@@ -1,1 +1,1 @@
-# React-Spotify
+# React Spotify
