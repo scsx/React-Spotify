@@ -29,6 +29,11 @@ function App() {
     }
   }, [])
 
+  const logout = (): void => {
+    setToken('')
+    window.localStorage.removeItem('spotifyToken')
+  }
+
   return (
     <>
       <div>
@@ -38,7 +43,7 @@ function App() {
             Login
           </a>
         ) : (
-          <button>Logout</button>
+          <button onClick={logout}>Logout</button>
         )}
       </div>
     </>
