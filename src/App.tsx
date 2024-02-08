@@ -10,7 +10,7 @@ interface SpotifySearchResponse {
   }
 }
 
-function App() {
+const App: React.FC = () => {
   const CLIENT_ID = '7fed2e2e70e947c0ae0c8872e7f1467a'
   const REDIRECT_URI = 'http://localhost:5173'
   const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize'
