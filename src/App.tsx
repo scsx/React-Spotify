@@ -16,8 +16,11 @@ function App() {
   const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize'
   const RESPONSE_TYPE = 'token'
 
+  const initialState: SpotifyArtist[] = []
+
   const [token, setToken] = useState('')
   const [searchKey, setSearchKey] = useState('')
+  const [artists, setArtists] = useState(initialState)
 
   useEffect(() => {
     const hash = window.location.hash
@@ -58,7 +61,20 @@ function App() {
         }
       }
     )
-    console.log(data)
+
+    const { items }: { items: SpotifyArtist[] } = data.artists
+    setArtists(items)
+  }
+
+  const renderArtists = (): JSX.Element[] => {
+    return artists.map((artist) => {
+      return (
+        <div key={artist.id}>
+          <p>Image here</p>
+          {artist.name}
+        </div>
+      )
+    })
   }
 
   return (
@@ -84,6 +100,8 @@ function App() {
           <h2>Please login</h2>
         )}
       </div>
+
+      <div>{renderArtists()}</div>
     </>
   )
 }
