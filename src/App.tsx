@@ -1,5 +1,6 @@
 // import Button from './components/Button'
 import { useEffect, useState } from 'react'
+import axios from 'axios'
 import './App.css'
 
 function App() {
@@ -9,6 +10,7 @@ function App() {
   const RESPONSE_TYPE = 'token'
 
   const [token, setToken] = useState('')
+  const [searchKey, setSearchKey] = useState('')
 
   useEffect(() => {
     const hash = window.location.hash
@@ -25,13 +27,29 @@ function App() {
 
       window.location.hash = ''
       window.localStorage.setItem('spotifyToken', spotifyToken ?? '')
-      setToken(spotifyToken ?? '')
     }
+
+    setToken(spotifyToken ?? '')
   }, [])
 
   const logout = (): void => {
     setToken('')
     window.localStorage.removeItem('spotifyToken')
+  }
+
+  const searchArtists = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault()
+    const { data } = await axios.get('https://api.spotify.com/v1/search', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      params: {
+        q: searchKey,
+        type: 'artist'
+      }
+    })
+
+    console.log(data)
   }
 
   return (
@@ -44,6 +62,17 @@ function App() {
           </a>
         ) : (
           <button onClick={logout}>Logout</button>
+        )}
+      </div>
+
+      <div>
+        {token ? (
+          <form onSubmit={searchArtists}>
+            <input type='text' onChange={(e) => setSearchKey(e.target.value)} />
+            <button type='submit'>Search</button>
+          </form>
+        ) : (
+          <h2>Please login</h2>
         )}
       </div>
     </>
