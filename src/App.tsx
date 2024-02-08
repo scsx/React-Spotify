@@ -23,17 +23,23 @@ function App() {
           .find((el) => el.startsWith('access_token'))
           ?.split('=')[1] ?? null
 
-      console.log(spotifyToken)
+      window.location.hash = ''
+      window.localStorage.setItem('spotifyToken', spotifyToken ?? '')
+      setToken(spotifyToken ?? '')
     }
   }, [])
 
   return (
     <>
       <div>
-        <a
-          href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>
-          Login
-        </a>
+        {!token ? (
+          <a
+            href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>
+            Login
+          </a>
+        ) : (
+          <button>Logout</button>
+        )}
       </div>
     </>
   )
