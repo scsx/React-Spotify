@@ -1,37 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import Button from './components/Button'
+// import Button from './components/Button'
+import { useEffect, useState } from 'react'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const CLIENT_ID = '7fed2e2e70e947c0ae0c8872e7f1467a'
+  const REDIRECT_URI = 'http://localhost:5173'
+  const AUTH_ENDPOINT = 'https://accounts.spotify.com/authorize'
+  const RESPONSE_TYPE = 'token'
+
+  const [token, setToken] = useState('')
+
+  useEffect(() => {
+    const hash = window.location.hash
+    let spotifyToken: string | null =
+      window.localStorage.getItem('spotifyToken')
+
+    if (!spotifyToken && hash) {
+      spotifyToken =
+        hash
+          .substring(1)
+          .split('&')
+          .find((el) => el.startsWith('access_token'))
+          ?.split('=')[1] ?? null
+
+      console.log(spotifyToken)
+    }
+  }, [])
 
   return (
     <>
       <div>
-        <a href='https://vitejs.dev' target='_blank'>
-          <img src={viteLogo} className='logo' alt='Vite logo' />
-        </a>
-        <a href='https://react.dev' target='_blank'>
-          <img src={reactLogo} className='logo react' alt='React logo' />
+        <a
+          href={`${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}`}>
+          Login
         </a>
       </div>
-      <h1>Vite + React</h1>
-
-      <Button text='Hey' />
-
-      <div className='card'>
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className='read-the-docs'>
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
