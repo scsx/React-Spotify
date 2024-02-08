@@ -1,7 +1,14 @@
 // import Button from './components/Button'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { SpotifyArtist } from './types/SpotifyArtist'
 import './App.css'
+
+interface SpotifySearchResponse {
+  artists: {
+    items: SpotifyArtist[]
+  }
+}
 
 function App() {
   const CLIENT_ID = '7fed2e2e70e947c0ae0c8872e7f1467a'
@@ -39,16 +46,18 @@ function App() {
 
   const searchArtists = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault()
-    const { data } = await axios.get('https://api.spotify.com/v1/search', {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      params: {
-        q: searchKey,
-        type: 'artist'
+    const { data }: { data: SpotifySearchResponse } = await axios.get(
+      'https://api.spotify.com/v1/search',
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        params: {
+          q: searchKey,
+          type: 'artist'
+        }
       }
-    })
-
+    )
     console.log(data)
   }
 
