@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 import { useToken } from '../contexts/TokenContext'
 import { SpotifyArtist } from '../types/SpotifyArtist'
 
@@ -57,7 +58,7 @@ const Homepage = (): JSX.Element => {
             <button type='submit'>Search</button>
           </form>
         ) : (
-          <h2>Please login</h2>
+          <h2>Please <Link to='/login'>login</Link></h2>
         )}
       </div>
 

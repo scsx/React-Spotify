@@ -38,7 +38,7 @@ const Login = (): JSX.Element => {
       {!token ? (
         <a
           href={`${VITE_SPOTIFY_AUTH_ENDPOINT}?client_id=${VITE_SPOTIFY_CLIENT_ID}&redirect_uri=${VITE_SPOTIFY_REDIRECT_URI}&response_type=${VITE_SPOTIFY_RESPONSE_TYPE}`}>
-          Login
+          Authenticate
         </a>
       ) : (
         <button onClick={logout}>Logout</button>
