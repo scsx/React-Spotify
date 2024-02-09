@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react'
 
-/* const SPOTIFY_CLIENT_ID = process.env.SPOTIFY_CLIENT_ID
-const SPOTIFY_REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI
-const SPOTIFY_AUTH_ENDPOINT = process.env.SPOTIFY_AUTH_ENDPOINT
-const SPOTIFY_RESPONSE_TYPE = process.env.SPOTIFY_RESPONSE_TYPE */
+const VITE_SPOTIFY_CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID
+const VITE_SPOTIFY_REDIRECT_URI = import.meta.env.VITE_SPOTIFY_REDIRECT_URI
+const VITE_SPOTIFY_AUTH_ENDPOINT = import.meta.env.VITE_SPOTIFY_AUTH_ENDPOINT
+const VITE_SPOTIFY_RESPONSE_TYPE = import.meta.env.VITE_SPOTIFY_RESPONSE_TYPE
 
 const Login = (): JSX.Element => {
-
-  console.log(import.meta.env.SPOTIFY_CLIENT_ID)
-
   const [token, setToken] = useState('')
 
   useEffect(() => {
@@ -39,11 +36,10 @@ const Login = (): JSX.Element => {
   return (
     <div>
       {!token ? (
-        <p>Hey</p>
-       /*  <a
-          href={`${SPOTIFY_AUTH_ENDPOINT}?client_id=${SPOTIFY_CLIENT_ID}&redirect_uri=${SPOTIFY_REDIRECT_URI}&response_type=${SPOTIFY_RESPONSE_TYPE}`}>
+        <a
+          href={`${VITE_SPOTIFY_AUTH_ENDPOINT}?client_id=${VITE_SPOTIFY_CLIENT_ID}&redirect_uri=${VITE_SPOTIFY_REDIRECT_URI}&response_type=${VITE_SPOTIFY_RESPONSE_TYPE}`}>
           Login
-        </a> */
+        </a>
       ) : (
         <button onClick={logout}>Logout</button>
       )}
