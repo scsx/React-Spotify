@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import Button from '../components/Button'
+import Button from '../../components/Button'
 
 const handleClick = jest.fn()
 
