@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-
-const VITE_SPOTIFY_CLIENT_ID = import.meta.env.VITE_SPOTIFY_CLIENT_ID
-const VITE_SPOTIFY_REDIRECT_URI = import.meta.env.VITE_SPOTIFY_REDIRECT_URI
-const VITE_SPOTIFY_AUTH_ENDPOINT = import.meta.env.VITE_SPOTIFY_AUTH_ENDPOINT
-const VITE_SPOTIFY_RESPONSE_TYPE = import.meta.env.VITE_SPOTIFY_RESPONSE_TYPE
+import {
+  VITE_SPOTIFY_CLIENT_ID,
+  VITE_SPOTIFY_REDIRECT_URI,
+  VITE_SPOTIFY_AUTH_ENDPOINT,
+  VITE_SPOTIFY_RESPONSE_TYPE
+} from '../../envConfig.ts'
 
 const Login = (): JSX.Element => {
   const [token, setToken] = useState('')

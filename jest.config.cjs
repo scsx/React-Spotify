@@ -3,10 +3,10 @@ module.exports = {
   testEnvironment: 'jsdom',
   rootDir: './',
   coverageDirectory: '<rootDir>/coverage',
-  collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
+  collectCoverageFrom: ['<rootDir>/src/**/*.tsx'],
   testPathIgnorePatterns: ['<rootDir>/node_modules'],
   coverageReporters: ['json', 'html'],
-  testMatch: ['<rootDir>/src/**/*.spec.ts'],
+  testMatch: ['<rootDir>/src/**/*.test.tsx'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1'
   }
