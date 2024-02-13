@@ -17,12 +17,10 @@ const reactSpotifyTheme = createTheme({
     },
     secondary: {
       main: '#191414'
-    }
-    /*
+    },
     background: {
-      default: '#191414'
+      default: '#f3f3f3'
     }
-    */
   }
 })
 

@@ -8,6 +8,7 @@ import List from '@mui/material/List'
 import CssBaseline from '@mui/material/CssBaseline'
 import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
+import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
@@ -23,6 +24,7 @@ const drawerWidth = 240
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
+  backgroundColor: theme.palette.primary.main,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen
@@ -55,13 +57,12 @@ interface AppBarProps extends MuiAppBarProps {
   open?: boolean
 }
 
-
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open'
 })<AppBarProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
-  backgroundColor: useTheme().palette.secondary.main,
-  color: useTheme().palette.primary.main,
+  backgroundColor: theme.palette.secondary.main,
+  color: theme.palette.primary.main,
   transition: theme.transitions.create(['width', 'margin'], {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen
@@ -93,7 +94,7 @@ const Drawer = styled(MuiDrawer, {
   })
 }))
 
-export default function PageWithDrawer() {  
+export default function PageWithDrawer() {
   const theme = useTheme()
   const [open, setOpen] = React.useState(false)
 
@@ -121,9 +122,10 @@ export default function PageWithDrawer() {
             }}>
             <MenuIcon />
           </IconButton>
-          <Typography variant='h6' noWrap component='div'>
-            SPOTIFY-REACT
+          <Typography variant='h5' noWrap component='div' sx={{ flexGrow: 1 }}>
+            Spotify React
           </Typography>
+          <Button color='inherit'>Login</Button>
         </Toolbar>
       </AppBar>
       <Drawer variant='permanent' open={open}>
@@ -159,29 +161,7 @@ export default function PageWithDrawer() {
             </ListItem>
           ))}
         </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-              <ListItemButton
-                sx={{
-                  minHeight: 48,
-                  justifyContent: open ? 'initial' : 'center',
-                  px: 2.5
-                }}>
-                <ListItemIcon
-                  sx={{
-                    minWidth: 0,
-                    mr: open ? 3 : 'auto',
-                    justifyContent: 'center'
-                  }}>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
+        {/* <Divider /> */}
       </Drawer>
       <Box component='main' sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
@@ -199,20 +179,6 @@ export default function PageWithDrawer() {
           vivamus at augue. At augue eget arcu dictum varius duis at consectetur
           lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
           faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
         </Typography>
       </Box>
     </Box>
