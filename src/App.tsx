@@ -5,7 +5,7 @@ import { ThemeProvider } from './contexts/ThemeProvider'
 import Homepage from './pages/Homepage'
 import Login from './pages/Login'
 
-import './App.css'
+import './globals.css'
 
 const App: React.FC = () => {
   return (
