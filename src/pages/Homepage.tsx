@@ -3,6 +3,7 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { useToken } from '../contexts/TokenContext'
 import { SpotifyArtist } from '../types/SpotifyArtist'
+import Button from '@mui/material/Button'
 
 interface SpotifySearchResponse {
   artists: {
@@ -43,6 +44,7 @@ const Homepage = (): JSX.Element => {
         <div key={artist.id}>
           <p>Image here</p>
           {artist.name}
+          <Button variant="contained">Hello world</Button>
         </div>
       )
     })
@@ -58,7 +60,9 @@ const Homepage = (): JSX.Element => {
             <button type='submit'>Search</button>
           </form>
         ) : (
-          <h2>Please <Link to='/login'>login</Link></h2>
+          <h2>
+            Please <Link to='/login'>login</Link>
+          </h2>
         )}
       </div>
 
