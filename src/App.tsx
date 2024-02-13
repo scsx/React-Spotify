@@ -4,7 +4,6 @@ import { ThemeProvider } from './contexts/ThemeProvider'
 
 import Header from './components/Header'
 import Homepage from './pages/Homepage'
-import Login from './pages/Login'
 
 import './globals.css'
 
@@ -14,7 +13,6 @@ const App: React.FC = () => {
       <Header />
       <Routes>
         <Route path='/' element={<Homepage />} />
-        <Route path='/login' element={<Login />} />
       </Routes>
     </ThemeProvider>
   )
