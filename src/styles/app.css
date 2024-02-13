@@ -1,3 +1,8 @@
 * {
   font-family: 'Gabarito', sans-serif;
 }
+
+/* Dark/Light theme mode */
+body {
+  transition: background-color .5s;
+}

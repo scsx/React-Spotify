@@ -5,8 +5,10 @@ import { SheetTrigger, SheetContent, Sheet } from '@/components/ui/sheet'
 import {
   NavigationMenuLink,
   NavigationMenuList,
+  NavigationMenuItem,
   NavigationMenu
 } from '@/components/ui/navigation-menu'
+import Switch from './Switch'
 
 const VITE_SPOTIFY_CLIENT_ID = process.env.VITE_SPOTIFY_CLIENT_ID
 const VITE_SPOTIFY_REDIRECT_URI = process.env.VITE_SPOTIFY_REDIRECT_URI
@@ -86,39 +88,54 @@ const Header = (): JSX.Element => {
             </div>
           </SheetContent>
         </Sheet>
-        <a className='mr-6 hidden lg:flex' href='#'>
-          <span className='sr-only'>ShadCN</span>
-        </a>
         <NavigationMenu className='hidden lg:flex'>
           <NavigationMenuList>
-            <NavigationMenuLink asChild>
-              <a className={lgLinkClasses} href='#'>
-                Search Artists
-              </a>
-            </NavigationMenuLink>
-            <NavigationMenuLink asChild>
-              <a className={lgLinkClasses} href='#'>
-                Playlists
-              </a>
-            </NavigationMenuLink>
-            <NavigationMenuLink asChild>
-              <a className={lgLinkClasses} href='#'>
-                Genres
-              </a>
-            </NavigationMenuLink>
-            <NavigationMenuLink asChild>
-              <a className={lgLinkClasses} href='#'>
-                User
-              </a>
-            </NavigationMenuLink>
-            <NavigationMenuLink asChild>
-              <a className={lgLinkClasses} href='#'>
-                Duplicates
-              </a>
-            </NavigationMenuLink>
+            <NavigationMenuItem>React Spotify</NavigationMenuItem>
+            {token && (
+              <>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <a className={lgLinkClasses} href='#'>
+                      Search Artists
+                    </a>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <a className={lgLinkClasses} href='#'>
+                      Playlists
+                    </a>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <a className={lgLinkClasses} href='#'>
+                      Genres
+                    </a>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <a className={lgLinkClasses} href='#'>
+                      User
+                    </a>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <NavigationMenuLink asChild>
+                    <a className={lgLinkClasses} href='#'>
+                      Duplicates
+                    </a>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              </>
+            )}
           </NavigationMenuList>
         </NavigationMenu>
-        <div className='ml-auto flex gap-2'>
+        <div className='ml-auto flex items-center gap-2'>
+
+          <Switch text='Dark mode' classes='flex mr-4' />
+
           {!token ? (
             <Button asChild>
               <a
@@ -127,13 +144,10 @@ const Header = (): JSX.Element => {
               </a>
             </Button>
           ) : (
-            <Button className={lgLinkClasses} onClick={logout}>
+            <a className={lgLinkClasses} onClick={logout} href={''}>
               Logout
-            </Button>
+            </a>
           )}
-
-          {/* <Button variant='outline'>Sign in</Button>
-          <Button>Sign Up</Button> */}
         </div>
       </header>
     </div>
