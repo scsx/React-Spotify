@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { Button } from "@/components/ui/button"
+
 const VITE_SPOTIFY_CLIENT_ID = process.env.VITE_SPOTIFY_CLIENT_ID
 const VITE_SPOTIFY_REDIRECT_URI = process.env.VITE_SPOTIFY_REDIRECT_URI
 const VITE_SPOTIFY_AUTH_ENDPOINT = process.env.VITE_SPOTIFY_AUTH_ENDPOINT
@@ -41,7 +43,7 @@ const Login = (): JSX.Element => {
           Authenticate
         </a>
       ) : (
-        <button onClick={logout}>Logout</button>
+        <Button onClick={logout}>Logout</Button>
       )}
     </div>
   )
