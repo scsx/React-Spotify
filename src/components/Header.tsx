@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { SheetTrigger, SheetContent, Sheet } from '@/components/ui/sheet'
 import {
-  NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuItem,
   NavigationMenu
 } from '@/components/ui/navigation-menu'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+
+import HeaderNav from './HeaderNav'
 import Switch from './Switch'
 
 const VITE_SPOTIFY_CLIENT_ID = process.env.VITE_SPOTIFY_CLIENT_ID
@@ -56,84 +58,53 @@ const Header = (): JSX.Element => {
             </Button>
           </SheetTrigger>
           <SheetContent side='left'>
-            <a href='#'>
-              <span className='sr-only'>ShadCN</span>
-            </a>
             <div className='grid gap-2 py-6'>
-              <a
-                className='flex w-full items-center py-2 text-lg font-semibold'
-                href='#'>
-                Search Artists
-              </a>
-              <a
-                className='flex w-full items-center py-2 text-lg font-semibold'
-                href='#'>
-                Playlists
-              </a>
-              <a
-                className='flex w-full items-center py-2 text-lg font-semibold'
-                href='#'>
-                Genres
-              </a>
-              <a
-                className='flex w-full items-center py-2 text-lg font-semibold'
-                href='#'>
-                User
-              </a>
-              <a
-                className='flex w-full items-center py-2 text-lg font-semibold'
-                href='#'>
-                Duplicates
-              </a>
+              {token ? (
+                <>
+                  <a
+                    className='flex w-full items-center py-2 text-lg font-semibold'
+                    href='#'>
+                    Search Artists
+                  </a>
+                  <a
+                    className='flex w-full items-center py-2 text-lg font-semibold'
+                    href='#'>
+                    Playlists
+                  </a>
+                  <a
+                    className='flex w-full items-center py-2 text-lg font-semibold'
+                    href='#'>
+                    Genres
+                  </a>
+                  <a
+                    className='flex w-full items-center py-2 text-lg font-semibold'
+                    href='#'>
+                    User
+                  </a>
+                  <a
+                    className='flex w-full items-center py-2 text-lg font-semibold'
+                    href='#'>
+                    Duplicates
+                  </a>
+                </>
+              ) : (
+                <Alert className='mt-8'>
+                  <AlertTitle>Authorization needed!</AlertTitle>
+                  <AlertDescription>
+                    Click the green button "Authenticate".
+                  </AlertDescription>
+                </Alert>
+              )}
             </div>
           </SheetContent>
         </Sheet>
         <NavigationMenu className='hidden lg:flex'>
           <NavigationMenuList>
             <NavigationMenuItem>React Spotify</NavigationMenuItem>
-            {token && (
-              <>
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <a className={lgLinkClasses} href='#'>
-                      Search Artists
-                    </a>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <a className={lgLinkClasses} href='#'>
-                      Playlists
-                    </a>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <a className={lgLinkClasses} href='#'>
-                      Genres
-                    </a>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <a className={lgLinkClasses} href='#'>
-                      User
-                    </a>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <NavigationMenuLink asChild>
-                    <a className={lgLinkClasses} href='#'>
-                      Duplicates
-                    </a>
-                  </NavigationMenuLink>
-                </NavigationMenuItem>
-              </>
-            )}
+            {token && <HeaderNav classes={lgLinkClasses} />}
           </NavigationMenuList>
         </NavigationMenu>
         <div className='ml-auto flex items-center gap-2'>
-
           <Switch text='Dark mode' classes='flex mr-4' />
 
           {!token ? (
