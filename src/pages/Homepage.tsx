@@ -36,7 +36,7 @@ const Homepage = (): JSX.Element => {
   }
 
   const token = useToken()
-  console.log('Token:', token)
+  // console.log('Token:', token)
 
   const renderArtists = (): JSX.Element[] => {
     return artists.map((artist) => {
