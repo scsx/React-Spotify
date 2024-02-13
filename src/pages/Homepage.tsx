@@ -51,7 +51,7 @@ const Homepage = (): JSX.Element => {
   }
 
   return (
-    <div>
+    <div className='home'>
       <h1>HP</h1>
       <div>
         {token ? (
