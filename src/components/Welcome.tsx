@@ -16,7 +16,3 @@ const Welcome = (): JSX.Element => {
 }
 
 export default Welcome
-{
-  /* <div className='flex flex-col content-center'> */
-}
-/*  </div> */
