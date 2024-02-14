@@ -113,7 +113,7 @@ const Header = (): JSX.Element => {
 
           {!token ? (
             <Button asChild>
-              <a href={authLink}>Authenticate</a>
+              <a className='text-white' href={authLink}>Authenticate</a>
             </Button>
           ) : (
             <a className={lgLinkClasses} onClick={logout} href={''}>

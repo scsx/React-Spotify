@@ -3,7 +3,6 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import { useToken } from '../contexts/TokenContext'
 import { SpotifyArtist } from '../types/SpotifyArtist'
-import Button from '@mui/material/Button'
 
 import {
   Table,
@@ -76,7 +75,6 @@ const Homepage = (): JSX.Element => {
         <div key={artist.id}>
           <p>Image here</p>
           {artist.name}
-          <Button variant='contained'>Hello world</Button>
         </div>
       )
     })
@@ -87,7 +85,7 @@ const Homepage = (): JSX.Element => {
       <div className='container'>
         <h1>HP</h1>
 
-        {[1,2,3,4,5,6,7,8,9,10].map((num) => {
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => {
           return exampleTable
         })}
 
