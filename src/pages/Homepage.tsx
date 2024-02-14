@@ -13,6 +13,7 @@ import {
   TableHeader,
   TableRow
 } from '@/components/ui/table'
+import Welcome from '@/components/Welcome'
 
 interface SpotifySearchResponse {
   artists: {
@@ -81,32 +82,21 @@ const Homepage = (): JSX.Element => {
   }
 
   return (
-    <div className='home'>
-      <div className='container'>
-        <h1>HP</h1>
-
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => {
+    <div className='home container flex flex-col flex-1 justify-center'>
+      {/*  {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => {
           return exampleTable
         })}
+ */}
+      {token ? (
+        <form onSubmit={searchArtists}>
+          <input type='text' onChange={(e) => setSearchKey(e.target.value)} />
+          <button type='submit'>Search</button>
+        </form>
+      ) : (
+        <Welcome />
+      )}
 
-        <div>
-          {token ? (
-            <form onSubmit={searchArtists}>
-              <input
-                type='text'
-                onChange={(e) => setSearchKey(e.target.value)}
-              />
-              <button type='submit'>Search</button>
-            </form>
-          ) : (
-            <h2>
-              Please <Link to='/login'>login</Link>
-            </h2>
-          )}
-        </div>
-
-        <div>{renderArtists()}</div>
-      </div>
+      <div>{renderArtists()}</div>
     </div>
   )
 }
