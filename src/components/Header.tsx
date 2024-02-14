@@ -17,6 +17,8 @@ const VITE_SPOTIFY_REDIRECT_URI = process.env.VITE_SPOTIFY_REDIRECT_URI
 const VITE_SPOTIFY_AUTH_ENDPOINT = process.env.VITE_SPOTIFY_AUTH_ENDPOINT
 const VITE_SPOTIFY_RESPONSE_TYPE = process.env.VITE_SPOTIFY_RESPONSE_TYPE
 
+const authLink = `${VITE_SPOTIFY_AUTH_ENDPOINT}?client_id=${VITE_SPOTIFY_CLIENT_ID}&redirect_uri=${VITE_SPOTIFY_REDIRECT_URI}&response_type=${VITE_SPOTIFY_RESPONSE_TYPE}`
+
 const Header = (): JSX.Element => {
   const [token, setToken] = useState('')
 
@@ -111,10 +113,7 @@ const Header = (): JSX.Element => {
 
           {!token ? (
             <Button asChild>
-              <a
-                href={`${VITE_SPOTIFY_AUTH_ENDPOINT}?client_id=${VITE_SPOTIFY_CLIENT_ID}&redirect_uri=${VITE_SPOTIFY_REDIRECT_URI}&response_type=${VITE_SPOTIFY_RESPONSE_TYPE}`}>
-                Authenticate
-              </a>
+              <a href={authLink}>Authenticate</a>
             </Button>
           ) : (
             <a className={lgLinkClasses} onClick={logout} href={''}>
