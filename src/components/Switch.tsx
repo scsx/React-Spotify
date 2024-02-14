@@ -30,7 +30,7 @@ const Switch: React.FC<SwitchProps> = ({
 
   return (
     <div className={classes}>
-      <span className='react-switch-text mr-4'>{text}</span>
+      <span className='react-switch-text mt-0.5 mr-4'>{text}</span>
       <input
         checked={darkMode}
         onChange={changeTheme}
