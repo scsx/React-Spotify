@@ -5,11 +5,43 @@ import { useToken } from '../contexts/TokenContext'
 import { SpotifyArtist } from '../types/SpotifyArtist'
 import Button from '@mui/material/Button'
 
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table'
+
 interface SpotifySearchResponse {
   artists: {
     items: SpotifyArtist[]
   }
 }
+
+const exampleTable = (
+  <Table>
+    <TableCaption>A list of your recent invoices.</TableCaption>
+    <TableHeader>
+      <TableRow>
+        <TableHead className='w-[100px]'>Invoice</TableHead>
+        <TableHead>Status</TableHead>
+        <TableHead>Method</TableHead>
+        <TableHead className='text-right'>Amount</TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody>
+      <TableRow>
+        <TableCell className='font-medium'>INV001</TableCell>
+        <TableCell>Paid</TableCell>
+        <TableCell>Credit Card</TableCell>
+        <TableCell className='text-right'>$250.00</TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
+)
 
 const Homepage = (): JSX.Element => {
   const initialState: SpotifyArtist[] = []
@@ -44,7 +76,7 @@ const Homepage = (): JSX.Element => {
         <div key={artist.id}>
           <p>Image here</p>
           {artist.name}
-          <Button variant="contained">Hello world</Button>
+          <Button variant='contained'>Hello world</Button>
         </div>
       )
     })
@@ -52,21 +84,31 @@ const Homepage = (): JSX.Element => {
 
   return (
     <div className='home'>
-      <h1>HP</h1>
-      <div>
-        {token ? (
-          <form onSubmit={searchArtists}>
-            <input type='text' onChange={(e) => setSearchKey(e.target.value)} />
-            <button type='submit'>Search</button>
-          </form>
-        ) : (
-          <h2>
-            Please <Link to='/login'>login</Link>
-          </h2>
-        )}
-      </div>
+      <div className='container'>
+        <h1>HP</h1>
 
-      <div>{renderArtists()}</div>
+        {[1,2,3,4,5,6,7,8,9,10].map((num) => {
+          return exampleTable
+        })}
+
+        <div>
+          {token ? (
+            <form onSubmit={searchArtists}>
+              <input
+                type='text'
+                onChange={(e) => setSearchKey(e.target.value)}
+              />
+              <button type='submit'>Search</button>
+            </form>
+          ) : (
+            <h2>
+              Please <Link to='/login'>login</Link>
+            </h2>
+          )}
+        </div>
+
+        <div>{renderArtists()}</div>
+      </div>
     </div>
   )
 }
