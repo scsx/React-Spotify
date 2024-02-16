@@ -4,14 +4,7 @@ import { SpotifyArtist } from '@/types/SpotifyArtist'
 import searchSpotify from '@/services/SpotifySearch'
 import Welcome from '@/components/Welcome'
 import HeadingOne from '@/components/HeadingOne'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
+import CardArtist from '@/components/CardArtist'
 import { MdArrowForwardIos } from 'react-icons/md'
 
 const HomepageSearchArtists = (): JSX.Element => {
@@ -25,7 +18,6 @@ const HomepageSearchArtists = (): JSX.Element => {
     e.preventDefault()
     try {
       const results = await searchSpotify(token, searchKey, 'artist')
-
       const artists = results.items as SpotifyArtist[]
       setArtists(artists)
       setTotalArtists(results.total)
@@ -45,22 +37,12 @@ const HomepageSearchArtists = (): JSX.Element => {
       return artists.map((artist, index) => {
         // MAKE Least Popular results blurry and blurryer
         return (
-          <Card
-            key={artist.id}
-            className={`col-span-3 lg:col-span-1 mb-1 ${
+          <CardArtist
+            artist={artist}
+            classes={`col-span-3 lg:col-span-1 mb-1 ${
               index === 0 ? 'lg:col-span-full' : ''
-            }`}>
-            <CardHeader>
-              <CardTitle>{artist.name}</CardTitle>
-              <CardDescription>Card Description</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p>Card Content</p>
-            </CardContent>
-            <CardFooter>
-              <p>Popularity: {artist.popularity}</p>
-            </CardFooter>
-          </Card>
+            }`}
+          />
         )
       })
     } else {
@@ -83,7 +65,7 @@ const HomepageSearchArtists = (): JSX.Element => {
             />
             <button
               type='submit'
-              className='bg-white dark:bg-slate-900 text-2xl md:text-4xl border border-l-0 border-indigo-700 px-4 text-black dark:text-white hover:bg-primary dark:hover:bg-primary'>
+              className='bg-white dark:bg-slate-900 text-2xl md:text-4xl border border-l-0 border-indigo-700 px-4 text-black hover:text-white dark:text-white hover:bg-primary dark:hover:bg-primary'>
               <MdArrowForwardIos />
             </button>
           </form>
@@ -96,7 +78,9 @@ const HomepageSearchArtists = (): JSX.Element => {
         <>
           <h3 className='text-lg mb-4'>
             Results <i className='text-primary'>{totalArtists}</i>
-            <button className='ml-4' onClick={clearSearch}>Clear search</button>
+            <button className='ml-4' onClick={clearSearch}>
+              Clear search
+            </button>
           </h3>
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
             {renderArtists()}
