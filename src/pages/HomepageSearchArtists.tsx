@@ -3,6 +3,7 @@ import { useToken } from '../contexts/TokenContext'
 import { SpotifyArtist } from '../types/SpotifyArtist'
 import searchSpotify from '@/services/SpotifySearch'
 import Welcome from '@/components/Welcome'
+import HeadingOne from '@/components/HeadingOne'
 import {
   Card,
   CardContent,
@@ -12,24 +13,20 @@ import {
   CardTitle
 } from '@/components/ui/card'
 
-const Homepage = (): JSX.Element => {
+const HomepageSearchArtists = (): JSX.Element => {
   const initialState: SpotifyArtist[] = []
   const [searchKey, setSearchKey] = useState('')
   const [artists, setArtists] = useState(initialState)
   const token = useToken()
 
-  // Search Artists. MOVE TO services.
-
-  /* const searchArtists = ((e: React.FormEvent): void) => {
-    e.preventDefault()
-    setArtists(searchSpotify(token, searchKey, 'artist'))
-    
-  } */
-
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const results = await searchSpotify(token, searchKey, 'artist')
+      const results = (await searchSpotify(
+        token,
+        searchKey,
+        'artist'
+      )) as SpotifyArtist[] // In this case we know its going to be of type artist so we use type assertion
       setArtists(results)
     } catch (error) {
       console.error('Error searching artists:', error)
@@ -69,7 +66,7 @@ const Homepage = (): JSX.Element => {
     <div className='home container flex flex-col flex-1 justify-center'>
       {token ? (
         <>
-          <h1>Search Artists</h1>
+          <HeadingOne text='Search Artists' />
           <form onSubmit={handleSearch}>
             <input type='text' onChange={(e) => setSearchKey(e.target.value)} />
             <button type='submit'>Search</button>
@@ -90,4 +87,4 @@ const Homepage = (): JSX.Element => {
   )
 }
 
-export default Homepage
+export default HomepageSearchArtists

@@ -4,7 +4,7 @@ import { ThemeProvider } from './contexts/ThemeProvider'
 
 import Header from './components/Header'
 import Footer from './components/Footer'
-import Homepage from './pages/Homepage'
+import Homepage from './pages/HomepageSearchArtists'
 
 import './globals.css'
 

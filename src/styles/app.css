@@ -6,3 +6,9 @@
 body {
   transition: background-color .5s;
 }
+
+/* target react-router-dom 'active' class */
+.basenav__link.active {
+  text-decoration: underline;
+  cursor: default;
+}

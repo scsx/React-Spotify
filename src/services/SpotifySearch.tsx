@@ -2,7 +2,7 @@ import axios from 'axios'
 import { SpotifyArtist } from '@/types/SpotifyArtist'
 import { SpotifyTrack } from '@/types/SpotifyTrack'
 
-// Searches for Artist or Track. Keep adding Types and conditions for album, playlist, etc.
+// Searches for Artist or Track. Keep adding <types> and conditions for album, playlist, etc.
 const searchSpotify = async (
   token: string,
   query: string,

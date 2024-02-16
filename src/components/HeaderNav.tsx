@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom'
 import {
   NavigationMenuLink,
   NavigationMenuItem
@@ -12,37 +13,37 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ classes = '' }): JSX.Element => {
     <>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <a className={classes} href='#'>
+          <NavLink to='/' end className={classes}>
             Search Artists
-          </a>
+          </NavLink>
         </NavigationMenuLink>
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <a className={classes} href='#'>
+          <NavLink to='/playlists' className={classes}>
             Playlists
-          </a>
+          </NavLink>
         </NavigationMenuLink>
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <a className={classes} href='#'>
+          <NavLink to='/genres' className={classes}>
             Genres
-          </a>
+          </NavLink>
         </NavigationMenuLink>
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <a className={classes} href='#'>
+          <NavLink to='/user' className={classes}>
             User
-          </a>
+          </NavLink>
         </NavigationMenuLink>
       </NavigationMenuItem>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <a className={classes} href='#'>
+          <NavLink to='/duplicates' className={classes}>
             Duplicates
-          </a>
+          </NavLink>
         </NavigationMenuLink>
       </NavigationMenuItem>
     </>
