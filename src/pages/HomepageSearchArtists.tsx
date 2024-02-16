@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card'
+import { MdArrowForwardIos } from 'react-icons/md'
 
 const HomepageSearchArtists = (): JSX.Element => {
   const initialState: SpotifyArtist[] = []
@@ -68,8 +69,12 @@ const HomepageSearchArtists = (): JSX.Element => {
         <>
           <HeadingOne text='Search Artists' />
           <form onSubmit={handleSearch}>
-            <input type='text' onChange={(e) => setSearchKey(e.target.value)} />
-            <button type='submit'>Search</button>
+            <input
+              className='bg-transparent text-3xl text-black dark:text-white border-b-4 border-indigo-500 focus:outline-none'
+              type='text'
+              onChange={(e) => setSearchKey(e.target.value)}
+            />
+            <button type='submit' className='text-3xl text-black dark:text-white'>Search</button>
           </form>
         </>
       ) : (
