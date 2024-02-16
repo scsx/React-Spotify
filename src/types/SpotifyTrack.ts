@@ -31,9 +31,3 @@ export interface SpotifyTrack {
   uri: string
   is_local: boolean
 }
-
-export interface SpotifySearchTracks {
-  tracks: {
-    items: SpotifyTrack[]
-  }
-}

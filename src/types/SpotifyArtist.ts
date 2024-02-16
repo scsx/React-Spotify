@@ -17,9 +17,3 @@ export interface SpotifyArtist {
   type: string
   uri: string
 }
-
-export interface SpotifySearchArtists {
-  artists: {
-    items: SpotifyArtist[]
-  }
-}

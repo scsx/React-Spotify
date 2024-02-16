@@ -1,32 +1,38 @@
 import axios from 'axios'
-import { SpotifyArtist, SpotifySearchArtists } from '@/types/SpotifyArtist'
+import { SpotifyArtist } from '@/types/SpotifyArtist'
+import { SpotifyTrack } from '@/types/SpotifyTrack'
 
+// Searches for Artist or Track. Keep adding Types and conditions for album, playlist, etc.
 const searchSpotify = async (
   token: string,
   query: string,
-  type: string
-): Promise<SpotifyArtist[]> => {
-  
-  //let typeOfData = type === 'artist' ? SpotifySearchArtists : ''
-
-  console.log(token, query, type)
-
-  const { data }: { data: SpotifySearchArtists } = await axios.get(
-    'https://api.spotify.com/v1/search',
-    {
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-      params: {
-        q: query,
-        type: type
+  searchType: string
+): Promise<SpotifyArtist[] | SpotifyTrack[]> => {
+  try {
+    const response = await axios.get(
+      `https://api.spotify.com/v1/search?type=${searchType}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        params: {
+          q: query
+        }
       }
+    )
+
+    if (searchType === 'artist') {
+      const { items }: { items: SpotifyArtist[] } = response.data.artists
+      return items
+    } else if (searchType === 'track') {
+      const { items }: { items: SpotifyTrack[] } = response.data.tracks
+      return items
+    } else {
+      throw new Error('Invalid search type')
     }
-  )
-
-  const { items }: { items: SpotifyArtist[] } = data.artists
-
-  return items
+  } catch (error) {
+    throw new Error('Failed to fetch from Spotify API')
+  }
 }
 
 export default searchSpotify
