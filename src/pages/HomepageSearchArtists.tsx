@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useToken } from '../contexts/TokenContext'
-import { SpotifyArtist } from '../types/SpotifyArtist'
+import { SpotifyArtist } from '@/types/SpotifyArtist'
 import searchSpotify from '@/services/SpotifySearch'
 import Welcome from '@/components/Welcome'
 import HeadingOne from '@/components/HeadingOne'
@@ -15,23 +15,28 @@ import {
 import { MdArrowForwardIos } from 'react-icons/md'
 
 const HomepageSearchArtists = (): JSX.Element => {
-  const initialState: SpotifyArtist[] = []
+  const initialArtistState: SpotifyArtist[] = []
   const [searchKey, setSearchKey] = useState('')
-  const [artists, setArtists] = useState(initialState)
+  const [artists, setArtists] = useState(initialArtistState)
+  const [totalArtists, setTotalArtists] = useState(0)
   const token = useToken()
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const results = (await searchSpotify(
-        token,
-        searchKey,
-        'artist'
-      )) as SpotifyArtist[] // In this case we know its going to be of type artist so we use type assertion
-      setArtists(results)
+      const results = await searchSpotify(token, searchKey, 'artist')
+
+      const artists = results.items as SpotifyArtist[]
+      setArtists(artists)
+      setTotalArtists(results.total)
     } catch (error) {
-      console.error('Error searching artists:', error)
+      console.error('Error searching API:', error)
     }
+  }
+
+  const clearSearch = (): void => {
+    setArtists(initialArtistState)
+    setTotalArtists(0)
   }
 
   // Render Artists.
@@ -89,7 +94,10 @@ const HomepageSearchArtists = (): JSX.Element => {
 
       {artists.length > 0 && (
         <>
-          <h3>Results ({artists.length})</h3>
+          <h3 className='text-lg mb-4'>
+            Results <i className='text-primary'>{totalArtists}</i>
+            <button className='ml-4' onClick={clearSearch}>Clear search</button>
+          </h3>
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
             {renderArtists()}
           </div>
