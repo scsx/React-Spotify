@@ -21,6 +21,8 @@ const searchSpotify = async (
       }
     )
 
+    console.log(response)
+
     if (searchType === 'artist') {
       const { items }: { items: SpotifyArtist[] } = response.data.artists
       return items

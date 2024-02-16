@@ -68,13 +68,19 @@ const HomepageSearchArtists = (): JSX.Element => {
       {token ? (
         <>
           <HeadingOne text='Search Artists' />
-          <form onSubmit={handleSearch}>
+          <form
+            onSubmit={handleSearch}
+            className={`flex -mt-2 ${artists.length > 0 ? 'mb-12' : 'mb-96'}`}>
             <input
-              className='bg-transparent text-3xl text-black dark:text-white border-b-4 border-indigo-500 focus:outline-none'
+              className='bg-white dark:bg-transparent text-2xl md:text-4xl text-black dark:text-white border border-indigo-700 focus:outline-none dark:focus:dark:bg-slate-900 py-3 px-4'
               type='text'
               onChange={(e) => setSearchKey(e.target.value)}
             />
-            <button type='submit' className='text-3xl text-black dark:text-white'>Search</button>
+            <button
+              type='submit'
+              className='bg-white dark:bg-slate-900 text-2xl md:text-4xl border border-l-0 border-indigo-700 px-4 text-black dark:text-white hover:bg-primary dark:hover:bg-primary'>
+              <MdArrowForwardIos />
+            </button>
           </form>
         </>
       ) : (
@@ -83,6 +89,7 @@ const HomepageSearchArtists = (): JSX.Element => {
 
       {artists.length > 0 && (
         <>
+          <h3>Results ({artists.length})</h3>
           <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
             {renderArtists()}
           </div>
