@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import axios from 'axios'
 import { useToken } from '../contexts/TokenContext'
 import { SpotifyArtist } from '../types/SpotifyArtist'
+import searchSpotify from '@/services/SpotifySearch'
 import Welcome from '@/components/Welcome'
 import {
   Card,
@@ -12,45 +12,35 @@ import {
   CardTitle
 } from '@/components/ui/card'
 
-interface SpotifySearchArtistsResponse {
-  artists: {
-    items: SpotifyArtist[]
-  }
-}
-
 const Homepage = (): JSX.Element => {
   const initialState: SpotifyArtist[] = []
   const [searchKey, setSearchKey] = useState('')
   const [artists, setArtists] = useState(initialState)
   const token = useToken()
 
-  // Search Artists.
-  const searchArtists = async (e: React.FormEvent): Promise<void> => {
-    e.preventDefault()
-    const { data }: { data: SpotifySearchArtistsResponse } = await axios.get(
-      'https://api.spotify.com/v1/search',
-      {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        params: {
-          q: searchKey,
-          type: 'artist'
-        }
-      }
-    )
+  // Search Artists. MOVE TO services.
 
-    const { items }: { items: SpotifyArtist[] } = data.artists
-    setArtists(items)
+  /* const searchArtists = ((e: React.FormEvent): void) => {
+    e.preventDefault()
+    setArtists(searchSpotify(token, searchKey, 'artist'))
+    
+  } */
+
+  const handleSearch = async (e: React.FormEvent) => {
+    e.preventDefault()
+    try {
+      const results = await searchSpotify(token, searchKey, 'artist')
+      setArtists(results)
+    } catch (error) {
+      console.error('Error searching artists:', error)
+    }
   }
 
   // Render Artists.
   const renderArtists = (): JSX.Element[] => {
     if (artists.length > 0) {
       return artists.map((artist, index) => {
-
         // MAKE Least Popular results blurry and blurryer
-
         return (
           <Card
             key={artist.id}
@@ -80,7 +70,7 @@ const Homepage = (): JSX.Element => {
       {token ? (
         <>
           <h1>Search Artists</h1>
-          <form onSubmit={searchArtists}>
+          <form onSubmit={handleSearch}>
             <input type='text' onChange={(e) => setSearchKey(e.target.value)} />
             <button type='submit'>Search</button>
           </form>
