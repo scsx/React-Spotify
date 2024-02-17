@@ -38,8 +38,8 @@ const HomepageSearchArtists = (): JSX.Element => {
         // MAKE Least Popular results blurry and blurryer
         return (
           <CardArtist
+          key={artist.id}
             artist={artist}
-            index={index}
             classes={`col-span-3 lg:col-span-1 mb-1 ${
               index === 0 ? 'lg:col-span-full' : ''
             }`}

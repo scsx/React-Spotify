@@ -10,19 +10,17 @@ import {
 
 interface CardArtistProps {
   artist: SpotifyArtist
-  index: number
   classes?: string
 }
 
 const CardArtist: React.FC<CardArtistProps> = ({
   artist,
-  index,
   classes = ''
 }): JSX.Element => {
+  //console.log(artist)
+
   return (
-    <Card
-      key={index}
-      className={classes}>
+    <Card className={classes}>
       <CardHeader>
         <CardTitle>{artist.name}</CardTitle>
         <CardDescription>Card Description</CardDescription>

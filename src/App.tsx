@@ -5,6 +5,7 @@ import { ThemeProvider } from './contexts/ThemeProvider'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Homepage from './pages/HomepageSearchArtists'
+import Playlists from './pages/Playlists'
 
 import './globals.css'
 
@@ -16,6 +17,7 @@ const App: React.FC = () => {
         <main className='flex flex-1 pt-40 pb-20 content-stretch'>
           <Routes>
             <Route path='/' element={<Homepage />} />
+            <Route path='/playlists' element={<Playlists />} />
           </Routes>
         </main>
         <Footer />
