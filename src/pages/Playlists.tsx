@@ -7,7 +7,7 @@ const Playlists = (): JSX.Element => {
   return (
     <div className='container flex flex-col flex-1 justify-center'>
       <h1>Playlists</h1>
-      {token}
+      {token?.isValid}
     </div>
   )
 }
