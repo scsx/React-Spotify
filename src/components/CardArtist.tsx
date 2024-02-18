@@ -17,10 +17,10 @@ const CardArtist: React.FC<CardArtistProps> = ({
   artist,
   classes = ''
 }): JSX.Element => {
+  //console.log(artist)
+
   return (
-    <Card
-      key={artist.id}
-      className={classes}>
+    <Card className={classes}>
       <CardHeader>
         <CardTitle>{artist.name}</CardTitle>
         <CardDescription>Card Description</CardDescription>

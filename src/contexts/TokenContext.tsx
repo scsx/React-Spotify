@@ -16,6 +16,7 @@ interface TokenProviderProps {
 export const TokenProvider: React.FC<TokenProviderProps> = ({ children }) => {
   const [token, setToken] = useState('')
 
+  // Set token.
   useEffect(() => {
     const hash = window.location.hash
     let spotifyToken = window.localStorage.getItem('spotifyToken')

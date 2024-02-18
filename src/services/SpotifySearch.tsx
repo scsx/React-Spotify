@@ -3,7 +3,6 @@ import { SpotifySearchResults } from '@/types/SpotifySearchResults'
 
 // Searches for Artist or Track. Keep adding <types> and conditions for album, playlist, etc.
 const searchSpotify = async (
-  token: string,
   query: string,
   searchType: string
 ): Promise<SpotifySearchResults> => {
@@ -11,9 +10,6 @@ const searchSpotify = async (
     const response = await axios.get(
       `https://api.spotify.com/v1/search?type=${searchType}`,
       {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
         params: {
           q: query
         }
