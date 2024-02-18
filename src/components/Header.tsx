@@ -1,4 +1,3 @@
-import { NavLink } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { SheetTrigger, SheetContent, Sheet } from '@/components/ui/sheet'
 import {
@@ -9,24 +8,16 @@ import {
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 
 import HeaderNav from './HeaderNav'
+import HeaderNavMobile from './HeaderNavMobile'
 import Switch from './Switch'
 import { useToken } from '@/contexts/TokenContext'
 
-const VITE_SPOTIFY_CLIENT_ID = process.env.VITE_SPOTIFY_CLIENT_ID
-const VITE_SPOTIFY_REDIRECT_URI = process.env.VITE_SPOTIFY_REDIRECT_URI
-const VITE_SPOTIFY_AUTH_ENDPOINT = process.env.VITE_SPOTIFY_AUTH_ENDPOINT
-const VITE_SPOTIFY_RESPONSE_TYPE = process.env.VITE_SPOTIFY_RESPONSE_TYPE
 
-const authLink = `${VITE_SPOTIFY_AUTH_ENDPOINT}?client_id=${VITE_SPOTIFY_CLIENT_ID}&redirect_uri=${VITE_SPOTIFY_REDIRECT_URI}&response_type=${VITE_SPOTIFY_RESPONSE_TYPE}`
 
 const Header = (): JSX.Element => {
   const token = useToken()
+ // console.log(token?.isValid)
 
-  const logout = (): void => {
-    window.localStorage.removeItem('spotifyToken')
-  }
-
-  const smLinkClasses = 'flex w-full items-center py-2 text-lg font-semibold'
   const lgLinkClasses =
     'basenav__link group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-primary hover:text-white focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-primary dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50'
 
@@ -41,27 +32,7 @@ const Header = (): JSX.Element => {
           </SheetTrigger>
           <SheetContent side='left'>
             <div className='grid gap-2 py-6'>
-              {token ? (
-                <>
-                  <NavLink to='/' end className={smLinkClasses}>
-                    Search Artists
-                  </NavLink>
-                  <NavLink to='/playlists' className={smLinkClasses}>
-                    Playlists
-                  </NavLink>
-                  <NavLink to='/genres' className={smLinkClasses}>
-                    Genres
-                  </NavLink>
-                  <a
-                    className='flex w-full items-center py-2 text-lg font-semibold'
-                    href='#'>
-                    User
-                  </a>
-                  <NavLink to='/user' className={smLinkClasses}>
-                    User
-                  </NavLink>
-                </>
-              ) : (
+              {token?.isValid ? <HeaderNavMobile /> : (
                 <Alert className='mt-8'>
                   <AlertTitle>Authorization needed!</AlertTitle>
                   <AlertDescription>
@@ -77,20 +48,20 @@ const Header = (): JSX.Element => {
             <NavigationMenuItem className='text-lg mr-5'>
               <span className='block -mt-1'>SCSX React Spotify</span>
             </NavigationMenuItem>
-            {token && <HeaderNav classes={lgLinkClasses} />}
+            {token?.isValid && <HeaderNav classes={lgLinkClasses} />}
           </NavigationMenuList>
         </NavigationMenu>
         <div className='ml-auto flex items-center gap-2'>
           <Switch text='Dark mode' classes='flex mr-4' />
 
-          {!token ? (
+          {!token?.isValid ? (
             <Button asChild>
-              <a className='text-white' href={authLink}>
+              <a className='text-white' href={token?.authLink}>
                 Authenticate
               </a>
             </Button>
           ) : (
-            <a className={lgLinkClasses} onClick={logout} href={''}>
+            <a className={lgLinkClasses} onClick={token?.logout} href={''}>
               Logout
             </a>
           )}
