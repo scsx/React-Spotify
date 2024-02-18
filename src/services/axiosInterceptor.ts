@@ -8,7 +8,6 @@ axios.interceptors.request.use(
       config.headers['Authorization'] = `Bearer ${token}`
     }
     
-
     // We have to return the config object
     return config
   },
@@ -20,17 +19,15 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
   (response: AxiosResponse) => {
-    console.log('Response data:', response.data)
 
-    /* if (response.status !== 200) {
-      console.log('Refresh token')
+    if (response.status !== 200) {
       console.log('Error:', response.statusText)
-    } */
+    }
 
-    if (response.status === 401) {
+    /* if (response.status === 401) {
       console.log('Error 401:', response.statusText)
       console.log('Refresh token')
-    }
+    } */
 
     return response
   },
