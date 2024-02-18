@@ -1,5 +1,4 @@
-import { useEffect, useState, useContext } from 'react'
-
+import { NavLink } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { SheetTrigger, SheetContent, Sheet } from '@/components/ui/sheet'
 import {
@@ -27,6 +26,7 @@ const Header = (): JSX.Element => {
     window.localStorage.removeItem('spotifyToken')
   }
 
+  const smLinkClasses = 'flex w-full items-center py-2 text-lg font-semibold'
   const lgLinkClasses =
     'basenav__link group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-primary hover:text-white focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-primary dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50'
 
@@ -43,31 +43,23 @@ const Header = (): JSX.Element => {
             <div className='grid gap-2 py-6'>
               {token ? (
                 <>
-                  <a
-                    className='flex w-full items-center py-2 text-lg font-semibold'
-                    href='#'>
+                  <NavLink to='/' end className={smLinkClasses}>
                     Search Artists
-                  </a>
-                  <a
-                    className='flex w-full items-center py-2 text-lg font-semibold'
-                    href='#'>
+                  </NavLink>
+                  <NavLink to='/playlists' className={smLinkClasses}>
                     Playlists
-                  </a>
-                  <a
-                    className='flex w-full items-center py-2 text-lg font-semibold'
-                    href='#'>
+                  </NavLink>
+                  <NavLink to='/genres' className={smLinkClasses}>
                     Genres
-                  </a>
+                  </NavLink>
                   <a
                     className='flex w-full items-center py-2 text-lg font-semibold'
                     href='#'>
                     User
                   </a>
-                  <a
-                    className='flex w-full items-center py-2 text-lg font-semibold'
-                    href='#'>
-                    Duplicates
-                  </a>
+                  <NavLink to='/user' className={smLinkClasses}>
+                    User
+                  </NavLink>
                 </>
               ) : (
                 <Alert className='mt-8'>
@@ -93,7 +85,9 @@ const Header = (): JSX.Element => {
 
           {!token ? (
             <Button asChild>
-              <a className='text-white' href={authLink}>Authenticate</a>
+              <a className='text-white' href={authLink}>
+                Authenticate
+              </a>
             </Button>
           ) : (
             <a className={lgLinkClasses} onClick={logout} href={''}>

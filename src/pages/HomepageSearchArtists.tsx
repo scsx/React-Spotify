@@ -17,7 +17,7 @@ const HomepageSearchArtists = (): JSX.Element => {
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const results = await searchSpotify(token, searchKey, 'artist')
+      const results = await searchSpotify(searchKey, 'artist')
       const artists = results.items as SpotifyArtist[]
       setArtists(artists)
       setTotalArtists(results.total)
