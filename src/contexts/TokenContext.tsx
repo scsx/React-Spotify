@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  ReactNode
-} from 'react'
+import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 
 // Token to be provided.
 interface TokenInfo {
@@ -34,17 +28,27 @@ export const TokenProvider: React.FC<TokenProviderProps> = ({ children }) => {
   const [token, setToken] = useState<TokenInfo | null>(null)
   const [tokenIsValid, setTokenIsValid] = useState(false)
 
-  // Logout.
-  const logoutCtx = () => {
-    window.localStorage.removeItem('spotifyToken')
-    setTokenIsValid(false)
+  // Token expiration time (1h)
+  const calculateExpirationTime = () => {
+    const now = new Date()
+    const expirationTime = new Date(now.getTime() + 60 * 60 * 1000)
+    localStorage.setItem('tokenExpirationTime', expirationTime.toISOString())
+    return expirationTime
   }
 
-  // Set token.
+  // Logout
+  const logoutCtx = () => {
+    localStorage.removeItem('spotifyToken')
+    localStorage.removeItem('tokenExpirationTime')
+    setToken(null)
+  }
+
+  // Set token validity
   useEffect(() => {
     const hash = window.location.hash
     let spotifyToken = window.localStorage.getItem('spotifyToken')
-    
+    let storedExpirationTime = window.localStorage.getItem('tokenExpirationTime')
+
     if (!spotifyToken && hash) {
       spotifyToken =
         hash
@@ -52,35 +56,39 @@ export const TokenProvider: React.FC<TokenProviderProps> = ({ children }) => {
           .split('&')
           .find((el) => el.startsWith('access_token'))
           ?.split('=')[1] ?? null
+
       window.location.hash = ''
-      setTokenIsValid(true)
-      window.localStorage.setItem('spotifyToken', spotifyToken ?? '')
+      localStorage.setItem('spotifyToken', spotifyToken ?? '')
+      storedExpirationTime = calculateExpirationTime().toISOString()
     }
 
-    setToken({
-      isValid: tokenIsValid,
-      authLink: authLink,
-      logout: logoutCtx
-    })
+    if (storedExpirationTime) {
+      let calcExpirationTime = new Date(storedExpirationTime)
+      if (calcExpirationTime > new Date()) {
+        setTokenIsValid(true)
+      } else {
+        logoutCtx()
+      }
+    } else {
+      logoutCtx()
+    }
   }, [])
 
-  // Update the token object whenever tokenIsValid changes otherwise it will refer to the initial value of tokenIsValid 
+  // Update token validity
   useEffect(() => {
-    setToken(prevToken => ({
-      ...(prevToken as TokenInfo),
-      isValid: tokenIsValid
-    }))
+    if (token) {
+      setToken((prevToken) => ({
+        ...(prevToken as TokenInfo),
+        isValid: tokenIsValid
+      }))
+    }
   }, [tokenIsValid])
 
   const tokenOrFallback = token ?? {
     isValid: tokenIsValid,
-    authLink: '',
+    authLink: authLink,
     logout: logoutCtx
   }
 
-  return (
-    <TokenContext.Provider value={tokenOrFallback}>
-      {children}
-    </TokenContext.Provider>
-  )
+  return <TokenContext.Provider value={tokenOrFallback}>{children}</TokenContext.Provider>
 }
