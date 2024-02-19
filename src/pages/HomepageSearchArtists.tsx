@@ -15,19 +15,23 @@ const HomepageSearchArtists = (): JSX.Element => {
   const [totalArtists, setTotalArtists] = useState(0)
   const isAuthorized = useToken()?.isValid
 
-  // Get local storage.
+  // Get local storage and update its state.
+  let storedPastSearches = localStorage.getItem('pastArtistSearches')
   useEffect(() => {
-    const storedPastSearches = localStorage.getItem('pastArtistSearches')
     if (storedPastSearches) {
       const obj = JSON.parse(storedPastSearches)
       setPastSearches(obj)
     }
-  }, [])
+  }, [storedPastSearches])
 
   // Set local storage based on state pastSearches.
   useEffect(() => {
     if (pastSearches.length > 0) {
-      localStorage.setItem('pastArtistSearches', JSON.stringify(pastSearches))
+      let updatedSearches = [...pastSearches]
+      if (pastSearches.length > 4) {
+        updatedSearches = updatedSearches.slice(1)
+      }
+      localStorage.setItem('pastArtistSearches', JSON.stringify(updatedSearches))
     }
   }, [pastSearches])
 
