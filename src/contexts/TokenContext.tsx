@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
-import authLink from './spotifyAuthLink'
+import authLink from '../services/spotifyAuthLink'
 
 // Token to be provided.
 interface TokenInfo {
@@ -24,6 +24,7 @@ export const TokenProvider: React.FC<TokenProviderProps> = ({ children }) => {
   // Token expiration time (1h)
   const calculateExpirationTime = () => {
     const now = new Date()
+    //const expirationTime = new Date(now.getTime() + 5000)
     const expirationTime = new Date(now.getTime() + 60 * 60 * 1000)
     localStorage.setItem('tokenExpirationTime', expirationTime.toISOString())
     return expirationTime

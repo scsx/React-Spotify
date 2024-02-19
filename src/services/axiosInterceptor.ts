@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
-import authLink from '@/contexts/spotifyAuthLink'
+import authLink from '@/services/spotifyAuthLink'
 
 // REQUESTS.
 axios.interceptors.request.use(
@@ -38,9 +38,9 @@ axios.interceptors.request.use(
 // RESPONSES.
 axios.interceptors.response.use(
   (response: AxiosResponse) => {
-    if (response.status !== 200) {
+    /* if (response.status !== 200) {
       console.log('Error:', response.statusText)
-    }
+    } */
 
     if (response.status === 401) {
       console.log('Error 401:', response.statusText)
