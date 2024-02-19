@@ -32,7 +32,6 @@ export const TokenProvider: React.FC<TokenProviderProps> = ({ children }) => {
 
   // Logout
   const logoutCtx = () => {
-    console.log('logout running')
     localStorage.removeItem('spotifyToken')
     localStorage.removeItem('tokenExpirationTime')
     setToken(null)

@@ -20,7 +20,6 @@ interface CardArtistProps {
 }
 
 const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.Element => {
-  console.log(artist)
 
   return (
     <Card className={classes}>
@@ -36,7 +35,7 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
           <div className='block'>
             {artist.genres.length > 0 &&
               artist.genres.map((genre) => {
-                return <Badge className='mx-1 bg-secondary text-muted-foreground'>{genre}</Badge>
+                return <Badge className='mx-1 bg-secondary text-muted-foreground' key={genre}>{genre}</Badge>
               })}
           </div>
         </CardHeader>
