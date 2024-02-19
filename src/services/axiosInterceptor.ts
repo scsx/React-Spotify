@@ -1,13 +1,31 @@
 import axios, { AxiosResponse } from 'axios'
+import authLink from '@/contexts/spotifyAuthLink'
 
-// Add a request interceptor
+// REQUESTS.
 axios.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('spotifyToken')
+    const storedDateString = localStorage.getItem('tokenExpirationTime')
+    let storedDate: Date | null = null
+
+    if (storedDateString) {
+      storedDate = new Date(storedDateString)
+    }
+
+    if (storedDate && !isNaN(storedDate.getTime())) {
+      const currentDate = new Date()
+
+      if (currentDate.getTime() > storedDate.getTime()) {
+        console.log('Token expired, redirecting')
+        // Redirect user to authenticate
+        window.location.href = authLink
+      }
+    }
+
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`
     }
-    
+
     // We have to return the config object
     return config
   },
@@ -17,17 +35,16 @@ axios.interceptors.request.use(
   }
 )
 
+// RESPONSES.
 axios.interceptors.response.use(
   (response: AxiosResponse) => {
-
     if (response.status !== 200) {
       console.log('Error:', response.statusText)
     }
 
-    /* if (response.status === 401) {
+    if (response.status === 401) {
       console.log('Error 401:', response.statusText)
-      console.log('Refresh token')
-    } */
+    }
 
     return response
   },

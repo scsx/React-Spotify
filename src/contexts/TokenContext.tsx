@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import authLink from './spotifyAuthLink'
 
 // Token to be provided.
 interface TokenInfo {
@@ -15,14 +16,6 @@ interface TokenProviderProps {
 const TokenContext = createContext<TokenInfo | null>(null)
 export const useToken = () => useContext(TokenContext)
 
-// .env vars and link for the Implicit Grant Flow.
-const VITE_SPOTIFY_CLIENT_ID = process.env.VITE_SPOTIFY_CLIENT_ID
-const VITE_SPOTIFY_REDIRECT_URI = process.env.VITE_SPOTIFY_REDIRECT_URI
-const VITE_SPOTIFY_AUTH_ENDPOINT = process.env.VITE_SPOTIFY_AUTH_ENDPOINT
-const VITE_SPOTIFY_RESPONSE_TYPE = process.env.VITE_SPOTIFY_RESPONSE_TYPE
-
-const authLink = `${VITE_SPOTIFY_AUTH_ENDPOINT}?client_id=${VITE_SPOTIFY_CLIENT_ID}&redirect_uri=${VITE_SPOTIFY_REDIRECT_URI}&response_type=${VITE_SPOTIFY_RESPONSE_TYPE}`
-
 // Provider.
 export const TokenProvider: React.FC<TokenProviderProps> = ({ children }) => {
   const [token, setToken] = useState<TokenInfo | null>(null)
@@ -38,6 +31,7 @@ export const TokenProvider: React.FC<TokenProviderProps> = ({ children }) => {
 
   // Logout
   const logoutCtx = () => {
+    console.log('logout running')
     localStorage.removeItem('spotifyToken')
     localStorage.removeItem('tokenExpirationTime')
     setToken(null)
@@ -59,7 +53,7 @@ export const TokenProvider: React.FC<TokenProviderProps> = ({ children }) => {
 
       window.location.hash = ''
       localStorage.setItem('spotifyToken', spotifyToken ?? '')
-      storedExpirationTime = calculateExpirationTime().toISOString()
+      storedExpirationTime = calculateExpirationTime().toISOString() // Also sets exp time localStorage
     }
 
     if (storedExpirationTime) {
