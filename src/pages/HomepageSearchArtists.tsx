@@ -12,7 +12,7 @@ const HomepageSearchArtists = (): JSX.Element => {
   const [searchKey, setSearchKey] = useState('')
   const [artists, setArtists] = useState(initialArtistState)
   const [totalArtists, setTotalArtists] = useState(0)
-  const token = useToken()
+  const isAuthorized = useToken()?.isValid
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -54,7 +54,7 @@ const HomepageSearchArtists = (): JSX.Element => {
 
   return (
     <div className='home container flex flex-col flex-1 justify-center'>
-      {token ? (
+      {isAuthorized ? (
         <>
           <HeadingOne text='Search Artists' />
           <form
