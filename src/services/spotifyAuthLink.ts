@@ -13,6 +13,11 @@ if (
   throw new Error('Missing required environment variables for Spotify authentication.')
 }
 
-const authLink = `${VITE_SPOTIFY_AUTH_ENDPOINT}?client_id=${VITE_SPOTIFY_CLIENT_ID}&redirect_uri=${VITE_SPOTIFY_REDIRECT_URI}&response_type=${VITE_SPOTIFY_RESPONSE_TYPE}`
+// https://developer.spotify.com/documentation/web-api/concepts/scopes
+const authScopes = encodeURIComponent(
+  'user-read-private user-read-email user-read-currently-playing'
+)
+
+const authLink = `${VITE_SPOTIFY_AUTH_ENDPOINT}?client_id=${VITE_SPOTIFY_CLIENT_ID}&redirect_uri=${VITE_SPOTIFY_REDIRECT_URI}&response_type=${VITE_SPOTIFY_RESPONSE_TYPE}&scope=${authScopes}`
 
 export default authLink

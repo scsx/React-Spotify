@@ -14,13 +14,7 @@ import {
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger
-} from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import {
   Table,
   TableBody,
@@ -44,7 +38,7 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [topTracks, setTopTracks] = useState<SpotifyMultipleTracks | null>(null)
 
-console.log(artist)
+  console.log(artist)
 
   const openSheet = async () => {
     setSidebarOpen(!sidebarOpen)
@@ -62,7 +56,11 @@ console.log(artist)
         <CardContent className='card__content flex flex-col h-full'>
           <div className='w-2/3 mx-auto my-8 overflow-hidden rounded-full'>
             <AspectRatio ratio={1 / 1}>
-              <img src={artist.images[0]?.url} alt='Image' className='object-cover' />
+              <img
+                src={artist.images[0]?.url}
+                alt={Array(40).fill(artist.name).join(' ')} // In case of no image.
+                className='object-cover text-sm text-gray-400 dark:text-gray-700'
+              />
             </AspectRatio>
           </div>
           <CardHeader className='text-center p-0 flex-grow'>
@@ -88,7 +86,7 @@ console.log(artist)
                 <MdOutlinePanoramaFishEye className='mx-2 text-xl -mt-0.5 text-muted-foreground hover:text-primary' />
               </SheetTrigger>
               <FaBullseye className='mx-2 text-muted-foreground' />
-              
+
               <a target='_blank' href={artist.uri}>
                 <FaSpotify className='mx-2 text-muted-foreground hover:text-primary' />
               </a>
