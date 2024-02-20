@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { SpotifyArtist } from '@/types/SpotifyArtist'
 import getTopTracks from '@/services/SpotifyGetTopTracks'
 import { SpotifyMultipleTracks, SpotifyTrack } from '@/types/SpotifyTrack'
@@ -17,7 +17,6 @@ import { AspectRatio } from '@/components/ui/aspect-ratio'
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger
@@ -25,7 +24,6 @@ import {
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -45,6 +43,8 @@ interface CardArtistProps {
 const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.Element => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [topTracks, setTopTracks] = useState<SpotifyMultipleTracks | null>(null)
+
+console.log(artist)
 
   const openSheet = async () => {
     setSidebarOpen(!sidebarOpen)
@@ -85,11 +85,16 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
             <Progress value={artist.popularity} className='h-1 w-2/3 mx-auto' />
             <div className='flex pt-6'>
               <SheetTrigger>
-                <MdOutlinePanoramaFishEye className='mx-2 text-xl -mt-0.5 text-muted-foreground' />
+                <MdOutlinePanoramaFishEye className='mx-2 text-xl -mt-0.5 text-muted-foreground hover:text-primary' />
               </SheetTrigger>
               <FaBullseye className='mx-2 text-muted-foreground' />
-              <FaSpotify className='mx-2 text-muted-foreground' />
-              <FaGoogle className='mx-2 text-muted-foreground' />
+              
+              <a target='_blank' href={artist.uri}>
+                <FaSpotify className='mx-2 text-muted-foreground hover:text-primary' />
+              </a>
+              <a target='_blank' href={`https://www.google.com/search?q=${artist.name}`}>
+                <FaGoogle className='mx-2 text-muted-foreground hover:text-primary' />
+              </a>
             </div>
           </CardFooter>
         </CardContent>
@@ -125,10 +130,6 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
               })}
           </TableBody>
         </Table>
-        {/* <SheetDescription>
-          This action cannot be undone. This will permanently delete your account and remove your
-          data from our servers.
-        </SheetDescription> */}
       </SheetContent>
     </Sheet>
   )
