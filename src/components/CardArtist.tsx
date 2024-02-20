@@ -59,16 +59,16 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
   return (
     <Sheet onOpenChange={openSheet}>
       <Card className={classes}>
-        <CardContent>
+        <CardContent className='card__content flex flex-col h-full'>
           <div className='w-2/3 mx-auto my-8 overflow-hidden rounded-full'>
             <AspectRatio ratio={1 / 1}>
               <img src={artist.images[0]?.url} alt='Image' className='object-cover' />
             </AspectRatio>
           </div>
-          <CardHeader className='text-center p-0'>
+          <CardHeader className='text-center p-0 flex-grow'>
             <CardTitle className='text-4xl'>{artist.name}</CardTitle>
             <CardDescription>{artist.followers.total} followers</CardDescription>
-            <div className='block'>
+            <div className='block pt-3'>
               {artist.genres.length > 0 &&
                 artist.genres.map((genre) => {
                   return (
@@ -81,18 +81,18 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
                 })}
             </div>
           </CardHeader>
+          <CardFooter className='flex-col pt-5 pb-0'>
+            <Progress value={artist.popularity} className='h-1 w-2/3 mx-auto' />
+            <div className='flex pt-6'>
+              <SheetTrigger>
+                <MdOutlinePanoramaFishEye className='mx-2 text-xl -mt-0.5 text-muted-foreground' />
+              </SheetTrigger>
+              <FaBullseye className='mx-2 text-muted-foreground' />
+              <FaSpotify className='mx-2 text-muted-foreground' />
+              <FaGoogle className='mx-2 text-muted-foreground' />
+            </div>
+          </CardFooter>
         </CardContent>
-        <CardFooter className='flex-col'>
-          <Progress value={artist.popularity} className='h-1 w-2/3 mx-auto' />
-          <div className='flex pt-6'>
-            <SheetTrigger>
-              <MdOutlinePanoramaFishEye className='mx-2 text-xl -mt-0.5 text-muted-foreground' />
-            </SheetTrigger>
-            <FaBullseye className='mx-2 text-muted-foreground' />
-            <FaSpotify className='mx-2 text-muted-foreground' />
-            <FaGoogle className='mx-2 text-muted-foreground' />
-          </div>
-        </CardFooter>
       </Card>
       {/* SIDEBAR */}
       <SheetContent className='w-full max-w-full sm:max-w-1/2 sm:w-1/2 overflow-y-auto'>

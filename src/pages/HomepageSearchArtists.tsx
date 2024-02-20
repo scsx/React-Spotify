@@ -89,16 +89,14 @@ const HomepageSearchArtists = (): JSX.Element => {
   // Render Artists.
   const renderArtists = (): JSX.Element[] => {
     if (artists.length > 0) {
-      return artists.map((artist) => {
+      return artists.map((artist, index) => {
         // MAKE Least Popular results blurry and blurrier
         return (
           <CardArtist
             key={artist.id}
             artist={artist}
-            /* classes={`col-span-3 lg:col-span-1 mb-1 ${
-              index === 0 ? 'lg:col-span-full' : ''
-            }`} */
-            classes={`col-span-3 lg:col-span-1 mb-1`}
+            classes={`col-span-3 lg:col-span-${index === 0 || index === 1 ? '2' : '1'} mb-1`}
+            //classes={`col-span-3 lg:col-span-1 mb-1`}
           />
         )
       })
@@ -172,7 +170,7 @@ const HomepageSearchArtists = (): JSX.Element => {
       </div>
 
       {artists.length > 0 && (
-        <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>{renderArtists()}</div>
+        <div className='grid grid-cols-1 lg:grid-cols-4 gap-4'>{renderArtists()}</div>
       )}
     </div>
   )
