@@ -7,12 +7,13 @@ export const getCurrentlyPlaying = async (): Promise<any> => {
       `https://api.spotify.com/v1/me/player/currently-playing?market=${market}`
     )
 
-    console.log(response.data.item.name)
+    //console.log(response.data.item.name)
 
     /* const tracks: SpotifyMultipleTracks = {
       items: response.data.tracks
     }
-    return tracks */
+    */
+    return response
   } catch (error) {
     throw new Error('Failed to get top tracks')
   }
