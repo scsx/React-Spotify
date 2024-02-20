@@ -1,4 +1,8 @@
+import { useState, useEffect } from 'react'
 import { SpotifyArtist } from '@/types/SpotifyArtist'
+import getTopTracks from '@/services/SpotifyGetTopTracks'
+import { SpotifyMultipleTracks, SpotifyTrack } from '@/types/SpotifyTrack'
+
 import {
   Card,
   CardContent,
@@ -10,8 +14,6 @@ import {
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
-import { FaGoogle } from 'react-icons/fa'
-import { MdOutlinePanoramaFishEye } from 'react-icons/md'
 import {
   Sheet,
   SheetContent,
@@ -20,7 +22,20 @@ import {
   SheetTitle,
   SheetTrigger
 } from '@/components/ui/sheet'
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
+} from '@/components/ui/table'
+
+import { FaGoogle } from 'react-icons/fa'
+import { MdOutlinePanoramaFishEye } from 'react-icons/md'
 import { FaBullseye } from 'react-icons/fa6'
+import { FaSpotify } from 'react-icons/fa'
 
 interface CardArtistProps {
   artist: SpotifyArtist
@@ -28,8 +43,21 @@ interface CardArtistProps {
 }
 
 const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.Element => {
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [topTracks, setTopTracks] = useState<SpotifyMultipleTracks | null>(null)
+
+  const openSheet = async () => {
+    setSidebarOpen(!sidebarOpen)
+    try {
+      const tracks = await getTopTracks(artist.id)
+      setTopTracks(tracks)
+    } catch (error) {
+      console.error('Error fetching top tracks:', error)
+    }
+  }
+
   return (
-    <Sheet>
+    <Sheet onOpenChange={openSheet}>
       <Card className={classes}>
         <CardContent>
           <div className='w-2/3 mx-auto my-8 overflow-hidden rounded-full'>
@@ -61,20 +89,46 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
               <MdOutlinePanoramaFishEye className='mx-2 text-xl -mt-0.5 text-muted-foreground' />
             </SheetTrigger>
             <FaBullseye className='mx-2 text-muted-foreground' />
+            <FaSpotify className='mx-2 text-muted-foreground' />
             <FaGoogle className='mx-2 text-muted-foreground' />
           </div>
         </CardFooter>
       </Card>
       {/* SIDEBAR */}
-      fixed z-50 gap-4 bg-background p-6 shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500 inset-y-0 right-0 h-full border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm w-2/4
-      <SheetContent className='w-full  max-w-full sm:max-w-1/2 sm:w-1/2'>
-        <SheetHeader>
-          <SheetTitle>Are you absolutely sure?</SheetTitle>
-          <SheetDescription>
-            This action cannot be undone. This will permanently delete your account and remove your
-            data from our servers.
-          </SheetDescription>
-        </SheetHeader>
+      <SheetContent className='w-full max-w-full sm:max-w-1/2 sm:w-1/2 overflow-y-auto'>
+        <div className='flex items-center'>
+          <SheetHeader className='w-1/2'>
+            <SheetTitle className='text-6xl'>{artist.name}</SheetTitle>
+          </SheetHeader>
+          <img src={artist.images[0]?.url} alt='Image' className='w-1/2' />
+        </div>
+
+        <h3 className='text-2xl mt-4'>Top Tracks</h3>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Name</TableHead>
+              <TableHead>Album</TableHead>
+              <TableHead className='text-right'>Popularity</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {topTracks &&
+              topTracks.items.map((track: SpotifyTrack) => {
+                return (
+                  <TableRow key={track.id}>
+                    <TableCell className='font-medium'>{track.name}</TableCell>
+                    <TableCell>{track.album.name}</TableCell>
+                    <TableCell className='text-right'>{track.popularity}</TableCell>
+                  </TableRow>
+                )
+              })}
+          </TableBody>
+        </Table>
+        {/* <SheetDescription>
+          This action cannot be undone. This will permanently delete your account and remove your
+          data from our servers.
+        </SheetDescription> */}
       </SheetContent>
     </Sheet>
   )

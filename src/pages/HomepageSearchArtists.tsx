@@ -148,7 +148,7 @@ const HomepageSearchArtists = (): JSX.Element => {
             <Separator orientation='vertical' />
           </>
         )}
-        {pastSearches.length > 0 && (
+        {isAuthorized && pastSearches.length > 0 && (
           <>
             <h3>Past searches</h3>
             {pastSearches
