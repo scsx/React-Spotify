@@ -6,7 +6,7 @@ const HeaderNavMobile = (): JSX.Element => {
   return (
     <>
       <NavLink to='/' end className={smLinkClasses}>
-        Search Artists
+        Artists
       </NavLink>
       <NavLink to='/playlists' className={smLinkClasses}>
         Playlists

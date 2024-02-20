@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useToken } from '../contexts/TokenContext'
 import { SpotifyArtist } from '@/types/SpotifyArtist'
 import searchSpotify from '@/services/SpotifySearch'
@@ -6,6 +6,7 @@ import Welcome from '@/components/Welcome'
 import HeadingOne from '@/components/HeadingOne'
 import CardArtist from '@/components/CardArtist'
 import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import { MdArrowForwardIos } from 'react-icons/md'
 
 const HomepageSearchArtists = (): JSX.Element => {
@@ -15,6 +16,8 @@ const HomepageSearchArtists = (): JSX.Element => {
   const [artists, setArtists] = useState(initialArtistState)
   const [totalArtists, setTotalArtists] = useState(0)
   const isAuthorized = useToken()?.isValid
+  const inputRef = useRef<HTMLInputElement>(null)
+  const formRef = useRef<HTMLFormElement>(null)
 
   // Get pastSearches from local storage and fill its state.
   let storedPastSearches = localStorage.getItem('pastArtistSearches')
@@ -44,6 +47,14 @@ const HomepageSearchArtists = (): JSX.Element => {
     }
   }
 
+  // Manipulate search field.
+  const editSearchField = (query = ''): void => {
+    if (inputRef.current) {
+      inputRef.current.value = query
+    }
+  }
+
+  // Search.
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault()
     updatePastSearches(searchKey)
@@ -58,9 +69,18 @@ const HomepageSearchArtists = (): JSX.Element => {
     }
   }
 
+  // Search by clicking past search.
+  // The form submit is done by simple HTML attributes in the button and id in form.
+  const handlePastSearch = (artist: string) => {
+    setSearchKey(artist)
+    editSearchField(artist)
+  }
+
+  // Clear search states.
   const clearSearch = (): void => {
     setArtists(initialArtistState)
     setTotalArtists(0)
+    editSearchField()
   }
 
   // Render Artists.
@@ -89,13 +109,17 @@ const HomepageSearchArtists = (): JSX.Element => {
       {isAuthorized ? (
         <>
           <HeadingOne text='Search Artists' />
+
           <div className='flex'>
             <form
+              id='searchArtistsForm'
+              ref={formRef}
               onSubmit={handleSearch}
-              className={`flex-1 flex -mt-2 ${artists.length > 0 ? 'mb-12' : 'mb-96'}`}>
+              className='flex-1 flex -mt-2'>
               <input
                 className='bg-white dark:bg-transparent text-2xl md:text-4xl font-normal text-black dark:text-white border border-indigo-700 focus:outline-none dark:focus:dark:bg-slate-900 py-3 px-4'
                 type='text'
+                ref={inputRef}
                 onChange={(e) => setSearchKey(e.target.value)}
               />
               <button
@@ -104,31 +128,48 @@ const HomepageSearchArtists = (): JSX.Element => {
                 <MdArrowForwardIos />
               </button>
             </form>
-            <div className='flex-1'>
-              <h5 className='ml-2'>Past searches</h5>
-              {pastSearches.length > 0 &&
-                pastSearches.slice().reverse().map((term, index) => {
-                  return (
-                      <Button key={index} className='px-2 py-1 text-gray-400 hover:text-white' variant='link'>{term}</Button>
-                  )
-                })}
-            </div>
           </div>
         </>
       ) : (
         <Welcome />
       )}
 
+      <div className={`flex items-center gap-4 ${artists.length > 0 ? 'my-6' : 'mt-12 mb-96'}`}>
+        {artists.length > 0 && (
+          <>
+            <h3>
+              Results: <span className='text-primary'>{totalArtists}</span>
+            </h3>
+            <Separator orientation='vertical' />
+            <button onClick={clearSearch}>Clear search</button>
+            <Separator orientation='vertical' />
+          </>
+        )}
+        {pastSearches.length > 0 && (
+          <>
+            <h3>Past searches</h3>
+            {pastSearches
+              .slice()
+              .reverse()
+              .map((term, index) => {
+                return (
+                  <Button
+                    key={index}
+                    className='px-2 py-1 text-gray-400 hover:text-white'
+                    onClick={() => handlePastSearch(term)}
+                    form='searchArtistsForm'
+                    type='submit'
+                    variant='link'>
+                    {term}
+                  </Button>
+                )
+              })}
+          </>
+        )}
+      </div>
+
       {artists.length > 0 && (
-        <>
-          <h3 className='text-lg mb-4'>
-            Results <i className='text-primary'>{totalArtists}</i>
-            <button className='ml-4' onClick={clearSearch}>
-              Clear search
-            </button>
-          </h3>
-          <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>{renderArtists()}</div>
-        </>
+        <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>{renderArtists()}</div>
       )}
     </div>
   )
