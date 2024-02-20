@@ -35,7 +35,7 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
           <div className='block'>
             {artist.genres.length > 0 &&
               artist.genres.map((genre) => {
-                return <Badge className='mx-1 bg-secondary text-muted-foreground' key={genre}>{genre}</Badge>
+                return <Badge className='m-1 bg-secondary hover:bg-secondary text-muted-foreground' key={genre}>{genre}</Badge>
               })}
           </div>
         </CardHeader>

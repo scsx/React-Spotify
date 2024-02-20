@@ -5,6 +5,7 @@ import searchSpotify from '@/services/SpotifySearch'
 import Welcome from '@/components/Welcome'
 import HeadingOne from '@/components/HeadingOne'
 import CardArtist from '@/components/CardArtist'
+import { Button } from '@/components/ui/button'
 import { MdArrowForwardIos } from 'react-icons/md'
 
 const HomepageSearchArtists = (): JSX.Element => {
@@ -15,7 +16,7 @@ const HomepageSearchArtists = (): JSX.Element => {
   const [totalArtists, setTotalArtists] = useState(0)
   const isAuthorized = useToken()?.isValid
 
-  // Get local storage and update its state.
+  // Get pastSearches from local storage and fill its state.
   let storedPastSearches = localStorage.getItem('pastArtistSearches')
   useEffect(() => {
     if (storedPastSearches) {
@@ -28,16 +29,19 @@ const HomepageSearchArtists = (): JSX.Element => {
   useEffect(() => {
     if (pastSearches.length > 0) {
       let updatedSearches = [...pastSearches]
-      if (pastSearches.length > 4) {
+      if (pastSearches.length > 6) {
         updatedSearches = updatedSearches.slice(1)
       }
       localStorage.setItem('pastArtistSearches', JSON.stringify(updatedSearches))
     }
   }, [pastSearches])
 
+  // Update pastSearches state, everytime a search is done.
   const updatePastSearches = (term: string) => {
-    const updatedSearches: string[] = [...pastSearches, term]
-    setPastSearches(updatedSearches)
+    if (!pastSearches.includes(term)) {
+      const updatedSearches: string[] = [...pastSearches, term]
+      setPastSearches(updatedSearches)
+    }
   }
 
   const handleSearch = async (e: React.FormEvent) => {
@@ -88,7 +92,7 @@ const HomepageSearchArtists = (): JSX.Element => {
           <div className='flex'>
             <form
               onSubmit={handleSearch}
-              className={`flex -mt-2 ${artists.length > 0 ? 'mb-12' : 'mb-96'}`}>
+              className={`flex-1 flex -mt-2 ${artists.length > 0 ? 'mb-12' : 'mb-96'}`}>
               <input
                 className='bg-white dark:bg-transparent text-2xl md:text-4xl font-normal text-black dark:text-white border border-indigo-700 focus:outline-none dark:focus:dark:bg-slate-900 py-3 px-4'
                 type='text'
@@ -100,11 +104,13 @@ const HomepageSearchArtists = (): JSX.Element => {
                 <MdArrowForwardIos />
               </button>
             </form>
-            <div>
-              <p>Past searches</p>
+            <div className='flex-1'>
+              <h5 className='ml-2'>Past searches</h5>
               {pastSearches.length > 0 &&
-                pastSearches.map((term, index) => {
-                  return <span key={index}>{term}</span>
+                pastSearches.slice().reverse().map((term, index) => {
+                  return (
+                      <Button key={index} className='px-2 py-1 text-gray-400 hover:text-white' variant='link'>{term}</Button>
+                  )
                 })}
             </div>
           </div>
