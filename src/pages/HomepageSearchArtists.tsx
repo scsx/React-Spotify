@@ -2,11 +2,14 @@ import { useState, useEffect, useRef } from 'react'
 import { useToken } from '../contexts/TokenContext'
 import { SpotifyArtist } from '@/types/SpotifyArtist'
 import searchSpotify from '@/services/SpotifySearch'
+
 import Welcome from '@/components/Welcome'
 import HeadingOne from '@/components/HeadingOne'
+
 import CardArtist from '@/components/CardArtist'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+
 import { MdArrowForwardIos } from 'react-icons/md'
 
 const HomepageSearchArtists = (): JSX.Element => {
