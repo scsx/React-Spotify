@@ -102,7 +102,6 @@ const HomepageSearchArtists = (): JSX.Element => {
             key={artist.id}
             artist={artist}
             classes={`col-span-3 lg:col-span-${index === 0 || index === 1 ? '2' : '1'} mb-1`}
-            //classes={`col-span-3 lg:col-span-1 mb-1`}
           />
         )
       })
@@ -115,7 +114,12 @@ const HomepageSearchArtists = (): JSX.Element => {
     <div className='home container flex flex-col flex-1 justify-center'>
       {isAuthorized ? (
         <>
-          <HeadingOne text='Search Artists' />
+          <div
+            className={`origin-top-left transition-transform ${
+              artists.length > 0 && searchPerformed ? 'scale-75 ' : ''
+            }`}>
+            <HeadingOne text='Search Artists' />
+          </div>
 
           <div className='flex'>
             <form

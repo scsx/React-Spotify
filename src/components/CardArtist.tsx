@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { SpotifyArtist } from '@/types/SpotifyArtist'
 import getTopTracks from '@/services/SpotifyGetTopTracks'
 import { SpotifyMultipleTracks, SpotifyTrack } from '@/types/SpotifyTrack'
@@ -39,8 +40,6 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [topTracks, setTopTracks] = useState<SpotifyMultipleTracks | null>(null)
 
-  console.log(artist)
-
   const openSheet = async () => {
     setSidebarOpen(!sidebarOpen)
     try {
@@ -65,7 +64,9 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
             </AspectRatio>
           </div>
           <CardHeader className='text-center p-0 flex-grow'>
-            <CardTitle className='text-4xl'>{artist.name}</CardTitle>
+            <CardTitle className='text-4xl'>
+              <Link to={`/${artist.id}`}>{artist.name}</Link>
+            </CardTitle>
             <CardDescription>{artist.followers.total.toLocaleString()} followers</CardDescription>
             <div className='block pt-3'>
               {artist.genres.length > 0 &&
@@ -86,8 +87,9 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
               <SheetTrigger>
                 <MdOutlinePanoramaFishEye className='mx-2 text-xl -mt-0.5 text-muted-foreground hover:text-primary' />
               </SheetTrigger>
-              <FaBullseye className='mx-2 text-muted-foreground' />
-
+              <Link to={`/${artist.id}`}>
+                <FaBullseye className='mx-2 text-muted-foreground hover:text-primary' />
+              </Link>
               <a target='_blank' href={artist.uri}>
                 <FaSpotify className='mx-2 text-muted-foreground hover:text-primary' />
               </a>
@@ -125,7 +127,11 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
                     <TableCell>{track.album.name}</TableCell>
                     <TableCell className='text-right'>
                       <div className='flex items-center justify-end'>
-                        {track.popularity > 70 ? <ImFire className='text-xs mr-3 text-gray-500' /> : ''}
+                        {track.popularity > 70 ? (
+                          <ImFire className='text-xs mr-3 text-gray-500' />
+                        ) : (
+                          ''
+                        )}
                         {track.popularity}
                       </div>
                     </TableCell>
