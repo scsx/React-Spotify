@@ -15,14 +15,12 @@ const Player = (): JSX.Element => {
   const [nowPlaying, setNowPlaying] = useState<NowPlaying | null>(null)
   const isAuthorized = useToken()?.isValid
 
-  console.log(isAuthorized)
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const playing = await getCurrentlyPlaying()
         setNowPlaying(playing.data.item)
-        console.log(playing)
+       // console.log(playing)
       } catch (error) {
         console.error('Error fetching currently playing:', error)
       }

@@ -38,21 +38,17 @@ axios.interceptors.request.use(
 // RESPONSES.
 axios.interceptors.response.use(
   (response: AxiosResponse) => {
-    /* if (response.status !== 200) {
-      console.log('Error:', response.statusText)
-    } */
-
-    if (response.status === 401) {
-      console.log('Error 401:', response.statusText)
+    if (response.status == 200) {
+      // Do something, its ok.
     }
-
     return response
   },
   (error) => {
-    // Handle request errors
     console.error('axios.interceptors.response.use error:', error)
-
-    // Return a rejected Promise to propagate the error
+    if (error.response.status === 401) {
+      window.location.href = authLink
+    }
+    // Return a rejected Promise to propagate the error if not 401.
     return Promise.reject(error)
   }
 )

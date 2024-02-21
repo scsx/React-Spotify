@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 import { SpotifyArtist } from '@/types/SpotifyArtist'
 import { getArtist } from '@/services/SpotifyGetArtist'
 
+import Albums from '@/components/Albums'
 import HeadingOne from '@/components/HeadingOne'
 
 const Artist = (): JSX.Element => {
@@ -17,8 +18,6 @@ const Artist = (): JSX.Element => {
       try {
         if (artistId) {
           const fetchedArtist = await getArtist(artistId)
-          console.log(artistId)
-          console.log(fetchedArtist)
           setArtist(fetchedArtist)
         }
       } catch (error) {
@@ -30,14 +29,33 @@ const Artist = (): JSX.Element => {
   }, [artistId])
 
   return (
-    <div className='container flex flex-col flex-1 justify-center'>
+    <div className='container flex flex-col flex-1'>
       {artist && (
-      <>
-      <HeadingOne text={artist.name} />
-      <p>{artist.followers.total.toLocaleString()} followers</p>
-      </>
-  )}
-      
+        <>
+          <div
+            className='w-1/4 absolute h-full bg-cover bg-no-repeat z-0'
+            style={{
+              backgroundImage: `url(${artist.images[0].url})`
+            }}></div>
+          <div className='relative z-10'>
+            <HeadingOne text={artist.name} />
+            <p>{artist.followers.total.toLocaleString()} followers</p>
+            <div className='flex w-full'>
+              <div className='w-1/2'>
+                Genres
+                <p>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat pariatur ex non
+                  consectetur reiciendis excepturi odit voluptatibus quasi voluptatem eligendi!
+                  Quibusdam labore ipsum architecto reiciendis animi veritatis dolorem, vero quidem?
+                </p>
+              </div>
+              <div className='w-1/2'>
+                <Albums />
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   )
 }
