@@ -11,13 +11,17 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 
 import { MdArrowForwardIos } from 'react-icons/md'
+import { GiDinosaurRex } from 'react-icons/gi'
 
 const HomepageSearchArtists = (): JSX.Element => {
   const initialArtistState: SpotifyArtist[] = []
+
   const [searchKey, setSearchKey] = useState('')
   const [pastSearches, setPastSearches] = useState<string[]>([])
   const [artists, setArtists] = useState(initialArtistState)
   const [totalArtists, setTotalArtists] = useState(0)
+  const [searchPerformed, setSearchPerformed] = useState(false)
+
   const isAuthorized = useToken()?.isValid
   const inputRef = useRef<HTMLInputElement>(null)
   const formRef = useRef<HTMLFormElement>(null)
@@ -44,7 +48,7 @@ const HomepageSearchArtists = (): JSX.Element => {
 
   // Update pastSearches state, everytime a search is done.
   const updatePastSearches = (term: string) => {
-    if (!pastSearches.includes(term)) {
+    if (!pastSearches.includes(term) && term !== '') {
       const updatedSearches: string[] = [...pastSearches, term]
       setPastSearches(updatedSearches)
     }
@@ -67,6 +71,7 @@ const HomepageSearchArtists = (): JSX.Element => {
       const artists = results.items as SpotifyArtist[]
       setArtists(artists)
       setTotalArtists(results.total)
+      setSearchPerformed(true)
     } catch (error) {
       console.error('Error searching API:', error)
     }
@@ -84,10 +89,11 @@ const HomepageSearchArtists = (): JSX.Element => {
     setArtists(initialArtistState)
     setTotalArtists(0)
     editSearchField()
+    setSearchPerformed(false)
   }
 
   // Render Artists.
-  const renderArtists = (): JSX.Element[] => {
+  const renderArtists = (): JSX.Element[] | null => {
     if (artists.length > 0) {
       return artists.map((artist, index) => {
         // MAKE Least Popular results blurry and blurrier
@@ -101,7 +107,7 @@ const HomepageSearchArtists = (): JSX.Element => {
         )
       })
     } else {
-      return [<h2 key={'noresults'}>No artists to display.</h2>] // In array so it always returns JSX.Element[]. Forces key.
+      return null
     }
   }
 
@@ -129,6 +135,12 @@ const HomepageSearchArtists = (): JSX.Element => {
                 <MdArrowForwardIos />
               </button>
             </form>
+            {artists.length === 0 && searchPerformed && (
+              <div className='flex-1 mt-3 text-2xl flex'>
+                <GiDinosaurRex className='text-4xl mr-4 -mt-1' />
+                <span>No artists found.</span>
+              </div>
+            )}
           </div>
         </>
       ) : (
@@ -142,7 +154,11 @@ const HomepageSearchArtists = (): JSX.Element => {
               Results: <span className='text-primary'>{totalArtists}</span>
             </h3>
             <Separator orientation='vertical' />
-            <button onClick={clearSearch}>Clear search</button>
+            <button
+              onClick={clearSearch}
+              className='-ml-3 -mr-3 px-3 py-1 rounded-md bg-transparent hover:bg-primary'>
+              Clear search
+            </button>
             <Separator orientation='vertical' />
           </>
         )}

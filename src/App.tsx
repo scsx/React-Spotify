@@ -15,7 +15,7 @@ const App: React.FC = () => {
     <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
       <div className='flex flex-col min-h-screen'>
         <Header />
-        <main className='flex flex-1 pt-40 pb-20 content-stretch'>
+        <main className='flex flex-1 py-40 content-stretch'>
           <Routes>
             <Route path='/' element={<Homepage />} />
             <Route path='/playlists' element={<Playlists />} />

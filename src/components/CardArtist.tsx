@@ -28,6 +28,7 @@ import { FaGoogle } from 'react-icons/fa'
 import { MdOutlinePanoramaFishEye } from 'react-icons/md'
 import { FaBullseye } from 'react-icons/fa6'
 import { FaSpotify } from 'react-icons/fa'
+import { ImFire } from 'react-icons/im'
 
 interface CardArtistProps {
   artist: SpotifyArtist
@@ -65,7 +66,7 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
           </div>
           <CardHeader className='text-center p-0 flex-grow'>
             <CardTitle className='text-4xl'>{artist.name}</CardTitle>
-            <CardDescription>{artist.followers.total} followers</CardDescription>
+            <CardDescription>{artist.followers.total.toLocaleString()} followers</CardDescription>
             <div className='block pt-3'>
               {artist.genres.length > 0 &&
                 artist.genres.map((genre) => {
@@ -122,12 +123,20 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
                   <TableRow key={track.id}>
                     <TableCell className='font-medium'>{track.name}</TableCell>
                     <TableCell>{track.album.name}</TableCell>
-                    <TableCell className='text-right'>{track.popularity}</TableCell>
+                    <TableCell className='text-right'>
+                      <div className='flex items-center justify-end'>
+                        {track.popularity > 70 ? <ImFire className='text-xs mr-3 text-gray-500' /> : ''}
+                        {track.popularity}
+                      </div>
+                    </TableCell>
                   </TableRow>
                 )
               })}
           </TableBody>
         </Table>
+        <p className='flex items-center mt-4 text-sm text-gray-500'>
+          <ImFire className='text-xs mr-2' /> Popularity &gt; 70
+        </p>
       </SheetContent>
     </Sheet>
   )
