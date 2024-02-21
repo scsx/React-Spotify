@@ -31,7 +31,12 @@ const Artist = (): JSX.Element => {
 
   return (
     <div className='container flex flex-col flex-1 justify-center'>
-      {artist && <HeadingOne text={artist.name} />}
+      {artist && (
+      <>
+      <HeadingOne text={artist.name} />
+      <p>{artist.followers.total.toLocaleString()} followers</p>
+      </>
+  )}
       
     </div>
   )
