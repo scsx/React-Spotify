@@ -29,14 +29,16 @@ const HomepageSearchArtists = (): JSX.Element => {
   const submitRef = useRef<HTMLButtonElement>(null)
   const navigate = useNavigate()
 
-  // Get pastSearches from local storage and fill its state.
+  // Get pastSearches from local storage and update its state.
   let storedPastSearches = localStorage.getItem('pastArtistSearches')
   useEffect(() => {
     if (storedPastSearches) {
-      const obj = JSON.parse(storedPastSearches)
-      setPastSearches(obj)
+      const parsedPastSearches = JSON.parse(storedPastSearches)
+      const uniqueSearches: string[] = Array.from(new Set(parsedPastSearches))
+      
+      setPastSearches(uniqueSearches)
     }
-  }, [storedPastSearches])
+  }, [])
 
   // Set local storage based on state pastSearches.
   useEffect(() => {
@@ -45,22 +47,19 @@ const HomepageSearchArtists = (): JSX.Element => {
       if (pastSearches.length > 6) {
         updatedSearches = updatedSearches.slice(1)
       }
-      localStorage.setItem('pastArtistSearches', JSON.stringify(updatedSearches))
+      const uniqueSearches: string[] = Array.from(new Set(updatedSearches))
+      localStorage.setItem('pastArtistSearches', JSON.stringify(uniqueSearches))
     }
   }, [pastSearches])
 
   // Update pastSearches state, everytime a search is done.
   const updatePastSearches = (term: string) => {
-    if (!pastSearches.includes(term) && term !== '') {
-      const updatedSearches: string[] = [...pastSearches, term]
-      setPastSearches(updatedSearches)
-    }
-  }
-
-  // Populate search field.
-  const editSearchField = (query = ''): void => {
-    if (inputRef.current) {
-      inputRef.current.value = query
+    if (term.trim() !== '') {
+      setPastSearches((prevSearches) => {
+        // Filter out duplicates and preserve the order
+        const uniqueSearches = Array.from(new Set([...prevSearches, term]))
+        return uniqueSearches
+      })
     }
   }
 
@@ -69,16 +68,15 @@ const HomepageSearchArtists = (): JSX.Element => {
     if (e) {
       e.preventDefault()
     }
-
     try {
       if (!searchKey) return
-      updatePastSearches(searchKey)
 
       const results = await searchSpotify(searchKey, 'artist')
       const artists = results.items as SpotifyArtist[]
 
       setArtists(artists)
       setTotalArtists(results.total)
+      updatePastSearches(searchKey)
       setSearchPerformed(true)
 
       navigate(`/?searchKey=${encodeURIComponent(searchKey)}`)
@@ -91,15 +89,15 @@ const HomepageSearchArtists = (): JSX.Element => {
   // The form submit is done by simple HTML attributes in the button and id in form.
   const handlePastSearch = (artist: string) => {
     setSearchKey(artist)
-    editSearchField(artist)
   }
 
   // Clear search states.
   const clearSearch = (): void => {
     setArtists(initialArtistState)
     setTotalArtists(0)
-    editSearchField()
     setSearchPerformed(false)
+    setSearchKey('')
+    navigate(`/`)
   }
 
   // Check if search params exist and perform search (/?searchKey=doors).
@@ -109,26 +107,15 @@ const HomepageSearchArtists = (): JSX.Element => {
 
     if (searchKeyParam && !searchPerformed) {
       setSearchKey(searchKeyParam)
+      //updatePastSearches(searchKey)
       handleSearch(undefined, searchKeyParam)
-      setSearchPerformed(true)
-
-      // Dirty trick bc inputRef.current is always coming as null.
-      setTimeout(() => {
-        console.log('Delayed for 1 second.')
-        editSearchField(searchKeyParam)
-      }, 500)
     }
   }, [])
-
-  useEffect(() => {
-    console.log(inputRef.current) // Check if inputRef.current is available after the component is mounted
-  }, [inputRef.current])
 
   // Render Artists.
   const renderArtists = (): JSX.Element[] | null => {
     if (artists.length > 0) {
       return artists.map((artist, index) => {
-        // MAKE Least Popular results blurry and blurrier
         return (
           <CardArtist
             key={artist.id}
@@ -146,6 +133,8 @@ const HomepageSearchArtists = (): JSX.Element => {
     <div className='home container flex flex-col flex-1 justify-center'>
       {isAuthorized ? (
         <>
+          {pastSearches && <div>pastSearches state: {JSON.stringify(pastSearches)}</div>}
+
           <div
             className={`origin-top-left transition-transform ${
               artists.length > 0 && searchPerformed ? 'scale-75 ' : ''
@@ -161,6 +150,7 @@ const HomepageSearchArtists = (): JSX.Element => {
               <input
                 className='bg-white dark:bg-transparent text-2xl md:text-4xl font-normal text-black dark:text-white border border-indigo-700 focus:outline-none dark:focus:dark:bg-slate-900 py-3 px-4'
                 type='text'
+                value={searchKey}
                 ref={inputRef}
                 onChange={(e) => setSearchKey(e.target.value)}
               />
