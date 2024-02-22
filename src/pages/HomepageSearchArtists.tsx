@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import { useToken } from '../contexts/TokenContext'
 import { SpotifyArtist } from '@/types/SpotifyArtist'
 import searchSpotify from '@/services/SpotifySearch'
@@ -24,7 +26,8 @@ const HomepageSearchArtists = (): JSX.Element => {
 
   const isAuthorized = useToken()?.isValid
   const inputRef = useRef<HTMLInputElement>(null)
-  const formRef = useRef<HTMLFormElement>(null)
+  const submitRef = useRef<HTMLButtonElement>(null)
+  const navigate = useNavigate()
 
   // Get pastSearches from local storage and fill its state.
   let storedPastSearches = localStorage.getItem('pastArtistSearches')
@@ -54,7 +57,7 @@ const HomepageSearchArtists = (): JSX.Element => {
     }
   }
 
-  // Manipulate search field.
+  // Populate search field.
   const editSearchField = (query = ''): void => {
     if (inputRef.current) {
       inputRef.current.value = query
@@ -62,16 +65,23 @@ const HomepageSearchArtists = (): JSX.Element => {
   }
 
   // Search.
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault()
-    updatePastSearches(searchKey)
+  const handleSearch = async (e: React.FormEvent | undefined, searchKey?: string) => {
+    if (e) {
+      e.preventDefault()
+    }
 
     try {
+      if (!searchKey) return
+      updatePastSearches(searchKey)
+
       const results = await searchSpotify(searchKey, 'artist')
       const artists = results.items as SpotifyArtist[]
+
       setArtists(artists)
       setTotalArtists(results.total)
       setSearchPerformed(true)
+
+      navigate(`/?searchKey=${encodeURIComponent(searchKey)}`)
     } catch (error) {
       console.error('Error searching API:', error)
     }
@@ -92,6 +102,28 @@ const HomepageSearchArtists = (): JSX.Element => {
     setSearchPerformed(false)
   }
 
+  // Check if search params exist and perform search (/?searchKey=doors).
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const searchKeyParam = params.get('searchKey')
+
+    if (searchKeyParam && !searchPerformed) {
+      setSearchKey(searchKeyParam)
+      handleSearch(undefined, searchKeyParam)
+      setSearchPerformed(true)
+
+      // Dirty trick bc inputRef.current is always coming as null.
+      setTimeout(() => {
+        console.log('Delayed for 1 second.')
+        editSearchField(searchKeyParam)
+      }, 500)
+    }
+  }, [])
+
+  useEffect(() => {
+    console.log(inputRef.current) // Check if inputRef.current is available after the component is mounted
+  }, [inputRef.current])
+
   // Render Artists.
   const renderArtists = (): JSX.Element[] | null => {
     if (artists.length > 0) {
@@ -101,7 +133,7 @@ const HomepageSearchArtists = (): JSX.Element => {
           <CardArtist
             key={artist.id}
             artist={artist}
-            classes={`col-span-3 lg:col-span-${index === 0 || index === 1 ? '2' : '1'} mb-1`}
+            classes={`mb-1 col-span-1 md:col-span-${index === 0 || index === 1 ? '2' : '1'}`}
           />
         )
       })
@@ -124,8 +156,7 @@ const HomepageSearchArtists = (): JSX.Element => {
           <div className='flex'>
             <form
               id='searchArtistsForm'
-              ref={formRef}
-              onSubmit={handleSearch}
+              onSubmit={(e) => handleSearch(e, searchKey)}
               className='flex-1 flex -mt-2'>
               <input
                 className='bg-white dark:bg-transparent text-2xl md:text-4xl font-normal text-black dark:text-white border border-indigo-700 focus:outline-none dark:focus:dark:bg-slate-900 py-3 px-4'
@@ -135,6 +166,7 @@ const HomepageSearchArtists = (): JSX.Element => {
               />
               <button
                 type='submit'
+                ref={submitRef}
                 className='bg-white dark:bg-slate-900 text-2xl md:text-4xl border border-l-0 border-indigo-700 px-4 text-black hover:text-white dark:text-white hover:bg-indigo-700 dark:hover:bg-indigo-700'>
                 <MdArrowForwardIos />
               </button>

@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 
 import { SpotifyAlbum } from '@/types/SpotifyAlbum'
 import { getArtistAlbums } from '@/services/SpotifyGetArtistAlbums'
+import Album from './Album'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
@@ -36,28 +37,22 @@ const Albums = (): JSX.Element => {
             <TabsTrigger value='singles'>Singles</TabsTrigger>
           </TabsList>
           <TabsContent value='albums'>
-            {albums
-            .filter(album => album.album_type === "album")
-            .map((album) => {
-              return (
-                <div>
-                  <p>{album.name}</p>
-                  <p>{album.release_date}</p>
-                </div>
-              )
-            })}
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
+              {albums
+                .filter((album) => album.album_type === 'album')
+                .map((album) => {
+                  return <Album key={album.id} album={album} />
+                })}
+            </div>
           </TabsContent>
           <TabsContent value='singles'>
-            {albums
-            .filter(album => album.album_type === "single")
-            .map((album) => {
-              return (
-                <div>
-                  <p>{album.name}</p>
-                  <p>{album.release_date}</p>
-                </div>
-              )
-            })}
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
+              {albums
+                .filter((album) => album.album_type === 'single')
+                .map((album) => {
+                  return <Album key={album.id} album={album} />
+                })}
+            </div>
           </TabsContent>
         </Tabs>
       ) : null}

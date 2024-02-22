@@ -2,7 +2,7 @@ import { MdArrowOutward } from 'react-icons/md'
 
 const Welcome = (): JSX.Element => {
   return (
-    <>
+    <div className='w-full md:w-2/3'>
       <div className='block'>
         <h1 className='inline-block text-6xl lg:text-9xl bg-gradient-to-l from-primary to-black dark:to-white text-transparent bg-clip-text'>
           Welcome.
@@ -15,7 +15,7 @@ const Welcome = (): JSX.Element => {
         Please authenticate, over there{' '}
         <MdArrowOutward className='inline text-4xl animate-pulse' />
       </p>
-    </>
+    </div>
   )
 }
 

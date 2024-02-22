@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import { SpotifyArtist } from '@/types/SpotifyArtist'
 import { getArtist } from '@/services/SpotifyGetArtist'
 
-import Albums from '@/components/Albums'
+import Albums from '@/components/AlbumsAll'
 import HeadingOne from '@/components/HeadingOne'
 
 const Artist = (): JSX.Element => {
@@ -33,7 +33,7 @@ const Artist = (): JSX.Element => {
       {artist && (
         <>
           <div
-            className='w-1/4 absolute h-full bg-cover bg-no-repeat z-0'
+            className='w-2/4 rounded-md absolute h-full bg-contain bg-no-repeat z-0'
             style={{
               backgroundImage: `url(${artist.images[0].url})`
             }}></div>
