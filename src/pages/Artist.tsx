@@ -39,10 +39,9 @@ const Artist = (): JSX.Element => {
             style={{
               backgroundImage: `url(${artist.images[0].url})`
             }}></div> */}
-          <div className='relative z-10'>
+          <div className='relative'>
             <HeadingOne text={artist.name} />
-            <p>{artist.followers.total.toLocaleString()} followers</p>
-
+            
             <div className='grid grid-cols-4 gap-8'>
               <div className='col-span-2'>
                 <Albums />
@@ -50,11 +49,12 @@ const Artist = (): JSX.Element => {
               <div className='col-span-2 pt-16'>
                 <div className='grid grid-cols-3 gap-8'>
                   <div className='col-start-2 col-end-4'>
-                    <AspectRatio ratio={16 / 9}>
+                    <AspectRatio ratio={1 / 1}>
                       <img className='rounded-sm' src={`${artist.images[0].url}`} alt='' />
                     </AspectRatio>
                   </div>
                 </div>
+                <p>{artist.followers.total.toLocaleString()} followers</p>
               </div>
             </div>
           </div>
