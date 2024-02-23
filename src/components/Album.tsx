@@ -16,7 +16,7 @@ const Album: React.FC<SpotifyAlbumProps> = ({ album }): JSX.Element => {
   return (
     <Card className='flex flex-col'>
       <CardHeader className='p-0'>
-        <AspectRatio ratio={1 / 1} className='w-full'>
+        <AspectRatio ratio={1 / 1} className='w-full rounded-tl-sm rounded-tr-sm overflow-hidden p-1'>
           <img
             src={album.images[1]?.url}
             className='object-cover w-full text-sm text-gray-400 dark:text-gray-700 rounded-tl-sm rounded-tr-sm'

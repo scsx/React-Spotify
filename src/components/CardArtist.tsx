@@ -2,7 +2,8 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { SpotifyArtist } from '@/types/SpotifyArtist'
 import getTopTracks from '@/services/SpotifyGetTopTracks'
-import { SpotifyMultipleTracks, SpotifyTrack } from '@/types/SpotifyTrack'
+import { SpotifyTrack } from '@/types/SpotifyTrack'
+import TopTracks from './TopTracks'
 
 import {
   Card,
@@ -16,20 +17,11 @@ import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow
-} from '@/components/ui/table'
 
 import { FaGoogle } from 'react-icons/fa'
 import { MdOutlinePanoramaFishEye } from 'react-icons/md'
 import { FaBullseye } from 'react-icons/fa6'
 import { FaSpotify } from 'react-icons/fa'
-import { ImFire } from 'react-icons/im'
 
 interface CardArtistProps {
   artist: SpotifyArtist
@@ -38,13 +30,14 @@ interface CardArtistProps {
 
 const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.Element => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [topTracks, setTopTracks] = useState<SpotifyMultipleTracks | null>(null)
+  const [topTracks, setTopTracks] = useState<SpotifyTrack[] | null>(null)
 
   const openSheet = async () => {
     setSidebarOpen(!sidebarOpen)
     try {
       const tracks = await getTopTracks(artist.id)
-      setTopTracks(tracks)
+      console.log(tracks)
+      setTopTracks(tracks.items)
     } catch (error) {
       console.error('Error fetching top tracks:', error)
     }
@@ -104,7 +97,9 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
       <SheetContent className='w-full max-w-full sm:max-w-1/2 sm:w-1/2 overflow-y-auto'>
         <div className='flex items-center'>
           <SheetHeader className='w-1/2'>
-            <SheetTitle className='text-6xl'>{artist.name}</SheetTitle>
+            <SheetTitle className='text-6xl'>
+              <Link to={`/${artist.id}`}>{artist.name}</Link>
+            </SheetTitle>
             <div className='flex pt-4'>
               <Link to={`/${artist.id}`}>
                 <FaBullseye className='mx-2 text-lg text-muted-foreground hover:text-primary' />
@@ -121,39 +116,7 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
         </div>
 
         <h3 className='text-2xl mt-4'>Top Tracks</h3>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Album</TableHead>
-              <TableHead className='text-right'>Popularity</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {topTracks &&
-              topTracks.items.map((track: SpotifyTrack) => {
-                return (
-                  <TableRow key={track.id}>
-                    <TableCell className='font-medium'>{track.name}</TableCell>
-                    <TableCell>{track.album.name}</TableCell>
-                    <TableCell className='text-right'>
-                      <div className='flex items-center justify-end'>
-                        {track.popularity > 70 ? (
-                          <ImFire className='text-xs mr-3 text-gray-500' />
-                        ) : (
-                          ''
-                        )}
-                        {track.popularity}
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                )
-              })}
-          </TableBody>
-        </Table>
-        <p className='flex items-center mt-4 text-sm text-gray-500'>
-          <ImFire className='text-xs mr-2' /> Popularity &gt; 70
-        </p>
+        {topTracks && <TopTracks items={topTracks} />}
       </SheetContent>
     </Sheet>
   )
