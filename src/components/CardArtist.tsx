@@ -105,6 +105,17 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
         <div className='flex items-center'>
           <SheetHeader className='w-1/2'>
             <SheetTitle className='text-6xl'>{artist.name}</SheetTitle>
+            <div className='flex pt-4'>
+              <Link to={`/${artist.id}`}>
+                <FaBullseye className='mx-2 text-lg text-muted-foreground hover:text-primary' />
+              </Link>
+              <a target='_blank' href={artist.uri}>
+                <FaSpotify className='mx-2 text-lg text-muted-foreground hover:text-primary' />
+              </a>
+              <a target='_blank' href={`https://www.google.com/search?q=${artist.name}`}>
+                <FaGoogle className='mx-2 text-lg text-muted-foreground hover:text-primary' />
+              </a>
+            </div>
           </SheetHeader>
           <img src={artist.images[0]?.url} alt='Image' className='w-1/2' />
         </div>
