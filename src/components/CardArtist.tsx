@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { SpotifyArtist } from '@/types/SpotifyArtist'
-import getTopTracks from '@/services/SpotifyGetTopTracks'
-import { SpotifyTrack } from '@/types/SpotifyTrack'
 import TopTracks from './TopTracks'
 
 import {
@@ -30,17 +28,15 @@ interface CardArtistProps {
 
 const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.Element => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [topTracks, setTopTracks] = useState<SpotifyTrack[] | null>(null)
 
   const openSheet = async () => {
     setSidebarOpen(!sidebarOpen)
-    try {
+    /* try {
       const tracks = await getTopTracks(artist.id)
-      console.log(tracks)
       setTopTracks(tracks.items)
     } catch (error) {
       console.error('Error fetching top tracks:', error)
-    }
+    } */
   }
 
   return (
@@ -116,7 +112,7 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
         </div>
 
         <h3 className='text-2xl mt-4'>Top Tracks</h3>
-        {topTracks && <TopTracks items={topTracks} />}
+        <TopTracks artistId={artist.id} />
       </SheetContent>
     </Sheet>
   )
