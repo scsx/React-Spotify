@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-//import { useToken } from '../contexts/TokenContext'
 import { useParams } from 'react-router-dom'
 
 import { SpotifyArtist } from '@/types/SpotifyArtist'
@@ -7,6 +6,8 @@ import { getArtist } from '@/services/SpotifyGetArtist'
 
 import Albums from '@/components/AlbumsAll'
 import HeadingOne from '@/components/HeadingOne'
+
+import { AspectRatio } from '@/components/ui/aspect-ratio'
 
 const Artist = (): JSX.Element => {
   const { artistId } = useParams<string>()
@@ -18,6 +19,7 @@ const Artist = (): JSX.Element => {
       try {
         if (artistId) {
           const fetchedArtist = await getArtist(artistId)
+          console.log(fetchedArtist)
           setArtist(fetchedArtist)
         }
       } catch (error) {
@@ -32,25 +34,27 @@ const Artist = (): JSX.Element => {
     <div className='container flex flex-col flex-1'>
       {artist && (
         <>
-          <div
-            className='w-2/4 rounded-md absolute h-full bg-contain bg-no-repeat z-0'
+          {/* <div
+            className='w-2/6 rounded-md absolute h-full bg-contain bg-no-repeat z-0'
             style={{
               backgroundImage: `url(${artist.images[0].url})`
-            }}></div>
+            }}></div> */}
           <div className='relative z-10'>
             <HeadingOne text={artist.name} />
             <p>{artist.followers.total.toLocaleString()} followers</p>
-            <div className='flex w-full'>
-              <div className='w-1/2'>
-                Genres
-                <p>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat pariatur ex non
-                  consectetur reiciendis excepturi odit voluptatibus quasi voluptatem eligendi!
-                  Quibusdam labore ipsum architecto reiciendis animi veritatis dolorem, vero quidem?
-                </p>
-              </div>
-              <div className='w-1/2'>
+
+            <div className='grid grid-cols-4 gap-8'>
+              <div className='col-span-2'>
                 <Albums />
+              </div>
+              <div className='col-span-2 pt-16'>
+                <div className='grid grid-cols-3 gap-8'>
+                  <div className='col-start-2 col-end-4'>
+                    <AspectRatio ratio={16 / 9}>
+                      <img className='rounded-sm' src={`${artist.images[0].url}`} alt='' />
+                    </AspectRatio>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

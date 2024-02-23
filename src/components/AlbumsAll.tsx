@@ -37,7 +37,7 @@ const Albums = (): JSX.Element => {
             <TabsTrigger value='singles'>Singles</TabsTrigger>
           </TabsList>
           <TabsContent value='albums'>
-            <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
               {albums
                 .filter((album) => album.album_type === 'album')
                 .map((album) => {
@@ -46,7 +46,7 @@ const Albums = (): JSX.Element => {
             </div>
           </TabsContent>
           <TabsContent value='singles'>
-            <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
               {albums
                 .filter((album) => album.album_type === 'single')
                 .map((album) => {

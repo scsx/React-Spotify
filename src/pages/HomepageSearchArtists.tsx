@@ -15,6 +15,7 @@ import { Separator } from '@/components/ui/separator'
 import { MdArrowForwardIos } from 'react-icons/md'
 import { GiDinosaurRex } from 'react-icons/gi'
 
+
 const HomepageSearchArtists = (): JSX.Element => {
   const initialArtistState: SpotifyArtist[] = []
 
@@ -133,8 +134,6 @@ const HomepageSearchArtists = (): JSX.Element => {
     <div className='home container flex flex-col flex-1 justify-center'>
       {isAuthorized ? (
         <>
-          {pastSearches && <div>pastSearches state: {JSON.stringify(pastSearches)}</div>}
-
           <div
             className={`origin-top-left transition-transform ${
               artists.length > 0 && searchPerformed ? 'scale-75 ' : ''

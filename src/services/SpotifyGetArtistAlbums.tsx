@@ -12,7 +12,6 @@ export const getArtistAlbums = async (artistId: string): Promise<SpotifyAlbum[]>
     // while to keep asking after the 20 limit is passed. Albums.
     while (nextAlbumsUrl) {
       const response = await axios.get(nextAlbumsUrl)
-      console.log(response)
       const { items, next } = response.data
       allAlbums = allAlbums.concat(items)
 
