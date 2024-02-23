@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 import { SpotifyArtist } from '@/types/SpotifyArtist'
 import { getArtist } from '@/services/SpotifyGetArtist'
 
 import Albums from '@/components/AlbumsAll'
 import TopTracks from '@/components/TopTracks'
+import RelatedArtists from '@/components/RelatedArtists'
 import HeadingOne from '@/components/HeadingOne'
 
 import { AspectRatio } from '@/components/ui/aspect-ratio'
+import { Badge } from '@/components/ui/badge'
 
 const Artist = (): JSX.Element => {
   const { artistId } = useParams<string>()
   const [artist, setArtist] = useState<SpotifyArtist | null>(null)
-  //const token = useToken()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -21,6 +23,7 @@ const Artist = (): JSX.Element => {
         if (artistId) {
           const fetchedArtist = await getArtist(artistId)
           setArtist(fetchedArtist)
+          console.log(fetchedArtist)
         }
       } catch (error) {
         console.error('Error fetching country details:', error)
@@ -53,12 +56,12 @@ const Artist = (): JSX.Element => {
               </p>
             </div>
 
-            <div className='grid grid-cols-4 gap-8'>
+            <div className='grid grid-cols-4 gap-16'>
               <div className='col-span-2'>
                 <Albums />
               </div>
               <div className='col-span-2 pt-16'>
-                <div className='grid grid-cols-3 gap-8 -mt-20 mb-8'>
+                <div className='grid grid-cols-3 gap-8 -mt-28'>
                   <div className='col-start-2 col-end-4'>
                     <AspectRatio ratio={1 / 1}>
                       <img
@@ -69,7 +72,27 @@ const Artist = (): JSX.Element => {
                     </AspectRatio>
                   </div>
                 </div>
-                <TopTracks artistId={artist.id} />
+                <div>
+                  <h3 className='mt-10 mb-4 text-1xl md:text-3xl'>Top Tracks</h3>
+                  <TopTracks artistId={artist.id} />
+                </div>
+                <div>
+                  <h3 className='mt-14 mb-4 text-1xl md:text-3xl'>Genres</h3>
+                  {artist.genres.length > 0 &&
+                    artist.genres.map((genre) => (
+                      <Link key={genre} to={`/genre/${genre}`}>
+                        <Badge
+                          variant='outline'
+                          className='text-sm mt-2 mr-2 font-normal bg-secondary hover:bg-primary dark:hover:text-white dark:text-muted-foreground'>
+                          {genre}
+                        </Badge>
+                      </Link>
+                    ))}
+                </div>
+                <div>
+                  <h3 className='mt-14 mb-4 text-1xl md:text-3xl'>Related Artists</h3>
+                  <RelatedArtists artistId={artist.id} />
+                </div>
               </div>
             </div>
           </div>

@@ -31,12 +31,6 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
 
   const openSheet = async () => {
     setSidebarOpen(!sidebarOpen)
-    /* try {
-      const tracks = await getTopTracks(artist.id)
-      setTopTracks(tracks.items)
-    } catch (error) {
-      console.error('Error fetching top tracks:', error)
-    } */
   }
 
   return (

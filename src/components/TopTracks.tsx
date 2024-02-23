@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom'
 import getTopTracks from '@/services/SpotifyGetTopTracks'
 import { SpotifyTrack } from '@/types/SpotifyTrack'
 
@@ -31,7 +30,7 @@ const TopTracks: React.FC<TopTracksProps> = ({ artistId }): JSX.Element => {
     }
 
     getTracks()
-  }, [])
+  }, [artistId])
 
   return (
     <>
