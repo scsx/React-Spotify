@@ -1,13 +1,7 @@
 import { Link } from 'react-router-dom'
 import { SpotifyArtist } from '@/types/SpotifyArtist'
 
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 
@@ -23,7 +17,7 @@ const CardArtistLight: React.FC<CardArtistLightProps> = ({ artist }): JSX.Elemen
   return (
     <Card>
       <CardContent className='flex flex-col'>
-        <div className='w-2/3 mx-auto my-4 overflow-hidden rounded-full'>
+        <div className='w-2/3 mx-auto my-4 overflow-hidden bg-slate-200 dark:bg-black rounded-full'>
           <AspectRatio ratio={1 / 1}>
             <img
               src={artist.images[0]?.url}

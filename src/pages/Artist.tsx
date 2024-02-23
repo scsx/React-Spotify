@@ -47,7 +47,7 @@ const Artist = (): JSX.Element => {
             <div className='bg-white dark:bg-black inline-block p-4 rounded-sm rounded-bl-none'>
               <HeadingOne
                 text={artist.name}
-                classes='text-3xl md:text-6xl font-semibold mb-0 tracking-wide'
+                classes='text-3xl md:text-6xl font-semibold mb-0 tracking-wide min-w-40'
               />
             </div>
             <div className='mb-6 '>
@@ -63,7 +63,7 @@ const Artist = (): JSX.Element => {
               <div className='col-span-2 pt-16'>
                 <div className='grid grid-cols-3 gap-8 -mt-28'>
                   <div className='col-start-2 col-end-4'>
-                    <AspectRatio ratio={1 / 1}>
+                    <AspectRatio ratio={1 / 1} className='rounded-sm overflow-hidden'>
                       <img
                         className='rounded-sm p-1 bg-white dark:bg-black'
                         src={`${artist.images[0].url}`}
