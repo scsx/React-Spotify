@@ -6,7 +6,6 @@ import { getArtistAlbums } from '@/services/SpotifyGetArtistAlbums'
 import Album from './Album'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { IoBatteryDeadSharp } from "react-icons/io5";
 
 const Albums = (): JSX.Element => {
@@ -40,6 +39,7 @@ const Albums = (): JSX.Element => {
           <TabsList className='mb-4'>
             <TabsTrigger value='albums'>Albums</TabsTrigger>
             <TabsTrigger value='singles'>Singles</TabsTrigger>
+            <TabsTrigger value='singles'>Bio</TabsTrigger>
           </TabsList>
           <TabsContent value='albums'>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>

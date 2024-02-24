@@ -1,11 +1,13 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
 import authLink from '../services/spotifyAuthLink'
+import lastFMKey from '@/services/lastFMKey'
 
 // Token to be provided.
 interface TokenInfo {
   isValid: boolean
   authLink: string
   logout: () => void
+  lastFMKey: string
 }
 
 interface TokenProviderProps {
@@ -42,7 +44,9 @@ export const TokenProvider: React.FC<TokenProviderProps> = ({ children }) => {
     const hash = window.location.hash
     let spotifyToken = window.localStorage.getItem('spotifyToken')
     let storedExpirationTime = window.localStorage.getItem('tokenExpirationTime')
+    let lastFMToken = window.localStorage.getItem('lastFMToken')
 
+    // For Spotify.
     if (!spotifyToken && hash) {
       spotifyToken =
         hash
@@ -54,6 +58,11 @@ export const TokenProvider: React.FC<TokenProviderProps> = ({ children }) => {
       window.location.hash = ''
       localStorage.setItem('spotifyToken', spotifyToken ?? '')
       storedExpirationTime = calculateExpirationTime().toISOString() // Also sets exp time localStorage
+    }
+
+    // For Last FM.
+    if (!lastFMToken && lastFMKey) {
+      localStorage.setItem('lastFMToken', lastFMKey ?? '')
     }
 
     if (storedExpirationTime) {
@@ -81,7 +90,8 @@ export const TokenProvider: React.FC<TokenProviderProps> = ({ children }) => {
   const tokenOrFallback = token ?? {
     isValid: tokenIsValid,
     authLink: authLink,
-    logout: logoutCtx
+    logout: logoutCtx,
+    lastFMKey: lastFMKey
   }
 
   return <TokenContext.Provider value={tokenOrFallback}>{children}</TokenContext.Provider>

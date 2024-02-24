@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
+import { useToken } from '@/contexts/TokenContext'
+import axios from 'axios'
 import { useParams, useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 
 import { SpotifyArtist } from '@/types/SpotifyArtist'
+import { LastFmArtist } from '@/types/LastFmArtist'
 import { getArtist } from '@/services/SpotifyGetArtist'
 
 import Albums from '@/components/AlbumsAll'
@@ -16,15 +19,29 @@ import { Badge } from '@/components/ui/badge'
 const Artist = (): JSX.Element => {
   const { artistId } = useParams<string>()
   const [artist, setArtist] = useState<SpotifyArtist | null>(null)
+  const [lastFmArtist, setLastFmArtist] = useState<LastFmArtist | null>(null)
+  const token = useToken()
   const location = useLocation()
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (artistId) {
+          // Fetch artist information from Spotify
           const fetchedArtist = await getArtist(artistId)
           setArtist(fetchedArtist)
-          console.log(fetchedArtist)
+          //console.log(fetchedArtist)
+
+          if (token) {
+            // Fetch artist information from Last.fm
+            const lastFmResponse = await axios.get(
+              `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(
+                fetchedArtist.name
+              )}&api_key=${token.lastFMKey}&format=json`
+            )
+            setLastFmArtist(lastFmResponse.data.artist)
+            //console.log(lastFmResponse)
+          }
         }
       } catch (error) {
         console.error('Error fetching country details:', error)
@@ -32,7 +49,6 @@ const Artist = (): JSX.Element => {
     }
 
     fetchData()
-    //window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [artistId])
 
   useEffect(() => {
@@ -101,7 +117,7 @@ const Artist = (): JSX.Element => {
                 </div>
                 <div>
                   <h3 className='mt-14 mb-4 text-1xl md:text-3xl'>Related Artists</h3>
-                  <RelatedArtists artistId={artist.id} />
+                  <RelatedArtists artistId={artist.id} lastFmSimilar={lastFmArtist?.similar!} />
                 </div>
               </div>
             </div>

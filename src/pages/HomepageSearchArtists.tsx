@@ -15,7 +15,6 @@ import { Separator } from '@/components/ui/separator'
 import { MdArrowForwardIos } from 'react-icons/md'
 import { GiDinosaurRex } from 'react-icons/gi'
 
-
 const HomepageSearchArtists = (): JSX.Element => {
   const initialArtistState: SpotifyArtist[] = []
 
@@ -36,7 +35,7 @@ const HomepageSearchArtists = (): JSX.Element => {
     if (storedPastSearches) {
       const parsedPastSearches = JSON.parse(storedPastSearches)
       const uniqueSearches: string[] = Array.from(new Set(parsedPastSearches))
-      
+
       setPastSearches(uniqueSearches)
     }
   }, [])
@@ -134,6 +133,9 @@ const HomepageSearchArtists = (): JSX.Element => {
     <div className='home container flex flex-col flex-1 justify-center'>
       {isAuthorized ? (
         <>
+          <h1>
+            <a href='http://www.last.fm/api/auth/?api_key='>LAST FM</a>
+          </h1>
           <div
             className={`origin-top-left transition-transform ${
               artists.length > 0 && searchPerformed ? 'scale-75 ' : ''
