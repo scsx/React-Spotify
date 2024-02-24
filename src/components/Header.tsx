@@ -12,8 +12,6 @@ import HeaderNavMobile from './HeaderNavMobile'
 import Switch from './Switch'
 import { useToken } from '@/contexts/TokenContext'
 
-
-
 const Header = (): JSX.Element => {
   const token = useToken()
 
@@ -31,12 +29,12 @@ const Header = (): JSX.Element => {
           </SheetTrigger>
           <SheetContent side='left'>
             <div className='grid gap-2 py-6'>
-              {token?.isValid ? <HeaderNavMobile /> : (
+              {token?.isValid ? (
+                <HeaderNavMobile />
+              ) : (
                 <Alert className='mt-8'>
                   <AlertTitle>Authorization needed!</AlertTitle>
-                  <AlertDescription>
-                    Click the green button "Authenticate".
-                  </AlertDescription>
+                  <AlertDescription>Click the green button "Authenticate".</AlertDescription>
                 </Alert>
               )}
             </div>

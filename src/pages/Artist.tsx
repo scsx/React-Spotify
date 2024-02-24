@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 
 import { SpotifyArtist } from '@/types/SpotifyArtist'
@@ -16,6 +16,7 @@ import { Badge } from '@/components/ui/badge'
 const Artist = (): JSX.Element => {
   const { artistId } = useParams<string>()
   const [artist, setArtist] = useState<SpotifyArtist | null>(null)
+  const location = useLocation()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +32,16 @@ const Artist = (): JSX.Element => {
     }
 
     fetchData()
+    //window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [artistId])
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    // Disable browser's scroll restoration.
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual'
+    }
+  }, [location.pathname])
 
   return (
     <div className='flex flex-col flex-1'>

@@ -52,7 +52,7 @@ const TopTracks: React.FC<TopTracksProps> = ({ artistId }): JSX.Element => {
                   <TableCell className='text-right'>
                     <div className='flex items-center justify-end'>
                       {track.popularity > 70 ? (
-                        <ImFire className='text-xs mr-3 text-gray-500' />
+                        <ImFire className='text-xs mr-3 text-amber-500' />
                       ) : (
                         ''
                       )}
