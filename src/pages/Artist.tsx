@@ -8,7 +8,7 @@ import { SpotifyArtist } from '@/types/SpotifyArtist'
 import { LastFmArtist } from '@/types/LastFmArtist'
 import { getArtist } from '@/services/SpotifyGetArtist'
 
-import Albums from '@/components/AlbumsAll'
+import Albums from '@/components/AlbumsAndBio'
 import TopTracks from '@/components/TopTracks'
 import RelatedArtists from '@/components/RelatedArtists'
 import HeadingOne from '@/components/HeadingOne'
@@ -84,7 +84,7 @@ const Artist = (): JSX.Element => {
 
             <div className='grid grid-cols-4 gap-16'>
               <div className='col-span-2'>
-                <Albums />
+                <Albums biographyLastFM={lastFmArtist ? lastFmArtist.bio.content : ''} />
               </div>
               <div className='col-span-2 pt-16'>
                 <div className='grid grid-cols-3 gap-8 -mt-28'>

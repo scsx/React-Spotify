@@ -6,13 +6,16 @@ import { getArtistAlbums } from '@/services/SpotifyGetArtistAlbums'
 import Album from './Album'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { IoBatteryDeadSharp } from "react-icons/io5";
+import { IoBatteryDeadSharp } from 'react-icons/io5'
 
-const Albums = (): JSX.Element => {
+interface AlbumsAndBioProps {
+  biographyLastFM?: string
+}
+
+const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({ biographyLastFM = '' }): JSX.Element => {
   const { artistId } = useParams<string>()
   const [albums, setAlbums] = useState<SpotifyAlbum[] | []>([])
   const [singles, setSingles] = useState<SpotifyAlbum[] | []>([])
-  //const token = useToken()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +33,7 @@ const Albums = (): JSX.Element => {
     }
 
     fetchData()
-  }, [artistId])
+  }, [artistId, biographyLastFM])
 
   return (
     <>
@@ -39,7 +42,9 @@ const Albums = (): JSX.Element => {
           <TabsList className='mb-4'>
             <TabsTrigger value='albums'>Albums</TabsTrigger>
             <TabsTrigger value='singles'>Singles</TabsTrigger>
-            <TabsTrigger value='singles'>Bio</TabsTrigger>
+            {biographyLastFM && biographyLastFM !== '' && (
+              <TabsTrigger value='bio'>Biography</TabsTrigger>
+            )}
           </TabsList>
           <TabsContent value='albums'>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
@@ -65,10 +70,15 @@ const Albums = (): JSX.Element => {
               )}
             </div>
           </TabsContent>
+          {biographyLastFM && biographyLastFM !== '' && (
+            <TabsContent value='bio'>
+              <div className='text-sm mt-8' dangerouslySetInnerHTML={{ __html: biographyLastFM.replace(/\n/g, '<br>') }} />
+            </TabsContent>
+          )}
         </Tabs>
       ) : null}
     </>
   )
 }
 
-export default Albums
+export default AlbumsAndBio
