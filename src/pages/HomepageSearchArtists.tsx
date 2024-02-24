@@ -29,37 +29,32 @@ const HomepageSearchArtists = (): JSX.Element => {
   const submitRef = useRef<HTMLButtonElement>(null)
   const navigate = useNavigate()
 
-  // Get pastSearches from local storage and update its state.
-  let storedPastSearches = localStorage.getItem('pastArtistSearches')
+  // Get pastSearches from local storage and update its state on component mount.
+  let retrievedPastSearches = localStorage.getItem('pastArtistSearches')
   useEffect(() => {
-    if (storedPastSearches) {
-      const parsedPastSearches = JSON.parse(storedPastSearches)
+    if (retrievedPastSearches) {
+      const parsedPastSearches = JSON.parse(retrievedPastSearches)
       const uniqueSearches: string[] = Array.from(new Set(parsedPastSearches))
-
       setPastSearches(uniqueSearches)
     }
   }, [])
 
-  // Set local storage based on state pastSearches.
-  useEffect(() => {
-    if (pastSearches.length > 0) {
-      let updatedSearches = [...pastSearches]
-      if (pastSearches.length > 6) {
-        updatedSearches = updatedSearches.slice(1)
-      }
-      const uniqueSearches: string[] = Array.from(new Set(updatedSearches))
-      localStorage.setItem('pastArtistSearches', JSON.stringify(uniqueSearches))
-    }
-  }, [pastSearches])
-
   // Update pastSearches state, everytime a search is done.
   const updatePastSearches = (term: string) => {
     if (term.trim() !== '') {
-      setPastSearches((prevSearches) => {
-        // Filter out duplicates and preserve the order
-        const uniqueSearches = Array.from(new Set([...prevSearches, term]))
-        return uniqueSearches
-      })
+      // Retrieve past searches from localStorage.
+      let retrievedPastSearches = localStorage.getItem('pastArtistSearches')
+      let parsedPastSearches: string[] = []
+      if (retrievedPastSearches) {
+        parsedPastSearches = JSON.parse(retrievedPastSearches)
+      }
+
+      // Add the new search term if not duplicate.
+      const updatedSearches = Array.from(new Set([...parsedPastSearches, term]))
+      // Max stored = 6.
+      const trimmedSearches = updatedSearches.slice(-6)
+      localStorage.setItem('pastArtistSearches', JSON.stringify(trimmedSearches))
+      setPastSearches(trimmedSearches)
     }
   }
 
@@ -107,7 +102,6 @@ const HomepageSearchArtists = (): JSX.Element => {
 
     if (searchKeyParam && !searchPerformed) {
       setSearchKey(searchKeyParam)
-      //updatePastSearches(searchKey)
       handleSearch(undefined, searchKeyParam)
     }
   }, [])
