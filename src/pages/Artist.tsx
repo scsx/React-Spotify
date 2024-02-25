@@ -2,26 +2,29 @@ import { useState, useEffect } from 'react'
 import { useToken } from '@/contexts/TokenContext'
 import axios from 'axios'
 import { useParams, useLocation } from 'react-router-dom'
-import { Link } from 'react-router-dom'
 
 import { SpotifyArtist } from '@/types/SpotifyArtist'
 import { LastFmArtist } from '@/types/LastFmArtist'
+import { LastFmTag } from '@/types/LastFmTag'
 import { getArtist } from '@/services/SpotifyGetArtist'
 
+import HeadingOne from '@/components/HeadingOne'
 import Albums from '@/components/AlbumsAndBio'
 import TopTracks from '@/components/TopTracks'
+import ArtistsGenres from '@/components/ArtistsGenres'
 import RelatedArtists from '@/components/RelatedArtists'
-import HeadingOne from '@/components/HeadingOne'
 
 import { AspectRatio } from '@/components/ui/aspect-ratio'
-import { Badge } from '@/components/ui/badge'
 
 const Artist = (): JSX.Element => {
   const { artistId } = useParams<string>()
   const [artist, setArtist] = useState<SpotifyArtist | null>(null)
   const [lastFmArtist, setLastFmArtist] = useState<LastFmArtist | null>(null)
+  const [lastFmArtistTags, setLastFmArtistTags] = useState<LastFmTag[] | null>(null)
   const token = useToken()
   const location = useLocation()
+
+  let lastFmTags: LastFmTag[] = []
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,21 +33,30 @@ const Artist = (): JSX.Element => {
           // Fetch artist information from Spotify
           const fetchedArtist = await getArtist(artistId)
           setArtist(fetchedArtist)
-          //console.log(fetchedArtist)
 
+          // Fetch artist information from Last.fm
           if (token) {
-            // Fetch artist information from Last.fm
             const lastFmResponse = await axios.get(
               `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(
                 fetchedArtist.name
               )}&api_key=${token.lastFMKey}&format=json`
             )
             setLastFmArtist(lastFmResponse.data.artist)
-            //console.log(lastFmResponse)
+
+            lastFmTags = lastFmResponse.data.artist.tags.tag.map((tag: any) => {
+              return {
+                name: tag.name,
+                url: tag.url
+              }
+            })
+
+            if (lastFmTags) {
+              setLastFmArtistTags(lastFmTags)
+            }
           }
         }
       } catch (error) {
-        console.error('Error fetching country details:', error)
+        console.error('Error fetching artist details:', error)
       }
     }
 
@@ -104,16 +116,7 @@ const Artist = (): JSX.Element => {
                 </div>
                 <div>
                   <h3 className='mt-14 mb-4 text-1xl md:text-3xl'>Genres</h3>
-                  {artist.genres.length > 0 &&
-                    artist.genres.map((genre) => (
-                      <Link key={genre} to={`/genre/${genre}`}>
-                        <Badge
-                          variant='outline'
-                          className='text-sm mt-2 mr-2 font-normal bg-secondary hover:bg-primary dark:hover:text-white dark:text-muted-foreground'>
-                          {genre}
-                        </Badge>
-                      </Link>
-                    ))}
+                  <ArtistsGenres genres={artist.genres} lastFmTags={lastFmArtistTags ?? []} />
                 </div>
                 <div>
                   <h3 className='mt-14 mb-4 text-1xl md:text-3xl'>Related Artists</h3>
