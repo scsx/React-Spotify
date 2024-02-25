@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { LastFmTag } from '@/types/LastFmTag'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -11,7 +11,15 @@ interface ArtistsGenresProps {
 }
 
 const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JSX.Element => {
-  useEffect(() => {}, [genres, lastFmTags])
+  const [activeTab, setActiveTab] = useState('spotifyGenres')
+
+  const onTabChange = (value: string) => {
+    setActiveTab(value)
+  }
+
+  useEffect(() => {
+    setActiveTab('spotifyGenres')
+  }, [genres, lastFmTags])
 
   const renderSpotifyGenres = (): JSX.Element[] | null => {
     if (genres && genres.length > 0) {
@@ -34,7 +42,7 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
   return (
     <>
       {genres && lastFmTags ? (
-        <Tabs defaultValue='spotifyGenres'>
+        <Tabs value={activeTab} onValueChange={onTabChange}>
           <TabsList>
             <TabsTrigger value='spotifyGenres'>Spotify</TabsTrigger>
             <TabsTrigger value='lastfmGenres'>LastFM</TabsTrigger>

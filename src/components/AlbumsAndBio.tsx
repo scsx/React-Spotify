@@ -16,6 +16,11 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({ biographyLastFM = '' }): JS
   const { artistId } = useParams<string>()
   const [albums, setAlbums] = useState<SpotifyAlbum[] | []>([])
   const [singles, setSingles] = useState<SpotifyAlbum[] | []>([])
+  const [activeTab, setActiveTab] = useState('albums')
+
+  const onTabChange = (value: string) => {
+    setActiveTab(value)
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,10 +40,18 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({ biographyLastFM = '' }): JS
     fetchData()
   }, [artistId, biographyLastFM])
 
+  useEffect(() => {
+    if (albums.length === 0 && singles.length !== 0) {
+      setActiveTab('singles')
+    } else {
+      setActiveTab('albums')
+    }
+  }, [albums, singles])
+    
   return (
     <>
       {albums.length > 0 || singles.length > 0 ? (
-        <Tabs defaultValue={albums.length > 0 ? 'albums' : 'singles'} className='w-full'>
+        <Tabs value={activeTab} onValueChange={onTabChange} className='w-full'>
           <TabsList className='mb-4'>
             <TabsTrigger value='albums'>Albums</TabsTrigger>
             <TabsTrigger value='singles'>Singles</TabsTrigger>
@@ -72,7 +85,10 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({ biographyLastFM = '' }): JS
           </TabsContent>
           {biographyLastFM && biographyLastFM !== '' && (
             <TabsContent value='bio'>
-              <div className='text-sm mt-8' dangerouslySetInnerHTML={{ __html: biographyLastFM.replace(/\n/g, '<br>') }} />
+              <div
+                className='text-sm mt-8'
+                dangerouslySetInnerHTML={{ __html: biographyLastFM.replace(/\n/g, '<br>') }}
+              />
             </TabsContent>
           )}
         </Tabs>

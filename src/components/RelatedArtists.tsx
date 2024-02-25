@@ -16,6 +16,11 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
   lastFmSimilar
 }): JSX.Element => {
   const [relatedArtists, setRelatedArtists] = useState<SpotifyArtist[] | null>(null)
+  const [activeTab, setActiveTab] = useState('spotifyRelated')
+
+  const onTabChange = (value: string) => {
+    setActiveTab(value)
+  }
 
   useEffect(() => {
     const getArtistsById = async () => {
@@ -28,6 +33,10 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
     }
 
     getArtistsById()
+  }, [artistId, lastFmSimilar])
+
+  useEffect(() => {
+    setActiveTab('spotifyRelated')
   }, [artistId, lastFmSimilar])
 
   const renderSpotifyRelated = (): JSX.Element[] | null => {
@@ -43,7 +52,7 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
   return (
     <>
       {relatedArtists && lastFmSimilar ? (
-        <Tabs defaultValue='spotifyRelated'>
+        <Tabs value={activeTab} onValueChange={onTabChange}>
           <TabsList>
             <TabsTrigger value='spotifyRelated'>Spotify</TabsTrigger>
             <TabsTrigger value='lastfmRelated'>LastFM</TabsTrigger>
@@ -68,7 +77,8 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
                         className='flex text-sm mr-4 text-slate-500'
                         target='_blank'
                         href={artist.url}>
-                        <FaLastfm className='text-red-500 mt-1 mr-1' />View on LastFM
+                        <FaLastfm className='text-red-500 mt-1 mr-1' />
+                        View on LastFM
                       </a>
                     </div>
                   </div>

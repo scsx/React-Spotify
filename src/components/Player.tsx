@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useToken } from '../contexts/TokenContext'
 import { SpotifyArtist } from '@/types/SpotifyArtist'
@@ -21,7 +21,6 @@ const Player = (): JSX.Element => {
       try {
         const playing = await getCurrentlyPlaying()
         setNowPlaying(playing.data.item)
-        // console.log(playing)
       } catch (error) {
         console.error('Error fetching currently playing:', error)
       }
@@ -48,12 +47,12 @@ const Player = (): JSX.Element => {
             <p className='text-gray-500'>
               {nowPlaying.artists.map((artist, index) => {
                 return (
-                  <>
+                  <React.Fragment key={artist.id}>
                   {index > 0 ? ', ' : ''}
-                  <Link key={artist.id} className='hover:text-primary' to={`/${artist.id}`}>
+                  <Link className='hover:text-primary' to={`/${artist.id}`}>
                     {artist.name}
                   </Link>
-                  </>
+                  </React.Fragment>
                 )
               })}
             </p>
