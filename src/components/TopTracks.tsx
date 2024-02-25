@@ -23,7 +23,7 @@ const TopTracks: React.FC<TopTracksProps> = ({ artistId }): JSX.Element => {
     const getTracks = async () => {
       try {
         const tracks = await getTopTracks(artistId)
-        setTopTracks(tracks.items)
+        setTopTracks(tracks)
       } catch (error) {
         console.error('Error fetching top tracks:', error)
       }

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { useToken } from '../contexts/TokenContext'
 import { SpotifyArtist } from '@/types/SpotifyArtist'
 import { getCurrentlyPlaying } from '@/services/SpotifyPlayer'
-import { useToken } from '../contexts/TokenContext'
 import { SpotifyAlbum } from '@/types/SpotifyAlbum'
 
 // Interfaces for Player are simpler and not complete.
@@ -20,7 +21,7 @@ const Player = (): JSX.Element => {
       try {
         const playing = await getCurrentlyPlaying()
         setNowPlaying(playing.data.item)
-       // console.log(playing)
+        // console.log(playing)
       } catch (error) {
         console.error('Error fetching currently playing:', error)
       }
@@ -35,10 +36,27 @@ const Player = (): JSX.Element => {
     <div>
       {nowPlaying && (
         <div className='flex'>
-          <img src={nowPlaying.album?.images[2].url} alt={nowPlaying.name} width={48} height={48} className='mr-2' />
+          <img
+            src={nowPlaying.album?.images[2].url}
+            alt={nowPlaying.name}
+            width={48}
+            height={48}
+            className='mr-2'
+          />
           <div>
             <p className='text-gray-700 dark:text-gray-300'>{nowPlaying.name}</p>
-            <p className='text-gray-500'>{nowPlaying.artists[0]?.name}</p>
+            <p className='text-gray-500'>
+              {nowPlaying.artists.map((artist, index) => {
+                return (
+                  <>
+                  {index > 0 ? ', ' : ''}
+                  <Link key={artist.id} className='hover:text-primary' to={`/${artist.id}`}>
+                    {artist.name}
+                  </Link>
+                  </>
+                )
+              })}
+            </p>
           </div>
         </div>
       )}
