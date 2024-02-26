@@ -1,4 +1,3 @@
-// .env vars and link for the Implicit Grant Flow.
 const VITE_LASTFM_KEY = process.env.VITE_LASTFM_KEY
 
 if (

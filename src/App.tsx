@@ -8,6 +8,7 @@ import Footer from './components/Footer'
 import Homepage from './pages/HomepageSearchArtists'
 import Playlists from './pages/Playlists'
 import Artist from './pages/Artist'
+import Genres from './pages/Genres'
 
 import './globals.css'
 
@@ -24,6 +25,7 @@ const App: React.FC = () => {
             </Route>
             {/* <Route path='/' element={<Homepage />} /> */}
             <Route path='/playlists' element={<Playlists />} />
+            <Route path='/genres' element={<Genres />} />
           </Routes>
         </main>
         <Footer />
