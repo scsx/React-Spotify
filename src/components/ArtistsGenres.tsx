@@ -15,14 +15,18 @@ interface ArtistsGenresProps {
 
 const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JSX.Element => {
   const [activeTab, setActiveTab] = useState('spotifyGenres')
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState<string[]>([])
 
   const onTabChange = (value: string) => {
     setActiveTab(value)
   }
 
   const addToSearch = (genre: string) => {
-    let currentParams = searchQuery
+    console.log(searchQuery.length)
+    let comma = searchQuery.length > 0 ? ',' : ''
+    if (!searchQuery.includes(genre)) {
+      setSearchQuery((prevSearchQuery) => [...prevSearchQuery, genre])
+    }
     console.log(`Adding ${genre} to search`)
   }
 
@@ -32,7 +36,7 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
 
   const badgeColors = 'dark:text-gray-200 hover:text-primary dark:hover:text-primary'
 
-  const renderPlusWithTooltip = (genre: string, brand: string): JSX.Element => {
+  const renderPlusWithTooltip = (brand: string, genre: string): JSX.Element => {
     return (
       <TooltipProvider>
         <Tooltip>
@@ -111,7 +115,7 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
           <Badge
             variant='outline'
             className='text-sm mt-2 mr-2 font-normal bg-secondary hover:bg-primary dark:hover:text-white dark:text-muted-foreground'>
-            {searchQuery[0]}
+            <Link to={`/genres/${searchQuery}`}>{searchQuery}</Link>
           </Badge>
         </div>
       )}
