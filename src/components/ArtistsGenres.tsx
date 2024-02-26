@@ -4,6 +4,7 @@ import { LastFmTag } from '@/types/LastFmTag'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
+import { Separator } from "@/components/ui/separator"
 import { FaLastfm } from 'react-icons/fa'
 import { LuPlusCircle } from 'react-icons/lu'
 
@@ -41,6 +42,7 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
               className='dark:hover:text-white dark:text-muted-foreground'>
               {genre}
             </Link>
+            <Separator orientation="vertical" />
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger>
