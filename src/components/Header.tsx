@@ -1,3 +1,4 @@
+import { useToken } from '@/contexts/TokenContext'
 import { Button } from '@/components/ui/button'
 import { SheetTrigger, SheetContent, Sheet } from '@/components/ui/sheet'
 import {
@@ -6,11 +7,11 @@ import {
   NavigationMenu
 } from '@/components/ui/navigation-menu'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { RxHamburgerMenu } from "react-icons/rx";
 
 import HeaderNav from './HeaderNav'
 import HeaderNavMobile from './HeaderNavMobile'
 import Switch from './Switch'
-import { useToken } from '@/contexts/TokenContext'
 
 const Header = (): JSX.Element => {
   const token = useToken()
@@ -24,6 +25,7 @@ const Header = (): JSX.Element => {
         <Sheet>
           <SheetTrigger asChild>
             <Button className='lg:hidden' size='icon' variant='outline'>
+              <RxHamburgerMenu />
               <span className='sr-only'>Toggle navigation menu</span>
             </Button>
           </SheetTrigger>

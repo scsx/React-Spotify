@@ -27,7 +27,7 @@ const CardArtistLight: React.FC<CardArtistLightProps> = ({ artist }): JSX.Elemen
           </AspectRatio>
         </div>
         <CardHeader className='text-center p-0 flex-grow'>
-          <CardTitle className='text-1xl'>
+          <CardTitle className='text-xl font-medium'>
             <Link to={`/${artist.id}`}>{artist.name}</Link>
           </CardTitle>
         </CardHeader>
