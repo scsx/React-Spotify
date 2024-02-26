@@ -4,18 +4,20 @@ import { SpotifySearchResults } from '@/types/SpotifySearchResults'
 // Searches for Artist or Track. Keep adding <types> and conditions for album, playlist, etc.
 const searchSpotify = async (
   query: string,
-  searchType: string
+  searchType: string,
+  genres?: string
 ): Promise<SpotifySearchResults> => {
   try {
-    const response = await axios.get(
-      `https://api.spotify.com/v1/search?type=${searchType}`,
-      {
-        params: {
-          q: query
-        }
-      }
-    )
-    
+    let url = `https://api.spotify.com/v1/search?type=${searchType}&q=${query}`
+
+    if (genres) {
+      console.log(genres)
+      url += `%20genre=${encodeURIComponent(genres)}`
+      console.log(url)
+    }
+
+    const response = await axios.get(url)
+
     if (searchType === 'artist') {
       return {
         items: response.data.artists.items,
