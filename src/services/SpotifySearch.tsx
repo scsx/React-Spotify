@@ -8,15 +8,25 @@ const searchSpotify = async (
   genres?: string
 ): Promise<SpotifySearchResults> => {
   try {
-    let url = `https://api.spotify.com/v1/search?type=${searchType}&q=${query}`
-
-    if (genres) {
-      console.log(genres)
-      url += `%20genre=${encodeURIComponent(genres)}`
-      console.log(url)
+    // ORDER MATTERS
+    // 0
+    let params: string = ''
+    // 1
+    if (query !== '') {
+      params += `q=${encodeURIComponent(query)}`
+    } else {
+      params += 'q='
     }
+    // 2
+    // Genres must be formatted in GenresFinder.tsx or wherever they come from.
+    if (genres) {
+      params += `genre:${genres}`
+    }
+    // 3
+    params += `&type=${searchType}`
 
-    const response = await axios.get(url)
+    console.log(`URL a pesquisar https://api.spotify.com/v1/search?${params}`)
+    const response = await axios.get(`https://api.spotify.com/v1/search?${params}`)
 
     if (searchType === 'artist') {
       return {

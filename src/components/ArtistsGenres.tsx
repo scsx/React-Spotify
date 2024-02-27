@@ -22,12 +22,9 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
   }
 
   const addToSearch = (genre: string) => {
-    console.log(searchQuery.length)
-    let comma = searchQuery.length > 0 ? ',' : ''
     if (!searchQuery.includes(genre)) {
       setSearchQuery((prevSearchQuery) => [...prevSearchQuery, genre])
     }
-    console.log(`Adding ${genre} to search`)
   }
 
   useEffect(() => {
@@ -59,7 +56,7 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
       return genres.map((genre) => {
         return (
           <div key={genre} className='fakebadge flex mt-3 mr-3 font-normal bg-secondary rounded-lg'>
-            <Link to={`/genre/${genre}`} className={`p-1.5 pl-3 text-sm ${badgeColors}`}>
+            <Link to={`/genres/spotify:${genre}`} className={`p-1.5 pl-3 text-sm ${badgeColors}`}>
               {genre}
             </Link>
             <Separator
