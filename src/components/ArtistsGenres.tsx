@@ -84,18 +84,37 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
             {renderSpotifyGenres()}
           </TabsContent>
           <TabsContent value='lastfmGenres'>
-            {lastFmTags.map((tag) => {
-              return (
-                <a key={tag.url} href={tag.url} target='_blank'>
-                  <Badge
-                    variant='outline'
-                    className='text-sm mt-2 mr-2 font-normal bg-secondary hover:bg-primary dark:hover:text-white dark:text-muted-foreground'>
-                    <FaLastfm className='text-red-500 mr-2' /> {tag.name}
-                  </Badge>
-                  {renderPlusWithTooltip('lastfm', tag.name)}
-                </a>
-              )
-            })}
+            <div className='flex flex-wrap'>
+              {lastFmTags.map((tag) => {
+                return (
+                  <div
+                    key={tag.name}
+                    className='fakebadge flex mt-3 mr-3 font-normal bg-secondary rounded-lg'>
+                    <a
+                      key={tag.url}
+                      href={tag.url}
+                      className='p-1.5 pl-3 pt-2 text-base'
+                      target='_blank'>
+                      <FaLastfm className='text-red-500' />
+                    </a>
+                    <Separator
+                      orientation='vertical'
+                      className='h-full mx-0.5 w-px bg-white dark:bg-black'
+                    />
+                    <Link
+                      to={`/genres/lastfm:${tag.name}`}
+                      className={`p-1.5 px-3 text-sm ${badgeColors}`}>
+                      {tag.name}
+                    </Link>
+                    <Separator
+                      orientation='vertical'
+                      className='h-full mx-0.5 w-px bg-white dark:bg-black'
+                    />
+                    {renderPlusWithTooltip('lastfm', tag.name)}
+                  </div>
+                )
+              })}
+            </div>
           </TabsContent>
         </Tabs>
       ) : (
