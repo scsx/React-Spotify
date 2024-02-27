@@ -25,7 +25,7 @@ const searchSpotify = async (
     // 3
     params += `&type=${searchType}`
 
-    console.log(`URL a pesquisar https://api.spotify.com/v1/search?${params}`)
+    //console.log(`URL a pesquisar https://api.spotify.com/v1/search?${params}`)
     const response = await axios.get(`https://api.spotify.com/v1/search?${params}`)
 
     if (searchType === 'artist') {

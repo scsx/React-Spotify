@@ -73,7 +73,7 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
               <Link to={`/${artist.id}`}>
                 <FaBullseye className='mx-2 text-muted-foreground hover:text-primary' />
               </Link>
-              <a target='_blank' href={artist.uri}>
+              <a href={artist.uri}>
                 <FaSpotify className='mx-2 text-muted-foreground hover:text-primary' />
               </a>
               <a target='_blank' href={`https://www.google.com/search?q=${artist.name}`}>
