@@ -15,7 +15,7 @@ if (
 
 // https://developer.spotify.com/documentation/web-api/concepts/scopes
 const authScopes = encodeURIComponent(
-  'user-read-private user-read-email user-read-currently-playing'
+  'user-read-private user-read-email user-read-currently-playing user-top-read user-follow-read'
 )
 
 const authLink = `${VITE_SPOTIFY_AUTH_ENDPOINT}?client_id=${VITE_SPOTIFY_CLIENT_ID}&redirect_uri=${VITE_SPOTIFY_REDIRECT_URI}&response_type=${VITE_SPOTIFY_RESPONSE_TYPE}&scope=${authScopes}`

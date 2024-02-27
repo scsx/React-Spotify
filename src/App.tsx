@@ -9,6 +9,7 @@ import Homepage from './pages/HomepageSearchArtists'
 import Playlists from './pages/Playlists'
 import Artist from './pages/Artist'
 import Genres from './pages/Genres'
+import GenresFinder from './pages/GenresFinder'
 
 import './globals.css'
 
@@ -25,7 +26,10 @@ const App: React.FC = () => {
             </Route>
             {/* <Route path='/' element={<Homepage />} /> */}
             <Route path='/playlists' element={<Playlists />} />
-            <Route path='/genres' element={<Genres />} />
+            <Route path='/genres' element={<Outlet />}>
+              <Route index element={<Genres />} />
+              <Route path=':genresNames' element={<GenresFinder />} />
+            </Route>
           </Routes>
         </main>
         <Footer />

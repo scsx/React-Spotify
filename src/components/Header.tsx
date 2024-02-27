@@ -1,3 +1,4 @@
+import { useToken } from '@/contexts/TokenContext'
 import { Button } from '@/components/ui/button'
 import { SheetTrigger, SheetContent, Sheet } from '@/components/ui/sheet'
 import {
@@ -6,17 +7,17 @@ import {
   NavigationMenu
 } from '@/components/ui/navigation-menu'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { RxHamburgerMenu } from "react-icons/rx";
 
 import HeaderNav from './HeaderNav'
 import HeaderNavMobile from './HeaderNavMobile'
 import Switch from './Switch'
-import { useToken } from '@/contexts/TokenContext'
 
 const Header = (): JSX.Element => {
   const token = useToken()
 
   const lgLinkClasses =
-    'basenav__link group inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium transition-colors hover:bg-primary hover:text-white focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-primary dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50'
+    'basenav__link group h-8 inline-flex w-max items-center justify-center rounded-md bg-transparent px-4 py-1 text-sm font-medium transition-colors hover:bg-primary hover:text-white focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-primary dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50'
 
   return (
     <div className='fixed z-50 w-full mx-auto px-4 md:px-6 lg:px-8 bg-black/10 dark:bg-black/15 backdrop-blur border-b border-white border-opacity-20 dark:border-gray-700'>
@@ -24,6 +25,7 @@ const Header = (): JSX.Element => {
         <Sheet>
           <SheetTrigger asChild>
             <Button className='lg:hidden' size='icon' variant='outline'>
+              <RxHamburgerMenu />
               <span className='sr-only'>Toggle navigation menu</span>
             </Button>
           </SheetTrigger>

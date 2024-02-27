@@ -69,12 +69,12 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
                     <h5 className='text-lg'>{artist.name}</h5>
                     <div className='flex'>
                       <Link
-                        className='inline-block text-sm mr-8 text-slate-500'
+                        className='inline-block text-sm mr-8 text-gray-500 hover:text-black dark:hover:text-white'
                         to={`/?searchKey=${artist.name}`}>
                         Search this app
                       </Link>
                       <a
-                        className='flex text-sm mr-4 text-slate-500'
+                        className='flex text-sm mr-4 text-gray-500 hover:text-black dark:hover:text-white'
                         target='_blank'
                         href={artist.url}>
                         <FaLastfm className='text-red-500 mt-1 mr-1' />
