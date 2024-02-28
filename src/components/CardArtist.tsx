@@ -55,11 +55,11 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
               {artist.genres.length > 0 &&
                 artist.genres.map((genre) => {
                   return (
-                    <Badge
-                      className='m-1 bg-secondary hover:bg-secondary text-muted-foreground'
-                      key={genre}>
-                      {genre}
-                    </Badge>
+                    <Link key={genre} to={`/genres/spotify:${genre}`}>
+                      <Badge className='m-1 font-normal bg-zinc-200 dark:bg-zinc-700 hover:bg-primary dark:hover:bg-primary text-zinc-700 hover:text-white dark:text-zinc-200 dark:hover:text-white'>
+                        {genre}
+                      </Badge>
+                    </Link>
                   )
                 })}
             </div>

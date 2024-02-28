@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useToken } from '@/contexts/TokenContext'
-import axios from 'axios'
 import { useParams, useLocation } from 'react-router-dom'
+import axios from 'axios'
 
 import { SpotifyArtist } from '@/types/SpotifyArtist'
 import { LastFmArtist } from '@/types/LastFmArtist'
@@ -14,6 +14,8 @@ import TopTracks from '@/components/TopTracks'
 import ArtistsGenres from '@/components/ArtistsGenres'
 import RelatedArtists from '@/components/RelatedArtists'
 
+import { FaGoogle } from 'react-icons/fa'
+import { FaSpotify } from 'react-icons/fa'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 
 const Artist = (): JSX.Element => {
@@ -88,10 +90,20 @@ const Artist = (): JSX.Element => {
                 classes='text-3xl md:text-6xl font-semibold mb-0 tracking-wide min-w-40'
               />
             </div>
-            <div className='mb-6 '>
-              <p className='bg-white dark:bg-black inline-block w-auto py-2 px-4 rounded-bl-sm rounded-br-sm'>
-                {artist.followers.total.toLocaleString()} followers
-              </p>
+            <div className='mb-6'>
+              <div className='inline-block bg-white dark:bg-black py-2 px-4 rounded-bl-sm rounded-br-sm'>
+                <div className='flex items-center'>
+                  <div>
+                    {artist.followers.total.toLocaleString()} followers
+                  </div>
+                  <a className='ml-4 text-xl' target='_blank' href={`https://www.google.com/search?q=${artist.name}`}>
+                    <FaGoogle className='mx-2 text-muted-foreground hover:text-red-500' />
+                  </a>
+                  <a className='text-xl' href={artist.uri}>
+                    <FaSpotify className='mx-2 text-muted-foreground hover:text-primary' />
+                  </a>
+                </div>
+              </div>
             </div>
 
             <div className='grid grid-cols-4 gap-16'>

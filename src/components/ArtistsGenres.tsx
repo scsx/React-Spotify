@@ -95,7 +95,7 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
                       href={tag.url}
                       className='p-1.5 pl-3 pt-2 text-base'
                       target='_blank'>
-                      <FaLastfm className='text-red-500' />
+                      <FaLastfm className='text-red-500 hover:text-black dark:hover:text-white' />
                     </a>
                     <Separator
                       orientation='vertical'
