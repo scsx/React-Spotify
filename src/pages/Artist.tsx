@@ -9,6 +9,7 @@ import { LastFmTag } from '@/types/LastFmTag'
 import { getArtist } from '@/services/SpotifyGetArtist'
 
 import HeadingOne from '@/components/HeadingOne'
+import { Progress } from '@/components/ui/progress'
 import Albums from '@/components/AlbumsAndBio'
 import TopTracks from '@/components/TopTracks'
 import ArtistsGenres from '@/components/ArtistsGenres'
@@ -81,11 +82,12 @@ const Artist = (): JSX.Element => {
             }}></div>
           <div className='w-full -mt-4 absolute top-96 h-8 z-0 bg-white dark:bg-background transition duration-500'></div>
           <div className='relative container'>
-            <div className='bg-white dark:bg-black inline-block p-4 rounded-sm rounded-bl-none'>
+            <div className='-mt-4 bg-white dark:bg-black inline-block p-4 rounded-sm rounded-bl-none'>
               <HeadingOne
                 text={artist.name}
                 classes='text-3xl md:text-6xl font-semibold mb-0 tracking-wide min-w-40'
               />
+              <Progress value={artist.popularity} className='h-1 mt-4 mx-auto' />
             </div>
             <div className='mb-6'>
               <div className='inline-block bg-white dark:bg-black py-2 px-4 rounded-bl-sm rounded-br-sm'>
