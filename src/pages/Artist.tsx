@@ -13,9 +13,6 @@ import Albums from '@/components/AlbumsAndBio'
 import TopTracks from '@/components/TopTracks'
 import ArtistsGenres from '@/components/ArtistsGenres'
 import RelatedArtists from '@/components/RelatedArtists'
-
-import { FaGoogle } from 'react-icons/fa'
-import { FaSpotify } from 'react-icons/fa'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 
 const Artist = (): JSX.Element => {
@@ -93,22 +90,18 @@ const Artist = (): JSX.Element => {
             <div className='mb-6'>
               <div className='inline-block bg-white dark:bg-black py-2 px-4 rounded-bl-sm rounded-br-sm'>
                 <div className='flex items-center'>
-                  <div>
-                    {artist.followers.total.toLocaleString()} followers
-                  </div>
-                  <a className='ml-4 text-xl' target='_blank' href={`https://www.google.com/search?q=${artist.name}`}>
-                    <FaGoogle className='mx-2 text-muted-foreground hover:text-red-500' />
-                  </a>
-                  <a className='text-xl' href={artist.uri}>
-                    <FaSpotify className='mx-2 text-muted-foreground hover:text-primary' />
-                  </a>
+                  <div>{artist.followers.total.toLocaleString()} followers</div>
                 </div>
               </div>
             </div>
 
             <div className='grid grid-cols-4 gap-16'>
               <div className='col-span-2'>
-                <Albums biographyLastFM={lastFmArtist ? lastFmArtist.bio.content : ''} />
+                <Albums
+                  biographyLastFM={lastFmArtist ? lastFmArtist.bio.content : ''}
+                  artistName={artist.name}
+                  artistURI={artist.uri}
+                />
               </div>
               <div className='col-span-2 pt-16'>
                 <div className='grid grid-cols-3 gap-8 -mt-28'>
