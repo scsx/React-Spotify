@@ -88,7 +88,6 @@ const GenresFinder = (): JSX.Element => {
         } catch (error) {
           console.error('Spotify tag(s) were not found in LastFM', error)
         }
-        
       }
 
       fetchGenreArtists()

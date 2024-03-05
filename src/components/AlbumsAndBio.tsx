@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 import { SpotifyAlbum } from '@/types/SpotifyAlbum'
 import { getArtistAlbums } from '@/services/SpotifyGetArtistAlbums'
 import Album from './Album'
+import CoverMosaic from './CoverMosaic'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { IoBatteryDeadSharp } from 'react-icons/io5'
@@ -16,6 +17,7 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({ biographyLastFM = '' }): JS
   const { artistId } = useParams<string>()
   const [albums, setAlbums] = useState<SpotifyAlbum[] | []>([])
   const [singles, setSingles] = useState<SpotifyAlbum[] | []>([])
+  const [albumsCovers, setAlbumCovers] = useState<string[] | []>([])
   const [activeTab, setActiveTab] = useState('albums')
 
   const onTabChange = (value: string) => {
@@ -27,10 +29,21 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({ biographyLastFM = '' }): JS
       try {
         if (artistId) {
           const fetchedAlbums = await getArtistAlbums(artistId)
+          // Albums and singles info.
           const resultAlbums = fetchedAlbums.filter((album) => album.album_type === 'album')
           const resultSingles = fetchedAlbums.filter((album) => album.album_type === 'single')
           setAlbums(resultAlbums)
           setSingles(resultSingles)
+
+          // Albums and singles covers.
+          let allCovers: string[] = []
+          fetchedAlbums.forEach((item) => {
+            const cover = item.images[0].url
+            if (cover) {
+              allCovers.push(cover)
+            }
+          })
+          setAlbumCovers(allCovers)
         }
       } catch (error) {
         console.error('Error fetching country details:', error)
@@ -47,7 +60,7 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({ biographyLastFM = '' }): JS
       setActiveTab('albums')
     }
   }, [albums, singles])
-    
+
   return (
     <>
       {albums.length > 0 || singles.length > 0 ? (
@@ -59,6 +72,8 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({ biographyLastFM = '' }): JS
               <TabsTrigger value='bio'>Biography</TabsTrigger>
             )}
           </TabsList>
+          {albumsCovers.length > 0 && <CoverMosaic covers={albumsCovers} />}
+          
           <TabsContent value='albums'>
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-8'>
               {albums.length > 0 ? (
