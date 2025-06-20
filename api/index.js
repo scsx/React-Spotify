@@ -55,14 +55,14 @@ app.get('/api/test', (req, res) => {
   res.send('Hello from Express API! The current time is ' + new Date().toLocaleTimeString())
 })
 
-// Para o Vercel, é necessário exportar o 'app'
+// Para o Vercel, é necessário exportar 'app'
 module.exports = app
 
-// Opcional: Iniciar o servidor localmente para testes (comente para deploy no Vercel)
-// if (process.env.NODE_ENV !== 'production') {
-//     app.listen(PORT, () => {
-//         console.log(`Express API running at http://localhost:${PORT}`);
-//         console.log(`Test with: http://localhost:${PORT}/api/hello`);
-//         console.log(`Test Last.FM info with: http://localhost:${PORT}/api/lastfm-artist-info?artist=Radiohead`);
-//     });
-// }
+// KEEP: dev only.
+app.listen(PORT, () => {
+  console.log(`Express API running at http://localhost:${PORT}`)
+  console.log(`Test with: http://localhost:${PORT}/api/test`)
+  console.log(
+    `Test Last.FM info with: http://localhost:${PORT}/api/lastfm-artist-info?artist=Radiohead`
+  )
+})

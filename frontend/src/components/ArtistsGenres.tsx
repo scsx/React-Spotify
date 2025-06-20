@@ -128,8 +128,8 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
       )}
       {searchQuery.length === 0 ? (
         <div className="mt-8 text-gray-500 text-sm">
-          Click on a genre to search or <LuPlusCircle className="inline" /> to search for multiple
-          genres.
+          Click on a genre to search or select with <LuPlusCircle className="inline" /> to search for
+          multiple genres.
         </div>
       ) : (
         <div className="mt-8 text-gray-500 text-sm">
