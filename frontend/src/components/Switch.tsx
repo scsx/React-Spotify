@@ -1,5 +1,7 @@
 import { useState } from 'react'
+
 import { useTheme } from '@/contexts/ThemeProvider'
+
 import './Switch.css'
 
 interface SwitchProps {
@@ -10,17 +12,12 @@ interface SwitchProps {
   onColor?: string
 }
 
-const Switch: React.FC<SwitchProps> = ({
-  text,
-  classes = '',
-  isOn = true,
-  onColor
-}) => {
-  const { theme , setTheme } = useTheme()
+const Switch: React.FC<SwitchProps> = ({ text, classes = '', isOn = true, onColor }) => {
+  const { theme, setTheme } = useTheme()
   const [darkMode, setDarkMode] = useState(theme === 'dark' ? true : false)
 
   const changeTheme = () => {
-    if(darkMode) {
+    if (darkMode) {
       setTheme('light')
     } else {
       setTheme('dark')
@@ -30,18 +27,19 @@ const Switch: React.FC<SwitchProps> = ({
 
   return (
     <div className={classes}>
-      <span className='react-switch-text mt-0.5 mr-4'>{text}</span>
+      <span className="react-switch-text mt-0.5 mr-4">{text}</span>
       <input
         checked={darkMode}
         onChange={changeTheme}
-        className='react-switch-checkbox'
+        className="react-switch-checkbox"
         id={`react-switch-new`}
-        type='checkbox'
+        type="checkbox"
       />
       <label
         style={{ backgroundColor: isOn ? onColor : '' }}
-        className='react-switch-label'
-        htmlFor={`react-switch-new`}>
+        className="react-switch-label"
+        htmlFor={`react-switch-new`}
+      >
         <span className={`react-switch-button`} />
       </label>
     </div>

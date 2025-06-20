@@ -1,10 +1,15 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
+
 import { Link } from 'react-router-dom'
-import { getRelatedArtists } from '@/services/SpotifyGetRelatedArtists'
+
 import { SpotifyArtist } from '@/types/SpotifyArtist'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import CardArtistLight from './CardArtistLight'
 import { FaLastfm } from 'react-icons/fa'
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+
+import { getRelatedArtists } from '@/services/SpotifyGetRelatedArtists'
+
+import CardArtistLight from './CardArtistLight'
 
 interface RelatedArtistsProps {
   artistId: string
@@ -13,7 +18,7 @@ interface RelatedArtistsProps {
 
 const RelatedArtists: React.FC<RelatedArtistsProps> = ({
   artistId,
-  lastFmSimilar
+  lastFmSimilar,
 }): JSX.Element => {
   const [relatedArtists, setRelatedArtists] = useState<SpotifyArtist[] | null>(null)
   const [activeTab, setActiveTab] = useState('spotifyRelated')
@@ -54,30 +59,32 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
       {relatedArtists && lastFmSimilar ? (
         <Tabs value={activeTab} onValueChange={onTabChange}>
           <TabsList>
-            <TabsTrigger value='spotifyRelated'>Spotify</TabsTrigger>
-            <TabsTrigger value='lastfmRelated'>LastFM</TabsTrigger>
+            <TabsTrigger value="spotifyRelated">Spotify</TabsTrigger>
+            <TabsTrigger value="lastfmRelated">LastFM</TabsTrigger>
           </TabsList>
-          <TabsContent value='spotifyRelated'>
-            <div className='grid grid-cols-3 gap-4'>{renderSpotifyRelated()}</div>
+          <TabsContent value="spotifyRelated">
+            <div className="grid grid-cols-3 gap-4">{renderSpotifyRelated()}</div>
           </TabsContent>
-          <TabsContent value='lastfmRelated'>
+          <TabsContent value="lastfmRelated">
             {lastFmSimilar &&
               lastFmSimilar.artist &&
               lastFmSimilar.artist.map((artist: any) => {
                 return (
-                  <div className='mt-4' key={artist.name}>
-                    <h5 className='text-lg'>{artist.name}</h5>
-                    <div className='flex'>
+                  <div className="mt-4" key={artist.name}>
+                    <h5 className="text-lg">{artist.name}</h5>
+                    <div className="flex">
                       <Link
-                        className='inline-block text-sm mr-8 text-gray-500 hover:text-black dark:hover:text-white'
-                        to={`/?searchKey=${artist.name}`}>
+                        className="inline-block text-sm mr-8 text-gray-500 hover:text-black dark:hover:text-white"
+                        to={`/?searchKey=${artist.name}`}
+                      >
                         Search this app
                       </Link>
                       <a
-                        className='flex text-sm mr-4 text-gray-500 hover:text-black dark:hover:text-white'
-                        target='_blank'
-                        href={artist.url}>
-                        <FaLastfm className='text-red-500 mt-1 mr-1' />
+                        className="flex text-sm mr-4 text-gray-500 hover:text-black dark:hover:text-white"
+                        target="_blank"
+                        href={artist.url}
+                      >
+                        <FaLastfm className="text-red-500 mt-1 mr-1" />
                         View on LastFM
                       </a>
                     </div>
@@ -87,7 +94,7 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
           </TabsContent>
         </Tabs>
       ) : (
-        <div className='grid grid-cols-3 gap-4'>{renderSpotifyRelated()}</div>
+        <div className="grid grid-cols-3 gap-4">{renderSpotifyRelated()}</div>
       )}
     </>
   )

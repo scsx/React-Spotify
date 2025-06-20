@@ -1,5 +1,5 @@
-import axios from 'axios'
 import { SpotifyArtist } from '@/types/SpotifyArtist'
+import axios from 'axios'
 
 export const getArtist = async (artistId: string): Promise<SpotifyArtist> => {
   try {

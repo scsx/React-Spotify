@@ -1,4 +1,5 @@
 import axios from 'axios'
+
 import market from './spotifyPreferredMarket'
 
 export const getCurrentlyPlaying = async (): Promise<any> => {

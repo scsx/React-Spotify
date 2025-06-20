@@ -1,20 +1,23 @@
-import { useState, useEffect } from 'react'
-import { useToken } from '@/contexts/TokenContext'
-import { useParams, useLocation } from 'react-router-dom'
-import axios from 'axios'
+import { useEffect, useState } from 'react'
 
-import { SpotifyArtist } from '@/types/SpotifyArtist'
+import { useLocation, useParams } from 'react-router-dom'
+
 import { LastFmArtist } from '@/types/LastFmArtist'
 import { LastFmTag } from '@/types/LastFmTag'
-import { getArtist } from '@/services/SpotifyGetArtist'
+import { SpotifyArtist } from '@/types/SpotifyArtist'
+import axios from 'axios'
 
-import HeadingOne from '@/components/HeadingOne'
-import { Progress } from '@/components/ui/progress'
 import Albums from '@/components/AlbumsAndBio'
-import TopTracks from '@/components/TopTracks'
 import ArtistsGenres from '@/components/ArtistsGenres'
+import HeadingOne from '@/components/HeadingOne'
 import RelatedArtists from '@/components/RelatedArtists'
+import TopTracks from '@/components/TopTracks'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
+import { Progress } from '@/components/ui/progress'
+
+import { useToken } from '@/contexts/TokenContext'
+
+import { getArtist } from '@/services/SpotifyGetArtist'
 
 const Artist = (): JSX.Element => {
   const { artistId } = useParams<string>()
@@ -46,7 +49,7 @@ const Artist = (): JSX.Element => {
             lastFmTags = lastFmResponse.data.artist.tags.tag.map((tag: any) => {
               return {
                 name: tag.name,
-                url: tag.url
+                url: tag.url,
               }
             })
 
@@ -72,61 +75,62 @@ const Artist = (): JSX.Element => {
   }, [location.pathname])
 
   return (
-    <div className='flex flex-col flex-1'>
+    <div className="flex flex-col flex-1">
       {artist && (
         <>
           <div
-            className='w-full -mt-40 absolute h-96 bg-cover blur-sm bg-center bg-no-repeat z-0'
+            className="w-full -mt-40 absolute h-96 bg-cover blur-sm bg-center bg-no-repeat z-0"
             style={{
-              backgroundImage: `url(${artist.images[0].url})`
-            }}></div>
-          <div className='w-full -mt-4 absolute top-96 h-8 z-0 bg-white dark:bg-background transition duration-500'></div>
-          <div className='relative container'>
-            <div className='-mt-4 bg-white dark:bg-black inline-block p-4 rounded-sm rounded-bl-none'>
+              backgroundImage: `url(${artist.images[0].url})`,
+            }}
+          ></div>
+          <div className="w-full -mt-4 absolute top-96 h-8 z-0 bg-white dark:bg-background transition duration-500"></div>
+          <div className="relative container">
+            <div className="-mt-4 bg-white dark:bg-black inline-block p-4 rounded-sm rounded-bl-none">
               <HeadingOne
                 text={artist.name}
-                classes='text-3xl md:text-6xl font-semibold mb-0 tracking-wide min-w-40'
+                classes="text-3xl md:text-6xl font-semibold mb-0 tracking-wide min-w-40"
               />
-              <Progress value={artist.popularity} className='h-1 mt-4 mx-auto' />
+              <Progress value={artist.popularity} className="h-1 mt-4 mx-auto" />
             </div>
-            <div className='mb-6'>
-              <div className='inline-block bg-white dark:bg-black py-2 px-4 rounded-bl-sm rounded-br-sm'>
-                <div className='flex items-center'>
+            <div className="mb-6">
+              <div className="inline-block bg-white dark:bg-black py-2 px-4 rounded-bl-sm rounded-br-sm">
+                <div className="flex items-center">
                   <div>{artist.followers.total.toLocaleString()} followers</div>
                 </div>
               </div>
             </div>
 
-            <div className='grid grid-cols-4 gap-16'>
-              <div className='col-span-2'>
+            <div className="grid grid-cols-4 gap-16">
+              <div className="col-span-2">
                 <Albums
                   biographyLastFM={lastFmArtist ? lastFmArtist.bio.content : ''}
                   artistName={artist.name}
                   artistURI={artist.uri}
                 />
               </div>
-              <div className='col-span-2 pt-16'>
-                <div className='grid grid-cols-3 gap-8 -mt-28'>
-                  <div className='col-start-2 col-end-4'>
-                    <AspectRatio ratio={1 / 1} className='rounded-sm overflow-hidden'>
+              <div className="col-span-2 pt-16">
+                <div className="grid grid-cols-3 gap-8 -mt-28">
+                  <div className="col-start-2 col-end-4">
+                    <AspectRatio ratio={1 / 1} className="rounded-sm overflow-hidden">
                       <img
-                        className='rounded-sm p-1 bg-white dark:bg-black'
+                        className="rounded-sm p-1 bg-white dark:bg-black"
                         src={`${artist.images[0].url}`}
-                        alt=''
+                        alt=""
                       />
                     </AspectRatio>
                   </div>
                 </div>
                 <div>
-                  <h3 className='mt-10 mb-4 text-1xl md:text-3xl'>Top Tracks</h3>
+                  <h3 className="mt-10 mb-4 text-1xl md:text-3xl">Top Tracks</h3>
                   <TopTracks artistId={artist.id} />
                 </div>
                 <div>
-                  <h3 className='mt-14 mb-4 text-1xl md:text-3xl'>Genres</h3>
+                  <h3 className="mt-14 mb-4 text-1xl md:text-3xl">Genres</h3>
                   <ArtistsGenres genres={artist.genres} lastFmTags={lastFmArtistTags ?? []} />
                 </div>
                 <div>
-                  <h3 className='mt-14 mb-4 text-1xl md:text-3xl'>Related Artists</h3>
+                  <h3 className="mt-14 mb-4 text-1xl md:text-3xl">Related Artists</h3>
                   <RelatedArtists artistId={artist.id} lastFmSimilar={lastFmArtist?.similar!} />
                 </div>
               </div>

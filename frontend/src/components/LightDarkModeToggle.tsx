@@ -5,13 +5,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu' */
-import { useTheme } from "@/contexts/ThemeProvider"
+import { useTheme } from '@/contexts/ThemeProvider'
 
 export const ModeToggle = () => {
   const { setTheme } = useTheme()
 
-  return (
-    {/* <DropdownMenu>
+  return {
+    /* <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant='outline' size='icon'>
           <Sun className='h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0' />
@@ -30,6 +30,6 @@ export const ModeToggle = () => {
           System
         </DropdownMenuItem>
       </DropdownMenuContent>
-    </DropdownMenu> */}
-  )
+    </DropdownMenu> */
+  }
 }

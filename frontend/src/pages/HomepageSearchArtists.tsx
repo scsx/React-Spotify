@@ -1,19 +1,20 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+
 import { useNavigate } from 'react-router-dom'
 
-import { useToken } from '../contexts/TokenContext'
 import { SpotifyArtist } from '@/types/SpotifyArtist'
-import searchSpotify from '@/services/SpotifySearch'
-
-import Welcome from '@/components/Welcome'
-import HeadingOne from '@/components/HeadingOne'
+import { GiDinosaurRex } from 'react-icons/gi'
+import { MdArrowForwardIos } from 'react-icons/md'
 
 import CardArtist from '@/components/CardArtist'
+import HeadingOne from '@/components/HeadingOne'
+import Welcome from '@/components/Welcome'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 
-import { MdArrowForwardIos } from 'react-icons/md'
-import { GiDinosaurRex } from 'react-icons/gi'
+import searchSpotify from '@/services/SpotifySearch'
+
+import { useToken } from '../contexts/TokenContext'
 
 const HomepageSearchArtists = (): JSX.Element => {
   const initialArtistState: SpotifyArtist[] = []
@@ -124,41 +125,44 @@ const HomepageSearchArtists = (): JSX.Element => {
   }
 
   return (
-    <div className='home container flex flex-col flex-1 justify-center'>
+    <div className="home container flex flex-col flex-1 justify-center">
       {isAuthorized ? (
         <>
           <h1>
-            <a href='http://www.last.fm/api/auth/?api_key='>LAST FM</a>
+            <a href="http://www.last.fm/api/auth/?api_key=">LAST FM</a>
           </h1>
           <div
             className={`origin-top-left transition-transform ${
               artists.length > 0 && searchPerformed ? 'scale-75 ' : ''
-            }`}>
-            <HeadingOne text='Search Artists' />
+            }`}
+          >
+            <HeadingOne text="Search Artists" />
           </div>
 
-          <div className='flex'>
+          <div className="flex">
             <form
-              id='searchArtistsForm'
+              id="searchArtistsForm"
               onSubmit={(e) => handleSearch(e, searchKey)}
-              className='flex-1 flex -mt-2'>
+              className="flex-1 flex -mt-2"
+            >
               <input
-                className='bg-white dark:bg-transparent text-2xl md:text-4xl font-normal text-black dark:text-white border border-indigo-700 focus:outline-none dark:focus:dark:bg-slate-900 py-3 px-4'
-                type='text'
+                className="bg-white dark:bg-transparent text-2xl md:text-4xl font-normal text-black dark:text-white border border-indigo-700 focus:outline-none dark:focus:dark:bg-slate-900 py-3 px-4"
+                type="text"
                 value={searchKey}
                 ref={inputRef}
                 onChange={(e) => setSearchKey(e.target.value)}
               />
               <button
-                type='submit'
+                type="submit"
                 ref={submitRef}
-                className='bg-white dark:bg-slate-900 text-2xl md:text-4xl border border-l-0 border-indigo-700 px-4 text-black hover:text-white dark:text-white hover:bg-indigo-700 dark:hover:bg-indigo-700'>
+                className="bg-white dark:bg-slate-900 text-2xl md:text-4xl border border-l-0 border-indigo-700 px-4 text-black hover:text-white dark:text-white hover:bg-indigo-700 dark:hover:bg-indigo-700"
+              >
                 <MdArrowForwardIos />
               </button>
             </form>
             {artists.length === 0 && searchPerformed && (
-              <div className='flex-1 mt-3 text-2xl flex'>
-                <GiDinosaurRex className='text-4xl mr-4 -mt-1' />
+              <div className="flex-1 mt-3 text-2xl flex">
+                <GiDinosaurRex className="text-4xl mr-4 -mt-1" />
                 <span>No artists found.</span>
               </div>
             )}
@@ -172,15 +176,16 @@ const HomepageSearchArtists = (): JSX.Element => {
         {artists.length > 0 && (
           <>
             <h3>
-              Results: <span className='text-primary'>{totalArtists}</span>
+              Results: <span className="text-primary">{totalArtists}</span>
             </h3>
-            <Separator orientation='vertical' />
+            <Separator orientation="vertical" />
             <button
               onClick={clearSearch}
-              className='-ml-3 -mr-3 px-3 py-1 rounded-md bg-transparent hover:bg-primary'>
+              className="-ml-3 -mr-3 px-3 py-1 rounded-md bg-transparent hover:bg-primary"
+            >
               Clear search
             </button>
-            <Separator orientation='vertical' />
+            <Separator orientation="vertical" />
           </>
         )}
         {isAuthorized && pastSearches.length > 0 && (
@@ -193,11 +198,12 @@ const HomepageSearchArtists = (): JSX.Element => {
                 return (
                   <Button
                     key={index}
-                    className='px-2 py-1 text-gray-400 hover:text-white'
+                    className="px-2 py-1 text-gray-400 hover:text-white"
                     onClick={() => handlePastSearch(term)}
-                    form='searchArtistsForm'
-                    type='submit'
-                    variant='link'>
+                    form="searchArtistsForm"
+                    type="submit"
+                    variant="link"
+                  >
                     {term}
                   </Button>
                 )
@@ -207,7 +213,7 @@ const HomepageSearchArtists = (): JSX.Element => {
       </div>
 
       {artists.length > 0 && (
-        <div className='grid grid-cols-1 lg:grid-cols-4 gap-4'>{renderArtists()}</div>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">{renderArtists()}</div>
       )}
     </div>
   )

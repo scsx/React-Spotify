@@ -1,5 +1,5 @@
-import { SpotifyArtist } from './SpotifyArtist'
 import { SpotifyAlbum } from './SpotifyAlbum'
+import { SpotifyArtist } from './SpotifyArtist'
 
 export interface SpotifyTrack {
   album: SpotifyAlbum

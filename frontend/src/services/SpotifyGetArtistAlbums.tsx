@@ -1,5 +1,5 @@
-import axios from 'axios'
 import { SpotifyAlbum } from '@/types/SpotifyAlbum'
+import axios from 'axios'
 
 export const getArtistAlbums = async (artistId: string): Promise<SpotifyAlbum[]> => {
   try {

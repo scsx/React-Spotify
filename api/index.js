@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3001 // Porta para desenvolvimento local. Verce
 // É uma boa prática restringir isso em produção.
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:5173' // Apenas permita requisições do seu frontend
+    origin: process.env.FRONTEND_URL || 'http://localhost:5173', // Apenas permita requisições do seu frontend
   })
 )
 

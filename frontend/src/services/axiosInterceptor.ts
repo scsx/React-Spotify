@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios'
+
 import authLink from '@/services/spotifyAuthLink'
 
 // REQUESTS.

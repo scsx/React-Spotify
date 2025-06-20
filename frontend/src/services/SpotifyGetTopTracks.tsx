@@ -1,5 +1,6 @@
-import axios from 'axios'
 import { SpotifyTrack } from '@/types/SpotifyTrack'
+import axios from 'axios'
+
 import market from './spotifyPreferredMarket'
 
 const getTopTracks = async (id: string): Promise<SpotifyTrack[]> => {

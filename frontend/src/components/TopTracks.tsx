@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react'
-import getTopTracks from '@/services/SpotifyGetTopTracks'
+import { useEffect, useState } from 'react'
+
 import { SpotifyTrack } from '@/types/SpotifyTrack'
+import { ImFire } from 'react-icons/im'
 
 import {
   Table,
@@ -8,9 +9,10 @@ import {
   TableCell,
   TableHead,
   TableHeader,
-  TableRow
+  TableRow,
 } from '@/components/ui/table'
-import { ImFire } from 'react-icons/im'
+
+import getTopTracks from '@/services/SpotifyGetTopTracks'
 
 interface TopTracksProps {
   artistId: string
@@ -39,7 +41,7 @@ const TopTracks: React.FC<TopTracksProps> = ({ artistId }): JSX.Element => {
           <TableRow>
             <TableHead>Name</TableHead>
             <TableHead>Album</TableHead>
-            <TableHead className='text-right'>Popularity</TableHead>
+            <TableHead className="text-right">Popularity</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -47,12 +49,12 @@ const TopTracks: React.FC<TopTracksProps> = ({ artistId }): JSX.Element => {
             topTracks.map((track: SpotifyTrack) => {
               return (
                 <TableRow key={track.id}>
-                  <TableCell className='font-medium'>{track.name}</TableCell>
+                  <TableCell className="font-medium">{track.name}</TableCell>
                   <TableCell>{track.album.name}</TableCell>
-                  <TableCell className='text-right'>
-                    <div className='flex items-center justify-end'>
+                  <TableCell className="text-right">
+                    <div className="flex items-center justify-end">
                       {track.popularity > 70 ? (
-                        <ImFire className='text-xs mr-3 text-amber-500' />
+                        <ImFire className="text-xs mr-3 text-amber-500" />
                       ) : (
                         ''
                       )}
@@ -64,8 +66,8 @@ const TopTracks: React.FC<TopTracksProps> = ({ artistId }): JSX.Element => {
             })}
         </TableBody>
       </Table>
-      <p className='flex items-center mt-4 text-sm text-gray-500'>
-        <ImFire className='text-xs mr-2' /> Popularity &gt; 70
+      <p className="flex items-center mt-4 text-sm text-gray-500">
+        <ImFire className="text-xs mr-2" /> Popularity &gt; 70
       </p>
     </>
   )

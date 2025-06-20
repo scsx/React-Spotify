@@ -1,4 +1,5 @@
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react'
+import { ReactNode, createContext, useContext, useEffect, useState } from 'react'
+
 import authLink from '../services/spotifyAuthLink'
 
 // Token to be provided.
@@ -74,7 +75,7 @@ export const TokenProvider: React.FC<TokenProviderProps> = ({ children }) => {
     if (token) {
       setToken((prevToken) => ({
         ...(prevToken as TokenInfo),
-        isValid: tokenIsValid
+        isValid: tokenIsValid,
       }))
     }
   }, [tokenIsValid])
@@ -82,7 +83,7 @@ export const TokenProvider: React.FC<TokenProviderProps> = ({ children }) => {
   const tokenOrFallback = token ?? {
     isValid: tokenIsValid,
     authLink: authLink,
-    logout: logoutCtx
+    logout: logoutCtx,
   }
 
   return <TokenContext.Provider value={tokenOrFallback}>{children}</TokenContext.Provider>

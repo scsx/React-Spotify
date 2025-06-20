@@ -1,17 +1,19 @@
 import { useEffect, useState } from 'react'
+
 import { useParams } from 'react-router-dom'
-import axios from 'axios'
-import { useToken } from '@/contexts/TokenContext'
+
 import { SpotifyArtist } from '@/types/SpotifyArtist'
-
-import searchSpotify from '@/services/SpotifySearch'
-
-import { Badge } from '@/components/ui/badge'
-import HeadingOne from '@/components/HeadingOne'
-import CardArtist from '@/components/CardArtist'
-
+import axios from 'axios'
 import { FaSpotify } from 'react-icons/fa'
 import { ImLastfm2 } from 'react-icons/im'
+
+import CardArtist from '@/components/CardArtist'
+import HeadingOne from '@/components/HeadingOne'
+import { Badge } from '@/components/ui/badge'
+
+import { useToken } from '@/contexts/TokenContext'
+
+import searchSpotify from '@/services/SpotifySearch'
 
 const GenresFinder = (): JSX.Element => {
   const initialArtistState: SpotifyArtist[] = []
@@ -122,20 +124,20 @@ const GenresFinder = (): JSX.Element => {
   }, [lastFmGenres])
 
   return (
-    <div className='container flex flex-col flex-1 justify-center'>
-      <HeadingOne text='Genres Finder' />
+    <div className="container flex flex-col flex-1 justify-center">
+      <HeadingOne text="Genres Finder" />
 
-      <div className='genres__results flex mt-4'>
-        <div className='genres__spotify flex-1 mr-4'>
-          <h3 className='text-xl mb-4'>
-            <FaSpotify className='inline-block text-primary mr-1' /> Spotify Results for{' '}
+      <div className="genres__results flex mt-4">
+        <div className="genres__spotify flex-1 mr-4">
+          <h3 className="text-xl mb-4">
+            <FaSpotify className="inline-block text-primary mr-1" /> Spotify Results for{' '}
             {spotifyGenres.map((genre, index) => (
-              <Badge key={index} variant='outline' className='font-normal text-sm'>
+              <Badge key={index} variant="outline" className="font-normal text-sm">
                 {genre}
               </Badge>
             ))}
           </h3>
-          <div className='grid grid-cols-1 lg:grid-cols-2 gap-4'>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {artistsSpotify.length > 0 &&
               artistsSpotify.map((artist) => (
                 <CardArtist
@@ -146,11 +148,11 @@ const GenresFinder = (): JSX.Element => {
               ))}
           </div>
         </div>
-        <div className='genres__lastfm flex-1 ml-4'>
-          <h3 className='text-xl mb-4'>
-            <ImLastfm2 className='inline-block text-red-500 mr-2' /> LastFM Results for{' '}
+        <div className="genres__lastfm flex-1 ml-4">
+          <h3 className="text-xl mb-4">
+            <ImLastfm2 className="inline-block text-red-500 mr-2" /> LastFM Results for{' '}
             {spotifyGenres.map((genre, index) => (
-              <Badge key={index} variant='outline' className='font-normal text-sm'>
+              <Badge key={index} variant="outline" className="font-normal text-sm">
                 {genre}
               </Badge>
             ))}

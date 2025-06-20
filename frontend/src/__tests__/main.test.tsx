@@ -1,7 +1,9 @@
-import { render } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
-import { TokenProvider } from '../contexts/TokenContext'
+
+import { render } from '@testing-library/react'
+
 import App from '../App'
+import { TokenProvider } from '../contexts/TokenContext'
 
 test('renders the app without errors', () => {
   render(
