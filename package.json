@@ -1,0 +1,17 @@
+{
+  "name": "react-spotify-monorepo",
+  "version": "1.0.0",
+  "description": "Monorepo for React Spotify Frontend and Express API",
+  "main": "index.js",
+  "scripts": {
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev:api": "npm start --prefix api",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:api\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
