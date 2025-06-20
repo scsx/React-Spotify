@@ -67,7 +67,7 @@ const GenresFinder = (): JSX.Element => {
               // Do something.
               console.log(lastFmResponse)
             }
-          /* const lastFmResponse = await axios.get(
+            /* const lastFmResponse = await axios.get(
             `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(
               fetchedArtist.name
             )}&api_key=${token.lastFMKey}&format=json`
@@ -84,7 +84,7 @@ const GenresFinder = (): JSX.Element => {
           if (lastFmTags) {
             setLastFmArtistTags(lastFmTags)
           } */
-        }
+          }
         } catch (error) {
           console.error('Spotify tag(s) were not found in LastFM', error)
         }
@@ -128,7 +128,7 @@ const GenresFinder = (): JSX.Element => {
       <div className='genres__results flex mt-4'>
         <div className='genres__spotify flex-1 mr-4'>
           <h3 className='text-xl mb-4'>
-            <FaSpotify className='inline-block text-primary mr-1' /> Results from Spotify{' '}
+            <FaSpotify className='inline-block text-primary mr-1' /> Spotify Results for{' '}
             {spotifyGenres.map((genre, index) => (
               <Badge key={index} variant='outline' className='font-normal text-sm'>
                 {genre}
@@ -148,7 +148,12 @@ const GenresFinder = (): JSX.Element => {
         </div>
         <div className='genres__lastfm flex-1 ml-4'>
           <h3 className='text-xl mb-4'>
-            <ImLastfm2 className='inline-block text-red-500 mr-2' /> Results from LastFM
+            <ImLastfm2 className='inline-block text-red-500 mr-2' /> LastFM Results for{' '}
+            {spotifyGenres.map((genre, index) => (
+              <Badge key={index} variant='outline' className='font-normal text-sm'>
+                {genre}
+              </Badge>
+            ))}
           </h3>
         </div>
       </div>
