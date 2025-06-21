@@ -1,4 +1,4 @@
-export interface SpotifyImage {
+export interface TSpotifyImage {
   url: string
   height: number
   width: number

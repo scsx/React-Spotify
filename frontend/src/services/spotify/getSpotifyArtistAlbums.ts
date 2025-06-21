@@ -1,9 +1,9 @@
-import { SpotifyAlbum } from '@/types/SpotifyAlbum'
+import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
 import axios from 'axios'
 
-export const getArtistAlbums = async (artistId: string): Promise<SpotifyAlbum[]> => {
+export const getSpotifyArtistAlbums = async (artistId: string): Promise<TSpotifyAlbum[]> => {
   try {
-    let allAlbums: SpotifyAlbum[] = []
+    let allAlbums: TSpotifyAlbum[] = []
 
     // Two calls because API is simply returning only albums when using ?include_groups=album,single.
     let nextAlbumsUrl = `https://api.spotify.com/v1/artists/${artistId}/albums?include_groups=album`

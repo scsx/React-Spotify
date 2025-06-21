@@ -1,6 +1,6 @@
-import { SpotifyImage } from './SpotifyImage'
+import { TSpotifyImage } from './SpotifyImage'
 
-export interface SpotifyArtist {
+export interface TSpotifyArtist {
   external_urls: {
     spotify: string
   }
@@ -11,7 +11,7 @@ export interface SpotifyArtist {
   genres: string[]
   href: string
   id: string
-  images: SpotifyImage[]
+  images: TSpotifyImage[]
   name: string
   popularity: number
   type: string

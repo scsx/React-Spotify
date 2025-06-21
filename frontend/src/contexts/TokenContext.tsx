@@ -1,9 +1,9 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react'
 
-import authLink from '../services/spotifyAuthLink'
+import authLink from '../services/spotify/spotifyAuthLink'
 
 // Token to be provided.
-interface TokenInfo {
+interface TTokenInfo {
   isValid: boolean
   authLink: string
   logout: () => void
@@ -14,12 +14,12 @@ interface TokenProviderProps {
 }
 
 // Create context.
-const TokenContext = createContext<TokenInfo | null>(null)
+const TokenContext = createContext<TTokenInfo | null>(null)
 export const useToken = () => useContext(TokenContext)
 
 // Provider.
 export const TokenProvider: React.FC<TokenProviderProps> = ({ children }) => {
-  const [token, setToken] = useState<TokenInfo | null>(null)
+  const [token, setToken] = useState<TTokenInfo | null>(null)
   const [tokenIsValid, setTokenIsValid] = useState(false)
 
   // Token expiration time (1h)
@@ -74,7 +74,7 @@ export const TokenProvider: React.FC<TokenProviderProps> = ({ children }) => {
   useEffect(() => {
     if (token) {
       setToken((prevToken) => ({
-        ...(prevToken as TokenInfo),
+        ...(prevToken as TTokenInfo),
         isValid: tokenIsValid,
       }))
     }

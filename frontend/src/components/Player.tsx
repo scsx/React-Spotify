@@ -2,18 +2,18 @@ import React, { useEffect, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { SpotifyAlbum } from '@/types/SpotifyAlbum'
-import { SpotifyArtist } from '@/types/SpotifyArtist'
+import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
+import { TSpotifyArtist } from '@/types/SpotifyArtist'
 
-import { getCurrentlyPlaying } from '@/services/SpotifyPlayer'
+import { getSpotifyCurrentlyPlaying } from '@/services/spotify/spotifyPlayer'
 
 import { useToken } from '../contexts/TokenContext'
 
 // Interfaces for Player are simpler and not complete.
 interface NowPlaying {
-  album: SpotifyAlbum
+  album: TSpotifyAlbum
   name: string
-  artists: SpotifyArtist[]
+  artists: TSpotifyArtist[]
 }
 
 const Player = (): JSX.Element => {
@@ -23,7 +23,7 @@ const Player = (): JSX.Element => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const playing = await getCurrentlyPlaying()
+        const playing = await getSpotifyCurrentlyPlaying()
         setNowPlaying(playing.data.item)
       } catch (error) {
         console.error('Error fetching currently playing:', error)

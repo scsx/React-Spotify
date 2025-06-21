@@ -1,8 +1,8 @@
-import { SpotifyArtist } from './SpotifyArtist'
-import { SpotifyImage } from './SpotifyImage'
-import { SpotifyTrack } from './SpotifyTrack'
+import { TSpotifyArtist } from './SpotifyArtist'
+import { TSpotifyImage } from './SpotifyImage'
+import { TSpotifyTrack } from './SpotifyTrack'
 
-export interface SpotifyAlbum {
+export interface TSpotifyAlbum {
   album_type: string
   total_tracks: number
   available_markets: string[]
@@ -11,7 +11,7 @@ export interface SpotifyAlbum {
   }
   href: string
   id: string
-  images: SpotifyImage[]
+  images: TSpotifyImage[]
   name: string
   release_date: string
   release_date_precision: string
@@ -20,7 +20,7 @@ export interface SpotifyAlbum {
   }
   type: string
   uri: string
-  artists: SpotifyArtist[]
+  artists: TSpotifyArtist[]
   tracks: {
     href: string
     limit: number
@@ -28,7 +28,7 @@ export interface SpotifyAlbum {
     offset: number
     previous: string
     total: number
-    items: SpotifyTrack[]
+    items: TSpotifyTrack[]
   }
   copyrights: {
     text: string

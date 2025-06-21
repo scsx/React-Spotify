@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { SpotifyArtist } from '@/types/SpotifyArtist'
+import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import { FaLastfm } from 'react-icons/fa'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-import { getRelatedArtists } from '@/services/SpotifyGetRelatedArtists'
+import { getSpotifyRelatedArtists } from '@/services/spotify/getSpotifyRelatedArtists'
 
 import CardArtistLight from './CardArtistLight'
 
@@ -20,7 +20,7 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
   artistId,
   lastFmSimilar,
 }): JSX.Element => {
-  const [relatedArtists, setRelatedArtists] = useState<SpotifyArtist[] | null>(null)
+  const [relatedArtists, setRelatedArtists] = useState<TSpotifyArtist[] | null>(null)
   const [activeTab, setActiveTab] = useState('spotifyRelated')
 
   const onTabChange = (value: string) => {
@@ -30,7 +30,7 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
   useEffect(() => {
     const getArtistsById = async () => {
       try {
-        const fetchedData = await getRelatedArtists(artistId)
+        const fetchedData = await getSpotifyRelatedArtists(artistId)
         setRelatedArtists(fetchedData.artists)
       } catch (error) {
         console.error('Error fetching top tracks:', error)

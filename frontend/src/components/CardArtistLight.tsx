@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import { SpotifyArtist } from '@/types/SpotifyArtist'
+import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import { FaGoogle } from 'react-icons/fa'
 import { FaSpotify } from 'react-icons/fa'
 import { FaBullseye } from 'react-icons/fa6'
@@ -10,7 +10,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Progress } from '@/components/ui/progress'
 
 interface CardArtistLightProps {
-  artist: SpotifyArtist
+  artist: TSpotifyArtist
 }
 
 const CardArtistLight: React.FC<CardArtistLightProps> = ({ artist }): JSX.Element => {

@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react'
 import { useLocation, useParams } from 'react-router-dom'
 
 import { LastFmArtist } from '@/types/LastFmArtist'
-import { LastFmTag } from '@/types/LastFmTag'
-import { SpotifyArtist } from '@/types/SpotifyArtist'
+import { TLastFmTag } from '@/types/LastFmTag'
+import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import axios from 'axios'
 
 import Albums from '@/components/AlbumsAndBio'
@@ -17,24 +17,24 @@ import { Progress } from '@/components/ui/progress'
 
 import { useToken } from '@/contexts/TokenContext'
 
-import { getArtist } from '@/services/SpotifyGetArtist'
+import { getSpotifyArtist } from '@/services/spotify/getSpotifyArtist'
 
 const Artist = (): JSX.Element => {
   const { artistId } = useParams<string>()
-  const [artist, setArtist] = useState<SpotifyArtist | null>(null)
+  const [artist, setArtist] = useState<TSpotifyArtist | null>(null)
   const [lastFmArtist, setLastFmArtist] = useState<LastFmArtist | null>(null)
-  const [lastFmArtistTags, setLastFmArtistTags] = useState<LastFmTag[] | null>(null)
+  const [lastFmArtistTags, setLastFmArtistTags] = useState<TLastFmTag[] | null>(null)
   const token = useToken()
   const location = useLocation()
 
-  let lastFmTags: LastFmTag[] = []
+  let lastFmTags: TLastFmTag[] = []
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (artistId) {
           // Fetch artist information from Spotify
-          const fetchedArtist = await getArtist(artistId)
+          const fetchedArtist = await getSpotifyArtist(artistId)
           setArtist(fetchedArtist)
 
           // Fetch artist information from Last.fm

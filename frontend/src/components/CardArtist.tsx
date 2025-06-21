@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { SpotifyArtist } from '@/types/SpotifyArtist'
+import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import { FaGoogle } from 'react-icons/fa'
 import { FaSpotify } from 'react-icons/fa'
 import { FaBullseye } from 'react-icons/fa6'
@@ -24,7 +24,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import TopTracks from './TopTracks'
 
 interface CardArtistProps {
-  artist: SpotifyArtist
+  artist: TSpotifyArtist
   classes?: string
 }
 

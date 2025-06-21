@@ -1,9 +1,9 @@
-import { SpotifyAlbum } from './SpotifyAlbum'
-import { SpotifyArtist } from './SpotifyArtist'
+import { TSpotifyAlbum } from './SpotifyAlbum'
+import { TSpotifyArtist } from './SpotifyArtist'
 
-export interface SpotifyTrack {
-  album: SpotifyAlbum
-  artists: SpotifyArtist[]
+export interface TSpotifyTrack {
+  album: TSpotifyAlbum
+  artists: TSpotifyArtist[]
   available_markets: string[]
   disc_number: number
   duration_ms: number

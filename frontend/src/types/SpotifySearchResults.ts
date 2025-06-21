@@ -1,8 +1,8 @@
-import { SpotifyArtist } from './SpotifyArtist'
-import { SpotifyTrack } from './SpotifyTrack'
+import { TSpotifyArtist } from './SpotifyArtist'
+import { TSpotifyTrack } from './SpotifyTrack'
 
-export interface SpotifySearchResults {
-  items: SpotifyArtist[] | SpotifyTrack[]
+export interface TSpotifySearchResults {
+  items: TSpotifyArtist[] | TSpotifyTrack[]
   nextPage: string
   prevPage: string
   total: number

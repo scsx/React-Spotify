@@ -1,16 +1,16 @@
 import axios from 'axios'
 
-interface AvailableGenreSeedsResponse {
+interface TAvailableGenreSeedsResponse {
   genres: string[]
 }
 
-export const getGenreSeeds = async (): Promise<AvailableGenreSeedsResponse> => {
+export const getSpotifyGenreSeeds = async (): Promise<TAvailableGenreSeedsResponse> => {
   try {
     const response = await axios.get(
       'https://api.spotify.com/v1/recommendations/available-genre-seeds'
     )
 
-    const genres: AvailableGenreSeedsResponse = response.data
+    const genres: TAvailableGenreSeedsResponse = response.data
 
     return genres
   } catch (error) {

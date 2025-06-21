@@ -1,4 +1,4 @@
-import { getGenreSeeds } from '@/services/SpotifyGetAvailableGenreSeeds'
+import { getGenreSeeds } from '@/services/spotify/SpotifyGetAvailableGenreSeeds'
 
 const Genres = (): JSX.Element => {
   return (

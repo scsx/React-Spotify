@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-import { SpotifyTrack } from '@/types/SpotifyTrack'
+import { TSpotifyTrack } from '@/types/SpotifyTrack'
 import { ImFire } from 'react-icons/im'
 
 import {
@@ -12,19 +12,19 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-import getTopTracks from '@/services/SpotifyGetTopTracks'
+import getSpotifyTopTracks from '@/services/spotify/getSpotifyTopTracks'
 
 interface TopTracksProps {
   artistId: string
 }
 
 const TopTracks: React.FC<TopTracksProps> = ({ artistId }): JSX.Element => {
-  const [topTracks, setTopTracks] = useState<SpotifyTrack[] | null>(null)
+  const [topTracks, setTopTracks] = useState<TSpotifyTrack[] | null>(null)
 
   useEffect(() => {
     const getTracks = async () => {
       try {
-        const tracks = await getTopTracks(artistId)
+        const tracks = await getSpotifyTopTracks(artistId)
         setTopTracks(tracks)
       } catch (error) {
         console.error('Error fetching top tracks:', error)
@@ -46,7 +46,7 @@ const TopTracks: React.FC<TopTracksProps> = ({ artistId }): JSX.Element => {
         </TableHeader>
         <TableBody>
           {topTracks &&
-            topTracks.map((track: SpotifyTrack) => {
+            topTracks.map((track: TSpotifyTrack) => {
               return (
                 <TableRow key={track.id}>
                   <TableCell className="font-medium">{track.name}</TableCell>

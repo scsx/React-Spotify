@@ -1,4 +1,4 @@
-export interface LastFmSimilarArtist {
+export interface TLastFmSimilarArtist {
   name: string
   url: string
   image: {

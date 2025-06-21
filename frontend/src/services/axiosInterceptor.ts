@@ -1,6 +1,6 @@
 import axios, { AxiosResponse } from 'axios'
 
-import authLink from '@/services/spotifyAuthLink'
+import authLink from '@/services/spotify/spotifyAuthLink'
 
 // REQUESTS.
 axios.interceptors.request.use(

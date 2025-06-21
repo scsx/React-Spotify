@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import { SpotifyAlbum } from '@/types/SpotifyAlbum'
+import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
 import { FaGoogle } from 'react-icons/fa'
 import { FaSpotify } from 'react-icons/fa'
 import { IoBatteryDeadSharp } from 'react-icons/io5'
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-import { getArtistAlbums } from '@/services/SpotifyGetArtistAlbums'
+import { getSpotifyArtistAlbums } from '@/services/spotify/getSpotifyArtistAlbums'
 
 import Album from './Album'
 import CoverMosaic from './CoverMosaic'
@@ -26,8 +26,8 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
   artistURI,
 }): JSX.Element => {
   const { artistId } = useParams<string>()
-  const [albums, setAlbums] = useState<SpotifyAlbum[] | []>([])
-  const [singles, setSingles] = useState<SpotifyAlbum[] | []>([])
+  const [albums, setAlbums] = useState<TSpotifyAlbum[] | []>([])
+  const [singles, setSingles] = useState<TSpotifyAlbum[] | []>([])
   const [albumsCovers, setAlbumCovers] = useState<string[] | []>([])
   const [activeTab, setActiveTab] = useState('albums')
 
@@ -39,7 +39,7 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
     const fetchData = async () => {
       try {
         if (artistId) {
-          const fetchedAlbums = await getArtistAlbums(artistId)
+          const fetchedAlbums = await getSpotifyArtistAlbums(artistId)
           // Albums and singles info.
           const resultAlbums = fetchedAlbums.filter((album) => album.album_type === 'album')
           const resultSingles = fetchedAlbums.filter((album) => album.album_type === 'single')

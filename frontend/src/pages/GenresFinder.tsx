@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import { SpotifyArtist } from '@/types/SpotifyArtist'
+import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import axios from 'axios'
 import { FaSpotify } from 'react-icons/fa'
 import { ImLastfm2 } from 'react-icons/im'
@@ -13,10 +13,10 @@ import { Badge } from '@/components/ui/badge'
 
 import { useToken } from '@/contexts/TokenContext'
 
-import searchSpotify from '@/services/SpotifySearch'
+import spotifySearch from '@/services/spotify/spotifySearch'
 
 const GenresFinder = (): JSX.Element => {
-  const initialArtistState: SpotifyArtist[] = []
+  const initialArtistState: TSpotifyArtist[] = []
   const { genresNames } = useParams()
   const token = useToken()
 
@@ -52,8 +52,8 @@ const GenresFinder = (): JSX.Element => {
       // Search Spotify.
       const formattedGenres = spotifyGenres.map((genre) => genre.replace(/\s+/g, '-')).join(',')
       async function fetchGenreArtists() {
-        const results = await searchSpotify('', 'artist', formattedGenres)
-        setArtistsSpotify(results.items as SpotifyArtist[])
+        const results = await spotifySearch('', 'artist', formattedGenres)
+        setArtistsSpotify(results.items as TSpotifyArtist[])
       }
 
       // Search LastFM.

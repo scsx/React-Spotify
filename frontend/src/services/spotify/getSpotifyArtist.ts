@@ -1,11 +1,11 @@
-import { SpotifyArtist } from '@/types/SpotifyArtist'
+import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import axios from 'axios'
 
-export const getArtist = async (artistId: string): Promise<SpotifyArtist> => {
+export const getSpotifyArtist = async (artistId: string): Promise<TSpotifyArtist> => {
   try {
     const response = await axios.get(`https://api.spotify.com/v1/artists/${artistId}`)
 
-    const artist: SpotifyArtist = response.data
+    const artist: TSpotifyArtist = response.data
 
     return artist
   } catch (error) {

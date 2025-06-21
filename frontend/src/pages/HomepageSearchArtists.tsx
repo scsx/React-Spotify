@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import { SpotifyArtist } from '@/types/SpotifyArtist'
+import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import { GiDinosaurRex } from 'react-icons/gi'
 import { MdArrowForwardIos } from 'react-icons/md'
 
@@ -12,12 +12,12 @@ import Welcome from '@/components/Welcome'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 
-import searchSpotify from '@/services/SpotifySearch'
+import spotifySearch from '@/services/spotify/spotifySearch'
 
 import { useToken } from '../contexts/TokenContext'
 
 const HomepageSearchArtists = (): JSX.Element => {
-  const initialArtistState: SpotifyArtist[] = []
+  const initialArtistState: TSpotifyArtist[] = []
 
   const [searchKey, setSearchKey] = useState('')
   const [pastSearches, setPastSearches] = useState<string[]>([])
@@ -67,8 +67,8 @@ const HomepageSearchArtists = (): JSX.Element => {
     try {
       if (!searchKey) return
 
-      const results = await searchSpotify(searchKey, 'artist')
-      const artists = results.items as SpotifyArtist[]
+      const results = await spotifySearch(searchKey, 'artist')
+      const artists = results.items as TSpotifyArtist[]
 
       setArtists(artists)
       setTotalArtists(results.total)

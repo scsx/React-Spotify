@@ -1,5 +1,5 @@
-import { LastFmSimilarArtist } from './LastFmSimilarArtist'
-import { LastFmTag } from './LastFmTag'
+import { TLastFmSimilarArtist } from './LastFmSimilarArtist'
+import { TLastFmTag } from './LastFmTag'
 
 export interface LastFmArtist {
   name: string
@@ -15,8 +15,8 @@ export interface LastFmArtist {
     listeners: string
     plays: string
   }
-  similar: LastFmSimilarArtist[]
-  tags: LastFmTag[]
+  similar: TLastFmSimilarArtist[]
+  tags: TLastFmTag[]
   bio: {
     published: string
     summary: string

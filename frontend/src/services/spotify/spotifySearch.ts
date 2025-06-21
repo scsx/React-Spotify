@@ -1,12 +1,12 @@
-import { SpotifySearchResults } from '@/types/SpotifySearchResults'
+import { TSpotifySearchResults } from '@/types/SpotifySearchResults'
 import axios from 'axios'
 
 // Searches for Artist or Track. Keep adding <types> and conditions for album, playlist, etc.
-const searchSpotify = async (
+const spotifySearch = async (
   query: string,
   searchType: string,
   genres?: string
-): Promise<SpotifySearchResults> => {
+): Promise<TSpotifySearchResults> => {
   try {
     // ORDER MATTERS
     // 0
@@ -50,4 +50,4 @@ const searchSpotify = async (
   }
 }
 
-export default searchSpotify
+export default spotifySearch
