@@ -2,25 +2,10 @@ import React, { ReactNode, createContext, useContext, useEffect, useState, useCa
 
 import authLink from '../services/spotify/spotifyAuthLink'
 
-// Token from localStorage.
-export interface TSpotifyTokenData {
-  accessToken: string;
-  expiresIn: number; 
-  tokenType: string;
-  obtainedAt: number;
-}
-
-// Token to be provided.
-interface TokenContextValue {
-  tokenInfo: TSpotifyTokenData | null;
-  setToken: (token: TSpotifyTokenData | null) => void;
-  isValid: boolean;
-  authLink: string;
-  logout: () => void;
-}
+import { TTokenContextValue, TSpotifyTokenData } from '@/types/General';
 
 // Create context.
-const TokenContext = createContext<TokenContextValue | undefined>(undefined);
+const TokenContext = createContext<TTokenContextValue | undefined>(undefined);
 
 // Hook.
 export const useToken = () => {

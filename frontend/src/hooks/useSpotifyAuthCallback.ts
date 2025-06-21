@@ -1,58 +1,95 @@
-import { useEffect } from 'react'
+// frontend/src/hooks/useSpotifyAuthCallback.ts
+import { useEffect, useRef } from 'react'
 
 import { useLocation, useNavigate } from 'react-router-dom'
 
 import { useToken } from '@/contexts/TokenContext'
 
-// Este hook encapsula a lógica de processamento do token da URL de callback do Spotify
 export const useSpotifyAuthCallback = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const { setToken } = useToken()
 
+  const hasProcessedThisLoad = useRef(false)
+
   useEffect(() => {
-    // 1. Tenta processar o token do HASH da URL (ex: #access_token=...)
-    if (location.hash) {
-      const params = new URLSearchParams(location.hash.substring(1)) // Remove o '#'
+    console.log(
+      'useSpotifyAuthCallback useEffect triggered. Location:',
+      location.pathname,
+      location.hash,
+      'hasProcessedThisLoad.current:',
+      hasProcessedThisLoad.current
+    )
+
+    if (hasProcessedThisLoad.current) {
+      console.log('Skipping processing: Already handled for this load.')
+      return
+    }
+
+    let tokenData = null
+    let isSpotifyCallback = false
+
+    // --- Check for token in URL Hash (Spotify's recommended way) ---
+    if (location.hash && location.hash.includes('access_token=')) {
+      const params = new URLSearchParams(location.hash.substring(1))
       const accessToken = params.get('access_token')
       const expiresIn = params.get('expires_in')
       const tokenType = params.get('token_type')
 
       if (accessToken && expiresIn && tokenType) {
-        console.log('Spotify token found in URL hash. Setting token and redirecting to homepage.')
-        setToken({
-          // Chamando o setToken do TokenContext
+        tokenData = {
           accessToken,
           expiresIn: parseInt(expiresIn, 10),
           tokenType,
-          obtainedAt: Date.now(), // Grava o timestamp de quando o token foi obtido
-        })
-        navigate('/', { replace: true }) // Redireciona para a raiz para limpar a URL e o histórico
-        return // Sai do useEffect para evitar processamento adicional
+          obtainedAt: Date.now(),
+        }
+        isSpotifyCallback = true
+        console.log('Found Spotify token in URL hash.')
       }
     }
 
-    // 2. Tenta processar o token diretamente na PATH da URL (o seu caso: /500yQ6SXJF9GBKVZrEjgAs)
-    const currentPath = location.pathname
+    // --- (Remova este bloco se você tem certeza que o token SEMPRE vem no hash) ---
+    // Apenas mantenha se o seu backend ou outro provedor de auth realmente colocar tokens na URL path desta forma.
+    const potentialPathTokenPattern = /^[a-zA-Z0-9_-]{50,}$/
     if (
-      currentPath !== '/' &&
-      !currentPath.startsWith('/artists/') &&
-      !currentPath.startsWith('/genres') &&
-      !currentPath.startsWith('/playlists') &&
-      currentPath.length > 50 // Heurística: tokens são geralmente longos
+      !tokenData &&
+      location.pathname !== '/' &&
+      potentialPathTokenPattern.test(location.pathname.substring(1))
     ) {
-      const potentialToken = currentPath.substring(1) // Remove o '/' inicial
-
-      console.log('Potentially found token in path. Setting a placeholder token and redirecting.')
-      setToken({
-        // Chamando o setToken do TokenContext
-        accessToken: potentialToken,
-        expiresIn: 3600, // Valor padrão, idealmente deveria vir do backend ou ser validado
-        tokenType: 'Bearer', // Valor padrão
-        obtainedAt: Date.now(),
-      })
-      navigate('/', { replace: true }) // Redireciona para a raiz para limpar a URL e o histórico
-      return
+      if (
+        !location.pathname.startsWith('/artists/') &&
+        !location.pathname.startsWith('/genres') &&
+        !location.pathname.startsWith('/playlists')
+      ) {
+        const potentialToken = location.pathname.substring(1)
+        tokenData = {
+          accessToken: potentialToken,
+          expiresIn: 3600,
+          tokenType: 'Bearer',
+          obtainedAt: Date.now(),
+        }
+        isSpotifyCallback = true
+        console.log('Found Spotify token in URL path (contingency).')
+      }
     }
-  }, [location, setToken, navigate]) 
+
+    // --- Process and redirect if a Spotify callback was detected ---
+    if (isSpotifyCallback && tokenData) {
+      console.log('Processing Spotify callback...')
+      setToken(tokenData)
+      hasProcessedThisLoad.current = true // Mark as processed for this load
+
+      // ***** A CHAVE PARA RESOLVER O LOOP: LIMPAR O HASH EXPLICITAMENTE *****
+      // Isso deve ser feito APÓS setToken, mas ANTES ou JUNTO com o navigate.
+      window.location.hash = '' // Isso modifica a URL no navegador e atualiza o 'location' do React Router
+
+      // navega para a rota base, o `replace: true` impede que o hash fique no histórico
+      navigate('/', { replace: true })
+      console.log('Redirecting to homepage after token set and hash cleared.')
+    } else if (location.pathname === '/' && !location.hash && !tokenData) {
+      // Condição para resetar hasProcessedThisLoad se estiver na homepage limpa
+      // e não houver token ou hash para processar.
+      hasProcessedThisLoad.current = false
+    }
+  }, [location, setToken, navigate]) // Dependências permanecem as mesmas
 }
