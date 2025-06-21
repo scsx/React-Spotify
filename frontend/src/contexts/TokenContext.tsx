@@ -1,101 +1,122 @@
-import { ReactNode, createContext, useContext, useEffect, useState } from 'react'
+import React, { ReactNode, createContext, useContext, useEffect, useState, useCallback } from 'react'
 
 import authLink from '../services/spotify/spotifyAuthLink'
 
-// Token to be provided.
-export interface TTokenInfo {
-  isValid: boolean
-  authLink: string
-  logout: () => void
-  accessToken: string | null
+// Token from localStorage.
+export interface TSpotifyTokenData {
+  accessToken: string;
+  expiresIn: number; 
+  tokenType: string;
+  obtainedAt: number;
 }
 
-interface TTokenProviderProps {
-  children: ReactNode
+// Token to be provided.
+interface TokenContextValue {
+  tokenInfo: TSpotifyTokenData | null;
+  setToken: (token: TSpotifyTokenData | null) => void;
+  isValid: boolean;
+  authLink: string;
+  logout: () => void;
 }
 
 // Create context.
-const TokenContext = createContext<TTokenInfo | null>(null)
-export const useToken = () => useContext(TokenContext)
+const TokenContext = createContext<TokenContextValue | undefined>(undefined);
+
+// Hook.
+export const useToken = () => {
+  const context = useContext(TokenContext);
+  if (context === undefined) {
+    throw new Error('useToken must be used within a TokenProvider');
+  }
+  return context;
+}
 
 // Provider.
-export const TokenProvider: React.FC<TTokenProviderProps> = ({ children }) => {
-  const [tokenInfo, setTokenInfo] = useState<TTokenInfo | null>(null)
-
-  // Token expiration time (1h)
-  const calculateExpirationTime = () => {
-    const now = new Date()
-    const expirationTime = new Date(now.getTime() + 60 * 60 * 1000)
-    localStorage.setItem('tokenExpirationTime', expirationTime.toISOString())
-    return expirationTime
-  }
-
-  // Logout
-  const logoutCtx = () => {
-    localStorage.removeItem('spotifyToken')
-    localStorage.removeItem('tokenExpirationTime')
-    setTokenInfo(null)
-  }
-
-  // Set token validity
-  useEffect(() => {
-    const hash = window.location.hash
-    let accessTokenFromStorage = localStorage.getItem('spotifyToken')
-    let tokenFromHash: string | null = null
-
-    // 1. Lógica para extrair o token do URL hash (novo login)
-    if (hash) {
-      tokenFromHash =
-        hash
-          .substring(1) // Remove o '#'
-          .split('&')
-          .find((el) => el.startsWith('access_token'))
-          ?.split('=')[1] ?? null
-
-      // Limpa o hash do URL para não ficar visível e para que não tente reprocessar a cada refresh
-      window.location.hash = ''
-
-      if (tokenFromHash) {
-        localStorage.setItem('spotifyToken', tokenFromHash) // Armazena o novo token
-        calculateExpirationTime() // Calcula e armazena o novo tempo de expiração
-        accessTokenFromStorage = tokenFromHash // Usa o token recém-obtido para o estado atual
+export const TokenProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [tokenInfo, setTokenInfo] = useState<TSpotifyTokenData | null>(() => {
+    // Tries to get the token from localStorage on initial render.
+    const storedToken = localStorage.getItem('spotifyTokenInfo');
+    if (storedToken) {
+      try {
+        const parsedToken: TSpotifyTokenData = JSON.parse(storedToken);
+        const now = Date.now();
+        const expiresAt = parsedToken.obtainedAt + (parsedToken.expiresIn * 1000);
+        if (now < expiresAt) {
+          return parsedToken;
+        } else {
+          localStorage.removeItem('spotifyTokenInfo');
+          return null;
+        }
+      } catch (e) {
+        console.error("Failed to parse token from localStorage", e);
+        localStorage.removeItem('spotifyTokenInfo');
+        return null;
       }
     }
+    return null;
+  });
 
-    // 2. Lógica para verificar a validade do token (existente ou recém-obtido)
-    let currentAccessToken = accessTokenFromStorage
-    let isCurrentlyValid = false
-    let storedExpirationTime = localStorage.getItem('tokenExpirationTime')
+  // Usamos useCallback para memoizar as funções e evitar renderizações desnecessárias
+  const logout = useCallback(() => {
+    localStorage.removeItem('spotifyTokenInfo');
+    setTokenInfo(null);
+  }, []);
 
-    if (currentAccessToken && storedExpirationTime) {
-      const expirationDate = new Date(storedExpirationTime)
-      if (expirationDate > new Date()) {
-        isCurrentlyValid = true // Token é válido
-      } else {
-        // Token expirado
-        console.log('Spotify token expired. Logging out.')
-        logoutCtx() // Realiza o logout (limpa localStorage, define setTokenInfo(null))
-        currentAccessToken = null // Garante que o token no estado seja null
-      }
-    } else if (currentAccessToken) {
-      // Token existe mas sem tempo de expiração (erro ou inconsistência)
-      console.log('Spotify token found but no expiration time. Logging out.')
-      logoutCtx()
-      currentAccessToken = null
+  const setToken = useCallback((newToken: TSpotifyTokenData | null) => {
+    if (newToken) {
+      const tokenWithObtainedAt = { ...newToken, obtainedAt: newToken.obtainedAt || Date.now() };
+      localStorage.setItem('spotifyTokenInfo', JSON.stringify(tokenWithObtainedAt));
+      setTokenInfo(tokenWithObtainedAt);
     } else {
-      // Não há token
-      isCurrentlyValid = false
-      currentAccessToken = null
+      localStorage.removeItem('spotifyTokenInfo');
+      setTokenInfo(null);
+    }
+  }, []);
+
+  // Lógica para isValid baseada no tokenInfo
+  const isValid = React.useMemo(() => {
+    if (!tokenInfo || !tokenInfo.accessToken) {
+      return false;
+    }
+    const now = Date.now();
+    const expiresAt = tokenInfo.obtainedAt + (tokenInfo.expiresIn * 1000);
+
+    return now < expiresAt;
+  }, [tokenInfo]);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (tokenInfo && isValid) {
+      const expiresAt = tokenInfo.obtainedAt + (tokenInfo.expiresIn * 1000);
+      const timeUntilExpire = expiresAt - Date.now();
+
+      if (timeUntilExpire > 0) {
+        timer = setTimeout(() => {
+          console.log("Spotify token expired by timer. Logging out.");
+          logout();
+        }, timeUntilExpire);
+      } else {
+        console.log("Spotify token already expired on load. Logging out.");
+        logout();
+      }
     }
 
-    // 3. Define o estado do contexto
-    setTokenInfo({
-      isValid: isCurrentlyValid,
-      authLink: authLink,
-      logout: logoutCtx,
-      accessToken: currentAccessToken,
-    })
-  }, [])
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [tokenInfo, isValid, logout]);
 
-  return <TokenContext.Provider value={tokenInfo}>{children}</TokenContext.Provider>
+
+  const contextValue = React.useMemo(() => ({
+    tokenInfo,
+    setToken,
+    isValid,
+    authLink,
+    logout,
+  }), [tokenInfo, setToken, isValid, logout]);
+
+
+  return <TokenContext.Provider value={contextValue}>{children}</TokenContext.Provider>
 }

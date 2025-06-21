@@ -7,7 +7,7 @@ import { TLastFmTag } from '@/types/LastFmTag'
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
 
 import Albums from '@/components/AlbumsAndBio'
-import ArtistsGenres from '@/components/ArtistsGenres'
+import ArtistsGenres from '@/components/Artist/ArtistsGenres'
 import HeadingOne from '@/components/HeadingOne'
 import RelatedArtists from '@/components/RelatedArtists'
 import TopTracks from '@/components/TopTracks'

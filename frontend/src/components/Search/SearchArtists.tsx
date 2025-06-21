@@ -6,7 +6,7 @@ import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import { GiDinosaurRex } from 'react-icons/gi'
 import { MdArrowForwardIos } from 'react-icons/md'
 
-import CardArtist from '@/components/CardArtist'
+import CardArtist from '@/components/Artist/CardArtist'
 import HeadingOne from '@/components/HeadingOne'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'

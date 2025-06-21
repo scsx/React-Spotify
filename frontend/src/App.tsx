@@ -1,4 +1,12 @@
+import React from 'react'
+
 import { Outlet, Route, Routes } from 'react-router-dom'
+
+import { useSpotifyAuthCallback } from '@/hooks/useSpotifyAuthCallback'
+
+import AuthGuard from '@/components/Auth/AuthGuard'
+
+import ArtistsPage from '@/pages/ArtistsPage'
 
 import Footer from './components/Footer'
 import Header from './components/Header'
@@ -12,6 +20,8 @@ import Playlists from './pages/Playlists'
 import './services/axiosInterceptor'
 
 const App: React.FC = () => {
+  useSpotifyAuthCallback()
+
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <div className="flex flex-col min-h-screen">
@@ -20,14 +30,17 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Outlet />}>
               <Route index element={<Homepage />} />
+            </Route>
+            <Route path="/artists" element={<AuthGuard />}>
+              <Route index element={<ArtistsPage />} />
               <Route path=":artistId" element={<Artist />} />
             </Route>
-            {/* <Route path='/' element={<Homepage />} /> */}
             <Route path="/playlists" element={<Playlists />} />
             <Route path="/genres" element={<Outlet />}>
               <Route index element={<Genres />} />
               <Route path=":genresNames" element={<GenresFinder />} />
             </Route>
+            <Route path="*" element={<Homepage />} />
           </Routes>
         </main>
         <Footer />

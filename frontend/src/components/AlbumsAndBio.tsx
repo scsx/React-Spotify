@@ -12,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getSpotifyArtistAlbums } from '@/services/spotify/getSpotifyArtistAlbums'
 
 import Album from './Album'
-import CoverMosaic from './CoverMosaic'
+import CoverMosaic from './Artist/CoverMosaic'
 
 interface AlbumsAndBioProps {
   biographyLastFM?: string

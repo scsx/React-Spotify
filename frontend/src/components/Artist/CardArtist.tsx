@@ -8,6 +8,7 @@ import { FaSpotify } from 'react-icons/fa'
 import { FaBullseye } from 'react-icons/fa6'
 import { MdOutlinePanoramaFishEye } from 'react-icons/md'
 
+import TopTracks from '@/components/TopTracks'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Badge } from '@/components/ui/badge'
 import {
@@ -20,8 +21,6 @@ import {
 } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
-
-import TopTracks from './TopTracks'
 
 interface CardArtistProps {
   artist: TSpotifyArtist
