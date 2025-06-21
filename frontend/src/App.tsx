@@ -7,7 +7,7 @@ import './globals.css'
 import Artist from './pages/Artist'
 import Genres from './pages/Genres'
 import GenresFinder from './pages/GenresFinder'
-import Homepage from './pages/HomepageSearchArtists'
+import Homepage from './pages/Homepage'
 import Playlists from './pages/Playlists'
 import './services/axiosInterceptor'
 

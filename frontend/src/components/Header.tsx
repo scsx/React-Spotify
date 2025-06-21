@@ -46,8 +46,10 @@ const Header = (): JSX.Element => {
         </Sheet>
         <NavigationMenu className="hidden lg:flex">
           <NavigationMenuList>
-            <NavigationMenuItem className="text-lg mr-5">
-              <span className="block -mt-1">SCSX React Spotify</span>
+            <NavigationMenuItem className="text-xl mr-5">
+              <span className="block -mt-1">
+                Spotify<span className="text-primary">+</span>
+              </span>
             </NavigationMenuItem>
             {token?.isValid && <HeaderNav classes={lgLinkClasses} />}
           </NavigationMenuList>

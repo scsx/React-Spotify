@@ -18,6 +18,13 @@ const Footer = (): JSX.Element => {
             target="_blank"
             className="hover:text-primary"
           >
+            Tech notes.{' '}
+          </a>
+          <a
+            href="https://github.com/scsx/React-Spotify"
+            target="_blank"
+            className="hover:text-primary"
+          >
             Repo
           </a>
           .

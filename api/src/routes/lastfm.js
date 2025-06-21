@@ -31,7 +31,10 @@ async function callLastFmApi(method, params, res) {
   }
 }
 
+// =======================================================================
 // LastFM routes following their names in API documentation (to lowercase).
+// =======================================================================
+
 router.get('/artist.getinfo', async (req, res) => {
   const artistName = req.query.artist
   if (!artistName) {

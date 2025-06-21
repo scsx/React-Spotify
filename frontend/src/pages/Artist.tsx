@@ -5,7 +5,6 @@ import { useLocation, useParams } from 'react-router-dom'
 import { LastFmArtist } from '@/types/LastFmArtist'
 import { TLastFmTag } from '@/types/LastFmTag'
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
-import axios from 'axios'
 
 import Albums from '@/components/AlbumsAndBio'
 import ArtistsGenres from '@/components/ArtistsGenres'
@@ -17,6 +16,7 @@ import { Progress } from '@/components/ui/progress'
 
 import { useToken } from '@/contexts/TokenContext'
 
+import { getLastFMArtistInfo } from '@/services/lastfm/getLastFMArtistInfo'
 import { getSpotifyArtist } from '@/services/spotify/getSpotifyArtist'
 
 const Artist = (): JSX.Element => {
@@ -27,34 +27,48 @@ const Artist = (): JSX.Element => {
   const token = useToken()
   const location = useLocation()
 
-  let lastFmTags: TLastFmTag[] = []
+  //let lastFmTags: TLastFmTag[] = []
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (artistId) {
+          if (!token || !token.accessToken) {
+            // Verifica se o token ou accessToken são válidos
+            console.warn('Spotify token not available. Skipping Spotify API calls.')
+            // Opcional: Limpar estados ou mostrar mensagem de erro na UI
+            setArtist(null)
+            setLastFmArtist(null)
+            setLastFmArtistTags(null)
+            return // Sai da função se não houver token
+          }
+
           // Fetch artist information from Spotify
           const fetchedArtist = await getSpotifyArtist(artistId)
           setArtist(fetchedArtist)
 
           // Fetch artist information from Last.fm
-          if (token) {
-            const lastFmResponse = await axios.get(
-              `https://ws.audioscrobbler.com/2.0/?method=artist.getinfo&artist=${encodeURIComponent(
-                fetchedArtist.name
-              )}&api_key=${token.lastFMKey}&format=json`
-            )
-            setLastFmArtist(lastFmResponse.data.artist)
+          if (fetchedArtist && fetchedArtist.name) {
+            const lastFmResponse = await getLastFMArtistInfo(fetchedArtist.name)
 
-            lastFmTags = lastFmResponse.data.artist.tags.tag.map((tag: any) => {
-              return {
-                name: tag.name,
-                url: tag.url,
+            if (lastFmResponse && !lastFmResponse.error) {
+              setLastFmArtist(lastFmResponse.artist)
+
+              const tags =
+                lastFmResponse.artist?.tags?.tag?.map((tag: any) => ({
+                  name: tag.name,
+                  url: tag.url,
+                })) || []
+
+              if (tags.length > 0) {
+                setLastFmArtistTags(tags)
+              } else {
+                setLastFmArtistTags(null)
               }
-            })
-
-            if (lastFmTags) {
-              setLastFmArtistTags(lastFmTags)
+            } else {
+              console.error('Error from Last.FM proxy:', lastFmResponse?.error || 'Unknown error')
+              setLastFmArtist(null)
+              setLastFmArtistTags(null)
             }
           }
         }
@@ -64,7 +78,7 @@ const Artist = (): JSX.Element => {
     }
 
     fetchData()
-  }, [artistId])
+  }, [artistId, token?.accessToken])
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })

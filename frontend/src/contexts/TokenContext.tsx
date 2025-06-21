@@ -3,13 +3,14 @@ import { ReactNode, createContext, useContext, useEffect, useState } from 'react
 import authLink from '../services/spotify/spotifyAuthLink'
 
 // Token to be provided.
-interface TTokenInfo {
+export interface TTokenInfo {
   isValid: boolean
   authLink: string
   logout: () => void
+  accessToken: string | null
 }
 
-interface TokenProviderProps {
+interface TTokenProviderProps {
   children: ReactNode
 }
 
@@ -18,14 +19,12 @@ const TokenContext = createContext<TTokenInfo | null>(null)
 export const useToken = () => useContext(TokenContext)
 
 // Provider.
-export const TokenProvider: React.FC<TokenProviderProps> = ({ children }) => {
-  const [token, setToken] = useState<TTokenInfo | null>(null)
-  const [tokenIsValid, setTokenIsValid] = useState(false)
+export const TokenProvider: React.FC<TTokenProviderProps> = ({ children }) => {
+  const [tokenInfo, setTokenInfo] = useState<TTokenInfo | null>(null)
 
   // Token expiration time (1h)
   const calculateExpirationTime = () => {
     const now = new Date()
-    //const expirationTime = new Date(now.getTime() + 5000)
     const expirationTime = new Date(now.getTime() + 60 * 60 * 1000)
     localStorage.setItem('tokenExpirationTime', expirationTime.toISOString())
     return expirationTime
@@ -35,56 +34,68 @@ export const TokenProvider: React.FC<TokenProviderProps> = ({ children }) => {
   const logoutCtx = () => {
     localStorage.removeItem('spotifyToken')
     localStorage.removeItem('tokenExpirationTime')
-    setToken(null)
+    setTokenInfo(null)
   }
 
   // Set token validity
   useEffect(() => {
     const hash = window.location.hash
-    let spotifyToken = window.localStorage.getItem('spotifyToken')
-    let storedExpirationTime = window.localStorage.getItem('tokenExpirationTime')
+    let accessTokenFromStorage = localStorage.getItem('spotifyToken')
+    let tokenFromHash: string | null = null
 
-    // For Spotify.
-    if (!spotifyToken && hash) {
-      spotifyToken =
+    // 1. Lógica para extrair o token do URL hash (novo login)
+    if (hash) {
+      tokenFromHash =
         hash
-          .substring(1)
+          .substring(1) // Remove o '#'
           .split('&')
           .find((el) => el.startsWith('access_token'))
           ?.split('=')[1] ?? null
 
+      // Limpa o hash do URL para não ficar visível e para que não tente reprocessar a cada refresh
       window.location.hash = ''
-      localStorage.setItem('spotifyToken', spotifyToken ?? '')
-      storedExpirationTime = calculateExpirationTime().toISOString() // Also sets exp time localStorage
+
+      if (tokenFromHash) {
+        localStorage.setItem('spotifyToken', tokenFromHash) // Armazena o novo token
+        calculateExpirationTime() // Calcula e armazena o novo tempo de expiração
+        accessTokenFromStorage = tokenFromHash // Usa o token recém-obtido para o estado atual
+      }
     }
 
-    if (storedExpirationTime) {
-      let calcExpirationTime = new Date(storedExpirationTime)
-      if (calcExpirationTime > new Date()) {
-        setTokenIsValid(true)
+    // 2. Lógica para verificar a validade do token (existente ou recém-obtido)
+    let currentAccessToken = accessTokenFromStorage
+    let isCurrentlyValid = false
+    let storedExpirationTime = localStorage.getItem('tokenExpirationTime')
+
+    if (currentAccessToken && storedExpirationTime) {
+      const expirationDate = new Date(storedExpirationTime)
+      if (expirationDate > new Date()) {
+        isCurrentlyValid = true // Token é válido
       } else {
-        logoutCtx()
+        // Token expirado
+        console.log('Spotify token expired. Logging out.')
+        logoutCtx() // Realiza o logout (limpa localStorage, define setTokenInfo(null))
+        currentAccessToken = null // Garante que o token no estado seja null
       }
-    } else {
+    } else if (currentAccessToken) {
+      // Token existe mas sem tempo de expiração (erro ou inconsistência)
+      console.log('Spotify token found but no expiration time. Logging out.')
       logoutCtx()
+      currentAccessToken = null
+    } else {
+      // Não há token
+      isCurrentlyValid = false
+      currentAccessToken = null
     }
+
+    // 3. Define o estado do contexto
+    setTokenInfo({
+      isValid: isCurrentlyValid,
+      authLink: authLink,
+      logout: logoutCtx,
+      accessToken: currentAccessToken,
+    })
   }, [])
 
-  // Update token validity
-  useEffect(() => {
-    if (token) {
-      setToken((prevToken) => ({
-        ...(prevToken as TTokenInfo),
-        isValid: tokenIsValid,
-      }))
-    }
-  }, [tokenIsValid])
-
-  const tokenOrFallback = token ?? {
-    isValid: tokenIsValid,
-    authLink: authLink,
-    logout: logoutCtx,
-  }
-
-  return <TokenContext.Provider value={tokenOrFallback}>{children}</TokenContext.Provider>
+  return <TokenContext.Provider value={tokenInfo}>{children}</TokenContext.Provider>
 }
