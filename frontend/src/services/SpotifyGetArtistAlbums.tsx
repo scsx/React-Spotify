@@ -9,7 +9,7 @@ export const getArtistAlbums = async (artistId: string): Promise<SpotifyAlbum[]>
     let nextAlbumsUrl = `https://api.spotify.com/v1/artists/${artistId}/albums?include_groups=album`
     let nextSingleUrl = `https://api.spotify.com/v1/artists/${artistId}/albums?include_groups=single`
 
-    // while to keep asking after the 20 limit is passed. Albums.
+    // while to keep asking after the 20 limit is passed - Albums.
     while (nextAlbumsUrl) {
       const response = await axios.get(nextAlbumsUrl)
       const { items, next } = response.data
@@ -19,7 +19,7 @@ export const getArtistAlbums = async (artistId: string): Promise<SpotifyAlbum[]>
       nextAlbumsUrl = next
     }
 
-    // while to keep asking after the 20 limit is passed. Singles.
+    // while to keep asking after the 20 limit is passed - Singles.
     while (nextSingleUrl) {
       const response = await axios.get(nextSingleUrl)
       const { items, next } = response.data
