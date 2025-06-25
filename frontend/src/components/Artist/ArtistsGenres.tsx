@@ -7,6 +7,7 @@ import { TSpotifyGenres } from '@/types/SpotifyGenres'
 import { FaLastfm } from 'react-icons/fa'
 import { LuPlusCircle } from 'react-icons/lu'
 
+import Text from '@/components/Text'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -128,10 +129,10 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
         <div className="grid grid-cols-3 gap-4">{renderSpotifyGenres()}</div>
       )}
       {searchQuery.length === 0 ? (
-        <p className="mt-8 text-gray-500 text-sm">
+        <Text color="gray" className="mt-8">
           Click on a genre to search or select with <LuPlusCircle className="inline" /> to search
           for multiple genres.
-        </p>
+        </Text>
       ) : (
         <div className="mt-8 text-gray-500 text-sm">
           Search for{' '}

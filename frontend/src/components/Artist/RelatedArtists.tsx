@@ -6,6 +6,7 @@ import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import { TSpotifyGenres } from '@/types/SpotifyGenres'
 import { FaLastfm } from 'react-icons/fa'
 
+import Text from '@/components/Text'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
@@ -104,19 +105,19 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
       ) : (
         <div className="grid grid-cols-3 gap-4">{renderSpotifyRelated()}</div>
       )}
-      <p className="mt-4 text-gray-500 text-sm">
+      <Text color="gray" className="mt-4">
         The Spotify endpoint for related artists is deprecated for{' '}
         <a
           href="https://developer.spotify.com/documentation/web-api/tutorials/implicit-flow"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <Button variant="link" className="p-0">
+          <Button variant="link" className="p-0 h-auto">
             implicit grant
           </Button>
         </a>
         . This is a workaround using search.
-      </p>
+      </Text>
     </>
   )
 }
