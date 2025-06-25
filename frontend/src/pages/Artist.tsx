@@ -8,8 +8,8 @@ import { TSpotifyArtist } from '@/types/SpotifyArtist'
 
 import Albums from '@/components/AlbumsAndBio'
 import ArtistsGenres from '@/components/Artist/ArtistsGenres'
+import RelatedArtists from '@/components/Artist/RelatedArtists'
 import HeadingOne from '@/components/HeadingOne'
-import RelatedArtists from '@/components/RelatedArtists'
 import TopTracks from '@/components/TopTracks'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Progress } from '@/components/ui/progress'
@@ -34,7 +34,7 @@ const Artist = (): JSX.Element => {
   useEffect(() => {
     const fetchData = async () => {
       setLoadingPage(true)
-      setErrorPage(null) 
+      setErrorPage(null)
 
       if (!isValid || !tokenInfo?.accessToken) {
         console.warn(
@@ -173,10 +173,12 @@ const Artist = (): JSX.Element => {
                   <h3 className="mt-14 mb-4 text-1xl md:text-3xl">Genres</h3>
                   <ArtistsGenres genres={artist.genres} lastFmTags={lastFmArtistTags ?? []} />
                 </div>
-                <div>
-                  <h3 className="mt-14 mb-4 text-1xl md:text-3xl">Related Artists</h3>
-                  <RelatedArtists artistId={artist.id} lastFmSimilar={lastFmArtist?.similar!} />
-                </div>
+
+                <RelatedArtists
+                  genres={artist.genres}
+                  artistId={artist.id}
+                  lastFmSimilar={lastFmArtist?.similar!}
+                />
               </div>
             </div>
           </div>

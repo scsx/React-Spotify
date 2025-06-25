@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { TLastFmTag } from '@/types/LastFmTag'
+import { TSpotifyGenres } from '@/types/SpotifyGenres'
 import { FaLastfm } from 'react-icons/fa'
 import { LuPlusCircle } from 'react-icons/lu'
 
@@ -12,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 
 interface ArtistsGenresProps {
-  genres: string[]
+  genres: TSpotifyGenres
   lastFmTags?: TLastFmTag[]
 }
 
@@ -127,10 +128,10 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
         <div className="grid grid-cols-3 gap-4">{renderSpotifyGenres()}</div>
       )}
       {searchQuery.length === 0 ? (
-        <div className="mt-8 text-gray-500 text-sm">
+        <p className="mt-8 text-gray-500 text-sm">
           Click on a genre to search or select with <LuPlusCircle className="inline" /> to search
           for multiple genres.
-        </div>
+        </p>
       ) : (
         <div className="mt-8 text-gray-500 text-sm">
           Search for{' '}
