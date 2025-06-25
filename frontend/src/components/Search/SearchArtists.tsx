@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import { GiDinosaurRex } from 'react-icons/gi'
-import { MdArrowForwardIos } from 'react-icons/md'
+import { MdArrowForwardIos, MdOutlineFlightTakeoff } from 'react-icons/md'
 
 import CardArtist from '@/components/Artist/CardArtist'
 import HeadingOne from '@/components/HeadingOne'
@@ -78,10 +78,10 @@ const SearchArtists = (): JSX.Element => {
 
     try {
       const results = await spotifySearch(finalSearchKey, 'artist')
-      const artistsData = results.items as TSpotifyArtist[]
+      const artistsData = results.artists?.items as TSpotifyArtist[]
 
       setArtists(artistsData)
-      setTotalArtists(results.total)
+      setTotalArtists(results.artists?.total || 0)
       updatePastSearches(finalSearchKey)
       setSearchPerformed(true)
       navigate(`/?searchKey=${encodeURIComponent(finalSearchKey)}`)
@@ -170,7 +170,7 @@ const SearchArtists = (): JSX.Element => {
             className="bg-white dark:bg-slate-900 text-2xl md:text-4xl border border-l-0 border-indigo-700 px-4 text-black hover:text-white dark:text-white hover:bg-indigo-700 dark:hover:bg-indigo-700"
             disabled={isLoading}
           >
-            {isLoading ? 'Searching...' : <MdArrowForwardIos />}
+            {isLoading ? <MdOutlineFlightTakeoff /> : <MdArrowForwardIos />}
           </button>
         </form>
         {error && (
