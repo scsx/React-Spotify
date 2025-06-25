@@ -5,37 +5,27 @@ import axios from 'axios'
 
 import { SPOTIFY_API_BASE_URL } from '@/lib/constants'
 
-interface TFakeRelatedArtistsParams {
-  artist: TSpotifyArtist
-  genres: TSpotifyGenres
-}
-
 interface TFakeRelatedArtistsResponse {
   artists: TSpotifyArtist[]
 }
 
-// getSpotifyFakeRelatedArtists "related artists" using search instead of the deprecated endpoint /artists/{id}/related-artists
+// NOTE: getSpotifyFakeRelatedArtists "related artists" using search instead of the deprecated endpoint /artists/{id}/related-artists
 export const getSpotifyFakeRelatedArtists = async (
-  params: TFakeRelatedArtistsParams
+  artistId: string,
+  artistGenres: TSpotifyGenres,
+  limit: number = 9
 ): Promise<TFakeRelatedArtistsResponse> => {
-  let limit: number = 9
   try {
-    const { artist, genres } = params
-
-    // Usar os géneros do parâmetro 'genres' (ou 'artist.genres', ambos devem ser os mesmos)
-    const genresToSearch: TSpotifyGenres = genres || artist.genres || [] // Prioriza 'genres' se fornecido, fallback para 'artist.genres'
-
-    if (!genresToSearch || genresToSearch.length === 0) {
+    if (!artistGenres || artistGenres.length === 0) {
       console.warn(
-        `getSpotifyFakeRelatedArtists: Artista ${artist.name} (${artist.id}) não tem géneros. Não é possível encontrar artistas semelhantes por género.`
+        `getSpotifyFakeRelatedArtists: Nenhum género fornecido para o artista ${artistId}. Não é possível encontrar artistas semelhantes por género.`
       )
       return { artists: [] }
     }
 
-    const slicedGenres = genresToSearch.slice(0, 3)
+    const slicedGenres = artistGenres.slice(0, 3)
     const searchQuery = slicedGenres.join(' OR ')
 
-    // Usar o endpoint /search para encontrar artistas por género
     const searchResponse = await axios.get<TSpotifySearchResults>(
       `${SPOTIFY_API_BASE_URL}/search`,
       {
@@ -43,14 +33,13 @@ export const getSpotifyFakeRelatedArtists = async (
           q: searchQuery,
           type: 'artist',
           limit: limit + 1,
-          // market: 'PT'
+          // market: 'PT' // TODO: use?
         },
       }
     )
 
     let foundArtists: TSpotifyArtist[] = searchResponse.data.artists?.items || []
-
-    foundArtists = foundArtists.filter((item) => item.id !== artist.id)
+    foundArtists = foundArtists.filter((item) => item.id !== artistId)
 
     return { artists: foundArtists.slice(0, limit) }
   } catch (error: any) {

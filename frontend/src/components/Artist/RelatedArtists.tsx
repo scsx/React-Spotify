@@ -38,12 +38,7 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
       }
 
       try {
-        const params = {
-          artist: { id: artistId, genres: genres } as TSpotifyArtist,
-          genres: genres,
-        }
-
-        const data = await getSpotifyFakeRelatedArtists(params)
+        const data = await getSpotifyFakeRelatedArtists(artistId, genres)
         setRelatedArtists(data.artists)
       } catch (err: any) {}
     }
