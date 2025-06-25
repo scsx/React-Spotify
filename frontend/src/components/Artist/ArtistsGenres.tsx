@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { LastFmTag } from '@/types/LastFmTag'
+import { TLastFmTag } from '@/types/LastFmTag'
 import { FaLastfm } from 'react-icons/fa'
 import { LuPlusCircle } from 'react-icons/lu'
 
@@ -13,7 +13,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/comp
 
 interface ArtistsGenresProps {
   genres: string[]
-  lastFmTags?: LastFmTag[]
+  lastFmTags?: TLastFmTag[]
 }
 
 const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JSX.Element => {

@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 import { RxHamburgerMenu } from 'react-icons/rx'
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -11,9 +13,9 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 
 import { useToken } from '@/contexts/TokenContext'
 
+import Switch from '../Switch'
 import HeaderNav from './HeaderNav'
 import HeaderNavMobile from './HeaderNavMobile'
-import Switch from './Switch'
 
 const Header = (): JSX.Element => {
   const token = useToken()
@@ -47,9 +49,9 @@ const Header = (): JSX.Element => {
         <NavigationMenu className="hidden lg:flex">
           <NavigationMenuList>
             <NavigationMenuItem className="text-xl mr-5">
-              <span className="block -mt-1">
+              <Link to="/" className="block -mt-1">
                 Spotify<span className="text-primary">+</span>
-              </span>
+              </Link>
             </NavigationMenuItem>
             {token?.isValid && <HeaderNav classes={lgLinkClasses} />}
           </NavigationMenuList>
@@ -64,9 +66,9 @@ const Header = (): JSX.Element => {
               </a>
             </Button>
           ) : (
-            <a className={lgLinkClasses} onClick={token?.logout} href={''}>
+            <Button className={lgLinkClasses} onClick={token?.logout}>
               Logout
-            </a>
+            </Button>
           )}
         </div>
       </header>

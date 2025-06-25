@@ -1,6 +1,8 @@
 import { TSpotifySearchResults } from '@/types/SpotifySearchResults'
 import axios from 'axios'
 
+import { SPOTIFY_API_BASE_URL } from '@/lib/constants'
+
 // Searches for Artist or Track. Keep adding <types> and conditions for album, playlist, etc.
 const spotifySearch = async (
   query: string,
@@ -25,8 +27,7 @@ const spotifySearch = async (
     // 3
     params += `&type=${searchType}`
 
-    //console.log(`URL a pesquisar https://api.spotify.com/v1/search?${params}`)
-    const response = await axios.get(`https://api.spotify.com/v1/search?${params}`)
+    const response = await axios.get(`${SPOTIFY_API_BASE_URL}/search?${params}`)
 
     if (searchType === 'artist') {
       return {

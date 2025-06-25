@@ -1,9 +1,11 @@
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import axios from 'axios'
 
+import { SPOTIFY_API_BASE_URL } from '@/lib/constants'
+
 export const getSpotifyArtist = async (artistId: string): Promise<TSpotifyArtist> => {
   try {
-    const response = await axios.get(`https://api.spotify.com/v1/artists/${artistId}`)
+    const response = await axios.get(`${SPOTIFY_API_BASE_URL}/artists/${artistId}`)
 
     const artist: TSpotifyArtist = response.data
 

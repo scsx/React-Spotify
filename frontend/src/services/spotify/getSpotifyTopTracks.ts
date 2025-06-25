@@ -1,12 +1,12 @@
 import { TSpotifyTrack } from '@/types/SpotifyTrack'
 import axios from 'axios'
 
-import market from './spotifyPreferredMarket'
+import { SPOTIFY_API_BASE_URL, SPOTIFY_PREFERRED_MARKET } from '@/lib/constants'
 
 const getSpotifyTopTracks = async (id: string): Promise<TSpotifyTrack[]> => {
   try {
     const response = await axios.get(
-      `https://api.spotify.com/v1/artists/${id}/top-tracks?market=${market}`
+      `${SPOTIFY_API_BASE_URL}/artists/${id}/top-tracks?market=${SPOTIFY_PREFERRED_MARKET}`
     )
 
     const tracks: TSpotifyTrack[] = response.data.tracks

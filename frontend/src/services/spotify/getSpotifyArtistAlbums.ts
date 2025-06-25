@@ -1,13 +1,15 @@
 import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
 import axios from 'axios'
 
+import { SPOTIFY_API_BASE_URL } from '@/lib/constants'
+
 export const getSpotifyArtistAlbums = async (artistId: string): Promise<TSpotifyAlbum[]> => {
   try {
     let allAlbums: TSpotifyAlbum[] = []
 
     // Two calls because API is simply returning only albums when using ?include_groups=album,single.
-    let nextAlbumsUrl = `https://api.spotify.com/v1/artists/${artistId}/albums?include_groups=album`
-    let nextSingleUrl = `https://api.spotify.com/v1/artists/${artistId}/albums?include_groups=single`
+    let nextAlbumsUrl = `${SPOTIFY_API_BASE_URL}/artists/${artistId}/albums?include_groups=album`
+    let nextSingleUrl = `${SPOTIFY_API_BASE_URL}/artists/${artistId}/albums?include_groups=single`
 
     // while to keep asking after the 20 limit is passed - Albums.
     while (nextAlbumsUrl) {

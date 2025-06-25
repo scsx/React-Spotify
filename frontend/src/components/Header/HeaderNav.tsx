@@ -11,7 +11,7 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ classes = '' }): JSX.Element => {
     <>
       <NavigationMenuItem>
         <NavigationMenuLink asChild>
-          <NavLink to="/" end className={classes}>
+          <NavLink to="/artists" end className={classes}>
             Artists
           </NavLink>
         </NavigationMenuLink>

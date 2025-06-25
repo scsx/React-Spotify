@@ -1,5 +1,8 @@
 import axios from 'axios'
 
+import { SPOTIFY_API_BASE_URL } from '@/lib/constants'
+
+// TODO: move?
 interface TAvailableGenreSeedsResponse {
   genres: string[]
 }
@@ -7,7 +10,7 @@ interface TAvailableGenreSeedsResponse {
 export const getSpotifyGenreSeeds = async (): Promise<TAvailableGenreSeedsResponse> => {
   try {
     const response = await axios.get(
-      'https://api.spotify.com/v1/recommendations/available-genre-seeds'
+      `${SPOTIFY_API_BASE_URL}/recommendations/available-genre-seeds`
     )
 
     const genres: TAvailableGenreSeedsResponse = response.data

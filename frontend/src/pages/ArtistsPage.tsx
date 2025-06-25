@@ -1,7 +1,7 @@
 // TODO: types
 
 const ArtistsPage = () => {
-  return <div>ArtistsPage</div>
+  return <div className="relative container">ArtistsPage</div>
 }
 
 export default ArtistsPage

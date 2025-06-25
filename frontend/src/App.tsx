@@ -9,7 +9,7 @@ import AuthGuard from '@/components/Auth/AuthGuard'
 import ArtistsPage from '@/pages/ArtistsPage'
 
 import Footer from './components/Footer'
-import Header from './components/Header'
+import Header from './components/Header/Header'
 import { ThemeProvider } from './contexts/ThemeProvider'
 import './globals.css'
 import Artist from './pages/Artist'

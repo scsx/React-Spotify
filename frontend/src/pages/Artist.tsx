@@ -19,66 +19,96 @@ import { useToken } from '@/contexts/TokenContext'
 import { getLastFMArtistInfo } from '@/services/lastfm/getLastFMArtistInfo'
 import { getSpotifyArtist } from '@/services/spotify/getSpotifyArtist'
 
+/* TODO: remove unused vars */
+
 const Artist = (): JSX.Element => {
   const { artistId } = useParams<string>()
   const [artist, setArtist] = useState<TSpotifyArtist | null>(null)
   const [lastFmArtist, setLastFmArtist] = useState<LastFmArtist | null>(null)
   const [lastFmArtistTags, setLastFmArtistTags] = useState<TLastFmTag[] | null>(null)
-  const token = useToken()
+  const { tokenInfo, isValid } = useToken()
+  const [loadingPage, setLoadingPage] = useState(true)
+  const [errorPage, setErrorPage] = useState<string | null>(null)
   const location = useLocation()
-
-  //let lastFmTags: TLastFmTag[] = []
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoadingPage(true)
+      setErrorPage(null) 
+
+      if (!isValid || !tokenInfo?.accessToken) {
+        console.warn(
+          'Artist Component: Spotify token not valid or available. Skipping Spotify API calls.'
+        )
+        setErrorPage(
+          'Autenticação necessária ou token expirado. Por favor, tente fazer login novamente.'
+        )
+        setArtist(null)
+        setLastFmArtist(null)
+        setLastFmArtistTags(null)
+        setLoadingPage(false)
+        return
+      }
+
+      if (!artistId) {
+        setErrorPage('ID do artista não fornecido na URL.')
+        setLoadingPage(false)
+        return
+      }
+
       try {
-        if (artistId) {
-          if (!token || !token.accessToken) {
-            // Verifica se o token ou accessToken são válidos
-            console.warn('Spotify token not available. Skipping Spotify API calls.')
-            // Opcional: Limpar estados ou mostrar mensagem de erro na UI
-            setArtist(null)
-            setLastFmArtist(null)
-            setLastFmArtistTags(null)
-            return // Sai da função se não houver token
-          }
+        // Fetch artist information from Spotify
+        const fetchedArtist = await getSpotifyArtist(artistId)
+        setArtist(fetchedArtist)
 
-          // Fetch artist information from Spotify
-          const fetchedArtist = await getSpotifyArtist(artistId)
-          setArtist(fetchedArtist)
+        // Fetch artist information from Last.fm
+        if (fetchedArtist && fetchedArtist.name) {
+          const lastFmResponse = await getLastFMArtistInfo(fetchedArtist.name)
 
-          // Fetch artist information from Last.fm
-          if (fetchedArtist && fetchedArtist.name) {
-            const lastFmResponse = await getLastFMArtistInfo(fetchedArtist.name)
+          if (lastFmResponse && !lastFmResponse.error) {
+            setLastFmArtist(lastFmResponse.artist)
 
-            if (lastFmResponse && !lastFmResponse.error) {
-              setLastFmArtist(lastFmResponse.artist)
+            const tags =
+              lastFmResponse.artist?.tags?.tag?.map((tag: any) => ({
+                name: tag.name,
+                url: tag.url,
+              })) || []
 
-              const tags =
-                lastFmResponse.artist?.tags?.tag?.map((tag: any) => ({
-                  name: tag.name,
-                  url: tag.url,
-                })) || []
-
-              if (tags.length > 0) {
-                setLastFmArtistTags(tags)
-              } else {
-                setLastFmArtistTags(null)
-              }
+            if (tags.length > 0) {
+              setLastFmArtistTags(tags)
             } else {
-              console.error('Error from Last.FM proxy:', lastFmResponse?.error || 'Unknown error')
-              setLastFmArtist(null)
               setLastFmArtistTags(null)
             }
+          } else {
+            console.error(
+              'Artist Component: Erro do proxy Last.FM:',
+              lastFmResponse?.error || 'Erro desconhecido'
+            )
+            setLastFmArtist(null)
+            setLastFmArtistTags(null)
           }
+        } else {
+          console.warn(
+            'Artist Component: Não foi possível buscar Last.fm: Artista Spotify não encontrado ou sem nome.'
+          )
         }
-      } catch (error) {
-        console.error('Error fetching artist details:', error)
+      } catch (error: any) {
+        console.error('Artist Component: Erro ao buscar detalhes do artista:', error)
+        // O axiosInterceptor deve lidar com 401s, mas outros erros podem acontecer
+        if (error.response && error.response.status === 401) {
+          setErrorPage('Sessão expirada. Por favor, faça login novamente.')
+        } else {
+          setErrorPage(`Erro ao carregar artista: ${error.message || 'Erro desconhecido'}`)
+        }
+        setArtist(null) // Limpa dados em caso de erro
+      } finally {
+        setLoadingPage(false) // Finaliza o estado de carregamento
       }
     }
 
     fetchData()
-  }, [artistId, token?.accessToken])
+    // Adicione tokenInfo.accessToken às dependências para re-executar se o token mudar/for carregado
+  }, [artistId, tokenInfo?.accessToken, isValid])
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })

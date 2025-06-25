@@ -1,5 +1,5 @@
-import SearchArtists from '@/components/Search/SearchArtists'
 import Welcome from '@/components/Homepage/Welcome'
+import SearchArtists from '@/components/Search/SearchArtists'
 
 import { useToken } from '../contexts/TokenContext'
 

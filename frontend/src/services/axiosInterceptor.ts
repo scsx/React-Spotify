@@ -29,7 +29,6 @@ axios.interceptors.request.use(
     const token = getStoredToken()
     if (token && token.accessToken) {
       config.headers['Authorization'] = `Bearer ${token.accessToken}`
-      console.log('Interceptor: Token adicionado ao cabeçalho da requisição.')
     } else {
       // Se não há token válido, não adicione cabeçalho de autorização.
       // A lógica de redirecionamento para login ficará no response interceptor para 401.

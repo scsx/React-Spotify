@@ -49,7 +49,7 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
           </div>
           <CardHeader className="text-center p-0 flex-grow">
             <CardTitle className="text-4xl">
-              <Link to={`/${artist.id}`}>{artist.name}</Link>
+              <Link to={`/artists/${artist.id}`}>{artist.name}</Link>
             </CardTitle>
             <CardDescription>{artist.followers.total.toLocaleString()} followers</CardDescription>
             <div className="block pt-3">

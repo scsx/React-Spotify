@@ -1,4 +1,3 @@
-// frontend/src/hooks/useSpotifyAuthCallback.ts
 import { useEffect, useRef } from 'react'
 
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -13,13 +12,13 @@ export const useSpotifyAuthCallback = () => {
   const hasProcessedThisLoad = useRef(false)
 
   useEffect(() => {
-    console.log(
+    /* console.log(
       'useSpotifyAuthCallback useEffect triggered. Location:',
       location.pathname,
       location.hash,
       'hasProcessedThisLoad.current:',
       hasProcessedThisLoad.current
-    )
+    ) */
 
     if (hasProcessedThisLoad.current) {
       console.log('Skipping processing: Already handled for this load.')
@@ -75,7 +74,6 @@ export const useSpotifyAuthCallback = () => {
 
     // --- Process and redirect if a Spotify callback was detected ---
     if (isSpotifyCallback && tokenData) {
-      console.log('Processing Spotify callback...')
       setToken(tokenData)
       hasProcessedThisLoad.current = true // Mark as processed for this load
 

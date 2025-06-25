@@ -15,7 +15,7 @@ const Welcome = (): JSX.Element => {
       </p>
       <ul className="mt-4 -ml-2">
         <li className="text-xl mb-2">
-          <MdArrowOutward className="inline text-2xl animate-pulse" /> Search artists, genres
+          <MdArrowOutward className="inline text-2xl animate-pulse" /> Search artists and genres
         </li>
         <li className="text-xl mb-2">
           <MdArrowOutward className="inline text-2xl animate-pulse" /> Find more artists by genre

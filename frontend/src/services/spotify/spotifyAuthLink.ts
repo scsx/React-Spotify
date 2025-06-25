@@ -13,6 +13,7 @@ if (
   throw new Error('Missing required environment variables for Spotify authentication.')
 }
 
+// Spotify authentication scopes.
 // https://developer.spotify.com/documentation/web-api/concepts/scopes
 const authScopes = encodeURIComponent(
   'user-read-private user-read-email user-read-currently-playing user-top-read user-follow-read'
