@@ -8,7 +8,7 @@ import { FaSpotify } from 'react-icons/fa'
 import { FaBullseye } from 'react-icons/fa6'
 import { MdOutlinePanoramaFishEye } from 'react-icons/md'
 
-import TopTracks from '@/components/TopTracks'
+import TopTracks from '@/components/Artist/TopTracks'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Badge } from '@/components/ui/badge'
 import {

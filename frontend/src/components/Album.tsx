@@ -26,7 +26,7 @@ const Album: React.FC<SpotifyAlbumProps> = ({ album }): JSX.Element => {
           />
         </AspectRatio>
       </CardHeader>
-      <CardContent className="p-4 pt-0 flex-1">
+      <CardContent className="py-2 px-4 flex-1">
         <CardTitle>
           <Link to={`/album/${album.id}`}>
             {album.name.includes('(') ? (
@@ -47,14 +47,14 @@ const Album: React.FC<SpotifyAlbumProps> = ({ album }): JSX.Element => {
         </CardTitle>
       </CardContent>
       <CardFooter className="flex px-4">
-        <p className="flex flex-1 font-normal text-gray-500 dark:text-gray-400">
+        <Text color="muted" className="flex flex-1 items-center -ml-1">
           <CiCalendarDate className="text-2xl mr-2" />
           {album.release_date}
-        </p>
-        <p className="flex pr-4 font-normal text-gray-500 dark:text-gray-400">
-          <CiBoxList className="text-2xl mr-2" />
+        </Text>
+        <Text color="muted" className="flex items-center pr-4">
+          <CiBoxList className="text-xl mr-2" />
           {album.total_tracks}
-        </p>
+        </Text>
       </CardFooter>
     </Card>
   )
