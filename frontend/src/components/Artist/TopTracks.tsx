@@ -46,9 +46,15 @@ const TopTracks: React.FC<TopTracksProps> = ({ artistId }): JSX.Element => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Name</TableHead>
-            <TableHead>Album</TableHead>
-            <TableHead className="text-right">Popularity</TableHead>
+            <TableHead>
+              <Text color="muted">Name</Text>
+            </TableHead>
+            <TableHead>
+              <Text color="muted">Album</Text>
+            </TableHead>
+            <TableHead>
+              <Text color="muted">Popularity</Text>
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -56,17 +62,21 @@ const TopTracks: React.FC<TopTracksProps> = ({ artistId }): JSX.Element => {
             topTracks.map((track: TSpotifyTrack) => {
               return (
                 <TableRow key={track.id}>
-                  <TableCell className="font-medium">{track.name}</TableCell>
-                  <TableCell>{track.album.name}</TableCell>
+                  <TableCell className="font-medium">
+                    <Text className="leading-tight">{track.name}</Text>
+                  </TableCell>
+                  <TableCell>
+                    <Text className="leading-tight">{track.album.name}</Text>
+                  </TableCell>
                   <TableCell className="text-right">
-                    <div className="flex items-center justify-end">
+                    <Text className="flex items-center justify-end leading-tight">
                       {track.popularity > 70 ? (
                         <ImFire className="text-xs mr-3 text-amber-500" />
                       ) : (
                         ''
                       )}
                       {track.popularity}
-                    </div>
+                    </Text>
                   </TableCell>
                 </TableRow>
               )

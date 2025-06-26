@@ -19,7 +19,7 @@ import { useToken } from '@/contexts/TokenContext'
 import { getLastFMArtistInfo } from '@/services/lastfm/getLastFMArtistInfo'
 import { getSpotifyArtist } from '@/services/spotify/getSpotifyArtist'
 
-/* TODO: remove unused vars */
+/* TODO: use or remove remove unused vars */
 
 const Artist = (): JSX.Element => {
   const { artistId } = useParams<string>()
@@ -60,10 +60,12 @@ const Artist = (): JSX.Element => {
         // Fetch artist information from Spotify
         const fetchedArtist = await getSpotifyArtist(artistId)
         setArtist(fetchedArtist)
+        console.log('fetchedArtist:', fetchedArtist)
 
         // Fetch artist information from Last.fm
         if (fetchedArtist && fetchedArtist.name) {
           const lastFmResponse = await getLastFMArtistInfo(fetchedArtist.name)
+          console.log('LastFM Response:', lastFmResponse)
 
           if (lastFmResponse && !lastFmResponse.error) {
             setLastFmArtist(lastFmResponse.artist)
