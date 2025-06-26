@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react'
 
-import { Link } from 'react-router-dom'
-
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import { TSpotifyGenres } from '@/types/SpotifyGenres'
 import { FaLastfm } from 'react-icons/fa'
 
+import Hyperlink from '@/components/Hyperlink'
 import Text from '@/components/Text'
-import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import { getSpotifyFakeRelatedArtists } from '@/services/spotify/getSpotifyFakeRelatedArtists'
@@ -82,20 +80,21 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
                   <div className="mt-4" key={artist.name}>
                     <h5 className="text-lg">{artist.name}</h5>
                     <div className="flex">
-                      <Link
+                      {/* TODO: test Hyperlink when LastFM works again. */}
+                      <Hyperlink
                         className="inline-block text-sm mr-8 text-gray-500 hover:text-black dark:hover:text-white"
-                        to={`/?searchKey=${artist.name}`}
+                        href={`/?searchKey=${artist.name}`}
                       >
                         Search this app
-                      </Link>
-                      <a
+                      </Hyperlink>
+                      <Hyperlink
                         className="flex text-sm mr-4 text-gray-500 hover:text-black dark:hover:text-white"
-                        target="_blank"
+                        external
                         href={artist.url}
                       >
                         <FaLastfm className="text-red-500 mt-1 mr-1" />
                         View on LastFM
-                      </a>
+                      </Hyperlink>
                     </div>
                   </div>
                 )
@@ -107,16 +106,13 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
       )}
       <Text color="gray" className="mt-4">
         The Spotify endpoint for related artists is deprecated for{' '}
-        <a
+        <Hyperlink
           href="https://developer.spotify.com/documentation/web-api/tutorials/implicit-flow"
-          target="_blank"
-          rel="noopener noreferrer"
+          external
         >
-          <Button variant="link" className="p-0 h-auto">
-            implicit grant
-          </Button>
-        </a>
-        . This is a workaround using search.
+          implicit grant
+        </Hyperlink>
+        . This workaround uses search.
       </Text>
     </>
   )

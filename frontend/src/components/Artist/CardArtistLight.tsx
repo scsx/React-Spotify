@@ -1,12 +1,12 @@
-import { Link } from 'react-router-dom'
-
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import { FaGoogle } from 'react-icons/fa'
 import { FaSpotify } from 'react-icons/fa'
 import { FaBullseye } from 'react-icons/fa6'
 
+import Hyperlink from '@/components/Hyperlink'
+import Text from '@/components/Text'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 
 interface CardArtistLightProps {
@@ -15,8 +15,8 @@ interface CardArtistLightProps {
 
 const CardArtistLight: React.FC<CardArtistLightProps> = ({ artist }): JSX.Element => {
   return (
-    <Card>
-      <CardContent className="flex flex-col">
+    <Card className="flex flex-col h-full">
+      <CardContent className="flex flex-col p-0 flex-grow">
         <div className="w-2/3 mx-auto my-4 overflow-hidden bg-slate-200 dark:bg-black rounded-full">
           <AspectRatio ratio={1 / 1}>
             <img
@@ -27,16 +27,18 @@ const CardArtistLight: React.FC<CardArtistLightProps> = ({ artist }): JSX.Elemen
           </AspectRatio>
         </div>
         <CardHeader className="text-center p-0 flex-grow">
-          <CardTitle className="text-xl font-medium">
-            <Link to={`/artists/${artist.id}`}>{artist.name}</Link>
-          </CardTitle>
+          <Text variant="h4" as='h4'>
+            <Hyperlink variant="title" href={`/artists/${artist.id}`}>
+              {artist.name}
+            </Hyperlink>
+          </Text>
         </CardHeader>
-        <CardFooter className="flex-col pt-3 pb-0">
+        <CardFooter className="flex-col py-4">
           <Progress value={artist.popularity} className="h-1" />
           <div className="flex pt-3">
-            <Link to={`/${artist.id}`}>
+            <Hyperlink href={`/${artist.id}`}>
               <FaBullseye className="mx-2 text-muted-foreground hover:text-primary" />
-            </Link>
+            </Hyperlink>
             <a target="_blank" href={artist.uri}>
               <FaSpotify className="mx-2 text-muted-foreground hover:text-primary" />
             </a>

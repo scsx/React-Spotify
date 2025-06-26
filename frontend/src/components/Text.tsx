@@ -5,7 +5,7 @@ import { tv } from 'tailwind-variants'
 
 type TextProps = {
   children: ReactNode
-  variant?: 'h1' | 'h3' | 'h6' | 'paragraph'
+  variant?: 'h1' | 'h3' | 'h4' | 'h6' | 'paragraph'
   color?: 'foreground' | 'muted' | 'primary' | 'gray'
   as?: 'p' | 'small' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6'
   className?: string
@@ -19,7 +19,7 @@ const textStyles = tv({
       h1: 'text-3xl md:text-6xl font-semibold mb-6 tracking-wide',
       h2: '',
       h3: '',
-      h4: '',
+      h4: 'text-xl font-medium leading-none',
       h5: '',
       h6: '',
       paragraph: 'text-sm leading-normal',
