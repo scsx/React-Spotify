@@ -61,7 +61,7 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
 
   return (
     <>
-      <h3 className="mt-14 mb-4 text-1xl md:text-3xl">Related Artists</h3>
+      <Text variant='h2' className="mb-4">Related Artists</Text>
 
       {relatedArtists && lastFmSimilar ? (
         <Tabs value={activeTab} onValueChange={onTabChange}>

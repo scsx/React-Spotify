@@ -78,7 +78,10 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
   }
 
   return (
-    <>
+    <div className="mb-14">
+      <Text variant="h2" className="mb-4">
+        Genres
+      </Text>
       {genres && lastFmTags ? (
         <Tabs value={activeTab} onValueChange={onTabChange}>
           <TabsList className="mb-4">
@@ -144,7 +147,7 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
           </Badge>
         </div>
       )}
-    </>
+    </div>
   )
 }
 

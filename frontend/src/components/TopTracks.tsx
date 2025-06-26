@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { TSpotifyTrack } from '@/types/SpotifyTrack'
 import { ImFire } from 'react-icons/im'
 
+import Text from '@/components/Text'
 import {
   Table,
   TableBody,
@@ -35,7 +36,10 @@ const TopTracks: React.FC<TopTracksProps> = ({ artistId }): JSX.Element => {
   }, [artistId])
 
   return (
-    <>
+    <div className="mb-14">
+      <Text variant="h2" className="mb-4">
+        Top Tracks
+      </Text>
       <Table>
         <TableHeader>
           <TableRow>
@@ -69,7 +73,7 @@ const TopTracks: React.FC<TopTracksProps> = ({ artistId }): JSX.Element => {
       <p className="flex items-center mt-4 text-sm text-gray-500">
         <ImFire className="text-xs mr-2" /> Popularity &gt; 70
       </p>
-    </>
+    </div>
   )
 }
 

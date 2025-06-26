@@ -1,19 +1,18 @@
 import { Link } from 'react-router-dom'
 
-import { SpotifyAlbum } from '@/types/SpotifyAlbum'
+import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
 import { CiCalendarDate } from 'react-icons/ci'
 import { CiBoxList } from 'react-icons/ci'
 
+import Text from '@/components/Text'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 
 interface SpotifyAlbumProps {
-  album: SpotifyAlbum
+  album: TSpotifyAlbum
 }
 
 const Album: React.FC<SpotifyAlbumProps> = ({ album }): JSX.Element => {
-  const titleClasses = 'block text-2xl leading-tight mt-2'
-
   return (
     <Card className="flex flex-col">
       <CardHeader className="p-0">
@@ -32,13 +31,17 @@ const Album: React.FC<SpotifyAlbumProps> = ({ album }): JSX.Element => {
           <Link to={`/album/${album.id}`}>
             {album.name.includes('(') ? (
               <>
-                <span className={titleClasses}>{album.name.split('(')[0]}</span>
+                <Text variant="h3" className="block mt-2">
+                  {album.name.split('(')[0]}
+                </Text>
                 <small className="block mb-2 text-base font-normal text-gray-500 dark:text-gray-400">
-                  ({album.name.split('(')[1]}
+                  ({album.name.split('(')[1]})
                 </small>
               </>
             ) : (
-              <span className={titleClasses}>{album.name}</span>
+              <Text variant="h3" className="block mt-2">
+                {album.name}
+              </Text>
             )}
           </Link>
         </CardTitle>

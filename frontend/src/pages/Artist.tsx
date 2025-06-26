@@ -9,7 +9,7 @@ import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import Albums from '@/components/AlbumsAndBio'
 import ArtistsGenres from '@/components/Artist/ArtistsGenres'
 import RelatedArtists from '@/components/Artist/RelatedArtists'
-import HeadingOne from '@/components/HeadingOne'
+import Text from '@/components/Text'
 import TopTracks from '@/components/TopTracks'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Progress } from '@/components/ui/progress'
@@ -131,10 +131,7 @@ const Artist = (): JSX.Element => {
           <div className="w-full -mt-4 absolute top-96 h-8 z-0 bg-white dark:bg-background transition duration-500"></div>
           <div className="relative container">
             <div className="-mt-4 bg-white dark:bg-black inline-block p-4 rounded-sm rounded-bl-none">
-              <HeadingOne
-                text={artist.name}
-                classes="text-3xl md:text-6xl font-semibold mb-0 tracking-wide min-w-40"
-              />
+              <Text variant="h1">{artist.name}</Text>
               <Progress value={artist.popularity} className="h-1 mt-4 mx-auto" />
             </div>
             <div className="mb-6">
@@ -165,14 +162,9 @@ const Artist = (): JSX.Element => {
                     </AspectRatio>
                   </div>
                 </div>
-                <div>
-                  <h3 className="mt-10 mb-4 text-1xl md:text-3xl">Top Tracks</h3>
-                  <TopTracks artistId={artist.id} />
-                </div>
-                <div>
-                  <h3 className="mt-14 mb-4 text-1xl md:text-3xl">Genres</h3>
-                  <ArtistsGenres genres={artist.genres} lastFmTags={lastFmArtistTags ?? []} />
-                </div>
+                <TopTracks artistId={artist.id} />
+
+                <ArtistsGenres genres={artist.genres} lastFmTags={lastFmArtistTags ?? []} />
 
                 <RelatedArtists
                   genres={artist.genres}

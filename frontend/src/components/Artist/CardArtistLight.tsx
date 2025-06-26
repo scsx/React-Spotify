@@ -27,7 +27,7 @@ const CardArtistLight: React.FC<CardArtistLightProps> = ({ artist }): JSX.Elemen
           </AspectRatio>
         </div>
         <CardHeader className="text-center p-0 flex-grow">
-          <Text variant="h4" as='h4'>
+          <Text variant="h4" as="h4">
             <Hyperlink variant="title" href={`/artists/${artist.id}`}>
               {artist.name}
             </Hyperlink>
@@ -35,16 +35,20 @@ const CardArtistLight: React.FC<CardArtistLightProps> = ({ artist }): JSX.Elemen
         </CardHeader>
         <CardFooter className="flex-col py-4">
           <Progress value={artist.popularity} className="h-1" />
-          <div className="flex pt-3">
-            <Hyperlink href={`/${artist.id}`}>
-              <FaBullseye className="mx-2 text-muted-foreground hover:text-primary" />
+          <div className="flex space-x-3 pt-3">
+            <Hyperlink variant="icon" href={`/${artist.id}`}>
+              <FaBullseye />
             </Hyperlink>
-            <a target="_blank" href={artist.uri}>
-              <FaSpotify className="mx-2 text-muted-foreground hover:text-primary" />
-            </a>
-            <a target="_blank" href={`https://www.google.com/search?q=${artist.name}`}>
-              <FaGoogle className="mx-2 text-muted-foreground hover:text-primary" />
-            </a>
+            <Hyperlink variant="icon" href={artist.uri} external>
+              <FaSpotify />
+            </Hyperlink>
+            <Hyperlink
+              variant="icon"
+              href={`https://www.google.com/search?q=${artist.name}`}
+              external
+            >
+              <FaGoogle />
+            </Hyperlink>
           </div>
         </CardFooter>
       </CardContent>
