@@ -147,7 +147,7 @@ const SearchArtists = (): JSX.Element => {
           artists.length > 0 && searchPerformed ? 'scale-75' : ''
         }`}
       >
-        <Text variant="h1">Search Artists</Text>
+        <Text variant="h1" className='mb-8'>Search Artists</Text>
       </div>
 
       <div className="flex">

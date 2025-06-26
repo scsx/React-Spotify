@@ -14,6 +14,7 @@ export default defineConfig({
     },
   },
   server: {
+    // O proxy do Vite ajuda a contornar problemas de CORS em desenvolvimento porque o browser pensa que está a falar com a mesma origem (http://localhost:5173).
     proxy: {
       '/api/lastfm': {
         target: `http://localhost:${EXPRESS_SERVER_PORT}`,
