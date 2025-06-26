@@ -21,12 +21,15 @@ interface TopTracksProps {
 
 const TopTracks: React.FC<TopTracksProps> = ({ artistId }): JSX.Element => {
   const [topTracks, setTopTracks] = useState<TSpotifyTrack[] | null>(null)
+  const [anyPopularTrack, setAnyPopularTrack] = useState<boolean>(false)
 
   useEffect(() => {
     const getTracks = async () => {
       try {
         const tracks = await getSpotifyTopTracks(artistId)
         setTopTracks(tracks)
+        const foundPopular = tracks.some((track) => track.popularity > 70)
+        setAnyPopularTrack(foundPopular)
       } catch (error) {
         console.error('Error fetching top tracks:', error)
       }
@@ -70,9 +73,11 @@ const TopTracks: React.FC<TopTracksProps> = ({ artistId }): JSX.Element => {
             })}
         </TableBody>
       </Table>
-      <p className="flex items-center mt-4 text-sm text-gray-500">
-        <ImFire className="text-xs mr-2" /> Popularity &gt; 70
-      </p>
+      {anyPopularTrack && (
+        <Text color="gray" className="flex items-center mt-4">
+          <ImFire className="text-xs mr-2 text-amber-500" /> Popularity above 70
+        </Text>
+      )}
     </div>
   )
 }

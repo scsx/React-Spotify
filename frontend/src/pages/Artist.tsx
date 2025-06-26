@@ -51,7 +51,7 @@ const Artist = (): JSX.Element => {
       }
 
       if (!artistId) {
-        setErrorPage('ID do artista não fornecido na URL.')
+        setErrorPage('Artist ID not provided in URL.')
         setLoadingPage(false)
         return
       }
