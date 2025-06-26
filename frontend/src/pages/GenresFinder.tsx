@@ -7,7 +7,7 @@ import { FaSpotify } from 'react-icons/fa'
 import { ImLastfm2 } from 'react-icons/im'
 
 import CardArtist from '@/components/Artist/CardArtist'
-import HeadingOne from '@/components/HeadingOne'
+import Text from '@/components/Text'
 import { Badge } from '@/components/ui/badge'
 
 import { getLastFMTagInfo } from '@/services/lastfm/getLastFMTagInfo'
@@ -21,7 +21,7 @@ const GenresFinder = (): JSX.Element => {
   const [artistsSpotify, setArtistsSpotify] = useState(initialArtistState)
   const [lastFmTagsInfo, setLastFmTagsInfo] = useState<any[]>([])
 
-  // Get genres by params.
+  // Get genres from params.
   useEffect(() => {
     if (genresNames) {
       const allGenres: string[] = genresNames.split(',').map((genre) => genre.trim())
@@ -51,7 +51,8 @@ const GenresFinder = (): JSX.Element => {
         try {
           const formattedGenres = spotifyGenres.map((genre) => genre.replace(/\s/g, '-')).join(',')
           const results = await spotifySearch('', 'artist', formattedGenres)
-          setArtistsSpotify(results.items as TSpotifyArtist[])
+          const artistsData = results.artists?.items as TSpotifyArtist[]
+          setArtistsSpotify(artistsData)
         } catch (error) {
           console.error('Error searching Spotify artists by genre:', error)
         }
@@ -111,7 +112,8 @@ const GenresFinder = (): JSX.Element => {
 
   return (
     <div className="container flex flex-col flex-1 justify-center">
-      <HeadingOne text="Genres Finder" />
+      <Text variant="h1">Genres Finder</Text>
+      <Text variant="h1">{genresNames}</Text>
 
       <div className="genres__results flex mt-4">
         <div className="genres__spotify flex-1 mr-4">

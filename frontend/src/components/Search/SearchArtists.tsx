@@ -7,7 +7,7 @@ import { GiDinosaurRex } from 'react-icons/gi'
 import { MdArrowForwardIos, MdOutlineFlightTakeoff } from 'react-icons/md'
 
 import CardArtist from '@/components/Artist/CardArtist'
-import HeadingOne from '@/components/HeadingOne'
+import Text from '@/components/Text'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 
@@ -147,7 +147,7 @@ const SearchArtists = (): JSX.Element => {
           artists.length > 0 && searchPerformed ? 'scale-75' : ''
         }`}
       >
-        <HeadingOne text="Search Artists" />
+        <Text variant="h1">Search Artists</Text>
       </div>
 
       <div className="flex">
