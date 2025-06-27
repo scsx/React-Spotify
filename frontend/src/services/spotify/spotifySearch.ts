@@ -1,8 +1,6 @@
 import { TSpotifySearchResults } from '@/types/SpotifySearchResults'
 import axios from 'axios'
 
-import { SPOTIFY_API_BASE_URL } from '@/lib/constants'
-
 // Searches for Artist or Track. Keep adding <types> and conditions for album, playlist, etc.
 const spotifySearch = async (
   query: string,
@@ -19,17 +17,18 @@ const spotifySearch = async (
       throw new Error('No search query or type provided.')
     }
 
-    const response = await axios.get<TSpotifySearchResults>(`${SPOTIFY_API_BASE_URL}/search`, {
+    const response = await axios.get<TSpotifySearchResults>(`/api/spotify/search`, {
       params: {
         q: finalQuery,
         type: searchType,
         limit: 50,
-        // market: 'PT'
+        // market: 'PT' // If you want to explicitly pass market from frontend
       },
     })
 
     return response.data
   } catch (error) {
+    console.error('Failed to fetch from Spotify API:', error)
     throw new Error('Failed to fetch from Spotify API')
   }
 }

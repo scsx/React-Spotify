@@ -20,6 +20,7 @@ import HeaderNavMobile from './HeaderNavMobile'
 const Header = (): JSX.Element => {
   const token = useToken()
 
+  // TODO: clean up legacy classes.
   const lgLinkClasses =
     'basenav__link group h-8 inline-flex w-max items-center justify-center rounded-md bg-transparent px-4 py-1 text-sm font-medium transition-colors hover:bg-primary hover:text-white focus:bg-gray-100 focus:text-gray-900 focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-gray-100/50 data-[state=open]:bg-gray-100/50 dark:bg-gray-950 dark:hover:bg-primary dark:hover:text-gray-50 dark:focus:bg-gray-800 dark:focus:text-gray-50 dark:data-[active]:bg-gray-800/50 dark:data-[state=open]:bg-gray-800/50'
 

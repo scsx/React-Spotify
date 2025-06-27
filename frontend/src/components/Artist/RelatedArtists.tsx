@@ -8,7 +8,7 @@ import Hyperlink from '@/components/Hyperlink'
 import Text from '@/components/Text'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-import { getSpotifyFakeRelatedArtists } from '@/services/spotify/getSpotifyFakeRelatedArtists'
+import { getSpotifyFakeRelatedArtists } from '@/services/spotify/getSpotifyRelatedArtists'
 
 import CardArtistLight from './CardArtistLight'
 
@@ -105,7 +105,7 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
         <div className="grid grid-cols-3 gap-4">{renderSpotifyRelated()}</div>
       )}
       <Text color="gray" className="mt-4">
-        The Spotify endpoint for related artists is deprecated for{' '}
+        TODO: REMOVE -- The Spotify endpoint for related artists is deprecated for{' '}
         <Hyperlink
           href="https://developer.spotify.com/documentation/web-api/tutorials/implicit-flow"
           external

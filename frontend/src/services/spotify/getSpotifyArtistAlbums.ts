@@ -1,37 +1,48 @@
 import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
-import axios from 'axios'
-
-import { SPOTIFY_API_BASE_URL } from '@/lib/constants'
+import { TSpotifyPagingObject } from '@/types/SpotifySearchResults'
+import axios, { AxiosResponse } from 'axios'
 
 export const getSpotifyArtistAlbums = async (artistId: string): Promise<TSpotifyAlbum[]> => {
   try {
     let allAlbums: TSpotifyAlbum[] = []
+    let nextAlbumsUrl: string | null =
+      `/api/spotify/artists/${artistId}/albums?include_groups=album`
+    let nextSingleUrl: string | null =
+      `/api/spotify/artists/${artistId}/albums?include_groups=single`
 
-    // Two calls because API is simply returning only albums when using ?include_groups=album,single.
-    let nextAlbumsUrl = `${SPOTIFY_API_BASE_URL}/artists/${artistId}/albums?include_groups=album`
-    let nextSingleUrl = `${SPOTIFY_API_BASE_URL}/artists/${artistId}/albums?include_groups=single`
-
-    // while to keep asking after the 20 limit is passed - Albums.
+    // while loop for Albums.
     while (nextAlbumsUrl) {
-      const response = await axios.get(nextAlbumsUrl)
+      const response: AxiosResponse<TSpotifyPagingObject<TSpotifyAlbum>> =
+        await axios.get(nextAlbumsUrl)
       const { items, next } = response.data
-      allAlbums = allAlbums.concat(items)
 
-      // Check if there's another page of results
+      allAlbums = allAlbums.concat(items)
       nextAlbumsUrl = next
+        ? next.replace(
+            'https://api.spotify.com/v1/search?q=rui&type=artist&limit=50[HTTP/34',
+            '/api/spotify/'
+          )
+        : null
     }
 
-    // while to keep asking after the 20 limit is passed - Singles.
+    // while loop for Singles.
     while (nextSingleUrl) {
-      const response = await axios.get(nextSingleUrl)
+      const response: AxiosResponse<TSpotifyPagingObject<TSpotifyAlbum>> =
+        await axios.get(nextSingleUrl)
       const { items, next } = response.data
-      allAlbums = allAlbums.concat(items)
 
+      allAlbums = allAlbums.concat(items)
       nextSingleUrl = next
+        ? next.replace(
+            'https://api.spotify.com/v1/search?q=rui&type=artist&limit=50[HTTP/35',
+            '/api/spotify/'
+          )
+        : null
     }
 
     return allAlbums
   } catch (error) {
+    console.error('Failed to get artist albums:', error)
     throw new Error('Failed to get artist albums')
   }
 }

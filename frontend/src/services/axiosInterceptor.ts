@@ -1,11 +1,9 @@
 import { TSpotifyTokenData } from '@/types/General'
 import axios, { AxiosResponse } from 'axios'
 
-import authLink from '@/services/spotify/spotifyAuthLink'
+import { SPOTIFY_AUTH_LOGIN_PATH } from '@/lib/constants'
 
-// --- Função auxiliar para obter o token do localStorage ---
-// Como o interceptor não é um componente React, não pode usar 'useToken()'.
-// Precisa de ler diretamente do localStorage.
+// --- Helper function to get token from localStorage ---
 const getStoredToken = (): TSpotifyTokenData | null => {
   const storedTokenString = localStorage.getItem('spotifyTokenInfo')
   if (storedTokenString) {
@@ -17,7 +15,7 @@ const getStoredToken = (): TSpotifyTokenData | null => {
         return parsedToken
       }
     } catch (e) {
-      console.error('Interceptor: Erro ao analisar token do localStorage:', e)
+      console.error('Interceptor: Error getting token from localStorage:', e)
     }
   }
   return null
@@ -30,14 +28,13 @@ axios.interceptors.request.use(
     if (token && token.accessToken) {
       config.headers['Authorization'] = `Bearer ${token.accessToken}`
     } else {
-      // Se não há token válido, não adicione cabeçalho de autorização.
-      // A lógica de redirecionamento para login ficará no response interceptor para 401.
-      console.log('Interceptor: Nenhum token válido encontrado para a requisição.')
+      // No valid token, do not add authorization header.
+      console.log('Interceptor: No valid token found for the request.')
     }
     return config
   },
   (error) => {
-    console.error('Interceptor: Falha na requisição de saída:', error)
+    console.error('Interceptor: Outgoing request failed:', error)
     return Promise.reject(error)
   }
 )
@@ -45,35 +42,31 @@ axios.interceptors.request.use(
 // --- RESPONSES Interceptor ---
 axios.interceptors.response.use(
   (response: AxiosResponse) => {
-    // Se a resposta for 200, está tudo bem.
     return response
   },
   async (error) => {
-    console.error('Interceptor: Erro na resposta da requisição:', error)
+    console.error('Interceptor: Error in request response:', error)
     const originalRequest = error.config
 
-    // Se o erro é 401 Unauthorized e não é uma requisição que já estamos a tentar renovar
-    // (A flag '_retry' é para evitar loops de retentativa para a mesma requisição)
+    // If 401 Unauthorized error and not already retrying
     if (error.response && error.response.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true // Marca a requisição como retentada
+      originalRequest._retry = true // Mark request as retried
 
-      console.log('Interceptor: Recebido 401. Token provavelmente inválido/expirado.')
+      console.log('Interceptor: Received 401. Token likely invalid/expired.')
 
-      // Remove o token do localStorage para forçar um novo login
+      // Remove token to force a new login
       localStorage.removeItem('spotifyTokenInfo')
-      console.log('Interceptor: Token removido do localStorage.')
+      console.log('Interceptor: Token removed from localStorage.')
 
-      // Redireciona para a página de autenticação do Spotify
-      // Usamos window.location.href para garantir um redirecionamento completo do navegador
-      // Isso irá acionar o fluxo de login novamente.
-      window.location.href = authLink
+      // Redirect to Spotify authentication
+      // Use window.location.href for full browser redirect to re-initiate login flow
+      window.location.href = SPOTIFY_AUTH_LOGIN_PATH // Use the centralized constant
 
-      // Retorna uma Promise que nunca resolve para parar a execução da requisição atual.
-      // Isso impede que qualquer código subsequente que chamou o axios execute com o erro 401.
-      return new Promise(() => {}) // Essencial para parar o loop imediato
+      // Return a Promise that never resolves to stop current request execution
+      return new Promise(() => {})
     }
 
-    // Para outros erros (não 401, ou 401 que já foi tentado renovar), propaga o erro.
+    // For other errors, propagate the error.
     return Promise.reject(error)
   }
 )
