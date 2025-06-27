@@ -60,12 +60,10 @@ const Artist = (): JSX.Element => {
         // Fetch artist information from Spotify
         const fetchedArtist = await getSpotifyArtist(artistId)
         setArtist(fetchedArtist)
-        console.log('fetchedArtist:', fetchedArtist)
 
         // Fetch artist information from Last.fm
         if (fetchedArtist && fetchedArtist.name) {
           const lastFmResponse = await getLastFMArtistInfo(fetchedArtist.name)
-          console.log('LastFM Response:', lastFmResponse)
 
           if (lastFmResponse && !lastFmResponse.error) {
             setLastFmArtist(lastFmResponse.artist)
@@ -146,11 +144,11 @@ const Artist = (): JSX.Element => {
 
             <div className="grid grid-cols-4 gap-16">
               <div className="col-span-2">
-                <Albums
+                {/* <Albums
                   biographyLastFM={lastFmArtist ? lastFmArtist.bio.content : ''}
                   artistName={artist.name}
                   artistURI={artist.uri}
-                />
+                /> */}
               </div>
               <div className="col-span-2 pt-16">
                 <div className="grid grid-cols-3 gap-8 -mt-28">
@@ -164,9 +162,9 @@ const Artist = (): JSX.Element => {
                     </AspectRatio>
                   </div>
                 </div>
-                <TopTracks artistId={artist.id} />
+                {/*  <TopTracks artistId={artist.id} />
 
-                <ArtistsGenres genres={artist.genres} lastFmTags={lastFmArtistTags ?? []} />
+                <ArtistsGenres genres={artist.genres} lastFmTags={lastFmArtistTags ?? []} /> */}
 
                 <RelatedArtists
                   genres={artist.genres}

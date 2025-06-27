@@ -28,7 +28,7 @@ router.get('/search', async (req, res) => {
     const parsedOffset = parseInt(offset, 10) || 0
 
     // Cap limit at Spotify's maximum (usually 50)
-    const finalLimit = Math.min(parsedLimit, 50)
+    const finalLimit = Math.min(parsedLimit, 20)
 
     // Build query parameters for Spotify API
     const spotifyQueryParams = new URLSearchParams({
@@ -41,7 +41,7 @@ router.get('/search', async (req, res) => {
 
     // Make the GET request to Spotify's Search API
     const spotifyApiResponse = await axios.get(
-      `https://api.spotify.com/v1/search?${spotifyQueryParams}`, // <-- AGORA ESTÁ CORRETO
+      `https://api.spotify.com/v1/search?${spotifyQueryParams}`,
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,

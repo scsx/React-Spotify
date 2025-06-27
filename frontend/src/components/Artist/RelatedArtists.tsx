@@ -14,11 +14,13 @@ import CardArtistLight from './CardArtistLight'
 interface RelatedArtistsProps {
   artistId: string
   lastFmSimilar?: any
+  genres: any // TODO: any
 }
 
 const RelatedArtists: React.FC<RelatedArtistsProps> = ({
   artistId,
   lastFmSimilar,
+  genres,
 }): JSX.Element => {
   const [relatedArtists, setRelatedArtists] = useState<TSpotifyArtist[] | null>(null)
   const [activeTab, setActiveTab] = useState('spotifyRelated')
