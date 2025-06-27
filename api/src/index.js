@@ -1,17 +1,11 @@
-// api/src/index.js
-
 require('dotenv').config()
-console.log(
-  'DEBUG: SESSION_SECRET loaded:',
-  process.env.SESSION_SECRET
-    ? 'YES (length: ' + process.env.SESSION_SECRET.length + ')'
-    : 'NO (undefined/empty)'
-) // <-- TODO: REMOVE LATER
 const express = require('express')
 const cors = require('cors')
 const session = require('express-session')
 const lastFmRoutes = require('./routes/lastfm')
 const spotifyAuthRoutes = require('./routes/spotifyAuth')
+// Spotify routes
+const spotifyCurrentlyPlayingRoute = require('./routes/spotify/currentlyPlaying')
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -54,6 +48,9 @@ app.use('/api/lastfm', lastFmRoutes)
 
 // Spotify auth routes.
 app.use('/auth/spotify', spotifyAuthRoutes)
+
+// Spotify routes.
+app.use('/api/spotify', spotifyCurrentlyPlayingRoute)
 
 // Test Endpoint
 app.get('/api/test', (req, res) => {
