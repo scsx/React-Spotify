@@ -16,6 +16,10 @@ router.get('/login', (req, res) => {
   const code_verifier = generateRandomString(128)
   const code_challenge = base64encode(sha256(code_verifier))
 
+  console.log('DEBUG: /login - state stored in session:', req.session.state)
+  console.log('DEBUG: /login - code_verifier stored in session:', req.session.code_verifier)
+  console.log('DEBUG: /login - session ID:', req.sessionID)
+
   req.session.code_verifier = code_verifier
   req.session.state = state
 
@@ -41,14 +45,18 @@ router.get('/callback', async (req, res) => {
   const storedState = req.session.state || null
   const code_verifier = req.session.code_verifier || null
 
+  console.log('DEBUG: /callback - received state from Spotify URL:', state)
+  console.log('DEBUG: /callback - storedState from session:', storedState)
+  console.log('DEBUG: /callback - code_verifier from session:', code_verifier)
+  console.log('DEBUG: /callback - current session ID:', req.sessionID)
+  console.log('DEBUG: /callback - Request headers for cookies:', req.headers.cookie)
+
   if (state === null || state !== storedState || code_verifier === null) {
     console.error('State mismatch or code_verifier missing!')
-    res.redirect(
-      '/#' +
-        new URLSearchParams({
-          error: 'state_mismatch',
-        }).toString()
-    )
+    const redirectUrl = '/#' + new URLSearchParams({ error: 'state_mismatch' }).toString()
+
+    console.log('Backend Debug: Redirecionando para Frontend (ERRO - State Mismatch):', redirectUrl)
+    res.redirect(redirectUrl)
     req.session.destroy()
     return
   }
@@ -83,20 +91,21 @@ router.get('/callback', async (req, res) => {
 
     console.log('Access Token:', access_token)
     console.log('Refresh Token:', refresh_token) // Logged for development, do not expose in production logs
+    const successRedirectUrl =
+      `${FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL}?` +
+      new URLSearchParams({
+        access_token: access_token,
+        expires_in: expires_in, // É bom enviar expires_in para o frontend
+        // refresh_token: refresh_token // Não enviar refresh_token para o frontend em produção!
+      }).toString()
+
+    console.log('Backend Debug: Redirecionando para Frontend (SUCESSO):', successRedirectUrl)
+    res.redirect(successRedirectUrl)
 
     // Redirect to frontend.
     // For production, consider sending access_token via a secure HTTP-only cookie
     // or a dedicated API response, not directly in the URL fragment.
     // Refresh token should NEVER be sent to the frontend.
-    res.redirect(
-      `${FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL}` +
-        new URLSearchParams({
-          access_token: access_token,
-          // Do NOT pass refresh_token to frontend in production!
-          // For dev testing, uncomment if needed, but remove for deployment:
-          // refresh_token: refresh_token
-        }).toString()
-    )
   } catch (error) {
     console.error(
       'Error during token exchange:',

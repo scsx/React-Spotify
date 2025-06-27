@@ -1,27 +1,24 @@
 import { useEffect, useState } from 'react'
 
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
-import { TSpotifyGenres } from '@/types/SpotifyGenres'
 import { FaLastfm } from 'react-icons/fa'
 
 import Hyperlink from '@/components/Hyperlink'
 import Text from '@/components/Text'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-import { getSpotifyFakeRelatedArtists } from '@/services/spotify/getSpotifyRelatedArtists'
+import { getSpotifyRelatedArtists } from '@/services/spotify/getSpotifyRelatedArtists'
 
 import CardArtistLight from './CardArtistLight'
 
 interface RelatedArtistsProps {
   artistId: string
   lastFmSimilar?: any
-  genres?: TSpotifyGenres
 }
 
 const RelatedArtists: React.FC<RelatedArtistsProps> = ({
   artistId,
   lastFmSimilar,
-  genres,
 }): JSX.Element => {
   const [relatedArtists, setRelatedArtists] = useState<TSpotifyArtist[] | null>(null)
   const [activeTab, setActiveTab] = useState('spotifyRelated')
@@ -32,18 +29,14 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
 
   useEffect(() => {
     const fetchSpotifySimilarArtists = async () => {
-      if (!genres || genres.length === 0) {
-        return
-      }
-
       try {
-        const data = await getSpotifyFakeRelatedArtists(artistId, genres)
+        const data = await getSpotifyRelatedArtists(artistId)
         setRelatedArtists(data.artists)
       } catch (err: any) {}
     }
 
     fetchSpotifySimilarArtists()
-  }, [artistId, genres])
+  }, [artistId])
 
   useEffect(() => {
     setActiveTab('spotifyRelated')
@@ -61,7 +54,9 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
 
   return (
     <>
-      <Text variant='h2' className="mb-4">Related Artists</Text>
+      <Text variant="h2" className="mb-4">
+        Related Artists
+      </Text>
 
       {relatedArtists && lastFmSimilar ? (
         <Tabs value={activeTab} onValueChange={onTabChange}>
