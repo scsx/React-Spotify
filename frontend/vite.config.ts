@@ -1,9 +1,12 @@
+// frontend/vite.config.ts
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import { defineConfig } from 'vite'
 import EnvironmentPlugin from 'vite-plugin-environment'
 
-const EXPRESS_SERVER_PORT = 3001
+// The base URL for your backend API, read from frontend/.env
+// It should be 'http://localhost:3001' in development.
+const BACKEND_API_BASE_URL = process.env.VITE_API_BASE_URL || 'http://localhost:3001' // Fallback for safety
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,18 +17,34 @@ export default defineConfig({
     },
   },
   server: {
-    // O proxy do Vite ajuda a contornar problemas de CORS em desenvolvimento porque o browser pensa que está a falar com a mesma origem (http://localhost:5173).
+    // Vite's proxy helps bypass CORS issues in development
     proxy: {
       '/api/lastfm': {
-        target: `http://localhost:${EXPRESS_SERVER_PORT}`,
+        target: BACKEND_API_BASE_URL,
         changeOrigin: true,
+        secure: false, // Set to true if your backend uses HTTPS in dev, false otherwise
       },
-      // Se tiveres outras rotas de API que não sejam da Last.fm e que também devam ir para o backend,
-      // podes adicioná-las aqui também, por exemplo:
-      // '/api/spotify': {
-      //   target: `http://localhost:${EXPRESS_SERVER_PORT}`,
-      //   changeOrigin: true,
-      // },
+      // Proxy for Spotify authentication routes (e.g., /auth/spotify/login)
+      '/auth/spotify': {
+        target: BACKEND_API_BASE_URL,
+        changeOrigin: true,
+        secure: false,
+      },
+      // Proxy for Spotify API routes (e.g., /api/spotify/current-user-top-artists)
+      // This assumes your backend will have routes like /api/spotify/* that then call Spotify's API.
+      '/api/spotify': {
+        target: BACKEND_API_BASE_URL,
+        changeOrigin: true,
+        secure: false, // HTTP vs HTTPS - Dev only.
+      },
+      // You can also use a more generic /api proxy if all backend APIs use this prefix:
+      /*
+      '/api': {
+        target: BACKEND_API_BASE_URL,
+        changeOrigin: true,
+        secure: false,
+      },
+      */
     },
   },
 })
