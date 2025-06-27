@@ -6,6 +6,7 @@ const lastFmRoutes = require('./routes/lastfm')
 const spotifyAuthRoutes = require('./routes/spotifyAuth')
 // Spotify routes
 const spotifyCurrentlyPlayingRoute = require('./routes/spotify/currentlyPlaying')
+const spotifySearchRoute = require('./routes/spotify/search')
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -51,6 +52,7 @@ app.use('/auth/spotify', spotifyAuthRoutes)
 
 // Spotify routes.
 app.use('/api/spotify', spotifyCurrentlyPlayingRoute)
+app.use('/api/spotify', spotifySearchRoute)
 
 // Test Endpoint
 app.get('/api/test', (req, res) => {

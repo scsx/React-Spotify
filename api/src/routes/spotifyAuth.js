@@ -79,7 +79,7 @@ router.get('/callback', async (req, res) => {
     data: new URLSearchParams({
       grant_type: 'authorization_code', // Exchange authorization code for tokens
       code: code, // The authorization code received from Spotify
-      redirect_uri: REDIJECT_URI, // Must match the one used in the /login step
+      redirect_uri: REDIRECT_URI, // Must match the one used in the /login step
       client_id: CLIENT_ID,
       code_verifier: code_verifier, // PKCE code verifier
     }).toString(),
