@@ -3,7 +3,7 @@ const router = express.Router()
 const axios = require('axios')
 
 const getAccessTokenFromSession = (req) => {
-  return req.session.access_token
+  return req.session && req.session.access_token ? req.session.access_token : null
 }
 
 router.get('/me/player/currently-playing', async (req, res) => {

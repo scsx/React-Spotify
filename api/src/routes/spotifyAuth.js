@@ -82,7 +82,7 @@ router.get('/callback', async (req, res) => {
 
   try {
     const response = await axios(authOptions)
-    const { access_token, refresh_token, expires_in } = response.data
+    const { access_token, refresh_token, expires_in, token_type } = response.data
 
     // --- SUCCESS ---
     // At this point, you have the access_token and refresh_token.
@@ -91,6 +91,18 @@ router.get('/callback', async (req, res) => {
 
     console.log('Access Token:', access_token)
     console.log('Refresh Token:', refresh_token) // Logged for development, do not expose in production logs
+
+    // --- ARMAZENAR TOKENS NA SESSÃO DO BACKEND ---
+    req.session.access_token = access_token
+    req.session.refresh_token = refresh_token // Crucial para renovar o token
+    req.session.expires_in = expires_in
+    req.session.token_type = token_type
+
+    console.log('Access Token (stored in session):', req.session.access_token)
+    console.log('Refresh Token (stored in session):', req.session.refresh_token) // Logged for development
+    console.log('Expires In (stored in session):', req.session.expires_in)
+    console.log('token_type:', req.session.token_type)
+
     const successRedirectUrl =
       `${FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL}?` +
       new URLSearchParams({
