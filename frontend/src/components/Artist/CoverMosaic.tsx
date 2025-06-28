@@ -14,7 +14,7 @@ const CoverMosaic: React.FC<CoverMosaicProps> = ({ covers }): JSX.Element => {
         </DialogTrigger>
       </div>
       <DialogContent className="max-w-6xl">
-        <ScrollArea className="h-[100vh] p-4">
+        <ScrollArea className="h-[90vh] p-4">
           <div className="grid grid-cols-2 lg:grid-cols-4">
             {covers.map((url) => {
               return <img key={url} src={url} />

@@ -60,7 +60,7 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
     if (genres && genres.length > 0) {
       return genres.map((genre) => {
         return (
-          <div key={genre} className="fakebadge flex mt-3 mr-3 font-normal bg-secondary rounded-lg">
+          <div key={genre} className="fakebadge flex mt-3 mr-3 font-normal bg-slate-200 rounded-lg">
             <Link to={`/genres/spotify:${genre}`} className={`p-1.5 pl-3 text-sm ${badgeColors}`}>
               {genre}
             </Link>
@@ -84,7 +84,7 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
       </Text>
       {genres && lastFmTags ? (
         <Tabs value={activeTab} onValueChange={onTabChange}>
-          <TabsList className="mb-4">
+          <TabsList className="mb-4 bg-slate-200 dark:bg-card">
             <TabsTrigger value="spotifyGenres">Spotify</TabsTrigger>
             <TabsTrigger value="lastfmGenres">LastFM</TabsTrigger>
           </TabsList>
@@ -141,7 +141,7 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
           Search for{' '}
           <Badge
             variant="outline"
-            className="text-sm mt-2 mr-2 font-normal bg-secondary hover:bg-primary dark:hover:text-white dark:text-muted-foreground"
+            className="text-sm mt-2 mr-2 font-normal bg-slate-200 hover:bg-primary dark:hover:text-white dark:text-muted-foreground"
           >
             <Link to={`/genres/${searchQuery}`}>{searchQuery}</Link>
           </Badge>

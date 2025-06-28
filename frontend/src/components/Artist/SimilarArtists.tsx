@@ -61,7 +61,7 @@ const SimilarArtists: React.FC<SimilarArtistsProps> = ({
 
       {spotifySimilarArtists && lastFmSimilar ? (
         <Tabs value={activeTab} onValueChange={onTabChange}>
-          <TabsList>
+          <TabsList className="bg-slate-200 dark:bg-card">
             <TabsTrigger value="spotifyRelated">Spotify</TabsTrigger>
             <TabsTrigger value="lastfmRelated">LastFM</TabsTrigger>
           </TabsList>
