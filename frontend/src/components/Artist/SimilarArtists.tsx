@@ -11,12 +11,12 @@ import { getSpotifySimilarArtists } from '@/services/spotify/getSpotifySimilarAr
 
 import CardArtistLight from './CardArtistLight'
 
-interface RelatedArtistsProps {
+interface SimilarArtistsProps {
   artistId: string
   lastFmSimilar?: any
 }
 
-const RelatedArtists: React.FC<RelatedArtistsProps> = ({
+const SimilarArtists: React.FC<SimilarArtistsProps> = ({
   artistId,
   lastFmSimilar,
 }): JSX.Element => {
@@ -114,4 +114,4 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
   )
 }
 
-export default RelatedArtists
+export default SimilarArtists

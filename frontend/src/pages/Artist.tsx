@@ -6,27 +6,22 @@ import { LastFmArtist } from '@/types/LastFmArtist'
 import { TLastFmTag } from '@/types/LastFmTag'
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
 
-import Albums from '@/components/AlbumsAndBio'
+import Albums from '@/components/Artist/AlbumsAndBio'
+import ArtistHero from '@/components/Artist/ArtistHero'
 import ArtistsGenres from '@/components/Artist/ArtistsGenres'
-import RelatedArtists from '@/components/Artist/RelatedArtists'
+import SimilarArtists from '@/components/Artist/SimilarArtists'
 import TopTracks from '@/components/Artist/TopTracks'
 import Text from '@/components/Text'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
-import { Progress } from '@/components/ui/progress'
-
-import { useToken } from '@/contexts/TokenContext'
 
 import { getLastFMArtistInfo } from '@/services/lastfm/getLastFMArtistInfo'
 import { getSpotifyArtist } from '@/services/spotify/getSpotifyArtist'
-
-/* TODO: use or remove remove unused vars */
 
 const Artist = (): JSX.Element => {
   const { artistId } = useParams<string>()
   const [artist, setArtist] = useState<TSpotifyArtist | null>(null)
   const [lastFmArtist, setLastFmArtist] = useState<LastFmArtist | null>(null)
   const [lastFmArtistTags, setLastFmArtistTags] = useState<TLastFmTag[] | null>(null)
-  const { tokenInfo, isValid } = useToken()
   const [loadingPage, setLoadingPage] = useState(true)
   const [errorPage, setErrorPage] = useState<string | null>(null)
   const location = useLocation()
@@ -35,20 +30,6 @@ const Artist = (): JSX.Element => {
     const fetchData = async () => {
       setLoadingPage(true)
       setErrorPage(null)
-
-      if (!isValid || !tokenInfo?.accessToken) {
-        console.warn(
-          'Artist Component: Spotify token not valid or available. Skipping Spotify API calls.'
-        )
-        setErrorPage(
-          'Autenticação necessária ou token expirado. Por favor, tente fazer login novamente.'
-        )
-        setArtist(null)
-        setLastFmArtist(null)
-        setLastFmArtistTags(null)
-        setLoadingPage(false)
-        return
-      }
 
       if (!artistId) {
         setErrorPage('Artist ID not provided in URL.')
@@ -100,15 +81,14 @@ const Artist = (): JSX.Element => {
         } else {
           setErrorPage(`Erro ao carregar artista: ${error.message || 'Erro desconhecido'}`)
         }
-        setArtist(null) // Limpa dados em caso de erro
+        setArtist(null)
       } finally {
-        setLoadingPage(false) // Finaliza o estado de carregamento
+        setLoadingPage(false)
       }
     }
 
     fetchData()
-    // Adicione tokenInfo.accessToken às dependências para re-executar se o token mudar/for carregado
-  }, [artistId, tokenInfo?.accessToken, isValid])
+  }, [artistId])
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -118,30 +98,29 @@ const Artist = (): JSX.Element => {
     }
   }, [location.pathname])
 
+  if (loadingPage) {
+    return (
+      <div className="flex flex-col flex-1 justify-center items-center h-screen-minus-header">
+        <Text variant="h2">Loading...</Text>
+      </div>
+    )
+  }
+
+  if (errorPage) {
+    return (
+      <div className="flex flex-col flex-1 justify-center items-center h-screen-minus-header">
+        <Text variant="paragraph">{errorPage}</Text>
+      </div>
+    )
+  }
+
   return (
     <div className="flex flex-col flex-1">
       {artist && (
         <>
-          <div
-            className="w-full -mt-40 absolute h-96 bg-cover blur-sm bg-center bg-no-repeat z-0"
-            style={{
-              backgroundImage: `url(${artist.images[0].url})`,
-            }}
-          ></div>
-          <div className="w-full -mt-4 absolute top-96 h-8 z-0 bg-white dark:bg-background transition duration-500"></div>
-          <div className="relative container">
-            <div className="-mt-4 bg-white dark:bg-black inline-block p-4 rounded-sm rounded-bl-none">
-              <Text variant="h1">{artist.name}</Text>
-              <Progress value={artist.popularity} className="h-1 mt-4 mx-auto" />
-            </div>
-            <div className="mb-6">
-              <div className="inline-block bg-white dark:bg-black py-2 px-4 rounded-bl-sm rounded-br-sm">
-                <div className="flex items-center">
-                  <div>{artist.followers.total.toLocaleString()} followers</div>
-                </div>
-              </div>
-            </div>
+          <ArtistHero artist={artist} />
 
+          <div className="relative container">
             <div className="grid grid-cols-4 gap-16">
               <div className="col-span-2">
                 <Albums
@@ -166,7 +145,7 @@ const Artist = (): JSX.Element => {
 
                 <ArtistsGenres genres={artist.genres} lastFmTags={lastFmArtistTags ?? []} />
 
-                <RelatedArtists artistId={artist.id} lastFmSimilar={lastFmArtist?.similar!} />
+                <SimilarArtists artistId={artist.id} lastFmSimilar={lastFmArtist?.similar!} />
               </div>
             </div>
           </div>

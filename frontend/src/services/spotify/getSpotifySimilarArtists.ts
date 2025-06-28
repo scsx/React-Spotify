@@ -8,7 +8,7 @@ interface TSpotifySimilarArtistsResponse {
 
 export const getSpotifySimilarArtists = async (
   artistId: string,
-  limit: number = 7
+  limit: number = 6
 ): Promise<TSpotifySimilarArtistsResponse> => {
   try {
     const response: AxiosResponse<TSpotifySimilarArtistsResponse> = await axios.get(
