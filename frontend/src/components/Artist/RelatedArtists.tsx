@@ -7,22 +7,20 @@ import Hyperlink from '@/components/Hyperlink'
 import Text from '@/components/Text'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
-import { getSpotifyRelatedArtists } from '@/services/spotify/getSpotifyRelatedArtists'
+import { getSpotifySimilarArtists } from '@/services/spotify/getSpotifySimilarArtists'
 
 import CardArtistLight from './CardArtistLight'
 
 interface RelatedArtistsProps {
   artistId: string
   lastFmSimilar?: any
-  genres: any // TODO: any
 }
 
 const RelatedArtists: React.FC<RelatedArtistsProps> = ({
   artistId,
   lastFmSimilar,
-  genres,
 }): JSX.Element => {
-  const [relatedArtists, setRelatedArtists] = useState<TSpotifyArtist[] | null>(null)
+  const [spotifySimilarArtists, setSpotifySimilarArtists] = useState<TSpotifyArtist[] | null>(null)
   const [activeTab, setActiveTab] = useState('spotifyRelated')
 
   const onTabChange = (value: string) => {
@@ -32,21 +30,22 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
   useEffect(() => {
     const fetchSpotifySimilarArtists = async () => {
       try {
-        const data = await getSpotifyRelatedArtists(artistId)
-        setRelatedArtists(data.artists)
-      } catch (err: any) {}
+        const data = await getSpotifySimilarArtists(artistId)
+        setSpotifySimilarArtists(data.artists)
+      } catch (err: any) {
+        console.error('Error fetching Spotify similar artists:', err)
+        setSpotifySimilarArtists([])
+      }
     }
 
-    fetchSpotifySimilarArtists()
+    if (artistId) {
+      fetchSpotifySimilarArtists()
+    }
   }, [artistId])
 
-  useEffect(() => {
-    setActiveTab('spotifyRelated')
-  }, [artistId, lastFmSimilar])
-
-  const renderSpotifyRelated = (): JSX.Element[] | null => {
-    if (relatedArtists && relatedArtists.length > 0) {
-      return relatedArtists.map((artist) => {
+  const renderSpotifySimilar = (): JSX.Element[] | null => {
+    if (spotifySimilarArtists && spotifySimilarArtists.length > 0) {
+      return spotifySimilarArtists.map((artist) => {
         return <CardArtistLight key={artist.id} artist={artist} />
       })
     } else {
@@ -60,14 +59,14 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
         Related Artists
       </Text>
 
-      {relatedArtists && lastFmSimilar ? (
+      {spotifySimilarArtists && lastFmSimilar ? (
         <Tabs value={activeTab} onValueChange={onTabChange}>
           <TabsList>
             <TabsTrigger value="spotifyRelated">Spotify</TabsTrigger>
             <TabsTrigger value="lastfmRelated">LastFM</TabsTrigger>
           </TabsList>
           <TabsContent value="spotifyRelated">
-            <div className="grid grid-cols-3 gap-4">{renderSpotifyRelated()}</div>
+            <div className="grid grid-cols-3 gap-4">{renderSpotifySimilar()}</div>
           </TabsContent>
           <TabsContent value="lastfmRelated">
             {lastFmSimilar &&
@@ -99,10 +98,10 @@ const RelatedArtists: React.FC<RelatedArtistsProps> = ({
           </TabsContent>
         </Tabs>
       ) : (
-        <div className="grid grid-cols-3 gap-4">{renderSpotifyRelated()}</div>
+        <div className="grid grid-cols-3 gap-4">{renderSpotifySimilar()}</div>
       )}
       <Text color="gray" className="mt-4">
-        TODO: REMOVE -- The Spotify endpoint for related artists is deprecated for{' '}
+        The Spotify endpoint for related artists is deprecated for{' '}
         <Hyperlink
           href="https://developer.spotify.com/documentation/web-api/tutorials/implicit-flow"
           external

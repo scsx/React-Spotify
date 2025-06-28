@@ -166,11 +166,7 @@ const Artist = (): JSX.Element => {
 
                 <ArtistsGenres genres={artist.genres} lastFmTags={lastFmArtistTags ?? []} /> */}
 
-                <RelatedArtists
-                  genres={artist.genres}
-                  artistId={artist.id}
-                  lastFmSimilar={lastFmArtist?.similar!}
-                />
+                <RelatedArtists artistId={artist.id} lastFmSimilar={lastFmArtist?.similar!} />
               </div>
             </div>
           </div>

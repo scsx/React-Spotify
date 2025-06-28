@@ -20,7 +20,7 @@ const textStyles = tv({
       h2: 'text-xl md:text-3xl font-normal', // e.g. section "Top Tracks"
       h3: 'text-2xl leading-tight leading-none', // e.g. album title
       h4: 'text-xl font-medium leading-none', // e.g. CardArtistLight title (related artist)
-      h5: '',
+      h5: 'text-lg',
       h6: '',
       paragraph: 'text-sm leading-normal',
       small: '',
