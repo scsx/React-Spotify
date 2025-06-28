@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
-import { Link } from 'react-router-dom'
-
 import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
+
+import Hyperlink from '@/components/Hyperlink'
 
 import { getSpotifyCurrentlyPlaying } from '@/services/spotify/spotifyPlayer'
 
@@ -53,9 +53,9 @@ const Player = (): JSX.Element => {
                 return (
                   <React.Fragment key={artist.id}>
                     {index > 0 ? ', ' : ''}
-                    <Link className="hover:text-primary" to={`/${artist.id}`}>
+                    <Hyperlink className="hover:text-primary" href={`/artists/${artist.id}`}>
                       {artist.name}
-                    </Link>
+                    </Hyperlink>
                   </React.Fragment>
                 )
               })}
