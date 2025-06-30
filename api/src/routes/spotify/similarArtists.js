@@ -42,13 +42,6 @@ router.get('/artists/:artistId/similar-artists', async (req, res) => {
       return res.json({ artists: [] })
     }
 
-    // Use the top few genres for searching to keep the query manageable and relevant.
-    const searchGenres = originalArtist.genres
-      .slice(0, 3)
-      .map((genre) => `genre:"${genre}"`)
-      .join(' ')
-    // Example: 'genre:"rock" genre:"alternative" genre:"punk"'
-
     // Step 2: Search for artists using the retrieved genres.
     // Endpoint: https://api.spotify.com/v1/search
     const genresForQuery = originalArtist.genres.slice(0, 3).join(',')

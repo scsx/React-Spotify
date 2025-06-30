@@ -7,6 +7,7 @@ import { useSpotifyAuthCallback } from '@/hooks/useSpotifyAuthCallback'
 import AuthGuard from '@/components/Auth/AuthGuard'
 
 import ArtistsPage from '@/pages/ArtistsPage'
+import User from '@/pages/User'
 
 import Footer from './components/Footer'
 import Header from './components/Header/Header'
@@ -28,18 +29,24 @@ const App: React.FC = () => {
         <Header />
         <main className="flex flex-1 py-40 content-stretch">
           <Routes>
-            <Route path="/" element={<Outlet />}>
-              <Route index element={<Homepage />} />
+            <Route path="/" element={<Homepage />} />
+
+            {/* AuthGuard for all except HP */}
+            <Route element={<AuthGuard />}>
+              <Route path="/artists">
+                <Route index element={<ArtistsPage />} />
+                <Route path=":artistId" element={<Artist />} />
+              </Route>
+              <Route path="/playlists" element={<Playlists />} />
+              <Route path="/user" element={<User />} />
+              <Route path="/genres" element={<Outlet />}>
+                <Route index element={<Genres />} />
+                <Route path=":genresNames" element={<GenresFinder />} />
+              </Route>
             </Route>
-            <Route path="/artists" element={<AuthGuard />}>
-              <Route index element={<ArtistsPage />} />
-              <Route path=":artistId" element={<Artist />} />
-            </Route>
-            <Route path="/playlists" element={<Playlists />} />
-            <Route path="/genres" element={<Outlet />}>
-              <Route index element={<Genres />} />
-              <Route path=":genresNames" element={<GenresFinder />} />
-            </Route>
+
+            {/* Any non-found route */}
+            {/* TODO: 404 */}
             <Route path="*" element={<Homepage />} />
           </Routes>
         </main>

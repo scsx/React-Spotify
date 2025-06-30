@@ -22,8 +22,6 @@ const UserPlaylists: React.FC = () => {
     try {
       const data = await getSpotifyUserPlaylists({ limit: PLAYLISTS_LIMIT, offset: currentOffset })
 
-      console.log('Fetched playlists:', data)
-
       // Adiciona as novas playlists às existentes
       setPlaylists((prevPlaylists) => {
         // Filtra duplicados (caso a API do Spotify possa devolver o mesmo item em páginas diferentes, ou se houver um bug na paginação)
@@ -103,10 +101,7 @@ const UserPlaylists: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto py-8">
-      <Text variant="h1" className="mb-8">
-        Minhas Playlists
-      </Text>
+    <div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {playlists.map((playlist) => (
           <Card key={playlist.id} className="flex flex-col items-center text-center p-4">
