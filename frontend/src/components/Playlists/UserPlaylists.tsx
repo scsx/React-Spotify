@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 import { getSpotifyUserPlaylists } from '@/services/spotify/getSpotifyUserPlaylists'
 
-const PLAYLISTS_LIMIT = 20
+const PLAYLISTS_LIMIT = 50
 
 const UserPlaylists: React.FC = () => {
   const [playlists, setPlaylists] = useState<TSpotifyPlaylist[]>([])
@@ -102,7 +102,7 @@ const UserPlaylists: React.FC = () => {
 
   return (
     <div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-8 gap-4">
         {playlists.map((playlist) => (
           <Card key={playlist.id} className="flex flex-col items-center text-center p-4">
             <CardHeader className="p-0 mb-4">
@@ -119,14 +119,14 @@ const UserPlaylists: React.FC = () => {
               )}
             </CardHeader>
             <CardContent className="flex-grow flex flex-col justify-between w-full p-0">
-              <CardTitle className="text-lg font-semibold mb-2">{playlist.name}</CardTitle>
+              <CardTitle className="text-lg font-semibold">{playlist.name}</CardTitle>
               {playlist.description && (
-                <Text className="text-gray-500 line-clamp-2">{playlist.description}</Text>
+                <Text className="text-gray-500">{playlist.description}</Text>
               )}
-              <Text className="text-gray-500 mt-2">{playlist.tracks.total} músicas</Text>
-              <Button asChild className="mt-4 w-full">
+              <Text className="text-gray-500 mt-2">{playlist.tracks.total} songs</Text>
+              <Button asChild>
                 <a href={playlist.external_urls.spotify} target="_blank" rel="noopener noreferrer">
-                  Abrir no Spotify
+                  Open in Spotify
                 </a>
               </Button>
             </CardContent>
