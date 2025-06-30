@@ -11,6 +11,7 @@ const spotifyArtistRoute = require('./routes/spotify/artist')
 const spotifySimilarArtistsRoute = require('./routes/spotify/similarArtists')
 const spotifyTopTracksRoute = require('./routes/spotify/topTracks')
 const spotifyArtistAlbumsRoute = require('./routes/spotify/artistAlbums')
+const spotifyUserPlaylistsRoute = require('./routes/spotify/userPlaylists');
 
 const app = express()
 const PORT = process.env.PORT || 3001
@@ -61,6 +62,7 @@ app.use('/api/spotify', spotifyArtistRoute)
 app.use('/api/spotify', spotifySimilarArtistsRoute)
 app.use('/api/spotify', spotifyTopTracksRoute)
 app.use('/api/spotify', spotifyArtistAlbumsRoute)
+app.use('/api/spotify', spotifyUserPlaylistsRoute)
 
 // Test Endpoint
 app.get('/api/test', (req, res) => {
