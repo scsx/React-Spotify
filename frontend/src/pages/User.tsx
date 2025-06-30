@@ -25,7 +25,7 @@ const User = (): JSX.Element => {
     }
 
     fetchUserProfile()
-  }, []) // O array de dependências vazio significa que isto executa uma vez ao montar o componente
+  }, [])
 
   if (loading) {
     return (
@@ -45,9 +45,9 @@ const User = (): JSX.Element => {
   }
 
   return (
-    <div className="container py-8">
+    <div className="container">
       <Text variant="h1" className="mb-4">
-        {loading ? 'Loading...' : `Profile for ${userProfile?.display_name}`}
+        {loading ? 'Loading...' : `${userProfile?.display_name}`}
       </Text>
       {userProfile ? (
         // Exibe o objeto userProfile formatado como JSON para fácil visualização
