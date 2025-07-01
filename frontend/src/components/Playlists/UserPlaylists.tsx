@@ -5,8 +5,7 @@ import { TSpotifyPlaylist } from '@/types/SpotifyPlaylist'
 import CardPlaylist from '@/components/Playlists/CardPlaylist'
 import Text from '@/components/Text'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-// Importa os componentes de paginação do shadcn/ui
+import { Card } from '@/components/ui/card'
 import {
   Pagination,
   PaginationContent,
@@ -17,28 +16,24 @@ import {
 } from '@/components/ui/pagination'
 import { Skeleton } from '@/components/ui/skeleton'
 
-// Removida CardHeader, CardTitle se não usadas diretamente
-
 import { getSpotifyUserPlaylists } from '@/services/spotify/getSpotifyUserPlaylists'
 
-// Para esqueletos de carregamento
-
-const PLAYLISTS_LIMIT = 20 // Um limite menor pode ser melhor para paginação visual
+const PLAYLISTS_LIMIT = 40
 
 const UserPlaylists: React.FC = () => {
   const [playlists, setPlaylists] = useState<TSpotifyPlaylist[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [currentPage, setCurrentPage] = useState(1) // Novo estado para a página atual
-  const [totalPlaylists, setTotalPlaylists] = useState<number | null>(null) // Total de playlists do Spotify
+  const [currentPage, setCurrentPage] = useState(1)
+  const [totalPlaylists, setTotalPlaylists] = useState<number | null>(null)
 
   const totalPages = totalPlaylists ? Math.ceil(totalPlaylists / PLAYLISTS_LIMIT) : 1
 
   const fetchPlaylists = useCallback(
     async (page: number) => {
       setLoading(true)
-      setError(null) // Limpa o erro ao tentar carregar uma nova página
-      const offset = (page - 1) * PLAYLISTS_LIMIT // Calcula o offset com base na página
+      setError(null)
+      const offset = (page - 1) * PLAYLISTS_LIMIT 
 
       try {
         const data = await getSpotifyUserPlaylists({ limit: PLAYLISTS_LIMIT, offset: offset })
@@ -89,7 +84,7 @@ const UserPlaylists: React.FC = () => {
         <Button
           onClick={() => {
             setPlaylists([])
-            setCurrentPage(1) // Reinicia para a primeira página
+            setCurrentPage(1)
             setTotalPlaylists(null)
             setError(null)
           }}
@@ -119,65 +114,70 @@ const UserPlaylists: React.FC = () => {
   if (playlists.length === 0 && !loading && !error) {
     return (
       <div className="container mx-auto py-8 text-center">
-        <Text variant="h2">Nenhuma playlist encontrada.</Text>
-        <Text variant="paragraph">Parece que não tens playlists no Spotify.</Text>
+        <Text variant="h2">Playlists not found.</Text>
+        <Text variant="paragraph">You have no playlists on Spotify.</Text>
       </div>
     )
   }
 
   return (
     <div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-5 gap-6">
         {playlists.map((playlist) => (
-          <CardPlaylist key={playlist.id} playlist={playlist} />
+          <CardPlaylist key={playlist.id} playlist={playlist} light />
         ))}
       </div>
 
       {/* Componentes de Paginação */}
       {totalPlaylists &&
         totalPlaylists > PLAYLISTS_LIMIT && ( // Mostra paginação apenas se houver mais de uma página
-          <div className="flex justify-center mt-8">
-            <Pagination>
-              <PaginationContent>
-                <PaginationItem>
-                  <PaginationPrevious onClick={handlePreviousPage} disabled={currentPage === 1} />
-                </PaginationItem>
+          <Pagination className="mt-8">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={handlePreviousPage}
+                  className="cursor-pointer hover:bg-primary"
+                />
+              </PaginationItem>
 
-                {/* Lógica para mostrar alguns números de página ao redor da página atual */}
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => {
-                  // Exibe apenas um subconjunto de páginas para evitar muitos botões
-                  if (
-                    pageNumber === 1 ||
-                    pageNumber === totalPages ||
-                    (pageNumber >= currentPage - 2 && pageNumber <= currentPage + 2)
-                  ) {
-                    return (
-                      <PaginationItem key={pageNumber}>
-                        <PaginationLink
-                          onClick={() => handlePageChange(pageNumber)}
-                          isActive={pageNumber === currentPage}
-                        >
-                          {pageNumber}
-                        </PaginationLink>
-                      </PaginationItem>
-                    )
-                  }
-                  // Adiciona reticências se houver lacunas grandes
-                  if (
-                    (pageNumber === currentPage - 3 && currentPage > 3) ||
-                    (pageNumber === currentPage + 3 && currentPage < totalPages - 2)
-                  ) {
-                    return <PaginationItem key={pageNumber}>...</PaginationItem>
-                  }
-                  return null
-                })}
+              {/* Lógica para mostrar alguns números de página ao redor da página atual */}
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => {
+                // Exibe apenas um subconjunto de páginas para evitar muitos botões
+                if (
+                  pageNumber === 1 ||
+                  pageNumber === totalPages ||
+                  (pageNumber >= currentPage - 2 && pageNumber <= currentPage + 2)
+                ) {
+                  return (
+                    <PaginationItem key={pageNumber}>
+                      <PaginationLink
+                        onClick={() => handlePageChange(pageNumber)}
+                        isActive={pageNumber === currentPage}
+                        className="cursor-pointer hover:bg-primary"
+                      >
+                        {pageNumber}
+                      </PaginationLink>
+                    </PaginationItem>
+                  )
+                }
+                // Adiciona reticências se houver lacunas grandes
+                if (
+                  (pageNumber === currentPage - 3 && currentPage > 3) ||
+                  (pageNumber === currentPage + 3 && currentPage < totalPages - 2)
+                ) {
+                  return <PaginationItem key={pageNumber}>...</PaginationItem>
+                }
+                return null
+              })}
 
-                <PaginationItem>
-                  <PaginationNext onClick={handleNextPage} disabled={currentPage === totalPages} />
-                </PaginationItem>
-              </PaginationContent>
-            </Pagination>
-          </div>
+              <PaginationItem>
+                <PaginationNext
+                  onClick={handleNextPage}
+                  className="cursor-pointer hover:bg-primary"
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
         )}
     </div>
   )
