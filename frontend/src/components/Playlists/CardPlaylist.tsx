@@ -44,7 +44,7 @@ const CardPlaylist: React.FC<CardPlaylistProps> = ({ playlist, light = false }) 
             {playlist.description}
           </CardDescription>
         )}
-        <div className="flex w-full items-space-between">
+        <div className="flex w-full justify-between items-center">
           <Text color="muted">{playlist.tracks.total} songs</Text>
           <Hyperlink variant="icon" href={playlist.external_urls.spotify} external>
             <FaSpotify className="mx-2 text-muted-foreground hover:text-primary" />

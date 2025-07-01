@@ -2,18 +2,11 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import { TSpotifyPlaylist } from '@/types/SpotifyPlaylist'
 
+import GenericPagination from '@/components/GenericPagination'
 import CardPlaylist from '@/components/Playlists/CardPlaylist'
 import Text from '@/components/Text'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination'
 import { Skeleton } from '@/components/ui/skeleton'
 
 import { getSpotifyUserPlaylists } from '@/services/spotify/getSpotifyUserPlaylists'
@@ -33,7 +26,7 @@ const UserPlaylists: React.FC = () => {
     async (page: number) => {
       setLoading(true)
       setError(null)
-      const offset = (page - 1) * PLAYLISTS_LIMIT 
+      const offset = (page - 1) * PLAYLISTS_LIMIT
 
       try {
         const data = await getSpotifyUserPlaylists({ limit: PLAYLISTS_LIMIT, offset: offset })
@@ -50,16 +43,15 @@ const UserPlaylists: React.FC = () => {
       } catch (err: any) {
         console.error('Failed to fetch user playlists:', err)
         setError('Falha ao carregar playlists. Por favor, tente novamente mais tarde.')
-        setPlaylists([]) // Limpa as playlists em caso de erro
+        setPlaylists([])
       } finally {
         setLoading(false)
       }
     },
     [totalPlaylists]
-  ) // totalPlaylists na dependência para garantir que é atualizado na primeira chamada
+  )
 
   useEffect(() => {
-    // Carrega as playlists para a página atual sempre que currentPage muda
     fetchPlaylists(currentPage)
   }, [currentPage, fetchPlaylists])
 
@@ -95,7 +87,7 @@ const UserPlaylists: React.FC = () => {
     )
   }
 
-  // Estado de carregamento com esqueletos
+  // Loading with skeletons.
   if (loading) {
     return (
       <div className="container mx-auto py-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -110,7 +102,7 @@ const UserPlaylists: React.FC = () => {
     )
   }
 
-  // Se não encontrou playlists após o carregamento
+  // No playlists found.
   if (playlists.length === 0 && !loading && !error) {
     return (
       <div className="container mx-auto py-8 text-center">
@@ -128,57 +120,15 @@ const UserPlaylists: React.FC = () => {
         ))}
       </div>
 
-      {/* Componentes de Paginação */}
-      {totalPlaylists &&
-        totalPlaylists > PLAYLISTS_LIMIT && ( // Mostra paginação apenas se houver mais de uma página
-          <Pagination className="mt-8">
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  onClick={handlePreviousPage}
-                  className="cursor-pointer hover:bg-primary"
-                />
-              </PaginationItem>
-
-              {/* Lógica para mostrar alguns números de página ao redor da página atual */}
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNumber) => {
-                // Exibe apenas um subconjunto de páginas para evitar muitos botões
-                if (
-                  pageNumber === 1 ||
-                  pageNumber === totalPages ||
-                  (pageNumber >= currentPage - 2 && pageNumber <= currentPage + 2)
-                ) {
-                  return (
-                    <PaginationItem key={pageNumber}>
-                      <PaginationLink
-                        onClick={() => handlePageChange(pageNumber)}
-                        isActive={pageNumber === currentPage}
-                        className="cursor-pointer hover:bg-primary"
-                      >
-                        {pageNumber}
-                      </PaginationLink>
-                    </PaginationItem>
-                  )
-                }
-                // Adiciona reticências se houver lacunas grandes
-                if (
-                  (pageNumber === currentPage - 3 && currentPage > 3) ||
-                  (pageNumber === currentPage + 3 && currentPage < totalPages - 2)
-                ) {
-                  return <PaginationItem key={pageNumber}>...</PaginationItem>
-                }
-                return null
-              })}
-
-              <PaginationItem>
-                <PaginationNext
-                  onClick={handleNextPage}
-                  className="cursor-pointer hover:bg-primary"
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
-        )}
+      {totalPlaylists && totalPlaylists > PLAYLISTS_LIMIT && (
+        <GenericPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          onPrevious={handlePreviousPage}
+          onNext={handleNextPage}
+        />
+      )}
     </div>
   )
 }

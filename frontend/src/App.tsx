@@ -5,6 +5,7 @@ import { Outlet, Route, Routes } from 'react-router-dom'
 import { useSpotifyAuthCallback } from '@/hooks/useSpotifyAuthCallback'
 
 import AuthGuard from '@/components/Auth/AuthGuard'
+import FavoritePlaylists from '@/components/Playlists/FavoritePlaylists/FavoritePlaylists'
 
 import ArtistsPage from '@/pages/ArtistsPage'
 import User from '@/pages/User'
@@ -37,7 +38,12 @@ const App: React.FC = () => {
                 <Route index element={<ArtistsPage />} />
                 <Route path=":artistId" element={<Artist />} />
               </Route>
-              <Route path="/playlists" element={<Playlists />} />
+
+              <Route path="/playlists">
+                <Route index element={<Playlists />} />
+                <Route path="/playlists/favorites" element={<FavoritePlaylists />} />
+              </Route>
+
               <Route path="/user" element={<User />} />
               <Route path="/genres" element={<Outlet />}>
                 <Route index element={<Genres />} />

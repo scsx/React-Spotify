@@ -4,9 +4,10 @@
 
 /* Dark/Light theme mode */
 body {
-  transition: background-color .5s;
+  transition: background-color 1s;
 }
 
+/* TODO: improve */
 /* target react-router-dom 'active' class */
 .basenav__link.active {
   text-decoration: underline;
