@@ -19,7 +19,7 @@ export const SPOTIFY_FAVORITE_PLAYLISTS = [
     id: '1Njwn17lPtwLN28P3my2fr',
   },
   {
-    name: 'Eletronica Generalis',
+    name: 'Electronica Generalis',
     id: '0jarrgCbTDpm64zx2lFlsE',
   },
   {
