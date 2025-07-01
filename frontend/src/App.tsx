@@ -33,6 +33,7 @@ const App: React.FC = () => {
             <Route path="/" element={<Homepage />} />
 
             {/* AuthGuard for all except HP */}
+            {/* Nested routes: --- Order matters --- */}
             <Route element={<AuthGuard />}>
               <Route path="/artists">
                 <Route index element={<ArtistsPage />} />
@@ -40,8 +41,8 @@ const App: React.FC = () => {
               </Route>
 
               <Route path="/playlists">
+                <Route path="favorites" element={<FavoritePlaylists />} />
                 <Route index element={<Playlists />} />
-                <Route path="/playlists/favorites" element={<FavoritePlaylists />} />
               </Route>
 
               <Route path="/user" element={<User />} />

@@ -31,8 +31,6 @@ const UserPlaylists: React.FC = () => {
       try {
         const data = await getSpotifyUserPlaylists({ limit: PLAYLISTS_LIMIT, offset: offset })
 
-        console.log(`Fetched playlists for page ${page}:`, data)
-
         // Substitui as playlists existentes pelas novas da página
         setPlaylists(data.items)
 
