@@ -62,10 +62,12 @@ router.get('/callback', async (req, res) => {
   if (state === null || state !== storedState || code_verifier === null) {
     console.error('Spotify Callback Error: State mismatch or code_verifier missing!')
     // Redirect to frontend with an error hash if validation fails
-    const redirectUrl = '/#' + new URLSearchParams({ error: 'state_mismatch' }).toString()
-    res.redirect(redirectUrl)
-    req.session.destroy() // Destroy session to prevent further issues
-    return
+    // IMPORTANTE: Redireciona para o FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL com um erro
+    return res.redirect(
+      `${FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL}?` + // Use o URL do frontend para erros também
+        new URLSearchParams({ error: 'state_mismatch' }).toString()
+    )
+    // Não precisa de req.session.destroy() aqui, pois a sessão está danificada ou é inválida
   }
 
   // Clean up session variables after successful state validation
@@ -98,36 +100,62 @@ router.get('/callback', async (req, res) => {
 
     // --- SUCCESSFUL TOKEN EXCHANGE ---
     // Store access_token and refresh_token in the backend session
-    // The refresh_token is crucial for obtaining new access tokens without re-authenticating the user.
-    // For production, refresh_token should ideally be stored securely (e.g., in a database)
-    // rather than just in the session, for persistent access across server restarts.
     req.session.access_token = access_token
     req.session.refresh_token = refresh_token
     req.session.expires_in = expires_in
     req.session.token_type = token_type
 
-    // Construct the success URL to redirect back to the frontend
-    const successRedirectUrl =
-      `${FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL}?` +
-      new URLSearchParams({
-        access_token: access_token,
-        expires_in: expires_in, // Include expires_in for frontend to manage token expiry
-        // Do NOT send refresh_token to the frontend in production!
-        // For development/debugging, you might uncomment this, but remove for deployment:
-        // refresh_token: refresh_token
-      }).toString()
+    // Guardar a sessão explicitamente e SÓ DEPOIS redirecionar
+    req.session.save((err) => {
+      if (err) {
+        console.error('Erro ao guardar a sessão após callback de autenticação:', err)
+        // Se houver um erro ao guardar a sessão, redirecione com um erro para o frontend
+        return res.redirect(
+          `${FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL}?` + // Use a URL do frontend para erros também
+            new URLSearchParams({
+              error: 'session_save_failed',
+            }).toString()
+        )
+      }
+      console.log('Sessão guardada com sucesso no callback de autenticação.')
 
-    // Redirect the user's browser to the frontend success URL
-    res.redirect(successRedirectUrl)
+      // --- LOGS DETALHADOS AQUI (APÓS GUARDAR NA SESSÃO) ---
+      console.log('\n--- AUTH CALLBACK SUCESSO ---')
+      console.log('Session ID (Auth Callback):', req.sessionID)
+      console.log(
+        'Token guardado na sessão (primeiros 10 chars):',
+        req.session.access_token
+          ? req.session.access_token.substring(0, 10) + '...'
+          : 'NÃO ENCONTRADO'
+      )
+      console.log(
+        'Refresh Token guardado na sessão (primeiros 10 chars):',
+        req.session.refresh_token
+          ? req.session.refresh_token.substring(0, 10) + '...'
+          : 'NÃO ENCONTRADO'
+      )
+      console.log('-----------------------------\n')
+
+      // Construir e redirecionar para o frontend SÓ DEPOIS de a sessão ser guardada
+      const successRedirectUrl =
+        `${FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL}?` +
+        new URLSearchParams({
+          expires_in: expires_in, // Opcional: pode enviar se o frontend precisar de saber
+        }).toString()
+
+      // Redireciona o utilizador para o frontend
+      return res.redirect(successRedirectUrl) // Usa 'return' para garantir que a execução para aqui
+    })
   } catch (error) {
     // Handle errors during the token exchange process
     console.error(
       'Spotify Token Exchange Error:',
       error.response ? error.response.data : error.message
     )
-    // Redirect to frontend with an error hash if token exchange fails
-    res.redirect(
-      '/#' +
+    // Redireciona para o frontend com um erro hash se a troca de token falhar
+    return res.redirect(
+      // Usa 'return' para garantir que a execução para aqui
+      `${FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL}?` + // Use a URL de sucesso do frontend para redirecionar erros também
         new URLSearchParams({
           error: 'token_exchange_failed',
         }).toString()

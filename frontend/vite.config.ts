@@ -1,23 +1,28 @@
 // frontend/vite.config.ts
-import basicSsl from '@vitejs/plugin-basic-ssl'
 import react from '@vitejs/plugin-react'
+import fs from 'fs'
 import path from 'path'
 import { defineConfig } from 'vite'
-import EnvironmentPlugin from 'vite-plugin-environment'
 
-// Mantém se usares para outras env vars
+// Importar o módulo 'fs' para ler ficheiros
+// import basicSsl from '@vitejs/plugin-basic-ssl'; // <--- REMOVA OU COMENTE ESTA LINHA
+// import EnvironmentPlugin from 'vite-plugin-environment'; // Manter se ainda precisar de outras env vars
 
 // A base URL para a tua API backend, lida de frontend/.env
-// Deve ser 'https://localhost:3001' em desenvolvimento AGORA QUE O BACKEND É HTTPS
-// E o VITE_API_BASE_URL no .env do frontend DEVE ser https://localhost:3001
-const BACKEND_API_BASE_URL = process.env.VITE_API_BASE_URL || 'https://localhost:3001' // Fallback para segurança
+// Agora deve ser 'https://spotify-clone.local:3001'
+const BACKEND_API_BASE_URL = process.env.VITE_API_BASE_URL || 'https://spotify-clone.local:3001'
+
+// O caminho para a pasta 'certs' está dentro da pasta 'api'
+// Se o vite.config.ts está em C:\DEV\React-Spotify
+// e os certificados estão em C:\DEV\React-Spotify\api\certs
+const certPath = path.resolve(__dirname, '../api', 'certs') // Ajuste este caminho se os seus certificados estiverem noutro local
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
-    basicSsl(), // ADICIONA ISTO: Habilita HTTPS automático para o Vite Dev Server
-    EnvironmentPlugin('all'), // Mantém se usares para outras env vars
+    // basicSsl(), // <--- REMOVA OU COMENTE ESTA LINHA - NÃO USE MAIS O basicSsl()
+    // EnvironmentPlugin('all'), // Manter se precisar
   ],
   resolve: {
     alias: {
@@ -25,28 +30,30 @@ export default defineConfig({
     },
   },
   server: {
+    // Configurar host e porta para o novo domínio
+    host: 'spotify-clone.local',
+    port: 5173, // Mantenha a porta do frontend
+
+    // Configurar HTTPS para usar os certificados mkcert
+    https: {
+      // Certifique-se que estes nomes correspondem EXATAMENTE aos seus ficheiros gerados pelo mkcert.
+      // Ex: spotify-clone.local+1-key.pem e spotify-clone.local+1.pem
+      key: fs.readFileSync(path.resolve(certPath, 'spotify-clone.local+1-key.pem')),
+      cert: fs.readFileSync(path.resolve(certPath, 'spotify-clone.local+1.pem')),
+    },
+
     // Vite's proxy helps bypass CORS issues in development
     proxy: {
-      // Como todas as tuas rotas de backend começam com /api ou /auth,
-      // podemos usar um proxy mais genérico para todas elas.
-      // A ordem pode ser importante se tiveres rotas mais específicas.
-      // Vamos usar uma entrada de proxy mais abrangente para simplificar.
       '/api': {
-        // Este proxy vai apanhar /api/lastfm e /api/spotify/*
-        target: BACKEND_API_BASE_URL,
+        target: BACKEND_API_BASE_URL, // Que agora é 'https://spotify-clone.local:3001'
         changeOrigin: true,
-        secure: false, // MUDA ISTO: Desabilita a verificação de certificado SSL para o proxy (APENAS PARA DEV/LOCALHOST)
-        // É necessário porque o proxy interno do Vite/Node.js pode não confiar
-        // automaticamente nos certificados mkcert como o navegador faz.
+        secure: false, // Necessário para certificados autoassinados em desenvolvimento
       },
       '/auth': {
-        // Este proxy vai apanhar /auth/spotify/*
-        target: BACKEND_API_BASE_URL,
+        target: BACKEND_API_BASE_URL, // Que agora é 'https://spotify-clone.local:3001'
         changeOrigin: true,
-        secure: false, // MUDA ISTO: Desabilita a verificação de certificado SSL para o proxy (APENAS PARA DEV/LOCALHOST)
+        secure: false, // Necessário para certificados autoassinados em desenvolvimento
       },
-      // NOTA: Se tivesses rotas como '/user' no backend que não começam com /api ou /auth,
-      // precisarias de adicionar mais entradas de proxy ou usar uma abordagem diferente.
     },
   },
 })

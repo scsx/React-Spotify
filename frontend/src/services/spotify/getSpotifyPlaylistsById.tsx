@@ -10,17 +10,16 @@ export async function getSpotifyPlaylistsById(
 ): Promise<TSpotifyPlaylist[]> {
   const idsToFetch = Array.isArray(playlistIds) ? playlistIds : [playlistIds]
   const fetchedPlaylists: TSpotifyPlaylist[] = []
-  const errors: string[] = []
+  const errors: string[] = [] // Delay to prevent rate limiting.
 
-  // Delay to prevent rate limiting.
   const THROTTLE_DELAY_MS_SINGLE = 100
 
   for (let i = 0; i < idsToFetch.length; i++) {
     const id = idsToFetch[i]
     try {
-      // api/spotify/playlists/:playlistId
+      // MUDAR AQUI: O novo caminho da API para detalhes de playlist
       const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/api/spotify/playlists/${id}`
+        `${import.meta.env.VITE_API_BASE_URL}/api/spotify/playlist-details/${id}`
       )
       fetchedPlaylists.push(response.data)
     } catch (error: any) {

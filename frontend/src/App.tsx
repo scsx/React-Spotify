@@ -5,6 +5,7 @@ import { Outlet, Route, Routes } from 'react-router-dom'
 import { useSpotifyAuthCallback } from '@/hooks/useSpotifyAuthCallback'
 
 import AuthGuard from '@/components/Auth/AuthGuard'
+import DiscoveryWeeklyPlaylist from '@/components/Playlists/DiscoveryWeeklyPlaylist/DiscoveryWeeklyPlaylist'
 import FavoritePlaylists from '@/components/Playlists/FavoritePlaylists/FavoritePlaylists'
 
 import ArtistsPage from '@/pages/ArtistsPage'
@@ -41,6 +42,7 @@ const App: React.FC = () => {
               </Route>
 
               <Route path="/playlists">
+                <Route path="discovery-weekly" element={<DiscoveryWeeklyPlaylist />} />
                 <Route path="favorites" element={<FavoritePlaylists />} />
                 <Route index element={<Playlists />} />
               </Route>

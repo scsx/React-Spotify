@@ -64,7 +64,7 @@ const FavoritePlaylists = () => {
     }
 
     fetchFavoritePlaylists()
-  }, []) // O array de dependências vazio faz com que corra apenas uma vez no mount
+  }, [])
 
   // Lógica para a barra de % por estilo (será implementada a seguir)
   const calculateStylePercentages = () => {

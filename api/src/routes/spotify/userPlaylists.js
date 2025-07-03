@@ -5,13 +5,9 @@ const axios = require('axios')
 const { getAccessTokenFromSession } = require('../../utils/sessionHelpers')
 
 /**
- * /api/spotify/me/playlists
+ * /api/spotify/.......
  */
 router.get('/me/playlists', async (req, res) => {
-  // TODO: DEV
-  console.log('--- /me/playlists ---')
-  console.log('Session ID:', req.sessionID)
-  console.log('Session has spotifyAccessToken:', !!req.session.access_token)
   const accessToken = getAccessTokenFromSession(req)
   const { limit, offset } = req.query
 
