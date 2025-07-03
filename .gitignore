@@ -7,3 +7,4 @@ node_modules/
 coverage/
 /sessions/
 *.pem
+api/sessions/loki.db

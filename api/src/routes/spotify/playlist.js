@@ -2,27 +2,32 @@
 const express = require('express')
 const router = express.Router()
 const axios = require('axios')
-const { getAccessTokenFromSession } = require('../../utils/sessionHelpers')
+// REMOVA esta linha se getAccessTokenFromSession não for mais usada diretamente aqui
+// const { getAccessTokenFromSession } = require('../../utils/sessionHelpers')
 
+// --- REMOVA ESTE BLOCO router.use COMPLETO ---
 // Middleware para todas as rotas neste router: Garante que o token de acesso está na sessão
+/*
 router.use(async (req, res, next) => {
-  console.log('\n--- REQUEST PARA PLAYLIST DETAILS ROUTE ---')
-  console.log('Path da Requisição:', req.path)
-  console.log('Session ID (Playlist Details Route):', req.sessionID)
-  console.log(
-    'Token na sessão (primeiros 10 chars):',
-    req.session.access_token ? req.session.access_token.substring(0, 10) + '...' : 'NÃO ENCONTRADO'
-  )
-  console.log('-----------------------------------------\n')
+    console.log('\n--- REQUEST PARA PLAYLIST DETAILS ROUTE ---')
+    console.log('Path da Requisição:', req.path)
+    console.log('Session ID (Playlist Details Route):', req.sessionID)
+    console.log(
+        'Token na sessão (primeiros 10 chars):',
+        req.session.access_token ? req.session.access_token.substring(0, 10) + '...' : 'NÃO ENCONTRADO'
+    )
+    console.log('-----------------------------------------\n')
 
-  const accessToken = getAccessTokenFromSession(req)
-  if (!accessToken) {
-    console.error(`ERRO: Token não disponível para ${req.path}.`)
-    return res.status(401).json({ error: 'No Spotify access token provided. Please log in.' })
-  }
-  req.spotifyAccessToken = accessToken // Adiciona o token à requisição
-  next()
+    const accessToken = getAccessTokenFromSession(req)
+    if (!accessToken) {
+        console.error(`ERRO: Token não disponível para ${req.path}.`)
+        return res.status(401).json({ error: 'No Spotify access token provided. Please log in.' })
+    }
+    req.spotifyAccessToken = accessToken // Adiciona o token à requisição
+    next()
 })
+*/
+// --- FIM DO BLOCO A REMOVER ---
 
 /**
  * GET /api/spotify/playlist-details/:playlistId
@@ -31,8 +36,9 @@ router.use(async (req, res, next) => {
  */
 router.get('/:playlistId', async (req, res) => {
   console.log('--- /api/spotify/playlist-details/:playlistId ---')
+  // O accessToken agora virá diretamente de req.spotifyAccessToken, definido no middleware do index.js
   const accessToken = req.spotifyAccessToken
-  let { playlistId } = req.params // O ID pode ser 'discovery-weekly', 'shazam', ou um ID real
+  let { playlistId } = req.params
 
   // Mapeia IDs especiais para IDs reais do Spotify
   if (playlistId === 'discovery-weekly') {
@@ -46,7 +52,8 @@ router.get('/:playlistId', async (req, res) => {
   }
 
   try {
-    const spotifyApiUrl = `https://api.spotify.com/v1/playlists/${playlistId}` // URL real do Spotify
+    // CORREÇÃO: Certifique-se de que a URL da API do Spotify é HTTPS
+    const spotifyApiUrl = `https://api.spotify.com/v1/playlists/${playlistId}`
     const spotifyApiResponse = await axios.get(spotifyApiUrl, {
       headers: {
         Authorization: `Bearer ${accessToken}`,

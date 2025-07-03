@@ -17,10 +17,7 @@ export async function getSpotifyPlaylistsById(
   for (let i = 0; i < idsToFetch.length; i++) {
     const id = idsToFetch[i]
     try {
-      // MUDAR AQUI: O novo caminho da API para detalhes de playlist
-      const response = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/api/spotify/playlist-details/${id}`
-      )
+      const response = await axios.get(`/api/spotify/playlist-details/${id}`)
       fetchedPlaylists.push(response.data)
     } catch (error: any) {
       console.error(

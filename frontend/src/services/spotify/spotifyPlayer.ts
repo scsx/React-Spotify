@@ -3,15 +3,18 @@ import axios from 'axios'
 
 import { SPOTIFY_PREFERRED_MARKET } from '@/lib/constants'
 
+const marketValue = SPOTIFY_PREFERRED_MARKET.split('=')[1] || 'US'
+
 export const getSpotifyCurrentlyPlaying = async (): Promise<any> => {
   try {
-    // The frontend now calls its own backend's proxy endpoint.
-    // This assumes your backend has a route like `/api/spotify/me/player/currently-playing`
-    // that will handle the actual call to Spotify's API.
-    const response = await axios.get(
-      `/api/spotify/me/player/currently-playing?market=${SPOTIFY_PREFERRED_MARKET}`
-    )
-    return response
+    const { data } = await axios.get(`/api/spotify/player/currently-playing`, {
+      params: {
+        market: marketValue,
+      },
+    })
+
+    console.log('Currently playing song:', data)
+    return data
   } catch (error) {
     console.error('Failed to get currently playing song:', error)
     throw new Error('Failed to get currently playing song')

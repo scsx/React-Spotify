@@ -11,14 +11,14 @@ import {
 } from '@/components/ui/navigation-menu'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 
-import { useToken } from '@/contexts/TokenContext'
+import { useAuth } from '@/contexts/AuthContext'
 
 import Switch from '../Switch'
 import HeaderNav from './HeaderNav'
 import HeaderNavMobile from './HeaderNavMobile'
 
 const Header = (): JSX.Element => {
-  const token = useToken()
+  const { isLoggedIn, authLink, logout, user } = useAuth()
 
   // TODO: clean up legacy classes.
   const lgLinkClasses =
@@ -36,7 +36,7 @@ const Header = (): JSX.Element => {
           </SheetTrigger>
           <SheetContent side="left">
             <div className="grid gap-2 py-6">
-              {token?.isValid ? (
+              {isLoggedIn ? (
                 <HeaderNavMobile />
               ) : (
                 <Alert className="mt-8">
@@ -54,22 +54,28 @@ const Header = (): JSX.Element => {
                 Spotify<span className="text-primary">+</span>
               </Link>
             </NavigationMenuItem>
-            {token?.isValid && <HeaderNav classes={lgLinkClasses} />}
+            {isLoggedIn && <HeaderNav classes={lgLinkClasses} />}
           </NavigationMenuList>
         </NavigationMenu>
         <div className="ml-auto flex items-center gap-2">
           <Switch text="Dark mode" classes="flex mr-4" />
 
-          {!token?.isValid ? (
+          {!isLoggedIn ? (
             <Button asChild>
-              <a className="text-white" href={token?.authLink}>
+              {/* USAR authLink DIRETAMENTE */}
+              <a className="text-white" href={authLink}>
                 Authenticate
               </a>
             </Button>
           ) : (
-            <Button className={lgLinkClasses} onClick={token?.logout}>
-              Logout
-            </Button>
+            <>
+              {/* EXIBIR NOME DO USUÁRIO SE DISPONÍVEL */}
+              {user && <span className="text-white mr-2">Olá, {user.display_name}!</span>}
+              {/* USAR logout DIRETAMENTE */}
+              <Button className={lgLinkClasses} onClick={logout}>
+                Logout
+              </Button>
+            </>
           )}
         </div>
       </header>

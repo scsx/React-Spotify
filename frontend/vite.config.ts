@@ -21,7 +21,6 @@ const certPath = path.resolve(__dirname, '../api', 'certs') // Ajuste este camin
 export default defineConfig({
   plugins: [
     react(),
-    // basicSsl(), // <--- REMOVA OU COMENTE ESTA LINHA - NÃO USE MAIS O basicSsl()
     // EnvironmentPlugin('all'), // Manter se precisar
   ],
   resolve: {
