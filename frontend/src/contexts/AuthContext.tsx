@@ -7,19 +7,14 @@ import React, {
   useState,
 } from 'react'
 
+import { TSpotifyUser } from '@/types/SpotifyUser'
 import axios from 'axios'
 
 import { SPOTIFY_AUTH_LOGIN_PATH } from '@/lib/constants'
 
-type TUser = {
-  id: string
-  display_name: string
-  email?: string
-}
-
 type TAuthContextValue = {
   isLoggedIn: boolean
-  user: TUser | null
+  user: TSpotifyUser | null
   checkAuthStatus: () => Promise<void>
   logout: () => void
   authLink: string
@@ -37,7 +32,7 @@ export const useAuth = () => {
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
-  const [user, setUser] = useState<TUser | null>(null)
+  const [user, setUser] = useState<TSpotifyUser | null>(null)
   const authLink = SPOTIFY_AUTH_LOGIN_PATH
 
   const checkAuthStatus = useCallback(async () => {

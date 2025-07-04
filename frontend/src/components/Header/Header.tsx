@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 
 import { RxHamburgerMenu } from 'react-icons/rx'
 
+import UserLoggedIn from '@/components/Header/UserLoggedIn'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
@@ -67,10 +68,7 @@ const Header = (): JSX.Element => {
               </a>
             </Button>
           ) : (
-            <>
-              {user && <span className="text-white mr-2">Hi {user.display_name}</span>}
-              <Button onClick={logout}>Logout</Button>
-            </>
+            <UserLoggedIn user={user} logout={logout} />
           )}
         </div>
       </header>
