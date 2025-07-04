@@ -72,7 +72,11 @@ const FavoritePlaylists = () => {
   if (loading) {
     return (
       <>
-        <div className="playlist-breakdown-loading">Loading styles...</div>
+        <div className="w-[90%] mx-auto pt-8 mb-16">
+          <div className="flex w-full h-2 bg-slate-500"></div>
+          <Text variant='paragraph' className='text-center mt-4'>Loading styles</Text>
+        </div>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {Array.from({ length: SPOTIFY_FAVORITE_PLAYLISTS.length }).map((_, index) => (
             <Card key={index} className="flex flex-col items-center p-4">

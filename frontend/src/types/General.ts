@@ -7,3 +7,9 @@ export interface TGenericPagination {
   onPrevious: () => void
   onNext: () => void
 }
+
+export interface TFavoritesStyleBreakdown {
+  style: string
+  percentage: number
+  totalTracks: number
+}

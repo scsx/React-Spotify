@@ -1,35 +1,29 @@
-// frontend/src/components/Playlists/FavoritePlaylists/FavoritesStyles.tsx
 import React, { useMemo } from 'react'
 
-// Remove useEffect, useState
+import { TFavoritesStyleBreakdown } from '@/types/General'
 import { TSpotifyPlaylist } from '@/types/SpotifyPlaylist'
 
-// Para tipar a prop 'playlists'
 import Text from '@/components/Text'
 
-// Não precisa mais importar getSpotifyPlaylistsById ou SPOTIFY_FAVORITE_PLAYLISTS aqui
-// import { getSpotifyPlaylistsById } from '@/services/spotify/getSpotifyPlaylistsById'
-// import { SPOTIFY_FAVORITE_PLAYLISTS } from '@/lib/constants'
-
-// Tipo para o resultado do cálculo
-interface StyleBreakdown {
-  style: string
-  percentage: number
-  totalTracks: number
-}
-
-// NOVO: Definir as props que este componente vai receber
 interface FavoritesStylesProps {
-  playlists: (TSpotifyPlaylist & { style: string })[] // A lista de playlists já combinada com 'style'
+  playlists: (TSpotifyPlaylist & { style: string })[]
 }
+
+const FavStylesColors = [
+  { pop: 'bg-blue-600' },
+  { electronic: 'bg-cyan-800' },
+  { world: 'bg-yellow-500' },
+  { rock: 'bg-rose-800' },
+  { classical: 'bg-cyan-700' },
+]
+
+const styleColorMap: { [key: string]: string } = FavStylesColors.reduce((acc, current) => {
+  const key = Object.keys(current)[0]
+  const value = Object.values(current)[0]
+  return { ...acc, [key]: value }
+}, {})
 
 const FavoritesStyles: React.FC<FavoritesStylesProps> = ({ playlists }) => {
-  // Remove loading, error, e useEffect
-  // const [breakdown, setBreakdown] = useState<StyleBreakdown[]>([])
-  // const [loading, setLoading] = useState<boolean>(true)
-  // const [error, setError] = useState<string | null>(null)
-
-  // O cálculo agora é feito diretamente a partir da prop 'playlists'
   const breakdown = useMemo(() => {
     if (!playlists || playlists.length === 0) {
       return []
@@ -49,41 +43,56 @@ const FavoritesStyles: React.FC<FavoritesStylesProps> = ({ playlists }) => {
       }
     })
 
-    const calculatedBreakdown: StyleBreakdown[] = Object.keys(styleTrackCounts).map((style) => {
-      const totalTracksForStyle = styleTrackCounts[style]
-      const percentage = grandTotalTracks > 0 ? (totalTracksForStyle / grandTotalTracks) * 100 : 0
-      return {
-        style,
-        percentage: parseFloat(percentage.toFixed(1)),
-        totalTracks: totalTracksForStyle,
+    const calculatedBreakdown: TFavoritesStyleBreakdown[] = Object.keys(styleTrackCounts).map(
+      (style) => {
+        const totalTracksForStyle = styleTrackCounts[style]
+        const percentage = grandTotalTracks > 0 ? (totalTracksForStyle / grandTotalTracks) * 100 : 0
+        return {
+          style,
+          percentage: parseFloat(percentage.toFixed(1)),
+          totalTracks: totalTracksForStyle,
+        }
       }
-    })
+    )
 
     calculatedBreakdown.sort((a, b) => b.percentage - a.percentage)
 
     return calculatedBreakdown
   }, [playlists])
 
-
   if (breakdown.length === 0) {
     return <div>Nenhum dado de estilo disponível.</div>
   }
 
   return (
-    <div>
-      <div>
-        {breakdown.map((item) => (
-         <div key={item.style}>
-            <span>{item.style}:</span>
-            <span>{item.percentage}%</span>
-            <div>
-              <div
-                style={{ width: `${item.percentage}%` }}
-                title={`${item.totalTracks} faixas`} // Tooltip com o número total de faixas
-              ></div>
+    <div className="w-[90%] mx-auto pt-8 mb-16">
+      {/* Bar */}
+      <div className="flex w-full h-2">
+        {breakdown.map((item) => {
+          const bgColorClass = styleColorMap[item.style] || 'bg-gray-500'
+          return (
+            <div
+              key={item.style}
+              className={`${bgColorClass} border-r border-gray-700 last:border-r-0`}
+              style={{ width: `${item.percentage}%` }}
+              title={`${item.style}: ${item.totalTracks} faixas (${item.percentage}%)`}
+            ></div>
+          )
+        })}
+      </div>
+      {/* Caption */}
+      <div className="flex flex-wrap justify-center mt-4 gap-x-8">
+        {breakdown.map((item) => {
+          const bgColorClass = styleColorMap[item.style] || 'bg-gray-500'
+          return (
+            <div key={item.style} className="flex items-center space-x-2">
+              <div className={`w-3 h-3 rounded-sm ${bgColorClass}`}></div>
+              <Text variant='paragraph' as='span'>
+                {item.style.charAt(0).toUpperCase() + item.style.slice(1)}: {item.percentage}%
+              </Text>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
     </div>
   )
