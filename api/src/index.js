@@ -14,6 +14,7 @@ const spotifyCurrentlyPlayingRoute = require('./routes/spotify/currentlyPlaying'
 const spotifySearchRoute = require('./routes/spotify/search')
 const spotifyArtistRoute = require('./routes/spotify/artist')
 const spotifyCurrentUserRoute = require('./routes/spotify/currentUser')
+const spotifySimilarArtistsRoute = require('./routes/spotify/similarArtists')
 
 const app = express()
 const API_PORT = process.env.PORT || 3001
@@ -60,28 +61,26 @@ app.use(
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// --- Definição de Rotas ---
-
+// --- ROUTES ---
 // LastFM routes.
 app.use('/api/lastfm', lastFmRoutes)
 
 // Spotify auth route.
 app.use('/auth/spotify', spotifyAuthRoutes)
 
-// Spotify API routes.
 const spotifyApiRouter = express.Router()
 
-// Monta a rota para obter o perfil do utilizador.
-// Esta é a correção para o 404 de /api/spotify/me
+// User
 spotifyApiRouter.use('/me', spotifyCurrentUserRoute)
 
-// Monte as outras rotas da API do Spotify
+// Other
 spotifyApiRouter.use('/playlists', spotifyPlaylistRoutes)
 spotifyApiRouter.use('/player', spotifyCurrentlyPlayingRoute)
 spotifyApiRouter.use('/search', spotifySearchRoute)
 spotifyApiRouter.use('/artists', spotifyArtistRoute)
+spotifyApiRouter.use('/artists', spotifySimilarArtistsRoute)
 
-// Finalmente, monte o spotifyApiRouter no caminho '/api/spotify' da sua aplicação principal
+// spotifyApiRouter
 app.use('/api/spotify', spotifyApiRouter)
 
 // Test Endpoint
