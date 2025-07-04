@@ -1,46 +1,41 @@
-// api/src/routes/spotify/currentUser.js
 const express = require('express')
 const axios = require('axios')
 const router = express.Router()
 
 /**
- * Rota para obter os detalhes do perfil do usuário atualmente logado no Spotify.
- * Esta rota é acessada como GET /api/spotify/me (devido à montagem no index.js)
+ * Route to get the current user's Spotify profile details.
+ * Accessed as GET /api/spotify/me (due to mounting in index.js)
  */
 router.get('/', async (req, res) => {
   const accessToken = req.session.access_token
 
   if (!accessToken) {
-    console.warn('Backend: /api/spotify/me - Tentativa de acesso sem access_token na sessão.')
-    return res
-      .status(401)
-      .json({ message: 'Não autenticado. Token de acesso não encontrado na sessão.' })
+    console.warn('Backend: /api/spotify/me - Access attempt without session access_token.')
+    return res.status(401).json({ message: 'Unauthorized. Access token not found in session.' })
   }
 
   try {
     const spotifyMeResponse = await axios.get('https://api.spotify.com/v1/me', {
-      // URL CORRETA DA API DO SPOTIFY para 'me'
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     })
 
     res.status(200).json({
-      message: 'Dados do usuário Spotify obtidos com sucesso.',
+      message: 'Spotify user data successfully retrieved.',
       user: spotifyMeResponse.data,
     })
-    console.log(
-      'Backend: Dados do usuário Spotify obtidos e enviados para o frontend via /api/spotify/me.'
-    )
+    // Removed verbose console.log for successful data retrieval
   } catch (error) {
     console.error(
-      'Erro ao obter dados do usuário Spotify da API externa (Spotify):',
+      'Error fetching Spotify user data from external API (Spotify):',
       error.response ? error.response.data : error.message
     )
 
     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+      // Destroy session and clear cookie if Spotify token is invalid/expired
       req.session.destroy((err) => {
-        if (err) console.error('Erro ao destruir sessão após token inválido:', err)
+        if (err) console.error('Error destroying session after invalid token:', err)
       })
       res.clearCookie('connect.sid', {
         domain: 'spotify-clone.local',
@@ -48,14 +43,12 @@ router.get('/', async (req, res) => {
         secure: true,
         sameSite: 'None',
       })
-      return res
-        .status(401)
-        .json({
-          message: 'Token Spotify expirado ou inválido. Por favor, autentique-se novamente.',
-        })
+      return res.status(401).json({
+        message: 'Spotify token expired or invalid. Please re-authenticate.',
+      })
     }
 
-    res.status(500).json({ message: 'Erro interno ao obter dados do Spotify.' })
+    res.status(500).json({ message: 'Internal server error fetching Spotify data.' })
   }
 })
 

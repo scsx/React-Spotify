@@ -18,7 +18,8 @@ const spotifySimilarArtistsRoute = require('./routes/spotify/similarArtists')
 
 const app = express()
 const API_PORT = process.env.PORT || 3001
-const API_HOST = 'spotify-clone.local'
+const FRONTEND_HOST = process.env.FRONTEND_HOST
+const FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL = process.env.FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL
 
 // --- Certificates SSL/TLS ---
 const privateKey = fs.readFileSync('./certs/spotify-clone.local+1-key.pem', 'utf8')
@@ -35,7 +36,7 @@ const lokiStoreOptions = {
 // --- Middlewares ---
 app.use(
   cors({
-    origin: process.env.FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL.replace(/\/$/, ''),
+    origin: FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL.replace(/\/$/, ''),
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
@@ -53,7 +54,7 @@ app.use(
       httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24, // 24 horas
       sameSite: 'None',
-      domain: 'spotify-clone.local',
+      domain: FRONTEND_HOST,
     },
   })
 )
@@ -90,7 +91,7 @@ app.get('/api/test', (req, res) => {
 
 // Adiciona uma rota de fallback para o frontend em caso de erro no backend para a raiz
 app.get('/', (req, res) => {
-  res.redirect(process.env.FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL)
+  res.redirect(FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL)
 })
 
 // --- Início do Servidor ---
@@ -98,11 +99,11 @@ if (process.env.NODE_ENV === 'production') {
   // TODO: do something or remove.
 } else {
   const httpsServer = https.createServer(credentials, app)
-  httpsServer.listen(API_PORT, API_HOST, () => {
-    console.log(`Express API running at https://${API_HOST}:${API_PORT}`)
-    console.log(`Test with: https://${API_HOST}:${API_PORT}/api/test`)
+  httpsServer.listen(API_PORT, FRONTEND_HOST, () => {
+    console.log(`Express API running at https://${FRONTEND_HOST}:${API_PORT}`)
+    console.log(`Test with: https://${FRONTEND_HOST}:${API_PORT}/api/test`)
     console.log(
-      `Test Last.FM info with: https://${API_HOST}:${API_PORT}/api/lastfm/artist.getinfo?artist=Radiohead`
+      `Test Last.FM info with: https://${FRONTEND_HOST}:${API_PORT}/api/lastfm/artist.getinfo?artist=Radiohead`
     )
   })
 }

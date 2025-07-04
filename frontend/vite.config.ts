@@ -4,6 +4,9 @@ import fs from 'fs'
 import path from 'path'
 import { defineConfig } from 'vite'
 
+// TODO: Clean, translate
+
+
 // Importar o módulo 'fs' para ler ficheiros
 // import basicSsl from '@vitejs/plugin-basic-ssl'; // <--- REMOVA OU COMENTE ESTA LINHA
 // import EnvironmentPlugin from 'vite-plugin-environment'; // Manter se ainda precisar de outras env vars

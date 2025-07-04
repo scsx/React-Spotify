@@ -8,7 +8,7 @@ const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET
 const REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI
 const SPOTIFY_SCOPES = process.env.SPOTIFY_SCOPES
-const FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL = process.env.FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL
+const FRONTEND_HOST = process.env.FRONTEND_HOST
 
 // Function to close the login window on the frontend after successful login or error.
 const sendPopupCloseScript = (res, error = null) => {
@@ -17,13 +17,6 @@ const sendPopupCloseScript = (res, error = null) => {
 
   if (error) {
     message = `An error occurred: ${error}. Please try again.`
-    // Optional: To send a more detailed error message to the main window,
-    // uncomment and adapt the line below:
-    // script = `window.opener.postMessage({ type: 'SPOTIFY_AUTH_ERROR', error: '${error}' }, '${FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL}'); window.close();`;
-  } else {
-    // Optional: To send a success message to the main window,
-    // uncomment and adapt the line below:
-    // script = `window.opener.postMessage({ type: 'SPOTIFY_AUTH_SUCCESS' }, '${FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL}'); window.close();`;
   }
 
   res.send(`
@@ -140,7 +133,7 @@ router.post('/logout', (req, res) => {
       console.error('Error destroying session during logout:', err)
       // Ensure cookie is cleared even if session destroy fails for consistency
       res.clearCookie('connect.sid', {
-        domain: 'spotify-clone.local', // Use your domain here
+        domain: FRONTEND_HOST,
         path: '/',
         secure: true,
         sameSite: 'None',
@@ -149,7 +142,7 @@ router.post('/logout', (req, res) => {
     }
 
     res.clearCookie('connect.sid', {
-      domain: 'spotify-clone.local', // Use your domain here
+      domain: FRONTEND_HOST,
       path: '/',
       secure: true,
       sameSite: 'None',
