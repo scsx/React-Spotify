@@ -19,7 +19,22 @@ import HeaderNav from './HeaderNav'
 import HeaderNavMobile from './HeaderNavMobile'
 
 const Header = (): JSX.Element => {
-  const { isLoggedIn, authLink, logout, user } = useAuth()
+  const { isLoggedIn, authLink, logout, user, checkAuthStatus } = useAuth()
+
+  const handleLogin = () => {
+    const popup = window.open(
+      authLink,
+      'spotifyAuthPopup',
+      'width=600,height=700,scrollbars=yes,resizable=yes'
+    )
+
+    const checkPopup = setInterval(() => {
+      if (!popup || popup.closed) {
+        clearInterval(checkPopup)
+        checkAuthStatus()
+      }
+    }, 500) // Verifica a cada 500ms
+  }
 
   // TODO: clean up legacy classes.
   const lgLinkClasses =
@@ -62,10 +77,11 @@ const Header = (): JSX.Element => {
           <Switch text="Dark mode" classes="flex mr-4" />
 
           {!isLoggedIn ? (
-            <Button asChild>
-              <a className="text-white" href={authLink}>
+            <Button onClick={handleLogin}>
+              Authenticate
+              {/* <a className="text-white" href={authLink}>
                 Authenticate
-              </a>
+              </a> */}
             </Button>
           ) : (
             <UserLoggedIn user={user} logout={logout} />
