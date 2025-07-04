@@ -131,7 +131,7 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
           {biographyLastFM && biographyLastFM !== '' && (
             <TabsContent value="bio">
               <div
-                className="text-sm mt-8"
+                className="text-base mt-8"
                 dangerouslySetInnerHTML={{ __html: biographyLastFM.replace(/\n/g, '<br>') }}
               />
             </TabsContent>
