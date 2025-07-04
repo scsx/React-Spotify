@@ -18,6 +18,7 @@ type TAuthContextValue = {
   checkAuthStatus: () => Promise<void>
   logout: () => void
   authLink: string
+  isAuthCheckComplete: boolean
 }
 
 const AuthContext = createContext<TAuthContextValue | undefined>(undefined)
@@ -33,6 +34,7 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false)
   const [user, setUser] = useState<TSpotifyUser | null>(null)
+  const [isAuthCheckComplete, setIsAuthCheckComplete] = useState<boolean>(false)
   const authLink = SPOTIFY_AUTH_LOGIN_PATH
 
   const checkAuthStatus = useCallback(async () => {
@@ -47,10 +49,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setUser(null)
       }
     } catch (error) {
-      // Axios interceptor likely handles 401 errors. For others, assume not logged in.
-      console.error('Frontend: Authentication status check failed:', error)
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        console.info('Frontend: Verificação de autenticação - Usuário não logado (401 esperado).')
+      } else {
+        // Para outros tipos de erro, continua a logar como erro
+        console.error('Frontend: Falha na verificação de autenticação:', error)
+      }
       setIsLoggedIn(false)
       setUser(null)
+    } finally {
+      // Garante que isAuthCheckComplete é definido para true após a tentativa,
+      // independentemente do sucesso ou falha.
+      setIsAuthCheckComplete(true)
     }
   }, [])
 
@@ -71,11 +81,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, [])
 
   useEffect(() => {
-    // Check auth status on component mount or if user/login state is incomplete
-    if (!isLoggedIn || !user) {
+    // Dispara a verificação de status de autenticação APENAS UMA VEZ no primeiro mount
+    // Não precisa verificar '!isLoggedIn || !user' aqui, porque o objetivo é verificar o status inicial.
+    if (!isAuthCheckComplete) {
       checkAuthStatus()
     }
-  }, [isLoggedIn, user, checkAuthStatus])
+  }, [checkAuthStatus, isAuthCheckComplete])
 
   const contextValue = React.useMemo(
     () => ({
@@ -84,6 +95,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       checkAuthStatus,
       logout,
       authLink,
+      isAuthCheckComplete,
     }),
     [isLoggedIn, user, checkAuthStatus, logout, authLink]
   )
