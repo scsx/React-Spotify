@@ -35,7 +35,7 @@ const UserLoggedIn = ({ user, logout }: UserLoggedInProps): JSX.Element => {
   const initials = user ? getUserInitials(user.display_name, user.id) : 'U'
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 border pl-4 rounded-full">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div className="flex items-center gap-4 cursor-pointer">
@@ -52,8 +52,7 @@ const UserLoggedIn = ({ user, logout }: UserLoggedInProps): JSX.Element => {
             )}
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56">
-          <DropdownMenuSeparator />
+        <DropdownMenuContent className="w-56 mt-4" align="end">
           <DropdownMenuItem>
             <Hyperlink href="/user">Profile</Hyperlink>
           </DropdownMenuItem>
