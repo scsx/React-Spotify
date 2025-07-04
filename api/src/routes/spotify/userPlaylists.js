@@ -5,7 +5,7 @@ const axios = require('axios')
 const { getAccessTokenFromSession } = require('../../utils/sessionHelpers')
 
 /**
- * /api/spotify/.......
+ * TODO: DELETE
  */
 router.get('/me/playlists', async (req, res) => {
   const accessToken = getAccessTokenFromSession(req)

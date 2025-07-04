@@ -8,3 +8,4 @@ coverage/
 /sessions/
 *.pem
 api/sessions/loki.db
+api/sessions/loki.db

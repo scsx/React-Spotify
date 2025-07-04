@@ -7,18 +7,17 @@ const https = require('https')
 const fs = require('fs')
 
 // --- Importação de Rotas ---
-const lastFmRoutes = require('./routes/lastfm') // <-- IMPORTANTE: Last.fm routes
-const spotifyAuthRoutes = require('./routes/spotifyAuth') // <-- IMPORTANTE: Spotify Auth (login, callback, logout)
+const lastFmRoutes = require('./routes/lastfm')
+const spotifyAuthRoutes = require('./routes/spotifyAuth')
 // Garanta que estes ficheiros de rota estão corretos para as URIs que pretende usar
-const spotifyCollectionsRoute = require('./routes/spotify/spotifyCollectionsRoute')
-const spotifyPlaylistDetailsRoute = require('./routes/spotify/playlist')
+const spotifyPlaylistRoutes = require('./routes/spotify/playlists')
 const spotifyCurrentlyPlayingRoute = require('./routes/spotify/currentlyPlaying')
 const spotifySearchRoute = require('./routes/spotify/search')
 const spotifyArtistRoute = require('./routes/spotify/artist')
 const spotifySimilarArtistsRoute = require('./routes/spotify/similarArtists')
 const spotifyTopTracksRoute = require('./routes/spotify/topTracks')
 const spotifyArtistAlbumsRoute = require('./routes/spotify/artistAlbums')
-const spotifyCurrentUserRoute = require('./routes/spotify/currentUser') // <-- IMPORTANTE: Spotify Current User (o /me)
+const spotifyCurrentUserRoute = require('./routes/spotify/currentUser')
 
 const app = express()
 const API_PORT = process.env.PORT || 3001
@@ -81,15 +80,13 @@ const spotifyApiRouter = express.Router()
 spotifyApiRouter.use('/me', spotifyCurrentUserRoute) // <-- ESTA É A LINHA CRÍTICA CORRIGIDA
 
 // Monte as outras rotas da API do Spotify
-spotifyApiRouter.use('/playlists', spotifyPlaylistDetailsRoute) // Se o endpoint é /api/spotify/playlists/:id
-spotifyApiRouter.use('/collections', spotifyCollectionsRoute) // Se o endpoint é /api/spotify/collections
-spotifyApiRouter.use('/player', spotifyCurrentlyPlayingRoute) // Ex: Se a rota interna é '/currently-playing'
+spotifyApiRouter.use('/playlists', spotifyPlaylistRoutes)
+spotifyApiRouter.use('/player', spotifyCurrentlyPlayingRoute)
 spotifyApiRouter.use('/search', spotifySearchRoute)
 spotifyApiRouter.use('/artist', spotifyArtistRoute)
 spotifyApiRouter.use('/artist/similar', spotifySimilarArtistsRoute)
 spotifyApiRouter.use('/artist/top-tracks', spotifyTopTracksRoute)
 spotifyApiRouter.use('/artist/albums', spotifyArtistAlbumsRoute)
-
 
 // Finalmente, monte o spotifyApiRouter no caminho '/api/spotify' da sua aplicação principal
 app.use('/api/spotify', spotifyApiRouter)

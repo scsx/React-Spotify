@@ -1,3 +1,4 @@
+// frontend/src/services/spotify/getSpotifyPlaylistsById.ts
 import { TSpotifyPlaylist } from '@/types/SpotifyPlaylist'
 import axios from 'axios'
 
@@ -17,7 +18,8 @@ export async function getSpotifyPlaylistsById(
   for (let i = 0; i < idsToFetch.length; i++) {
     const id = idsToFetch[i]
     try {
-      const response = await axios.get(`/api/spotify/playlist-details/${id}`)
+      // A rota do backend para uma playlist específica por ID é agora '/api/spotify/playlists/:playlistId'
+      const response = await axios.get(`/api/spotify/playlists/${id}`)
       fetchedPlaylists.push(response.data)
     } catch (error: any) {
       console.error(

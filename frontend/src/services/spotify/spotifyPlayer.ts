@@ -13,7 +13,6 @@ export const getSpotifyCurrentlyPlaying = async (): Promise<any> => {
       },
     })
 
-    console.log('Currently playing song:', data)
     return data
   } catch (error) {
     console.error('Failed to get currently playing song:', error)
