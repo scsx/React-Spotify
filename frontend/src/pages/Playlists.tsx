@@ -1,15 +1,7 @@
-import PlaylistsNav from '@/components/Playlists/PlaylistsNav'
-import UserPlaylists from '@/components/Playlists/UserPlaylists'
-import Text from '@/components/Text'
+import UserPlaylists from '@/components/Playlists/UserPlaylists/UserPlaylists'
 
 const Playlists = (): JSX.Element => {
-  return (
-    <div className="container">
-      <Text variant="h1">Playlists</Text>
-      <PlaylistsNav />
-      <UserPlaylists />
-    </div>
-  )
+  return <UserPlaylists />
 }
 
 export default Playlists
