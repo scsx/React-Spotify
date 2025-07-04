@@ -3,7 +3,7 @@ import axios from 'axios'
 
 export const getSpotifyArtist = async (artistId: string): Promise<TSpotifyArtist> => {
   try {
-    const response = await axios.get(`/api/spotify/artist/${artistId}`)
+    const response = await axios.get(`/api/spotify/artists/${artistId}`)
 
     const artist: TSpotifyArtist = response.data
 
