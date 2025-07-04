@@ -54,7 +54,7 @@ const FavoritesStyles: React.FC<FavoritesStylesProps> = ({ playlists }) => {
       const percentage = grandTotalTracks > 0 ? (totalTracksForStyle / grandTotalTracks) * 100 : 0
       return {
         style,
-        percentage: parseFloat(percentage.toFixed(1)), // Arredonda para 1 casa decimal
+        percentage: parseFloat(percentage.toFixed(1)),
         totalTracks: totalTracksForStyle,
       }
     })
@@ -66,19 +66,18 @@ const FavoritesStyles: React.FC<FavoritesStylesProps> = ({ playlists }) => {
 
 
   if (breakdown.length === 0) {
-    return <div className="playlist-breakdown-empty">Nenhum dado de estilo disponível.</div>
+    return <div>Nenhum dado de estilo disponível.</div>
   }
 
   return (
-    <div className="playlist-style-breakdown">
-      <div className="style-list">
+    <div>
+      <div>
         {breakdown.map((item) => (
-          <div key={item.style} className="style-item">
-            <span className="style-name">{item.style}:</span>
-            <span className="style-percentage">{item.percentage}%</span>
-            <div className="progress-bar-container">
+         <div key={item.style}>
+            <span>{item.style}:</span>
+            <span>{item.percentage}%</span>
+            <div>
               <div
-                className="progress-bar-fill"
                 style={{ width: `${item.percentage}%` }}
                 title={`${item.totalTracks} faixas`} // Tooltip com o número total de faixas
               ></div>

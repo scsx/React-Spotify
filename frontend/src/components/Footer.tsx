@@ -1,3 +1,5 @@
+import Hyperlink from '@/components/Hyperlink'
+
 import Player from './Player'
 
 const Footer = (): JSX.Element => {
@@ -9,24 +11,16 @@ const Footer = (): JSX.Element => {
         </div>
         <p>
           By{' '}
-          <a href="https://soucasaux.com" target="_blank" className="hover:text-primary">
+          <Hyperlink href="https://soucasaux.com" variant="title" external>
             SCSX
-          </a>
+          </Hyperlink>
           .{' '}
-          <a
-            href="https://github.com/scsx/React-Spotify"
-            target="_blank"
-            className="hover:text-primary"
-          >
-            Tech notes.{' '}
-          </a>
-          <a
-            href="https://github.com/scsx/React-Spotify"
-            target="_blank"
-            className="hover:text-primary"
-          >
+          <Hyperlink href="/dev-notes" variant="title">
+            Dev notes.{' '}
+          </Hyperlink>
+          <Hyperlink href="https://github.com/scsx/React-Spotify" external variant="title">
             Repo
-          </a>
+          </Hyperlink>
           .
         </p>
       </div>

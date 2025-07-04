@@ -5,6 +5,7 @@ import { Outlet, Route, Routes } from 'react-router-dom'
 import { useSpotifyAuthCallback } from '@/hooks/useSpotifyAuthCallback'
 
 import AuthGuard from '@/components/Auth/AuthGuard'
+import DevNotes from '@/components/DevNotes'
 import DiscoveryWeeklyPlaylist from '@/components/Playlists/DiscoveryWeeklyPlaylist/DiscoveryWeeklyPlaylist'
 import FavoritePlaylists from '@/components/Playlists/FavoritePlaylists/FavoritePlaylists'
 import PlaylistsLayout from '@/components/Playlists/PlaylistsLayout'
@@ -33,8 +34,9 @@ const App: React.FC = () => {
         <main className="flex flex-1 py-40 content-stretch">
           <Routes>
             <Route path="/" element={<Homepage />} />
+            <Route path="/dev-notes" element={<DevNotes />} />
 
-            {/* AuthGuard for all except HP */}
+            {/* AuthGuard for all except HP, Dev Notes */}
             {/* Nested routes: --- Order matters --- */}
             <Route element={<AuthGuard />}>
               <Route path="/artists">
