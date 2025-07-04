@@ -45,6 +45,7 @@ const PlaylistsNav: React.FC = () => {
           <Text key={item.path} variant="h6">
             <NavLink
               to={item.path}
+              end={item.path === '/playlists'}
               className={({ isActive }) =>
                 isActive ? 'text-primary cursor-default' : 'text-foreground hover:text-primary'
               }

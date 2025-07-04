@@ -1,4 +1,3 @@
-// api/src/index.js
 require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
@@ -77,7 +76,7 @@ const spotifyApiRouter = express.Router()
 
 // Monta a rota para obter o perfil do utilizador.
 // Esta é a correção para o 404 de /api/spotify/me
-spotifyApiRouter.use('/me', spotifyCurrentUserRoute) // <-- ESTA É A LINHA CRÍTICA CORRIGIDA
+spotifyApiRouter.use('/me', spotifyCurrentUserRoute)
 
 // Monte as outras rotas da API do Spotify
 spotifyApiRouter.use('/playlists', spotifyPlaylistRoutes)

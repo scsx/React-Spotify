@@ -1,4 +1,3 @@
-// frontend/src/services/spotifyPlayer.ts
 import axios from 'axios'
 
 import { SPOTIFY_PREFERRED_MARKET } from '@/lib/constants'

@@ -3,15 +3,14 @@ const router = express.Router()
 const axios = require('axios')
 
 // Import the helper function to get the access token from the session
-const { getAccessTokenFromSession } = require('../../utils/sessionHelpers') // Adjust path if necessary
+const { getAccessTokenFromSession } = require('../../utils/sessionHelpers')
 
 /**
  * /api/spotify/artists/:artistId
  * Proxies Spotify Get Artist API requests.
  * Fetches details for a specific artist by Spotify ID.
  */
-router.get('/artists/:artistId', async (req, res) => {
-  // Note the '/artists' prefix here
+router.get('/:artistId', async (req, res) => {
   const accessToken = getAccessTokenFromSession(req)
   const { artistId } = req.params // Extract artistId from URL parameters
 
@@ -26,7 +25,6 @@ router.get('/artists/:artistId', async (req, res) => {
   }
 
   try {
-    // The endpoint is https://api.spotify.com/v1/artists/{id}
     const spotifyApiResponse = await axios.get(`https://api.spotify.com/v1/artists/${artistId}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
