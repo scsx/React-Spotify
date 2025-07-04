@@ -62,19 +62,14 @@ const Header = (): JSX.Element => {
 
           {!isLoggedIn ? (
             <Button asChild>
-              {/* USAR authLink DIRETAMENTE */}
               <a className="text-white" href={authLink}>
                 Authenticate
               </a>
             </Button>
           ) : (
             <>
-              {/* EXIBIR NOME DO USUÁRIO SE DISPONÍVEL */}
-              {user && <span className="text-white mr-2">Olá, {user.display_name}!</span>}
-              {/* USAR logout DIRETAMENTE */}
-              <Button className={lgLinkClasses} onClick={logout}>
-                Logout
-              </Button>
+              {user && <span className="text-white mr-2">Hi {user.display_name}</span>}
+              <Button onClick={logout}>Logout</Button>
             </>
           )}
         </div>

@@ -46,14 +46,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const response = await axios.get('/api/spotify/me')
       if (response.status === 200) {
         setIsLoggedIn(true)
-        setUser(response.data)
+        setUser(response.data.user)
       } else {
         setIsLoggedIn(false)
         setUser(null)
       }
     } catch (error) {
       // Axios interceptor likely handles 401 errors. For others, assume not logged in.
-      console.error('Frontend: Authentication status check failed:', error);
+      console.error('Frontend: Authentication status check failed:', error)
       setIsLoggedIn(false)
       setUser(null)
     }
@@ -67,7 +67,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setUser(null)
       window.location.href = SPOTIFY_AUTH_LOGIN_PATH
     } catch (error) {
-      console.error('Frontend: Backend logout failed:', error);
+      console.error('Frontend: Backend logout failed:', error)
       // Even if backend logout fails, clear frontend state for consistency.
       setIsLoggedIn(false)
       setUser(null)
