@@ -4,24 +4,22 @@ const axios = require('axios')
 
 const { getAccessTokenFromSession } = require('../../utils/sessionHelpers')
 
-router.get('/me/player/currently-playing', async (req, res) => {
+router.get('/currently-playing', async (req, res) => {
   const accessToken = getAccessTokenFromSession(req)
   const market = req.query.market || 'US'
 
   if (!accessToken) {
-    console.error('No Spotify access token available for /me/player/currently-playing.')
+    console.error('No Spotify access token available for /currently-playing.')
     return res.status(401).json({ error: 'No Spotify access token provided. Please log in.' })
   }
 
   try {
-    const response = await axios.get(
-      `https://api.spotify.com/v1/me/player/currently-playing?market=${market}`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    )
+    const response = await axios.get(`https://api.spotify.com/v1/me/player/currently-playing`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: { market: market },
+    })
     res.json(response.data)
   } catch (error) {
     console.error(

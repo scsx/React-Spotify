@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 
-import { TokenProvider, useToken } from '../../contexts/TokenContext'
+import { TokenProvider, useToken } from '../../contexts/AuthContext'
 
 describe('TokenProvider', () => {
   it('provides the token value to the context', () => {

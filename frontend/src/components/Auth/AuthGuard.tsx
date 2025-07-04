@@ -2,20 +2,20 @@ import { useEffect } from 'react'
 
 import { Outlet, useNavigate } from 'react-router-dom'
 
-import { useToken } from '@/contexts/TokenContext'
+import { useAuth } from '@/contexts/AuthContext'
 
 const AuthGuard = () => {
-  const { isValid } = useToken()
+  const { isLoggedIn } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!isValid) {
+    if (!isLoggedIn) {
       console.log('Token not found, redirecting to homepage.')
       navigate('/', { replace: true })
     }
-  }, [isValid, navigate])
+  }, [isLoggedIn, navigate])
 
-  return isValid ? <Outlet /> : null
+  return isLoggedIn ? <Outlet /> : null
 }
 
 export default AuthGuard

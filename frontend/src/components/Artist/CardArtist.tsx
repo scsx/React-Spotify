@@ -71,6 +71,7 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
               <SheetTrigger>
                 <MdOutlinePanoramaFishEye className="mx-2 text-xl -mt-0.5 text-muted-foreground hover:text-primary" />
               </SheetTrigger>
+              {/* TODO: use Hyperlink */}
               <Link to={`/${artist.id}`}>
                 <FaBullseye className="mx-2 text-muted-foreground hover:text-primary" />
               </Link>

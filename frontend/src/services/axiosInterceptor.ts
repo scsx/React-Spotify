@@ -1,43 +1,8 @@
-import { TSpotifyTokenData } from '@/types/General'
 import axios, { AxiosResponse } from 'axios'
 
 import { SPOTIFY_AUTH_LOGIN_PATH } from '@/lib/constants'
 
-// --- Helper function to get token from localStorage ---
-const getStoredToken = (): TSpotifyTokenData | null => {
-  const storedTokenString = localStorage.getItem('spotifyTokenInfo')
-  if (storedTokenString) {
-    try {
-      const parsedToken: TSpotifyTokenData = JSON.parse(storedTokenString)
-      const now = Date.now()
-      const expiresAt = parsedToken.obtainedAt + parsedToken.expiresIn * 1000
-      if (now < expiresAt) {
-        return parsedToken
-      }
-    } catch (e) {
-      console.error('Interceptor: Error getting token from localStorage:', e)
-    }
-  }
-  return null
-}
-
-// --- REQUESTS Interceptor ---
-axios.interceptors.request.use(
-  (config) => {
-    const token = getStoredToken()
-    if (token && token.accessToken) {
-      config.headers['Authorization'] = `Bearer ${token.accessToken}`
-    } else {
-      // No valid token, do not add authorization header.
-      console.log('Interceptor: No valid token found for the request.')
-    }
-    return config
-  },
-  (error) => {
-    console.error('Interceptor: Outgoing request failed:', error)
-    return Promise.reject(error)
-  }
-)
+axios.defaults.withCredentials = true
 
 // --- RESPONSES Interceptor ---
 axios.interceptors.response.use(
@@ -54,7 +19,7 @@ axios.interceptors.response.use(
 
       console.log('Interceptor: Received 401. Token likely invalid/expired.')
 
-      // Remove token to force a new login
+      // TODO: Remove later, localStorage is not going to be used.
       localStorage.removeItem('spotifyTokenInfo')
       console.log('Interceptor: Token removed from localStorage.')
 

@@ -20,7 +20,7 @@ export const getSpotifyUserPlaylists = async (
     }
 
     const queryString = params.toString()
-    const url = `/api/spotify/me/playlists${queryString ? `?${queryString}` : ''}`
+    const url = `/api/spotify/playlists${queryString ? `?${queryString}` : ''}`
 
     const response: AxiosResponse<TSpotifyPagingObject<TSpotifyPlaylist>> = await axios.get(url)
 

@@ -5,6 +5,8 @@ import { Outlet, Route, Routes } from 'react-router-dom'
 import { useSpotifyAuthCallback } from '@/hooks/useSpotifyAuthCallback'
 
 import AuthGuard from '@/components/Auth/AuthGuard'
+import DiscoveryWeeklyPlaylist from '@/components/Playlists/DiscoveryWeeklyPlaylist/DiscoveryWeeklyPlaylist'
+import FavoritePlaylists from '@/components/Playlists/FavoritePlaylists/FavoritePlaylists'
 
 import ArtistsPage from '@/pages/ArtistsPage'
 import User from '@/pages/User'
@@ -32,12 +34,19 @@ const App: React.FC = () => {
             <Route path="/" element={<Homepage />} />
 
             {/* AuthGuard for all except HP */}
+            {/* Nested routes: --- Order matters --- */}
             <Route element={<AuthGuard />}>
               <Route path="/artists">
                 <Route index element={<ArtistsPage />} />
                 <Route path=":artistId" element={<Artist />} />
               </Route>
-              <Route path="/playlists" element={<Playlists />} />
+
+              <Route path="/playlists">
+                <Route path="discovery-weekly" element={<DiscoveryWeeklyPlaylist />} />
+                <Route path="favorites" element={<FavoritePlaylists />} />
+                <Route index element={<Playlists />} />
+              </Route>
+
               <Route path="/user" element={<User />} />
               <Route path="/genres" element={<Outlet />}>
                 <Route index element={<Genres />} />

@@ -5,7 +5,7 @@ const axios = require('axios')
 const { getAccessTokenFromSession } = require('../../utils/sessionHelpers')
 
 /**
- * /api/spotify/me/playlists
+ * TODO: DELETE
  */
 router.get('/me/playlists', async (req, res) => {
   const accessToken = getAccessTokenFromSession(req)
@@ -15,7 +15,6 @@ router.get('/me/playlists', async (req, res) => {
     console.error('No Spotify access token available for /me/playlists.')
     return res.status(401).json({ error: 'No Spotify access token provided. Please log in.' })
   }
-
 
   try {
     const queryParams = new URLSearchParams()
