@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useLocation, useParams } from 'react-router-dom'
 
-import { LastFmArtist } from '@/types/LastFmArtist'
+import { TLastFmArtistGetInfoError, TLastFmArtistGetInfoResponse } from '@/types/LastFmArtist'
 import { TLastFmTag } from '@/types/LastFmTag'
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
 
@@ -20,7 +20,9 @@ import { getSpotifyArtist } from '@/services/spotify/getSpotifyArtist'
 const Artist = (): JSX.Element => {
   const { artistId } = useParams<string>()
   const [artist, setArtist] = useState<TSpotifyArtist | null>(null)
-  const [lastFmArtist, setLastFmArtist] = useState<LastFmArtist | null>(null)
+  const [lastFmResponseData, setLastFmResponseData] = useState<TLastFmArtistGetInfoResponse | null>(
+    null
+  )
   const [lastFmArtistTags, setLastFmArtistTags] = useState<TLastFmTag[] | null>(null)
   const [loadingPage, setLoadingPage] = useState(true)
   const [errorPage, setErrorPage] = useState<string | null>(null)
@@ -46,8 +48,15 @@ const Artist = (): JSX.Element => {
         if (fetchedArtist && fetchedArtist.name) {
           const lastFmResponse = await getLastFMArtistInfo(fetchedArtist.name)
 
-          if (lastFmResponse && !lastFmResponse.error) {
-            setLastFmArtist(lastFmResponse.artist)
+          if ('error' in lastFmResponse) {
+            console.error(
+              'Artist Component: Last.FM API error:',
+              (lastFmResponse as TLastFmArtistGetInfoError).message || 'Unknown error' // Cast para aceder 'message'
+            )
+            setLastFmResponseData(null)
+            setLastFmArtistTags(null)
+          } else {
+            setLastFmResponseData(lastFmResponse)
 
             const tags =
               lastFmResponse.artist?.tags?.tag?.map((tag: any) => ({
@@ -60,13 +69,6 @@ const Artist = (): JSX.Element => {
             } else {
               setLastFmArtistTags(null)
             }
-          } else {
-            console.error(
-              'Artist Component: Erro do proxy Last.FM:',
-              lastFmResponse?.error || 'Erro desconhecido'
-            )
-            setLastFmArtist(null)
-            setLastFmArtistTags(null)
           }
         } else {
           console.warn(
@@ -124,7 +126,7 @@ const Artist = (): JSX.Element => {
             <div className="grid grid-cols-4 gap-16">
               <div className="col-span-2">
                 <Albums
-                  biographyLastFM={lastFmArtist ? lastFmArtist.bio.content : ''}
+                  biographyLastFM={lastFmResponseData?.artist?.bio?.content || ''}
                   artistName={artist.name}
                   artistURI={artist.uri}
                 />
@@ -142,10 +144,11 @@ const Artist = (): JSX.Element => {
                   </div>
                 </div>
                 <TopTracks artistId={artist.id} />
-
                 <ArtistsGenres genres={artist.genres} lastFmTags={lastFmArtistTags ?? []} />
-
-                <SimilarArtists artistId={artist.id} lastFmSimilar={lastFmArtist?.similar!} />
+                <SimilarArtists
+                  artistId={artist.id}
+                  lastFmSimilar={lastFmResponseData?.artist?.similar || []}
+                />{' '}
               </div>
             </div>
           </div>
