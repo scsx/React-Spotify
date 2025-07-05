@@ -39,7 +39,9 @@ const UserLoggedIn = ({ user, logout }: UserLoggedInProps): JSX.Element => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <div className="flex items-center gap-4 cursor-pointer">
-            <Text variant='paragraph' as='span' color='foreground'>Hi {initials}</Text>
+            <Text variant="paragraph" as="span" color="foreground">
+              Hi {initials}
+            </Text>
             {user?.images && user.images.length > 0 ? (
               <Avatar className="h-8 w-8">
                 <AvatarImage src={user.images[0].url} alt={user.display_name || 'User Profile'} />
@@ -52,7 +54,7 @@ const UserLoggedIn = ({ user, logout }: UserLoggedInProps): JSX.Element => {
             )}
           </div>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56 mt-4" align="end">
+        <DropdownMenuContent className="w-44 mt-2" align="end">
           <DropdownMenuItem>
             <Hyperlink href="/user">Profile</Hyperlink>
           </DropdownMenuItem>

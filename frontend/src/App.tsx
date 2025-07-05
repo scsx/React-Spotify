@@ -6,6 +6,7 @@ import { useSpotifyAuthCallback } from '@/hooks/useSpotifyAuthCallback'
 
 import AuthGuard from '@/components/Auth/AuthGuard'
 import DevNotes from '@/components/DevNotes'
+import NotFoundPage from '@/components/NotFoundPage'
 import DiscoveryWeeklyPlaylist from '@/components/Playlists/DiscoveryWeeklyPlaylist/DiscoveryWeeklyPlaylist'
 import FavoritePlaylists from '@/components/Playlists/FavoritePlaylists/FavoritePlaylists'
 import PlaylistsLayout from '@/components/Playlists/PlaylistsLayout'
@@ -58,8 +59,7 @@ const App: React.FC = () => {
             </Route>
 
             {/* Any non-found route */}
-            {/* TODO: 404 */}
-            <Route path="*" element={<Homepage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
         <Footer />
