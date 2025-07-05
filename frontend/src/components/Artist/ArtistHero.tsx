@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
+import { twMerge } from 'tailwind-merge'
 
 import Text from '@/components/Text'
 import { Progress } from '@/components/ui/progress'
@@ -10,6 +11,26 @@ interface ArtistHeroProps {
 }
 
 const ArtistHero: React.FC<ArtistHeroProps> = ({ artist }): JSX.Element => {
+  // refs and logic to check what div is longer, to do rounded corners.
+  const titleRef = useRef<HTMLDivElement>(null)
+  const followersRef = useRef<HTMLDivElement>(null)
+  const [widerDiv, setWiderDiv] = useState<'title' | 'followers' | 'equal' | null>(null)
+
+  useEffect(() => {
+    if (titleRef.current && followersRef.current) {
+      const width1 = titleRef.current.offsetWidth
+      const width2 = followersRef.current.offsetWidth
+
+      if (width1 > width2) {
+        setWiderDiv('title')
+      } else if (width2 > width1) {
+        setWiderDiv('followers')
+      } else {
+        setWiderDiv('equal')
+      }
+    }
+  }, [artist])
+
   return (
     <>
       <div
@@ -20,12 +41,24 @@ const ArtistHero: React.FC<ArtistHeroProps> = ({ artist }): JSX.Element => {
       ></div>
       <div className="w-full -mt-4 absolute top-96 h-8 z-0 bg-white dark:bg-background transition duration-500"></div>
       <div className="relative container">
-        <div className="-mt-4 bg-white dark:bg-black inline-block p-4 rounded-sm rounded-bl-none">
+        <div
+          className={twMerge(
+            '-mt-4 bg-white dark:bg-black inline-block p-4 rounded-tl-sm rounded-tr-sm rounded-bl-none',
+            widerDiv === 'title' ? 'rounded-br-sm' : 'rounded-br-none'
+          )}
+          ref={titleRef}
+        >
           <Text variant="h1">{artist.name}</Text>
           <Progress value={artist.popularity} className="h-1 mt-4 mx-auto" />
         </div>
         <div className="mb-6">
-          <div className="inline-block bg-white dark:bg-black py-2 px-4 rounded-bl-sm rounded-br-sm">
+          <div
+            className={twMerge(
+              'inline-block bg-white dark:bg-black py-2 px-4 rounded-bl-sm rounded-br-sm rounded-tr-sm',
+              widerDiv === 'followers' ? 'rounded-tr-sm' : 'rounded-tr-none'
+            )}
+            ref={followersRef}
+          >
             <div className="flex items-center">
               <div>{artist.followers.total.toLocaleString()} followers</div>
             </div>
