@@ -67,7 +67,7 @@ const Header = (): JSX.Element => {
           <NavigationMenuList>
             <NavigationMenuItem className="text-xl mr-5">
               <Link to="/" className="block -mt-1">
-                Spotify<span className="text-primary">+</span>
+                Spotify<span className="text-primary text-2xl">+</span>
               </Link>
             </NavigationMenuItem>
             {isLoggedIn && <HeaderNav classes={lgLinkClasses} />}
