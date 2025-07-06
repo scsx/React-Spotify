@@ -12,3 +12,8 @@ export interface TSpotifyUser {
   country?: string // Requires the 'user-read-private' scope
   explicit_content?: { filter_enabled: boolean; filter_locked: boolean }
 }
+
+export interface TSpotifyUserResponse {
+  message?: string
+  user: TSpotifyUser
+}

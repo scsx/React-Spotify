@@ -1,12 +1,21 @@
-import { TSpotifyUser } from '@/types/SpotifyUser'
+import { TSpotifyUserResponse } from '@/types/SpotifyUser'
 import axios, { AxiosResponse } from 'axios'
 
-export const getCurrentUserProfile = async (): Promise<TSpotifyUser> => {
+export const getCurrentUserProfile = async (): Promise<TSpotifyUserResponse> => {
   try {
-    const response: AxiosResponse<TSpotifyUser> = await axios.get('/api/spotify/me')
+    const response: AxiosResponse<TSpotifyUserResponse> = await axios.get('/api/spotify/me')
+
     return response.data
-  } catch (error) {
-    console.error('Error:', error)
-    throw new Error('Não foi possível carregar o perfil do utilizador.')
+  } catch (error: any) {
+    console.error('Error fetching user profile from Spotify API:', error)
+
+    if (axios.isAxiosError(error) && error.response && error.response.data) {
+      const errorMessage = error.response.data.message || 'Erro desconhecido da API Spotify.'
+      throw new Error(`Erro da API Spotify: ${errorMessage}`)
+    }
+
+    throw new Error(
+      'Não foi possível carregar o perfil do utilizador. Verifique a conexão ou a autenticação.'
+    )
   }
 }
