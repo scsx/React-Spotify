@@ -5,7 +5,7 @@ import { tv } from 'tailwind-variants'
 
 type TextProps = {
   children: ReactNode
-  variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h6' | 'paragraph'
+  variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'paragraph'
   color?: 'foreground' | 'muted' | 'primary' | 'gray'
   as?: 'p' | 'small' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'span'
   className?: string

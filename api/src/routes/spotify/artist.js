@@ -1,4 +1,3 @@
-// api/src/routes/spotify/artist.js (este ficheiro conteria tudo)
 const express = require('express')
 const router = express.Router()
 const axios = require('axios')

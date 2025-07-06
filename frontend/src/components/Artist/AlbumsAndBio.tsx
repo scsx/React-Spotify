@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import { getSpotifyArtistAlbums } from '@/services/spotify/getSpotifyArtistAlbums'
 
-import Album from '../Album'
+import AlbumCard from '../AlbumCard'
 import CoverMosaic from './CoverMosaic'
 
 interface AlbumsAndBioProps {
@@ -107,7 +107,7 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
           <TabsContent value="albums">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {albums.length > 0 ? (
-                albums.map((album) => <Album key={album.id} album={album} />)
+                albums.map((album) => <AlbumCard key={album.id} album={album} />)
               ) : (
                 <p className="mt-10 flex items-center">
                   <IoBatteryDeadSharp className="text-4xl mr-4" />
@@ -119,7 +119,7 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
           <TabsContent value="singles">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {singles.length > 0 ? (
-                singles.map((album) => <Album key={album.id} album={album} />)
+                singles.map((album) => <AlbumCard key={album.id} album={album} />)
               ) : (
                 <p className="mt-10 flex items-center">
                   <IoBatteryDeadSharp className="text-4xl mr-4" />

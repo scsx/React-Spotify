@@ -11,6 +11,8 @@ import DiscoveryWeeklyPlaylist from '@/components/Playlists/DiscoveryWeeklyPlayl
 import FavoritePlaylists from '@/components/Playlists/FavoritePlaylists/FavoritePlaylists'
 import PlaylistsLayout from '@/components/Playlists/PlaylistsLayout'
 
+import Album from '@/pages/Album'
+import AlbumsPage from '@/pages/AlbumsPage'
 import ArtistsPage from '@/pages/ArtistsPage'
 import User from '@/pages/User'
 
@@ -43,6 +45,11 @@ const App: React.FC = () => {
               <Route path="/artists">
                 <Route index element={<ArtistsPage />} />
                 <Route path=":artistId" element={<Artist />} />
+              </Route>
+
+              <Route path="/albums">
+                <Route index element={<AlbumsPage />} />
+                <Route path=":albumId" element={<Album />} />
               </Route>
 
               <Route path="/playlists" element={<PlaylistsLayout />}>
