@@ -7,6 +7,8 @@ import React, {
   useState,
 } from 'react'
 
+import { useLocation, useNavigate } from 'react-router-dom'
+
 import { TSpotifyUser } from '@/types/SpotifyUser'
 import axios from 'axios'
 
@@ -37,9 +39,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isAuthCheckComplete, setIsAuthCheckComplete] = useState<boolean>(false)
   const authLink = SPOTIFY_AUTH_LOGIN_PATH
 
+  const navigate = useNavigate()
+  const location = useLocation()
+
   const checkAuthStatus = useCallback(async () => {
     try {
-      // Requests a protected endpoint; session cookie is sent automatically.
       const response = await axios.get('/api/spotify/me')
       if (response.status === 200) {
         setIsLoggedIn(true)
@@ -50,30 +54,34 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
-        console.info('Frontend: Verificação de autenticação - Usuário não logado (401 esperado).')
+        console.info('Auth check: User not logged in (401 expected).')
+        setIsLoggedIn(false)
+        setUser(null)
+
+        // Redirect to login path only if not already there, to prevent loop
+        if (location.pathname !== SPOTIFY_AUTH_LOGIN_PATH) {
+          console.log(`Redirecting from ${location.pathname} to ${SPOTIFY_AUTH_LOGIN_PATH}`)
+          navigate(SPOTIFY_AUTH_LOGIN_PATH)
+        }
       } else {
-        // Para outros tipos de erro, continua a logar como erro
-        console.error('Frontend: Falha na verificação de autenticação:', error)
+        console.error('Auth check failed:', error)
+        setIsLoggedIn(false)
+        setUser(null)
       }
-      setIsLoggedIn(false)
-      setUser(null)
     } finally {
-      // Garante que isAuthCheckComplete é definido para true após a tentativa,
-      // independentemente do sucesso ou falha.
       setIsAuthCheckComplete(true)
     }
-  }, [])
+  }, [navigate, location.pathname]) 
 
   const logout = useCallback(async () => {
     try {
-      // Calls backend logout endpoint, which should destroy the session.
       await axios.post('/auth/logout')
       setIsLoggedIn(false)
       setUser(null)
+      // Force full page reload for complete session clear after logout
       window.location.href = SPOTIFY_AUTH_LOGIN_PATH
     } catch (error) {
-      console.error('Frontend: Backend logout failed:', error)
-      // Even if backend logout fails, clear frontend state for consistency.
+      console.error('Backend logout failed:', error)
       setIsLoggedIn(false)
       setUser(null)
       window.location.href = SPOTIFY_AUTH_LOGIN_PATH
@@ -81,8 +89,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, [])
 
   useEffect(() => {
-    // Dispara a verificação de status de autenticação APENAS UMA VEZ no primeiro mount
-    // Não precisa verificar '!isLoggedIn || !user' aqui, porque o objetivo é verificar o status inicial.
+    // Perform initial auth status check once on component mount
     if (!isAuthCheckComplete) {
       checkAuthStatus()
     }
@@ -97,7 +104,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       authLink,
       isAuthCheckComplete,
     }),
-    [isLoggedIn, user, checkAuthStatus, logout, authLink]
+    // Dependencies include values that change and are part of the context
+    [isLoggedIn, user, checkAuthStatus, logout, authLink, isAuthCheckComplete]
   )
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
