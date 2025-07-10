@@ -13,3 +13,9 @@ export interface TFavoritesStyleBreakdown {
   percentage: number
   totalTracks: number
 }
+
+export interface TErrorDisplay {
+  title?: string
+  message: string
+  details?: string
+}

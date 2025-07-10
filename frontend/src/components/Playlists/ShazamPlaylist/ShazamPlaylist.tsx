@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 
 import { TSpotifyPlaylist } from '@/types/SpotifyPlaylist'
 
+import ErrorDisplay from '@/components/ErrorDisplay'
+import Loading from '@/components/Loading'
 import Text from '@/components/Text'
 
 import { getSpotifyPlaylistsByNames } from '@/services/spotify/getSpotifyPlaylistsByNames'
@@ -47,30 +49,16 @@ const ShazamPlaylist = () => {
   }, [])
 
   if (loading) {
-    return (
-      <div className="container py-8">
-        {/* Skeleton UI para feedback visual de carregamento */}
-        <div className="bg-gray-800 rounded-lg p-6 mt-4 flex items-center space-x-4">
-          <div className="w-32 h-32 bg-gray-700 rounded-md animate-pulse"></div>
-          <div>
-            <div className="h-6 w-48 bg-gray-700 rounded mb-2 animate-pulse"></div>
-            <div className="h-4 w-64 bg-gray-700 rounded animate-pulse"></div>
-          </div>
-        </div>
-      </div>
-    )
+    return <Loading />
   }
 
   if (error) {
     return (
-      <div className="container py-8">
-        <Text variant="h1">Erro</Text>
-        <Text variant="paragraph">{error}</Text>
-        <Text variant="paragraph" className="mt-2 text-gray-500">
-          Certifique-se de que está logado na sua conta Spotify e que a playlist "Discover Weekly"
-          existe na sua biblioteca.
-        </Text>
-      </div>
+      <ErrorDisplay
+        title="Error loading playlist"
+        message={error}
+        details={`Confirm that "${term}" exists in you playlist collection.`}
+      />
     )
   }
 
@@ -86,11 +74,8 @@ const ShazamPlaylist = () => {
   }
 
   return (
-    <div className="container py-8">
-      <Text variant="h1" className="mb-6">
-        Discovery Weekly
-      </Text>
-
+    <div className="py-8">
+      
       <div className="bg-gray-800 rounded-lg shadow-lg p-6 flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
         {playlist.images && playlist.images.length > 0 && (
           <img
