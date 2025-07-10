@@ -1,40 +1,46 @@
 // api/src/routes/spotify/playlists.js
+
 const express = require('express')
 const router = express.Router()
 const axios = require('axios')
-// Re-incluímos esta importação, pois iremos usá-la diretamente em cada rota.
 const { getAccessTokenFromSession } = require('../../utils/sessionHelpers')
 
 // --- Importante: Defina a URL base da API do Spotify ---
-// É ALTAMENTE RECOMENDADO usar uma variável de ambiente para isto (ex: process.env.SPOTIFY_API_BASE_URL)
-// Por agora, vamos usar a string literal correta.
-const SPOTIFY_API_BASE = 'https://api.spotify.com/v1'
+const SPOTIFY_API_BASE = 'https://api.spotify.com/v1' // Corrigido para o endpoint real da API do Spotify
 
-// --- MIDDLEWARE LOCAL (OPCIONAL, para logs e token) ---
-// Se quiser logs detalhados e ter o accessToken no req.spotifyAccessToken para todas as rotas neste router.
-// Alternativamente, pode continuar a chamar getAccessTokenFromSession(req) em cada rota individualmente.
+// --- MIDDLEWARE LOCAL (para logs e token) ---
 router.use(async (req, res, next) => {
-  // console.log('\n--- REQUEST PARA PLAYLISTS ROUTER ---');
-  // console.log('Path da Requisição:', req.path);
-  // console.log('Session ID (Playlists Router):', req.sessionID);
-
   const accessToken = getAccessTokenFromSession(req)
   if (!accessToken) {
     console.error(`ERRO: Token não disponível para ${req.path}.`)
     return res.status(401).json({ error: 'No Spotify access token provided. Please log in.' })
   }
   req.spotifyAccessToken = accessToken // Adiciona o token à requisição
-  // console.log('Token na sessão (primeiros 10 chars):', accessToken.substring(0, 10) + '...');
-  // console.log('-----------------------------------------\n');
   next()
 })
+
+// --- Função Auxiliar para Buscar Detalhes Completos da Playlist ---
+// Esta função será reutilizada pelas rotas que precisam de detalhes completos
+async function fetchFullPlaylistDetails(playlistId, accessToken) {
+  try {
+    const response = await axios.get(`${SPOTIFY_API_BASE}/playlists/${playlistId}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    })
+    return response.data
+  } catch (error) {
+    console.error(
+      `Erro ao buscar detalhes completos da playlist ${playlistId} da Spotify API:`,
+      error.response?.data || error.message
+    )
+    throw error // Re-lança o erro para ser tratado pela rota chamadora
+  }
+}
 
 // --- 1. GET /playlists (Frontend: /playlists) - Todas as Playlists do Utilizador (paginada) ---
 // Endpoint: /api/spotify/playlists
 router.get('/', async (req, res) => {
-  // O accessToken agora é obtido do middleware acima
   const accessToken = req.spotifyAccessToken
-  const limit = req.query.limit || 40 // Padrão 40, como solicitado
+  const limit = req.query.limit || 40 // Padrão 40
   const offset = req.query.offset || 0
 
   try {
@@ -55,26 +61,45 @@ router.get('/', async (req, res) => {
   }
 })
 
-// --- 2. GET /playlists/favorites (Frontend: /playlists/favorites) ---
+// --- 2. GET /playlists/favorites (MODIFICADA para retornar detalhes completos) ---
 // Endpoint: /api/spotify/playlists/favorites
 router.get('/favorites', async (req, res) => {
-  // O accessToken agora é obtido do middleware acima
   const accessToken = req.spotifyAccessToken
 
   try {
-    // Busca um número razoável de playlists para filtrar
-    // A API do Spotify não tem um endpoint direto para "favoritas", então filtramos no backend.
-    const allPlaylistsResponse = await axios.get(`${SPOTIFY_API_BASE}/me/playlists?limit=50`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-    const allPlaylists = allPlaylistsResponse.data.items
+    const allUserPlaylists = []
+    let offset = 0
+    const limit = 50
+    let hasMore = true
 
-    // --- Lógica de filtragem para "favoritas" ---
-    // Adapte esta lógica conforme a sua definição de "favoritas"
-    // Exemplo: filtrar por nomes que contenham "Favorite" ou por IDs pré-definidos no backend.
-    const favoritePlaylists = allPlaylists.filter((p) => p.name.toLowerCase().includes('favorite')) // Exemplo simples
+    while (hasMore) {
+      const response = await axios.get(`${SPOTIFY_API_BASE}/me/playlists`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        params: { limit, offset },
+      })
+      allUserPlaylists.push(...response.data.items)
+      hasMore = response.data.next !== null
+      offset += limit
+    }
 
-    res.json({ items: favoritePlaylists, total: favoritePlaylists.length })
+    const favoritePlaylistsBasic = allUserPlaylists.filter((p) =>
+      p.name.toLowerCase().includes('favorite')
+    )
+
+    // --- NOVO: Buscar detalhes completos para cada playlist favorita ---
+    const fullFavoritePlaylists = []
+    for (const basicPlaylist of favoritePlaylistsBasic) {
+      try {
+        const fullDetails = await fetchFullPlaylistDetails(basicPlaylist.id, accessToken)
+        fullFavoritePlaylists.push(fullDetails)
+      } catch (detailError) {
+        console.warn(`Could not fetch full details for favorite playlist ID: ${basicPlaylist.id}`)
+        // Opcional: Adicionar a playlist básica se os detalhes completos falharem
+        // fullFavoritePlaylists.push(basicPlaylist);
+      }
+    }
+
+    res.json({ items: fullFavoritePlaylists, total: fullFavoritePlaylists.length })
   } catch (error) {
     console.error(
       'Error fetching favorite playlists from Spotify API:',
@@ -87,33 +112,52 @@ router.get('/favorites', async (req, res) => {
   }
 })
 
-// --- 3. GET /playlists/your-top-songs & 4. GET /playlists/by-year ---
+// --- 3. GET /playlists/your-top-songs & 4. GET /playlists/by-year (MODIFICADAS para retornar detalhes completos) ---
 // Endpoint: /api/spotify/playlists/your-top-songs?term=your%20top%20songs
 // Endpoint: /api/spotify/playlists/by-year?term=2023
 router.get('/:filterType(your-top-songs|by-year)', async (req, res) => {
-  // O accessToken agora é obtido do middleware acima
   const accessToken = req.spotifyAccessToken
-  const filterType = req.params.filterType // 'your-top-songs' ou 'by-year'
-  const searchTerm = req.query.term // O termo real a filtrar (ex: 'your top songs', '2023')
+  const filterType = req.params.filterType
+  const searchTerm = req.query.term
 
   if (!searchTerm) {
     return res.status(400).json({ error: 'Search term is required for this filter.' })
   }
 
   try {
-    // Busca todas as playlists (ou um número razoável para a filtragem)
-    const allPlaylistsResponse = await axios.get(`${SPOTIFY_API_BASE}/me/playlists?limit=50`, {
-      // Ajuste o limit se o utilizador tiver muitas
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-    const allPlaylists = allPlaylistsResponse.data.items
+    const allUserPlaylists = []
+    let offset = 0
+    const limit = 50
+    let hasMore = true
 
-    // Filtra pelo termo de busca
-    const filteredPlaylists = allPlaylists.filter((p) =>
+    while (hasMore) {
+      const response = await axios.get(`${SPOTIFY_API_BASE}/me/playlists`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        params: { limit, offset },
+      })
+      allUserPlaylists.push(...response.data.items)
+      hasMore = response.data.next !== null
+      offset += limit
+    }
+
+    const filteredPlaylistsBasic = allUserPlaylists.filter((p) =>
       p.name.toLowerCase().includes(searchTerm.toLowerCase())
     )
 
-    res.json({ items: filteredPlaylists, total: filteredPlaylists.length })
+    // --- NOVO: Buscar detalhes completos para cada playlist filtrada ---
+    const fullFilteredPlaylists = []
+    for (const basicPlaylist of filteredPlaylistsBasic) {
+      try {
+        const fullDetails = await fetchFullPlaylistDetails(basicPlaylist.id, accessToken)
+        fullFilteredPlaylists.push(fullDetails)
+      } catch (detailError) {
+        console.warn(`Could not fetch full details for filtered playlist ID: ${basicPlaylist.id}`)
+        // Opcional: Adicionar a playlist básica se os detalhes completos falharem
+        // fullFilteredPlaylists.push(basicPlaylist);
+      }
+    }
+
+    res.json({ items: fullFilteredPlaylists, total: fullFilteredPlaylists.length })
   } catch (error) {
     console.error(
       `Error fetching playlists filtered by ${filterType} from Spotify API:`,
@@ -126,31 +170,100 @@ router.get('/:filterType(your-top-songs|by-year)', async (req, res) => {
   }
 })
 
-// --- 5. GET /playlists/:playlistId (Frontend: /playlists/discovery-weekly, /playlists/shazam, ou qualquer ID) ---
-// Endpoint: /api/spotify/playlists/:playlistId (onde :playlistId pode ser um ID real ou 'discovery-weekly', 'shazam')
-router.get('/:playlistId', async (req, res) => {
-  // O accessToken agora é obtido do middleware acima
+// --- POST /playlists/by-names
+// Endpoint: /api/spotify/playlists/by-names
+router.post('/by-names', async (req, res) => {
   const accessToken = req.spotifyAccessToken
-  let { playlistId } = req.params // Captura o ID da playlist da URL
+  const targetPlaylistNames = req.body.names
 
-  // Mapeia IDs especiais para IDs reais do Spotify se necessário.
-  // É recomendado que estes IDs estejam em variáveis de ambiente ou num ficheiro de config.
-  if (playlistId === 'discovery-weekly') {
-    playlistId = process.env.SPOTIFY_DISCOVERY_WEEKLY_ID // <--- **MUDE ISTO PARA A SUA VAR ENV!**
-  } else if (playlistId === 'shazam') {
-    playlistId = process.env.SPOTIFY_SHAZAM_ID // <--- **MUDE ISTO PARA A SUA VAR ENV!**
+  if (!Array.isArray(targetPlaylistNames) || targetPlaylistNames.length === 0) {
+    return res
+      .status(400)
+      .json({ error: 'Array of playlist names is required in the request body.' })
   }
 
+  const foundPlaylists = []
+  const notFoundNames = []
+
+  const limit = 50
+
+  try {
+    const allUserPlaylists = []
+    let offset = 0
+    let hasMore = true
+
+    while (hasMore) {
+      const response = await axios.get(`${SPOTIFY_API_BASE}/me/playlists`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        params: { limit, offset },
+      })
+      allUserPlaylists.push(...response.data.items)
+      hasMore = response.data.next !== null
+      offset += limit
+    }
+    console.log(`[Backend] Total de playlists do utilizador carregadas: ${allUserPlaylists.length}`)
+
+    for (const name of targetPlaylistNames) {
+      const lowerCaseName = name.toLowerCase()
+
+      const foundBasicPlaylist = allUserPlaylists.find(
+        (p) => p.name && p.name.toLowerCase().includes(lowerCaseName)
+      )
+
+      if (foundBasicPlaylist) {
+        try {
+          console.log(
+            `[Backend] Encontrou playlist "${name}" com ID: ${foundBasicPlaylist.id}. A buscar detalhes completos.`
+          )
+          const fullDetails = await fetchFullPlaylistDetails(foundBasicPlaylist.id, accessToken)
+          foundPlaylists.push(fullDetails)
+        } catch (detailError) {
+          console.error(
+            `[Backend] Erro ao buscar detalhes completos da playlist "${name}" (ID: ${foundBasicPlaylist.id}):`,
+            detailError.response?.data || detailError.message
+          )
+          notFoundNames.push(name)
+        }
+      } else {
+        console.log(`[Backend] Playlist "${name}" não encontrada para o utilizador.`)
+        notFoundNames.push(name)
+      }
+    }
+
+    if (notFoundNames.length > 0) {
+      return res.json({
+        found: foundPlaylists,
+        notFound: notFoundNames,
+        message: `Found ${foundPlaylists.length} playlists. ${notFoundNames.length} playlists not found.`,
+      })
+    } else {
+      res.json({ found: foundPlaylists, notFound: [], message: 'All requested playlists found.' })
+    }
+  } catch (error) {
+    console.error(
+      `[Backend] Erro geral ao buscar playlists por nomes do Spotify API:`,
+      error.response?.data || error.message
+    )
+    res.status(error.response?.status || 500).json({
+      error: 'Failed to fetch playlists by name from Spotify.',
+      details: error.response?.data || error.message,
+    })
+  }
+})
+
+// --- GET /playlists/:playlistId
+// Endpoint: /api/spotify/playlists/:playlistId
+router.get('/:playlistId', async (req, res) => {
+  const accessToken = req.spotifyAccessToken
+  const { playlistId } = req.params
+
   if (!playlistId) {
-    return res.status(400).json({ error: 'Playlist ID is required or could not be mapped.' })
+    return res.status(400).json({ error: 'Playlist ID is required.' })
   }
 
   try {
-    const spotifyApiUrl = `${SPOTIFY_API_BASE}/playlists/${playlistId}`
-    const spotifyApiResponse = await axios.get(spotifyApiUrl, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    })
-    res.json(spotifyApiResponse.data)
+    const fullDetails = await fetchFullPlaylistDetails(playlistId, accessToken)
+    res.json(fullDetails)
   } catch (error) {
     console.error(
       `Error fetching playlist ${playlistId} from Spotify API:`,

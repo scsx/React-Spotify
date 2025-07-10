@@ -51,9 +51,7 @@ const AlbumsPage = () => {
 
   return (
     <div className="container py-8 mb-2">
-      <Text variant="h1">
-        Albums
-      </Text>
+      <Text variant="h1">Albums</Text>
       <Text variant="h4" className="mb-8">
         New Releases, it's mostly crap...
       </Text>
