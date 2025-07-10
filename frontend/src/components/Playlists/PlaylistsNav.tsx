@@ -27,8 +27,8 @@ const playlistNavItems: PlaylistsNavItem[] = [
     path: '/playlists/by-year',
   },
   {
-    name: 'Discovery Weekly',
-    path: '/playlists/discovery-weekly',
+    name: 'Discover Weekly',
+    path: '/playlists/discover-weekly',
   },
   {
     name: 'Shazam',

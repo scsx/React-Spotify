@@ -1,17 +1,32 @@
+import { useState } from 'react'
+
 import Hyperlink from '@/components/Hyperlink'
 import Text from '@/components/Text'
 
 Hyperlink
 const DiscoverWeeklyPlaylist = () => {
+  const [iframeLoading, setIframeLoading] = useState(true)
+  const spotifyEmbedSrc =
+    'https://open.spotify.com/embed/playlist/37i9dQZEVXcTkNtHwiM24j?utm_source=generator'
+
   return (
     <div className="pt-8 flex space-x-8">
-      <div className="w-2/3">
+      <div className="relative w-2/3">
+        {iframeLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-900 bg-opacity-75 rounded-lg z-10">
+            <div className="w-16 h-16 border-4 border-t-4 border-gray-200 border-t-green-500 rounded-full animate-spin"></div>
+            <Text className="ml-4 text-white">Loading...</Text>
+          </div>
+        )}
+
+        {/* TODO: make ID more dynamic */}
         <iframe
-          src="https://open.spotify.com/embed/playlist/37i9dQZEVXcTkNtHwiM24j?utm_source=generator"
+          src={spotifyEmbedSrc}
           width="100%"
-          height="1200"
+          height={iframeLoading ? 400 : 1200}
           allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
           loading="lazy"
+          onLoad={() => setIframeLoading(false)}
         ></iframe>
       </div>
       <div className="w-1/3">

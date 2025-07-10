@@ -7,7 +7,7 @@ import { useSpotifyAuthCallback } from '@/hooks/useSpotifyAuthCallback'
 import AuthGuard from '@/components/Auth/AuthGuard'
 import DevNotes from '@/components/DevNotes'
 import NotFoundPage from '@/components/NotFoundPage'
-import DiscoveryWeeklyPlaylist from '@/components/Playlists/DiscoverWeeklyPlaylist/DiscoverWeeklyPlaylist'
+import DiscoverWeeklyPlaylist from '@/components/Playlists/DiscoverWeeklyPlaylist/DiscoverWeeklyPlaylist'
 import FavoritePlaylists from '@/components/Playlists/FavoritePlaylists/FavoritePlaylists'
 import PlaylistsLayout from '@/components/Playlists/PlaylistsLayout'
 import ShazamPlaylist from '@/components/Playlists/ShazamPlaylist/ShazamPlaylist'
@@ -55,7 +55,7 @@ const App: React.FC = () => {
 
               <Route path="/playlists" element={<PlaylistsLayout />}>
                 <Route path="favorites" element={<FavoritePlaylists />} />
-                <Route path="discovery-weekly" element={<DiscoveryWeeklyPlaylist />} />
+                <Route path="discover-weekly" element={<DiscoverWeeklyPlaylist />} />
                 <Route path="shazam" element={<ShazamPlaylist />} />
                 <Route index element={<Playlists />} />
               </Route>
