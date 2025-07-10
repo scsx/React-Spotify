@@ -3,34 +3,20 @@ import { useEffect, useState } from 'react'
 import { TSpotifyUser } from '@/types/SpotifyUser'
 import { twMerge } from 'tailwind-merge'
 
+import ErrorDisplay from '@/components/ErrorDisplay'
 import Hyperlink from '@/components/Hyperlink'
+import Loading from '@/components/Loading'
 import Text from '@/components/Text'
 
 import { getCurrentUserProfile } from '@/services/spotify/getSpotifyCurrentUser'
 
-const getFirstNameAndLastInitial = (displayName: string | null | undefined): string => {
-  if (displayName) {
-    const parts = displayName.split(' ').filter(Boolean)
-    if (parts.length === 0) {
-      return ''
-    }
-    const firstName = parts[0]
-    if (parts.length > 1) {
-      const lastInitial = parts[parts.length - 1][0].toUpperCase()
-      return `${firstName} ${lastInitial}.`
-    }
-    return firstName
-  }
-  return ''
-}
+import { getFirstNameAndLastInitial } from '@/lib/get-first-name-and-last-initial'
 
 const User = (): JSX.Element => {
   const [userProfile, setUserProfile] = useState<TSpotifyUser | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [blur, setBlur] = useState<boolean>(true)
-
-  console.log(userProfile)
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -53,20 +39,11 @@ const User = (): JSX.Element => {
   }
 
   if (loading) {
-    return (
-      <div className="container">
-        <Text variant="h1">Loading user...</Text>
-      </div>
-    )
+    return <Loading type="spinner" />
   }
 
   if (error) {
-    return (
-      <div className="container">
-        <Text variant="h1">Error loading user</Text>
-        <Text variant="paragraph">{error}</Text>
-      </div>
-    )
+    return <ErrorDisplay message={error} title="Error loading user" />
   }
 
   return (

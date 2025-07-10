@@ -15,7 +15,7 @@ const ErrorDisplay: React.FC<TErrorDisplay> = ({ title = 'Error', message, detai
         <Text variant="h3" as="h3" className="mb-8">
           {title}
         </Text>
-        <pre className="mb-8 text-foreground">{message}</pre>
+        <pre className="mb-8 text-foreground text-wrap text-red-400">{message}</pre>
         {details && <Text variant="paragraph">{details}</Text>}
       </div>
     </div>

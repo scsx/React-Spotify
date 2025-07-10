@@ -35,7 +35,7 @@ const DiscoverWeeklyPlaylist = () => {
           Spotify-owned editorial playlists.
         </Text>
         <Text variant="h3" as="p" className="leading-normal">
-          Here's the embed or{' '}
+          Check the embed or{' '}
           <Hyperlink href="https://open.spotify.com/playlist/37i9dQZEVXcTkNtHwiM24j?si=ba49edd40d6c49d5">
             open in Spotify
           </Hyperlink>

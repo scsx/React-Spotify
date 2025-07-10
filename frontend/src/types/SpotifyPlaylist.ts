@@ -1,4 +1,17 @@
-import { TSpotifyTrack } from "@/types/SpotifyTrack"
+import { TSpotifyTrack } from '@/types/SpotifyTrack'
+
+export interface TSpotifyPlaylistTrack {
+  added_at: string
+  added_by: {
+    external_urls: { spotify: string }
+    href: string
+    id: string
+    type: string
+    uri: string
+  }
+  is_local: boolean
+  track: TSpotifyTrack
+}
 
 export interface TSpotifyPlaylist {
   collaborative: boolean
@@ -30,7 +43,7 @@ export interface TSpotifyPlaylist {
     href: string
     previous: string
     next: string
-    items: TSpotifyTrack[]
+    items: TSpotifyPlaylistTrack[]
     total: number
     limit: number
     offset: number

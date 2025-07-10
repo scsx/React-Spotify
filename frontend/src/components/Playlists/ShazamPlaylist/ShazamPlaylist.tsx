@@ -58,15 +58,12 @@ const ShazamPlaylist = () => {
   if (!playlist) {
     return (
       <div className="container py-8">
-        <Text variant="h2">Playlist {term} não encontrada.</Text>
-        <Text variant="paragraph" className="mt-2 text-gray-500">
-          Pode ser que a playlist não esteja disponível ou que não exista na sua conta Spotify.
-        </Text>
+        <Text variant="h2">Playlist {term} not found.</Text>
       </div>
     )
   }
 
-  return <FullPlaylist playlist={playlist} />
+  return <FullPlaylist playlist={playlist} showHeader />
 }
 
 export default ShazamPlaylist

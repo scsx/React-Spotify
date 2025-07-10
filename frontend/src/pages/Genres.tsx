@@ -1,7 +1,9 @@
+import Text from "@/components/Text"
+
 const Genres = (): JSX.Element => {
   return (
-    <div className="container flex flex-col flex-1 justify-center">
-      <h1>Genres</h1>
+    <div className="container">
+      <Text variant="h1">Genres</Text>
     </div>
   )
 }
