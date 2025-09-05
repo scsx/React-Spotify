@@ -10,7 +10,7 @@ import { getSpotifyCurrentlyPlaying } from '@/services/spotify/spotifyPlayer'
 import { useAuth } from '../contexts/AuthContext'
 
 // TODO: Interfaces for Player are simpler and not complete.
-interface NowPlaying {
+type NowPlaying = {
   album: TSpotifyAlbum
   name: string
   artists: TSpotifyArtist[]
@@ -44,8 +44,8 @@ const Player = (): JSX.Element => {
     if (isLoggedIn) {
       fetchData()
 
-      // Opcional: Adicionar polling para atualizar a música a tocar automaticamente
-      const intervalId = setInterval(fetchData, 5000) // Exemplo: a cada 5 segundos
+      // polling para atualizar a música a tocar automaticamente.
+      const intervalId = setInterval(fetchData, 5000)
 
       return () => clearInterval(intervalId)
     } else {

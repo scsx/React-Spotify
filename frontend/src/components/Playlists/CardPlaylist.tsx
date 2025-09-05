@@ -30,20 +30,22 @@ const CardPlaylist: React.FC<CardPlaylistProps> = ({ playlist, light = false }) 
         )}
       </CardHeader>
       <CardContent className="flex-grow flex flex-col w-full p-0">
-        <Text
-          variant="h3"
-          as="h3"
-          className={twMerge(light && 'whitespace-nowrap overflow-hidden text-ellipsis')}
-        >
-          <Hyperlink variant="title" href={`/playlists/${playlist.id}`}>
-            {playlist.name}
-          </Hyperlink>
-        </Text>
-        {!light && playlist.description && playlist.description.length > 0 && (
-          <CardDescription className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-2">
-            {playlist.description}
-          </CardDescription>
-        )}
+        <div className="grow">
+          <Text
+            variant="h3"
+            as="h3"
+            className={twMerge(light && 'whitespace-nowrap overflow-hidden text-ellipsis')}
+          >
+            <Hyperlink variant="title" href={`/playlists/${playlist.id}`}>
+              {playlist.name}
+            </Hyperlink>
+          </Text>
+          {!light && playlist.description && playlist.description.length > 0 && (
+            <CardDescription className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-2">
+              {playlist.description}
+            </CardDescription>
+          )}
+        </div>
         <div className="flex w-full justify-between items-center">
           <Text color="muted">{playlist.tracks.total} songs</Text>
           <Hyperlink variant="icon" href={playlist.external_urls.spotify} external>
