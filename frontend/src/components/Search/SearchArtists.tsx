@@ -84,7 +84,7 @@ const SearchArtists = (): JSX.Element => {
       setTotalArtists(results.artists?.total || 0)
       updatePastSearches(finalSearchKey)
       setSearchPerformed(true)
-      navigate(`/?searchKey=${encodeURIComponent(finalSearchKey)}`)
+      navigate(`/artists/?searchKey=${encodeURIComponent(finalSearchKey)}`)
     } catch (error) {
       console.error('Error searching Spotify API:', error)
       setError('Failed to search artists. Please try again later.')

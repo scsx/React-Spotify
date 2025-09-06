@@ -1,6 +1,10 @@
 import { MdArrowOutward } from 'react-icons/md'
 
+import { useAuth } from '@/contexts/AuthContext'
+
 const Welcome = (): JSX.Element => {
+  const { isLoggedIn } = useAuth()
+
   return (
     <div className="w-full md:w-2/3">
       <div className="block">
@@ -9,6 +13,7 @@ const Welcome = (): JSX.Element => {
         </h1>
       </div>
       <hr />
+      <p>TODO: {isLoggedIn ? 'logged in' : 'not'}</p>
       <p className="text-2xl pt-4" style={{ boxShadow: 'rgb(0 0 0 / 11%) 0px -13px 14px -10px' }}>
         Authenticate to:
         {/*  */}

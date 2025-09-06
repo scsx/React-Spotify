@@ -1,5 +1,3 @@
-// api/src/routes/spotify/similarArtists.js
-
 const express = require('express')
 const router = express.Router()
 const axios = require('axios')
@@ -28,7 +26,7 @@ router.use(async (req, res, next) => {
  * com géneros semelhantes. Isso contorna o endpoint "Related Artists" descontinuado.
  * Requer artistId e um parâmetro de query opcional 'limit'.
  */
-router.get('/:artistId/similar-artists', async (req, res) => {
+router.get('/:artistId', async (req, res) => {
   // Usamos req.spotifyAccessToken que vem do middleware acima
   const accessToken = req.spotifyAccessToken
   const { artistId } = req.params

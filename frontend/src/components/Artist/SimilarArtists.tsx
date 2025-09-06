@@ -56,7 +56,7 @@ const SimilarArtists: React.FC<SimilarArtistsProps> = ({
   return (
     <>
       <Text variant="h2" className="mb-4">
-        Related Artists
+        Similar Artists
       </Text>
 
       {spotifySimilarArtists && lastFmSimilar ? (

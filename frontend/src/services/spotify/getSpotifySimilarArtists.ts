@@ -12,7 +12,7 @@ export const getSpotifySimilarArtists = async (
 ): Promise<TSpotifySimilarArtistsResponse> => {
   try {
     const response: AxiosResponse<TSpotifySimilarArtistsResponse> = await axios.get(
-      `/api/spotify/artists/${artistId}/similar-artists`,
+      `/api/spotify/similar-artists/${artistId}`,
       {
         params: { limit: limit },
       }

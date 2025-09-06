@@ -8,7 +8,6 @@ const fs = require('fs')
 // --- Importação de Rotas ---
 const lastFmRoutes = require('./routes/lastfm')
 const spotifyAuthRoutes = require('./routes/spotifyAuth')
-// Garanta que estes ficheiros de rota estão corretos para as URIs que pretende usar
 const spotifyPlaylistRoutes = require('./routes/spotify/playlists')
 const spotifyCurrentlyPlayingRoute = require('./routes/spotify/currentlyPlaying')
 const spotifySearchRoute = require('./routes/spotify/search')
@@ -80,8 +79,8 @@ spotifyApiRouter.use('/playlists', spotifyPlaylistRoutes)
 spotifyApiRouter.use('/player', spotifyCurrentlyPlayingRoute)
 spotifyApiRouter.use('/search', spotifySearchRoute)
 spotifyApiRouter.use('/artists', spotifyArtistRoute)
-spotifyApiRouter.use('/artists', spotifySimilarArtistsRoute)
-spotifyApiRouter.use('/', spotifyNewReleasesRoute)
+spotifyApiRouter.use('/similar-artists', spotifySimilarArtistsRoute)
+spotifyApiRouter.use('/new-releases', spotifyNewReleasesRoute)
 
 // spotifyApiRouter
 app.use('/api/spotify', spotifyApiRouter)

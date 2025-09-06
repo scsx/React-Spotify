@@ -9,7 +9,7 @@ const { getAccessTokenFromSession } = require('../../utils/sessionHelpers')
  *Proxies Spotify Search API requests.
  * Requires 'q' (query), 'type' (item type), and optional 'limit', 'offset', etc.
  */
-router.get('/search', async (req, res) => {
+router.get('/', async (req, res) => {
   const accessToken = getAccessTokenFromSession(req)
   const { q, type, limit, offset, market } = req.query // Extract query parameters
 
