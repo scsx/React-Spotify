@@ -57,11 +57,10 @@ const App: React.FC = () => {
                 <Route path="discover-weekly" element={<DiscoverWeeklyPlaylist />} />
                 <Route path="shazam" element={<ShazamPlaylist />} />
                 <Route index element={<Playlists />} />
-                <Route path=":playlistId" element={<PlaylistPage />} />
               </Route>
-              {/* TODO: Decide whats kept. */}
-              {/* <Route path="/playlists/:playlistId" element={<PlaylistPage />} /> */}{' '}
-              {/* Fora do PlaylistsLayout */}
+              {/* Playlist detail outside <PlaylistsLayout /> */}
+              <Route path="/playlists/:playlistId" element={<PlaylistPage />} />
+
               <Route path="/user" element={<User />} />
               <Route path="/genres" element={<Outlet />}>
                 <Route index element={<Genres />} />
