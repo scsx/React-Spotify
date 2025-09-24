@@ -1,4 +1,3 @@
-// frontend/src/hooks/useSpotifyAuthCallback.ts
 import { useEffect, useRef } from 'react'
 
 import { useLocation, useNavigate } from 'react-router-dom'

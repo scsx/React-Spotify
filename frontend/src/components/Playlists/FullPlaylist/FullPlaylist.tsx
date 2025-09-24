@@ -3,6 +3,7 @@ import React from 'react'
 import { TSpotifyPlaylist } from '@/types/SpotifyPlaylist'
 import { twMerge } from 'tailwind-merge'
 
+import Hyperlink from '@/components/Hyperlink'
 import FullPlaylistHeader from '@/components/Playlists/FullPlaylist/FullPlaylistHeader'
 import Text from '@/components/Text'
 import { Card, CardContent } from '@/components/ui/card'
@@ -41,12 +42,25 @@ const FullPlaylist: React.FC<FullPlaylistProps> = ({ playlist, showHeader = fals
                           {trackItem.track.name}
                         </Text>
                         <Text className="text-gray-400 text-sm">
-                          {trackItem.track.artists.map((artist) => artist.name).join(', ')}
+                          {trackItem.track.artists.map((artist, index) => (
+                            <span key={artist.id}>
+                              <Hyperlink
+                                className="hover:text-primary"
+                                href={`/artists/${artist.id}`}
+                                variant="title"
+                              >
+                                {artist.name}
+                              </Hyperlink>
+                              {index < trackItem.track.artists.length - 1 && ', '}
+                            </span>
+                          ))}
                         </Text>
                       </div>
                     </TableCell>
                     <TableCell className="hidden md:table-cell text-gray-400">
-                      {trackItem.track.album?.name}
+                      <Hyperlink href={`/albums/${trackItem.track.album.id}`} variant="title">
+                        {trackItem.track.album?.name}
+                      </Hyperlink>
                     </TableCell>
                     <TableCell className="text-right">
                       {trackItem.track.external_urls?.spotify && (

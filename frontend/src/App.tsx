@@ -15,6 +15,7 @@ import ShazamPlaylist from '@/components/Playlists/ShazamPlaylist/ShazamPlaylist
 import Album from '@/pages/Album'
 import AlbumsPage from '@/pages/AlbumsPage'
 import ArtistsPage from '@/pages/ArtistsPage'
+import PlaylistPage from '@/pages/PlaylistPage'
 import User from '@/pages/User'
 
 import Footer from './components/Footer'
@@ -47,19 +48,20 @@ const App: React.FC = () => {
                 <Route index element={<ArtistsPage />} />
                 <Route path=":artistId" element={<Artist />} />
               </Route>
-
               <Route path="/albums">
                 <Route index element={<AlbumsPage />} />
                 <Route path=":albumId" element={<Album />} />
               </Route>
-
               <Route path="/playlists" element={<PlaylistsLayout />}>
                 <Route path="favorites" element={<FavoritePlaylists />} />
                 <Route path="discover-weekly" element={<DiscoverWeeklyPlaylist />} />
                 <Route path="shazam" element={<ShazamPlaylist />} />
                 <Route index element={<Playlists />} />
+                <Route path=":playlistId" element={<PlaylistPage />} />
               </Route>
-
+              {/* TODO: Decide whats kept. */}
+              {/* <Route path="/playlists/:playlistId" element={<PlaylistPage />} /> */}{' '}
+              {/* Fora do PlaylistsLayout */}
               <Route path="/user" element={<User />} />
               <Route path="/genres" element={<Outlet />}>
                 <Route index element={<Genres />} />

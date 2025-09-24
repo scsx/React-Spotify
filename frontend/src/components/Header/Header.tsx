@@ -77,12 +77,7 @@ const Header = (): JSX.Element => {
           <Switch text="Dark mode" classes="flex mr-4" />
 
           {!isLoggedIn ? (
-            <Button onClick={handleLogin}>
-              Authenticate
-              {/* <a className="text-white" href={authLink}>
-                Authenticate
-              </a> */}
-            </Button>
+            <Button onClick={handleLogin}>Authenticate</Button>
           ) : (
             <UserLoggedIn user={user} logout={logout} />
           )}

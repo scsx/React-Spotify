@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { Link } from 'react-router-dom'
 import Hyperlink from '@/components/Hyperlink'
 import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
 import { CiCalendarDate } from 'react-icons/ci'
@@ -31,7 +30,7 @@ const AlbumCard: React.FC<AlbumCardProps> = ({ album, showArtist = false }): JSX
       </CardHeader>
       <CardContent className="py-2 px-4 flex-1">
         <CardTitle>
-          <Link to={`/albums/${album.id}`}>
+          <Hyperlink href={`/albums/${album.id}`}>
             {album.name.includes('(') ? (
               <>
                 <Text variant="h3" className="block mt-2">
@@ -46,7 +45,7 @@ const AlbumCard: React.FC<AlbumCardProps> = ({ album, showArtist = false }): JSX
                 {album.name}
               </Text>
             )}
-          </Link>
+          </Hyperlink>
           {showArtist && album.artists && album.artists.length > 0 && (
             <Text variant="h5" className='mt-2'>
               {album.artists.map((artist, index) => (

@@ -80,3 +80,46 @@ export const SPOTIFY_FAVORITE_PLAYLISTS = [
     style: 'world',
   },
 ]
+
+export const SPOTIFY_SPECIAL_PLAYLISTS = [
+  {
+    name: 'Best of Dance',
+    id: '6QHSxGBW3My3TurSAsSqvC',
+  },
+  {
+    name: 'Best of Easy',
+    id: '7zjzjRt3uQxK5kWxJXG7no',
+  },
+  {
+    name: 'Best of Electronica',
+    id: '4cb3YFuGghoOB7IBfhNRsC',
+  },
+  {
+    name: 'Best of Landscapes',
+    id: '4AMiZ3I3oVC7hgaR8VH7Ca',
+  },
+  {
+    name: 'Best of Light Rocks',
+    id: '43kxu9uhr2a6k7g37u0PV9',
+  },
+  {
+    name: 'Best of Other Rocks',
+    id: '5TtBPQAUzbUAp1nwOWL2Cx',
+  },
+  {
+    name: 'Best of Rock to Drive',
+    id: '2kwKYEWNZ3tOtWZ3gxgZal',
+  },
+  {
+    name: 'Best of Slow Rocks',
+    id: '5Ot56GoRe4gxh6VAwDrwBd',
+  },
+  {
+    name: 'Churrasco Alcântara',
+    id: '6A0IMMSBx4ARnt5xwL1FWE',
+  },
+  {
+    name: 'Uma Boa Fase Negra',
+    id: '20ehY0LcHI4sugA9r0NJmJ',
+  },
+]

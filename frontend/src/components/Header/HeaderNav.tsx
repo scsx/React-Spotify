@@ -51,6 +51,13 @@ const HeaderNav: React.FC<HeaderNavProps> = ({ classes = '' }): JSX.Element => {
           </NavLink>
         </NavigationMenuLink>
       </NavigationMenuItem>
+      <NavigationMenuItem>
+        <NavigationMenuLink asChild>
+          <NavLink to="/backup" className={classes}>
+            Backup
+          </NavLink>
+        </NavigationMenuLink>
+      </NavigationMenuItem>
     </>
   )
 }
