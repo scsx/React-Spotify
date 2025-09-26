@@ -52,4 +52,59 @@ router.get('/', async (req, res) => {
   }
 })
 
+/**
+ * Route to get the current user's followed artists.
+ * Accessed as GET /api/spotify/me/following
+ */
+router.get('/following', async (req, res) => {
+  const accessToken = req.session.access_token
+
+  if (!accessToken) {
+    console.warn(
+      'Backend: /api/spotify/me/following - Access attempt without session access_token.'
+    )
+    return res.status(401).json({ message: 'Unauthorized. Access token not found in session.' })
+  }
+
+  try {
+    const response = await axios.get('https://api.spotify.com/v1/me/following', {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      params: {
+        type: 'artist',
+        limit: 40, // Max 50
+      },
+    })
+
+    res.status(200).json({
+      message: 'Spotify followed artists successfully retrieved.',
+      artists: response.data.artists,
+    })
+  } catch (error) {
+    console.error(
+      'Error fetching Spotify followed artists from external API (Spotify):',
+      error.response ? error.response.data : error.message
+    )
+
+    if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+      // Destroy session and clear cookie if Spotify token is invalid/expired
+      req.session.destroy((err) => {
+        if (err) console.error('Error destroying session after invalid token:', err)
+      })
+      res.clearCookie('connect.sid', {
+        domain: 'spotify-clone.local',
+        path: '/',
+        secure: true,
+        sameSite: 'None',
+      })
+      return res.status(401).json({
+        message: 'Spotify token expired or invalid. Please re-authenticate.',
+      })
+    }
+
+    res.status(500).json({ message: 'Internal server error fetching Spotify followed artists.' })
+  }
+})
+
 module.exports = router

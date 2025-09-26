@@ -8,7 +8,7 @@ import Hyperlink from '@/components/Hyperlink'
 import Loading from '@/components/Loading'
 import Text from '@/components/Text'
 
-import { getCurrentUserProfile } from '@/services/spotify/getSpotifyCurrentUser'
+import { getSpotifyCurrentUserProfile } from '@/services/spotify/getSpotifyCurrentUser'
 
 import { getFirstNameAndLastInitial } from '@/lib/get-first-name-and-last-initial'
 
@@ -21,7 +21,7 @@ const User = (): JSX.Element => {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const data = await getCurrentUserProfile()
+        const data = await getSpotifyCurrentUserProfile()
         setUserProfile(data.user)
       } catch (err: any) {
         console.error('Erro ao buscar o perfil do utilizador:', err)

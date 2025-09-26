@@ -1,4 +1,4 @@
-//Retrieves the Spotify access token from the current session.
+// Retrieves the Spotify access token from the current session.
 const getAccessTokenFromSession = (req) => {
   // Ensure req.session exists and contains the access_token
   return req.session && req.session.access_token ? req.session.access_token : null

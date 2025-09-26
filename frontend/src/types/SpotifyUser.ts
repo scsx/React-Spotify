@@ -1,3 +1,5 @@
+import { TSpotifyArtist } from './SpotifyArtist'
+
 export interface TSpotifyUser {
   display_name: string
   id: string
@@ -16,4 +18,19 @@ export interface TSpotifyUser {
 export interface TSpotifyUserResponse {
   message?: string
   user: TSpotifyUser
+}
+
+export interface TSpotifyFollowedArtistsResponse {
+  message: string
+  artists: {
+    items: TSpotifyArtist[]
+    total: number
+    limit: number
+    next: string | null
+    previous: string | null
+    cursors: {
+      after: string | null
+      before: string | null
+    }
+  }
 }

@@ -5,7 +5,7 @@ import { MdArrowForwardIos, MdOutlineFlightTakeoff } from 'react-icons/md'
 
 import spotifySearch from '@/services/spotify/spotifySearch'
 
-type SearchFormProps = {
+type TSearchFormProps = {
   searchKey: string
   setSearchKey: (value: string) => void
   setArtists: (artists: TSpotifyArtist[]) => void
@@ -27,7 +27,7 @@ const SearchForm = ({
   setSearchPerformed,
   updatePastSearches,
   onSearch,
-}: SearchFormProps): JSX.Element => {
+}: TSearchFormProps): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)

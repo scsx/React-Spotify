@@ -1,7 +1,7 @@
 import { TSpotifyUserResponse } from '@/types/SpotifyUser'
 import axios, { AxiosResponse } from 'axios'
 
-export const getCurrentUserProfile = async (): Promise<TSpotifyUserResponse> => {
+export const getSpotifyCurrentUserProfile = async (): Promise<TSpotifyUserResponse> => {
   try {
     const response: AxiosResponse<TSpotifyUserResponse> = await axios.get('/api/spotify/me')
 

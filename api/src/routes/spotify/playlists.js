@@ -5,8 +5,7 @@ const router = express.Router()
 const axios = require('axios')
 const { getAccessTokenFromSession } = require('../../utils/sessionHelpers')
 
-// --- Importante: Defina a URL base da API do Spotify ---
-const SPOTIFY_API_BASE = 'https://api.spotify.com/v1' // Corrigido para o endpoint real da API do Spotify
+const SPOTIFY_API_BASE = 'https://api.spotify.com/v1' 
 
 // --- MIDDLEWARE LOCAL (para logs e token) ---
 router.use(async (req, res, next) => {
@@ -86,7 +85,7 @@ router.get('/favorites', async (req, res) => {
       p.name.toLowerCase().includes('favorite')
     )
 
-    // --- NOVO: Buscar detalhes completos para cada playlist favorita ---
+    // --- Buscar detalhes completos para cada playlist favorita ---
     const fullFavoritePlaylists = []
     for (const basicPlaylist of favoritePlaylistsBasic) {
       try {
@@ -94,8 +93,6 @@ router.get('/favorites', async (req, res) => {
         fullFavoritePlaylists.push(fullDetails)
       } catch (detailError) {
         console.warn(`Could not fetch full details for favorite playlist ID: ${basicPlaylist.id}`)
-        // Opcional: Adicionar a playlist básica se os detalhes completos falharem
-        // fullFavoritePlaylists.push(basicPlaylist);
       }
     }
 

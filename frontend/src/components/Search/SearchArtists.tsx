@@ -7,10 +7,13 @@ import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import { GiDinosaurRex } from 'react-icons/gi'
 
 import CardArtist from '@/components/Artist/CardArtist'
+import FollowedArtists from '@/components/Search/FollowedArtists'
 import SearchForm from '@/components/Search/SearchForm'
 import Text from '@/components/Text'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
+
+import { getSpotifyFollowedArtists } from '@/services/spotify/getSpotifyFollowedArtists'
 
 const SearchArtists = (): JSX.Element => {
   const initialArtistState: TSpotifyArtist[] = []
@@ -25,6 +28,7 @@ const SearchArtists = (): JSX.Element => {
   >(null)
   const navigate = useNavigate()
   const lastSearchRef = useRef('')
+  const [followedArtists, setFollowedArtists] = useState<TSpotifyArtist[]>([])
 
   const handlePastSearch = (artistName: string) => {
     setSearchKey(artistName)
@@ -43,6 +47,18 @@ const SearchArtists = (): JSX.Element => {
         localStorage.removeItem('pastArtistSearches')
       }
     }
+  }, [])
+
+  useEffect(() => {
+    const fetchFollowedArtists = async () => {
+      try {
+        const data = await getSpotifyFollowedArtists(20)
+        setFollowedArtists(data.artists.items)
+      } catch (error) {
+        console.error('Error fetching followed artists:', error)
+      }
+    }
+    fetchFollowedArtists()
   }, [])
 
   const updatePastSearches = (term: string) => {
@@ -84,88 +100,87 @@ const SearchArtists = (): JSX.Element => {
 
   const renderArtists = (): JSX.Element[] | null => {
     if (artists.length > 0) {
-      return artists.map((artist, index) => (
-        <CardArtist
-          key={artist.id}
-          artist={artist}
-          classes={`mb-1 col-span-1 md:col-span-${index === 0 || index === 1 ? '2' : '1'}`}
-        />
+      return artists.map((artist) => (
+        <CardArtist key={artist.id} artist={artist} classes="mb-1 col-span-1" />
       ))
     }
     return null
   }
 
   return (
-    <>
-      <div
-        className={`origin-top-left transition-transform ${
-          artists.length > 0 && searchPerformed ? 'scale-75' : ''
-        }`}
-      >
-        <Text variant="h1" className="mb-8">
-          Search Artists
-        </Text>
-      </div>
-
-      <SearchForm
-        searchKey={searchKey}
-        setSearchKey={setSearchKey}
-        setArtists={setArtists}
-        setTotalArtists={setTotalArtists}
-        searchPerformed={searchPerformed}
-        setSearchPerformed={setSearchPerformed}
-        updatePastSearches={updatePastSearches}
-        onSearch={handleSearchFn}
-      />
-
-      <div className={`flex items-center gap-4 ${artists.length > 0 ? 'my-6' : 'mt-12 mb-96'}`}>
-        {artists.length > 0 && (
-          <>
-            <h3>
-              Results: <span className="text-primary">{totalArtists}</span>
-            </h3>
-            <Separator orientation="vertical" />
-            <Button
-              onClick={clearSearch}
-              className="-ml-3 -mr-3 px-3 py-1 rounded-md bg-transparent hover:bg-primary"
-              variant="ghost"
-            >
-              Clear search
-            </Button>
-            <Separator orientation="vertical" />
-          </>
-        )}
-        {pastSearches.length > 0 && (
-          <>
-            <h3>Past searches</h3>
-            {pastSearches
-              .slice()
-              .reverse()
-              .map((term, index) => (
-                <Button
-                  key={index}
-                  className="px-2 py-1 text-gray-400 hover:text-white"
-                  onClick={() => handlePastSearch(term)}
-                  variant="link"
-                >
-                  {term}
-                </Button>
-              ))}
-          </>
-        )}
-      </div>
-
-      {artists.length === 0 && searchPerformed && (
-        <div className="flex-1 mt-3 text-2xl flex items-center">
-          <GiDinosaurRex className="text-4xl mr-4 -mt-1" />
-          <span>No artists found.</span>
+    <div className="flex gap-8">
+      <div className="basis-3/4">
+        <div
+          className={`origin-top-left transition-transform ${
+            artists.length > 0 && searchPerformed ? 'scale-75' : ''
+          }`}
+        >
+          <Text variant="h1" className="mb-8">
+            Search Artists
+          </Text>
         </div>
-      )}
 
-      {artists.length > 0 && (
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">{renderArtists()}</div>
-      )}
-    </>
+        <SearchForm
+          searchKey={searchKey}
+          setSearchKey={setSearchKey}
+          setArtists={setArtists}
+          setTotalArtists={setTotalArtists}
+          searchPerformed={searchPerformed}
+          setSearchPerformed={setSearchPerformed}
+          updatePastSearches={updatePastSearches}
+          onSearch={handleSearchFn}
+        />
+
+        <div className={`flex items-center gap-4 ${artists.length > 0 ? 'my-6' : 'mt-12 mb-96'}`}>
+          {artists.length > 0 && (
+            <>
+              <h3>
+                Results: <span className="text-primary">{totalArtists}</span>
+              </h3>
+              <Separator orientation="vertical" />
+              <Button
+                onClick={clearSearch}
+                className="-ml-3 -mr-3 px-3 py-1 rounded-md bg-transparent hover:bg-primary"
+                variant="ghost"
+              >
+                Clear search
+              </Button>
+              <Separator orientation="vertical" />
+            </>
+          )}
+          {pastSearches.length > 0 && (
+            <>
+              <h3>Past searches</h3>
+              {pastSearches
+                .slice()
+                .reverse()
+                .map((term, index) => (
+                  <Button
+                    key={index}
+                    className="px-2 py-1 text-gray-400 hover:text-white"
+                    onClick={() => handlePastSearch(term)}
+                    variant="link"
+                  >
+                    {term}
+                  </Button>
+                ))}
+            </>
+          )}
+        </div>
+
+        {artists.length === 0 && searchPerformed && (
+          <div className="flex-1 mt-3 text-2xl flex items-center">
+            <GiDinosaurRex className="text-4xl mr-4 -mt-1" />
+            <span>No artists found.</span>
+          </div>
+        )}
+
+        {artists.length > 0 && <div className="grid grid-cols-3 gap-4">{renderArtists()}</div>}
+      </div>
+      <div className="basis-1/4 pt-20">
+        {followedArtists.length > 0 && <FollowedArtists artists={followedArtists} />}
+      </div>
+    </div>
   )
 }
 
