@@ -13,8 +13,6 @@ import Text from '@/components/Text'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 
-import { getSpotifyFollowedArtists } from '@/services/spotify/getSpotifyFollowedArtists'
-
 const SearchArtists = (): JSX.Element => {
   const initialArtistState: TSpotifyArtist[] = []
   const [searchKey, setSearchKey] = useState('')
@@ -28,7 +26,6 @@ const SearchArtists = (): JSX.Element => {
   >(null)
   const navigate = useNavigate()
   const lastSearchRef = useRef('')
-  const [followedArtists, setFollowedArtists] = useState<TSpotifyArtist[]>([])
 
   const handlePastSearch = (artistName: string) => {
     setSearchKey(artistName)
@@ -47,18 +44,6 @@ const SearchArtists = (): JSX.Element => {
         localStorage.removeItem('pastArtistSearches')
       }
     }
-  }, [])
-
-  useEffect(() => {
-    const fetchFollowedArtists = async () => {
-      try {
-        const data = await getSpotifyFollowedArtists(20)
-        setFollowedArtists(data.artists.items)
-      } catch (error) {
-        console.error('Error fetching followed artists:', error)
-      }
-    }
-    fetchFollowedArtists()
   }, [])
 
   const updatePastSearches = (term: string) => {
@@ -178,7 +163,10 @@ const SearchArtists = (): JSX.Element => {
         {artists.length > 0 && <div className="grid grid-cols-3 gap-4">{renderArtists()}</div>}
       </div>
       <div className="basis-1/4 pt-20">
-        {followedArtists.length > 0 && <FollowedArtists artists={followedArtists} />}
+        <Text as="h4" variant="h3" className="mb-8 text-right">
+          Following
+        </Text>
+        <FollowedArtists />
       </div>
     </div>
   )

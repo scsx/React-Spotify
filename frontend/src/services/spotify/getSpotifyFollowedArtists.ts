@@ -16,8 +16,6 @@ export const getSpotifyFollowedArtists = async (
       }
     )
 
-    console.log(response)
-
     return response.data
   } catch (error: any) {
     console.error('Error fetching followed artists from Spotify API:', error)

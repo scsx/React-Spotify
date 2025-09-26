@@ -14,6 +14,7 @@ import ShazamPlaylist from '@/components/Playlists/ShazamPlaylist/ShazamPlaylist
 
 import Album from '@/pages/Album'
 import AlbumsPage from '@/pages/AlbumsPage'
+import ArtistsFollowedPage from '@/pages/ArtistsFollowedPage'
 import ArtistsPage from '@/pages/ArtistsPage'
 import PlaylistPage from '@/pages/PlaylistPage'
 import User from '@/pages/User'
@@ -46,6 +47,7 @@ const App: React.FC = () => {
             <Route element={<AuthGuard />}>
               <Route path="/artists">
                 <Route index element={<ArtistsPage />} />
+                <Route path="following" element={<ArtistsFollowedPage />} />
                 <Route path=":artistId" element={<Artist />} />
               </Route>
               <Route path="/albums">
