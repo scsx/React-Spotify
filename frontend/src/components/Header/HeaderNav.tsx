@@ -1,63 +1,45 @@
 import { NavLink } from 'react-router-dom'
 
-import { NavigationMenuItem, NavigationMenuLink } from '@/components/ui/navigation-menu'
+import { NavigationMenuItem } from '@/components/ui/navigation-menu'
 
-interface HeaderNavProps {
-  classes?: string
+type NavLinkClassNameFn = (props: { isActive: boolean }) => string
+
+type NavItem = {
+  to: string
+  label: string
 }
 
-const HeaderNav: React.FC<HeaderNavProps> = ({ classes = '' }): JSX.Element => {
+const navItems: NavItem[] = [
+  { to: '/artists', label: 'Artists' },
+  { to: '/albums', label: 'Albums' },
+  { to: '/playlists', label: 'Playlists' },
+  { to: '/genres', label: 'Genres' },
+  { to: '/user', label: 'User' },
+  { to: '/duplicates', label: 'Duplicates' },
+  { to: '/backup', label: 'Backup' },
+]
+
+const HeaderNav = (): JSX.Element => {
+  const linkClasses: NavLinkClassNameFn = ({ isActive }) => {
+    return (
+      'group inline-flex w-max items-center justify-center rounded-sm px-4 py-1 text-sm transition-colors ' +
+      (isActive
+        ? // Active
+          'bg-primary text-white hover:bg-primary/90 dark:bg-primary dark:text-white dark:hover:bg-primary/90'
+        : // Inactive
+          'bg-transparent text-gray-900 hover:bg-primary hover:text-white dark:bg-transparent dark:text-gray-50 dark:hover:bg-primary dark:hover:text-white')
+    )
+  }
+
   return (
     <>
-      <NavigationMenuItem>
-        <NavigationMenuLink asChild>
-          <NavLink to="/artists" end className={classes}>
-            Artists
+      {navItems.map((item) => (
+        <NavigationMenuItem key={item.to}>
+          <NavLink to={item.to} end className={linkClasses}>
+            {item.label}
           </NavLink>
-        </NavigationMenuLink>
-      </NavigationMenuItem>
-      <NavigationMenuItem>
-        <NavigationMenuLink asChild>
-          <NavLink to="/albums" end className={classes}>
-            Albums
-          </NavLink>
-        </NavigationMenuLink>
-      </NavigationMenuItem>
-      <NavigationMenuItem>
-        <NavigationMenuLink asChild>
-          <NavLink to="/playlists" className={classes}>
-            Playlists
-          </NavLink>
-        </NavigationMenuLink>
-      </NavigationMenuItem>
-      <NavigationMenuItem>
-        <NavigationMenuLink asChild>
-          <NavLink to="/genres" className={classes}>
-            Genres
-          </NavLink>
-        </NavigationMenuLink>
-      </NavigationMenuItem>
-      <NavigationMenuItem>
-        <NavigationMenuLink asChild>
-          <NavLink to="/user" className={classes}>
-            User
-          </NavLink>
-        </NavigationMenuLink>
-      </NavigationMenuItem>
-      <NavigationMenuItem>
-        <NavigationMenuLink asChild>
-          <NavLink to="/duplicates" className={classes}>
-            Duplicates
-          </NavLink>
-        </NavigationMenuLink>
-      </NavigationMenuItem>
-      <NavigationMenuItem>
-        <NavigationMenuLink asChild>
-          <NavLink to="/backup" className={classes}>
-            Backup
-          </NavLink>
-        </NavigationMenuLink>
-      </NavigationMenuItem>
+        </NavigationMenuItem>
+      ))}
     </>
   )
 }

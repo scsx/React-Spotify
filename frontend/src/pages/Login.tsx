@@ -32,7 +32,7 @@ const Login = () => {
           await checkAuthStatus()
 
           // Redireciona a janela principal após o sucesso
-          navigate('/albums', { replace: true })
+          navigate('/', { replace: true })
         }
       }
 
@@ -48,7 +48,7 @@ const Login = () => {
           await checkAuthStatus()
 
           // Redireciona a janela principal e fecha o popup
-          window.opener.location.href = '/albums'
+          window.opener.location.href = '/'
           window.close()
         } catch (e) {
           console.error('ERRO DURANTE O CALLBACK. Redirecionando para HP:', e)
