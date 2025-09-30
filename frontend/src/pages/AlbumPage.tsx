@@ -46,7 +46,11 @@ const AlbumPage = () => {
   }, [albumId])
 
   if (loadingPage) {
-    return <Loading />
+    return (
+      <div className="container py-8">
+        <Loading />
+      </div>
+    )
   }
 
   if (errorPage) {
@@ -64,9 +68,12 @@ const AlbumPage = () => {
           <Text variant="h1" className="mb-4">
             {album.name}
           </Text>
+          {/* TODO: link to artist */}
           <Text variant="h3">{album?.artists[0]?.name}</Text>
 
-          <div className='my-8'><AlbumOverview album={album} /></div>
+          <div className="my-8">
+            <AlbumOverview album={album} />
+          </div>
 
           <Tracklist tracks={album.tracks.items} />
         </div>

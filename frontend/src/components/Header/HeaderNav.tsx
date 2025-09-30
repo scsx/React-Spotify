@@ -35,7 +35,7 @@ const HeaderNav = (): JSX.Element => {
     <>
       {navItems.map((item) => (
         <NavigationMenuItem key={item.to}>
-          <NavLink to={item.to} end className={linkClasses}>
+          <NavLink to={item.to} className={linkClasses}>
             {item.label}
           </NavLink>
         </NavigationMenuItem>

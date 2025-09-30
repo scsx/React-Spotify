@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
 
 import AlbumCard from '@/components/AlbumCard'
+import Loading from '@/components/Loading'
 import Text from '@/components/Text'
 
 import getSpotifyNewReleases from '@/services/spotify/getSpotifyNewReleases'
@@ -33,7 +34,7 @@ const Albums = () => {
   if (loading) {
     return (
       <div className="container py-8">
-        <Text variant="h1">Loading albums...</Text>
+        <Loading />
       </div>
     )
   }
