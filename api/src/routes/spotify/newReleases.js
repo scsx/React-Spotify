@@ -15,7 +15,7 @@ router.use(async (req, res, next) => {
 })
 
 // GET /new-releases (will be mounted under /api/spotify in main server)
-router.get('/new-releases', async (req, res) => {
+router.get('/', async (req, res) => {
   const accessToken = req.spotifyAccessToken
   const { country, limit, offset } = req.query // Optional query parameters from frontend
 

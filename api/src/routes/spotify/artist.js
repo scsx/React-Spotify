@@ -53,7 +53,6 @@ router.get('/:artistId/albums', async (req, res) => {
 
 // Rota para top tracks: /api/spotify/artists/:artistId/top-tracks
 router.get('/:artistId/top-tracks', async (req, res) => {
-  // ESTA É A ROTA AGORA PREENCHIDA
   const accessToken = req.spotifyAccessToken // Já disponível do middleware
   const { artistId } = req.params
   const { market = 'US' } = req.query // Define 'US' como padrão se não for fornecido
@@ -69,15 +68,11 @@ router.get('/:artistId/top-tracks', async (req, res) => {
   // if (!market) { /* ... */ }
 
   try {
-    const spotifyApiUrl = `${SPOTIFY_API_BASE}/artists/${artistId}/top-tracks?market=${market}` // CORRIGIDA a URL base e o 'artistId'
-
-    console.log('[Backend - TopTracks] Chamando Spotify API com URL:', spotifyApiUrl) // DEBUG
+    const spotifyApiUrl = `${SPOTIFY_API_BASE}/artists/${artistId}/top-tracks?market=${market}`
 
     const spotifyApiResponse = await axios.get(spotifyApiUrl, {
       headers: { Authorization: `Bearer ${accessToken}` },
     })
-
-    console.log('[Backend - TopTracks] Resposta do Spotify (data):', spotifyApiResponse.data) // DEBUG
 
     // O frontend espera response.data.tracks, então enviar spotifyApiResponse.data está correto
     res.json(spotifyApiResponse.data)

@@ -12,8 +12,8 @@ import FavoritePlaylists from '@/components/Playlists/FavoritePlaylists/Favorite
 import PlaylistsLayout from '@/components/Playlists/PlaylistsLayout'
 import ShazamPlaylist from '@/components/Playlists/ShazamPlaylist/ShazamPlaylist'
 
-import Album from '@/pages/Album'
-import AlbumsPage from '@/pages/AlbumsPage'
+import AlbumPage from '@/pages/AlbumPage'
+import Albums from '@/pages/Albums'
 import ArtistsFollowedPage from '@/pages/ArtistsFollowedPage'
 import ArtistsPage from '@/pages/ArtistsPage'
 import PlaylistPage from '@/pages/PlaylistPage'
@@ -51,8 +51,8 @@ const App: React.FC = () => {
                 <Route path=":artistId" element={<Artist />} />
               </Route>
               <Route path="/albums">
-                <Route index element={<AlbumsPage />} />
-                <Route path=":albumId" element={<Album />} />
+                <Route index element={<Albums />} />
+                <Route path=":albumId" element={<AlbumPage />} />
               </Route>
               <Route path="/playlists" element={<PlaylistsLayout />}>
                 <Route path="favorites" element={<FavoritePlaylists />} />

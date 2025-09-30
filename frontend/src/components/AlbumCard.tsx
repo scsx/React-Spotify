@@ -1,10 +1,10 @@
 import React from 'react'
 
-import Hyperlink from '@/components/Hyperlink'
 import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
 import { CiCalendarDate } from 'react-icons/ci'
 import { CiBoxList } from 'react-icons/ci'
 
+import Hyperlink from '@/components/Hyperlink'
 import Text from '@/components/Text'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -24,36 +24,35 @@ const AlbumCard: React.FC<AlbumCardProps> = ({ album, showArtist = false }): JSX
         >
           <img
             src={album.images[0]?.url}
-            className="object-cover w-full text-sm text-gray-400 dark:text-gray-700 rounded-tl-sm rounded-tr-sm"
+            className="object-cover w-full rounded-tl-sm rounded-tr-sm"
           />
         </AspectRatio>
       </CardHeader>
       <CardContent className="py-2 px-4 flex-1">
         <CardTitle>
-          <Hyperlink href={`/albums/${album.id}`}>
+          <div>
             {album.name.includes('(') ? (
               <>
                 <Text variant="h3" className="block mt-2">
-                  {album.name.split('(')[0]}
+                  <Hyperlink href={`/albums/${album.id}`} variant="title">
+                    {album.name.split('(')[0]}
+                  </Hyperlink>
                 </Text>
-                <small className="block mb-2 text-base font-normal text-gray-500 dark:text-gray-400">
-                  ({album.name.split('(')[1]})
-                </small>
+                <Text>({album.name.split('(')[1]})</Text>
               </>
             ) : (
               <Text variant="h3" className="block mt-2">
-                {album.name}
+                <Hyperlink href={`/albums/${album.id}`} variant="title">
+                  {album.name}
+                </Hyperlink>
               </Text>
             )}
-          </Hyperlink>
+          </div>
           {showArtist && album.artists && album.artists.length > 0 && (
-            <Text variant="h5" className='mt-2'>
+            <Text variant="h5" className="mt-2">
               {album.artists.map((artist, index) => (
                 <React.Fragment key={artist.id}>
-                  <Hyperlink href={`/artists/${artist.id}`}>
-                    {' '}
-                    {artist.name}
-                  </Hyperlink>
+                  <Hyperlink href={`/artists/${artist.id}`}> {artist.name}</Hyperlink>
                   {index < album.artists.length - 1 && ', '}
                 </React.Fragment>
               ))}

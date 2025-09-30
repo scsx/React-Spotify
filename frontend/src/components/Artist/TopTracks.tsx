@@ -52,7 +52,7 @@ const TopTracks: React.FC<TopTracksProps> = ({ artistId }): JSX.Element => {
             <TableHead>
               <Text color="muted">Album</Text>
             </TableHead>
-            <TableHead>
+            <TableHead className='text-right'>
               <Text color="muted">Popularity</Text>
             </TableHead>
           </TableRow>

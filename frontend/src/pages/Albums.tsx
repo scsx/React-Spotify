@@ -7,9 +7,7 @@ import Text from '@/components/Text'
 
 import getSpotifyNewReleases from '@/services/spotify/getSpotifyNewReleases'
 
-// Importe o seu novo componente AlbumCard
-
-const AlbumsPage = () => {
+const Albums = () => {
   const [albums, setAlbums] = useState<TSpotifyAlbum[] | null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
@@ -71,4 +69,4 @@ const AlbumsPage = () => {
   )
 }
 
-export default AlbumsPage
+export default Albums

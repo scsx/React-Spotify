@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
-
+import Loading from '@/components/Loading'
 import Hyperlink from '@/components/Hyperlink'
 import Text from '@/components/Text'
 
@@ -39,7 +39,7 @@ const ArtistsFollowedPage = () => {
       </Text>
 
       {isLoading ? (
-        <Text className="text-gray-400">Loading followed artists...</Text>
+        <Loading />
       ) : error ? (
         <Text className="text-red-400">{error}</Text>
       ) : artists.length > 0 ? (
