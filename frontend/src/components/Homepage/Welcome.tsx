@@ -1,26 +1,13 @@
 import { MdArrowOutward } from 'react-icons/md'
 
-import { Button } from '@/components/ui/button'
+import Hyperlink from '@/components/Hyperlink'
 
 import { useAuth } from '@/contexts/AuthContext'
 
+import { SPOTIFY_AUTH_LOGIN_PATH } from '@/lib/constants'
+
 const Welcome = (): JSX.Element => {
-  const { isLoggedIn, authLink, checkAuthStatus } = useAuth()
-
-  const handleLogin = () => {
-    const popup = window.open(
-      authLink,
-      'spotifyAuthPopup',
-      'width=600,height=700,scrollbars=yes,resizable=yes'
-    )
-
-    const checkPopup = setInterval(() => {
-      if (!popup || popup.closed) {
-        clearInterval(checkPopup)
-        checkAuthStatus()
-      }
-    }, 500) // Verifica a cada 500ms
-  }
+  const { isLoggedIn } = useAuth()
 
   return (
     <div className="w-full md:w-2/3">
@@ -35,9 +22,7 @@ const Welcome = (): JSX.Element => {
         {isLoggedIn ? (
           'You can now:'
         ) : (
-          <Button className="text-2xl text-white" onClick={handleLogin}>
-            Authenticate
-          </Button>
+          <Hyperlink href={SPOTIFY_AUTH_LOGIN_PATH}>Authenticate</Hyperlink>
         )}
       </p>
       <ul className="mt-4 -ml-2">

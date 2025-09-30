@@ -7,7 +7,7 @@ import React, {
   useState,
 } from 'react'
 
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { TSpotifyUser } from '@/types/SpotifyUser'
 import axios from 'axios'
@@ -40,11 +40,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const authLink = SPOTIFY_AUTH_LOGIN_PATH
 
   const navigate = useNavigate()
-  const location = useLocation()
 
   const checkAuthStatus = useCallback(async () => {
     try {
-      const response = await axios.get('/api/spotify/me') // A bit flimsy.
+      const response = await axios.get('/api/spotify/me') // A bit flimsy?
       if (response.status === 200) {
         setIsLoggedIn(true)
         setUser(response.data.user)
@@ -54,15 +53,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
-        console.info('Auth check: User not logged in (401 expected).')
+        console.error('Auth check: User not logged in (401 expected).')
         setIsLoggedIn(false)
         setUser(null)
-
-        // Redirect to login path only if not already there, to prevent loop
-        if (location.pathname !== SPOTIFY_AUTH_LOGIN_PATH) {
-          console.log(`Redirecting from ${location.pathname} to ${SPOTIFY_AUTH_LOGIN_PATH}`)
-          navigate(SPOTIFY_AUTH_LOGIN_PATH)
-        }
       } else {
         console.error('Auth check failed:', error)
         setIsLoggedIn(false)
@@ -71,7 +64,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     } finally {
       setIsAuthCheckComplete(true)
     }
-  }, [navigate, location.pathname]) 
+  }, [])
 
   const logout = useCallback(async () => {
     try {
@@ -79,17 +72,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setIsLoggedIn(false)
       setUser(null)
       // Force full page reload for complete session clear after logout
-      window.location.href = SPOTIFY_AUTH_LOGIN_PATH
+      navigate(SPOTIFY_AUTH_LOGIN_PATH, { replace: true })
     } catch (error) {
       console.error('Backend logout failed:', error)
       setIsLoggedIn(false)
       setUser(null)
-      window.location.href = SPOTIFY_AUTH_LOGIN_PATH
+      navigate(SPOTIFY_AUTH_LOGIN_PATH, { replace: true })
     }
-  }, [])
+  }, [navigate])
 
   useEffect(() => {
-    // Perform initial auth status check once on component mount
     if (!isAuthCheckComplete) {
       checkAuthStatus()
     }
@@ -104,7 +96,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       authLink,
       isAuthCheckComplete,
     }),
-    // Dependencies include values that change and are part of the context
     [isLoggedIn, user, checkAuthStatus, logout, authLink, isAuthCheckComplete]
   )
 

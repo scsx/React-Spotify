@@ -16,6 +16,7 @@ import AlbumPage from '@/pages/AlbumPage'
 import Albums from '@/pages/Albums'
 import ArtistsFollowedPage from '@/pages/ArtistsFollowedPage'
 import ArtistsPage from '@/pages/ArtistsPage'
+import Login from '@/pages/Login'
 import PlaylistPage from '@/pages/PlaylistPage'
 import User from '@/pages/User'
 
@@ -41,6 +42,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="/dev-notes" element={<DevNotes />} />
+            <Route path="/auth/spotify/login" element={<Login />} />
 
             {/* AuthGuard for all except HP, Dev Notes */}
             {/* Nested routes: --- Order matters --- */}
