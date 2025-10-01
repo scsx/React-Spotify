@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
 
-import AlbumCard from '@/components/AlbumCard'
+import AlbumCard from '@/components/Album/AlbumCard'
 import Loading from '@/components/Loading'
 import Text from '@/components/Text'
 
@@ -51,7 +51,7 @@ const Albums = () => {
   return (
     <div className="container py-8 mb-2">
       <Text variant="h1">Albums</Text>
-      <Text variant="h4" color='muted' className="mb-8">
+      <Text variant="h4" color="muted" className="mb-8">
         New releases, it's mostly bad.
       </Text>
 

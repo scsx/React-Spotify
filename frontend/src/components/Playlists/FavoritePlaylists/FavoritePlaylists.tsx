@@ -80,8 +80,6 @@ const FavoritePlaylists = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {Array.from({ length: SPOTIFY_FAVORITE_PLAYLISTS.length }).map((_, index) => (
             <Card key={index} className="flex flex-col items-center p-4">
-              {' '}
-              {/* Usa a Card do Shadcn para o skeleton */}
               <Skeleton className="w-full h-[150px] aspect-square rounded-md mb-4" />
               <Skeleton className="w-3/4 h-6 rounded-md mb-2" />
               <Skeleton className="w-1/2 h-4 rounded-md" />

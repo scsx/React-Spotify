@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom'
 
 import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
 
+import AlbumLastFmInfo from '@/components/Album/AlbumLastFmInfo'
 import AlbumOverview from '@/components/Album/AlbumOverview'
 import Tracklist from '@/components/Album/Tracklist'
 import ErrorDisplay from '@/components/ErrorDisplay'
@@ -34,7 +35,6 @@ const AlbumPage = () => {
     const fetchAlbumDetails = async () => {
       try {
         const albumData = await getSpotifyAlbum(albumId)
-        console.log(albumData)
         setAlbum(albumData)
       } catch (error) {
         console.error('Erro ao carregar detalhes do álbum:', error)
@@ -67,9 +67,20 @@ const AlbumPage = () => {
     <div className="container py-8">
       <div className="flex gap-16 mb-16">
         <div className="w-2/3">
-          <Text variant="h1" className="mb-2">
-            {album.name}
-          </Text>
+          {album.name.includes('(') ? (
+            <>
+              <Text variant="h1" className="block mb-1">
+                {album.name.split('(')[0]}
+              </Text>
+              <Text variant="h3" className="mb-2">
+                ({album.name.split('(')[1].slice(0, -1)})
+              </Text>
+            </>
+          ) : (
+            <Text variant="h1" className="mb-2">
+              {album.name}
+            </Text>
+          )}
           <Text variant="h3" className="font-bold">
             {album?.artists?.map((artist, index, array) => (
               <React.Fragment key={artist.id}>
@@ -95,11 +106,9 @@ const AlbumPage = () => {
               className="w-full aspect-square mb-2"
             />
           )}
-          {album.label && (
-            <Text variant="h5" className="mb-2">
-              {album.label}
-            </Text>
-          )}
+          {album.label && <Text className="mb-2">{album.label}</Text>}
+
+          <AlbumLastFmInfo artistName={album.artists[0]?.name || ''} albumName={album.name} />
         </div>
       </div>
     </div>

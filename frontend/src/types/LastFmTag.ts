@@ -1,4 +1,4 @@
-export interface TLastFmTag {
+export type TLastFmTag = {
   name: string
   url: string
 }

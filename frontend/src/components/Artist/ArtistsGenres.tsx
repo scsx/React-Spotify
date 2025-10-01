@@ -60,7 +60,7 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
     if (genres && genres.length > 0) {
       return genres.map((genre) => {
         return (
-          <div key={genre} className="fakebadge flex mt-3 mr-3 font-normal bg-slate-200 rounded-lg">
+          <div key={genre} className="flex mt-3 mr-3 font-normal bg-slate-200 rounded-lg">
             <Link to={`/genres/spotify:${genre}`} className={`p-1.5 pl-3 text-sm ${badgeColors}`}>
               {genre}
             </Link>
@@ -97,7 +97,7 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
                 return (
                   <div
                     key={tag.name}
-                    className="fakebadge flex mt-3 mr-3 font-normal bg-secondary rounded-lg"
+                    className="flex mt-3 mr-3 font-normal bg-secondary rounded-lg"
                   >
                     <a
                       key={tag.url}

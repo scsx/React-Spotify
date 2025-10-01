@@ -38,7 +38,7 @@ const AlbumCard: React.FC<AlbumCardProps> = ({ album, showArtist = false }): JSX
                     {album.name.split('(')[0]}
                   </Hyperlink>
                 </Text>
-                <Text>({album.name.split('(')[1]})</Text>
+                <Text>({album.name.split('(')[1].slice(0, -1)})</Text>
               </>
             ) : (
               <Text variant="h3" className="block mt-2">

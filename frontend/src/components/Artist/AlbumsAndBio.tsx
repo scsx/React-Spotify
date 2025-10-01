@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import { getSpotifyArtistAlbums } from '@/services/spotify/getSpotifyArtistAlbums'
 
-import AlbumCard from '../AlbumCard'
+import AlbumCard from '../Album/AlbumCard'
 import CoverMosaic from './CoverMosaic'
 
 interface AlbumsAndBioProps {

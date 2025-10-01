@@ -1,16 +1,16 @@
-import { CSSProperties, ReactNode } from 'react'
+import { CSSProperties, HTMLAttributes, ReactNode } from 'react'
 
 import { twMerge } from 'tailwind-merge'
 import { tv } from 'tailwind-variants'
 
 type TextProps = {
-  children: ReactNode
+  children?: ReactNode
   variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'paragraph'
   color?: 'foreground' | 'muted' | 'primary' | 'gray'
   as?: 'p' | 'small' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'span'
   className?: string
   style?: CSSProperties
-}
+} & HTMLAttributes<HTMLElement> // Allow passing other HTML attributes like dangerouslySetInnerHTML
 
 const textStyles = tv({
   base: 'text-foreground',
@@ -38,12 +38,20 @@ const textStyles = tv({
   },
 })
 
-export default function Text({ children, variant, color, as = 'p', className, style }: TextProps) {
+export default function Text({
+  children,
+  variant,
+  color,
+  as = 'p',
+  className,
+  style,
+  ...rest
+}: TextProps) {
   const Component = as
   const combinedClasses = twMerge(textStyles({ variant, color }) + ' ' + className)
 
   return (
-    <Component className={combinedClasses} style={style}>
+    <Component className={combinedClasses} style={style} {...rest}>
       {children}
     </Component>
   )

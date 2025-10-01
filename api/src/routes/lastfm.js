@@ -51,4 +51,13 @@ router.get('/tag.getinfo', async (req, res) => {
   await callLastFmApi('tag.getinfo', { tag: tagName }, res)
 })
 
+router.get('/album.getinfo', async (req, res) => {
+  const { artist, album } = req.query
+
+  if (!artist || !album) {
+    return res.status(400).json({ error: 'Both artist and album parameters are required.' })
+  }
+  await callLastFmApi('album.getinfo', { artist: artist, album: album }, res)
+})
+
 module.exports = router
