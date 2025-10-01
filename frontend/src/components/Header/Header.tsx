@@ -22,7 +22,7 @@ const Header = (): JSX.Element => {
   const { isLoggedIn, logout, user } = useAuth()
 
   return (
-    <div className="fixed z-50 w-full mx-auto px-4 md:px-6 lg:px-8 bg-black/10 dark:bg-black/15 backdrop-blur border-b border-white/20 dark:border-black/20">
+    <div className="fixed z-50 w-full mx-auto bg-black/10 dark:bg-black/15 backdrop-blur border-b border-white/20 dark:border-black/20">
       <header className="flex h-20 container shrink-0 items-center">
         <Sheet>
           <SheetTrigger asChild>

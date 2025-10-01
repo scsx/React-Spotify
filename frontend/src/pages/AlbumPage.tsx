@@ -10,6 +10,7 @@ import ErrorDisplay from '@/components/ErrorDisplay'
 import Hyperlink from '@/components/Hyperlink'
 import Loading from '@/components/Loading'
 import Text from '@/components/Text'
+import { Progress } from '@/components/ui/progress'
 
 import { getSpotifyAlbum } from '@/services/spotify/getSpotifyAlbum'
 
@@ -69,7 +70,7 @@ const AlbumPage = () => {
           <Text variant="h1" className="mb-2">
             {album.name}
           </Text>
-          <Text variant="h3" className='font-bold'>
+          <Text variant="h3" className="font-bold">
             {album?.artists?.map((artist, index, array) => (
               <React.Fragment key={artist.id}>
                 <Hyperlink href={`/artists/${artist.id}`} variant="icon">
@@ -79,7 +80,7 @@ const AlbumPage = () => {
               </React.Fragment>
             ))}
           </Text>
-
+          <Progress value={album.popularity} className="h-1 mt-5 mx-auto" />
           <div className="mt-4 mb-12">
             <AlbumOverview album={album} />
           </div>
@@ -91,8 +92,13 @@ const AlbumPage = () => {
             <img
               src={album.images[0].url}
               alt={`Album cover ${album.name}`}
-              className="w-full aspect-square"
+              className="w-full aspect-square mb-2"
             />
+          )}
+          {album.label && (
+            <Text variant="h5" className="mb-2">
+              {album.label}
+            </Text>
           )}
         </div>
       </div>

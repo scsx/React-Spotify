@@ -11,6 +11,7 @@ import ArtistHero from '@/components/Artist/ArtistHero'
 import ArtistsGenres from '@/components/Artist/ArtistsGenres'
 import SimilarArtists from '@/components/Artist/SimilarArtists'
 import TopTracks from '@/components/Artist/TopTracks'
+import Loading from '@/components/Loading'
 import Text from '@/components/Text'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 
@@ -102,15 +103,15 @@ const Artist = (): JSX.Element => {
 
   if (loadingPage) {
     return (
-      <div className="flex flex-col flex-1 justify-center items-center h-screen-minus-header">
-        <Text variant="h2">Loading...</Text>
+      <div className="flex flex-col flex-1 justify-center items-center h-[600px]">
+        <Loading />
       </div>
     )
   }
 
   if (errorPage) {
     return (
-      <div className="flex flex-col flex-1 justify-center items-center h-screen-minus-header">
+      <div className="flex flex-col flex-1 justify-center items-center h-[600px]">
         <Text variant="paragraph">{errorPage}</Text>
       </div>
     )

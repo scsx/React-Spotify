@@ -1,7 +1,13 @@
 import React from 'react'
 
 import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
+import { AiOutlineClockCircle } from 'react-icons/ai'
+import { FaListUl } from 'react-icons/fa'
+import { FaRegCalendarAlt } from 'react-icons/fa'
+import { FaSpotify } from 'react-icons/fa'
+import { ImFire } from 'react-icons/im'
 
+import Hyperlink from '@/components/Hyperlink'
 import Text from '@/components/Text'
 
 const formatTotalDuration = (album: TSpotifyAlbum) => {
@@ -46,26 +52,38 @@ const AlbumOverview: React.FC<AlbumOverviewProps> = ({ album }) => {
   const releaseDate = formatReleaseDate(album.release_date)
 
   return (
-    <div className="flex items-center space-x-2">
-      <Text color="muted" className="whitespace-nowrap">
-        {album.total_tracks} tracks
-      </Text>
-
-      <Text color="muted" className="text-xl leading-none">
-        •
-      </Text>
-
-      <Text color="muted" className="whitespace-nowrap">
-        {totalDuration}
-      </Text>
-
-      <Text color="muted" className="text-xl leading-none">
-        •
-      </Text>
-
-      <Text color="muted" className="whitespace-nowrap">
-        {releaseDate}
-      </Text>
+    <div className="flex items-center">
+      <div className="flex items-center space-x-4 grow">
+        <Text color="muted" className="whitespace-nowrap flex items-center gap-x-2">
+          <FaListUl />
+          {album.total_tracks} tracks
+        </Text>
+        <Text color="muted" className="whitespace-nowrap flex items-center gap-x-2">
+          <AiOutlineClockCircle />
+          {totalDuration}
+        </Text>
+        <Text color="muted" className="whitespace-nowrap flex items-center gap-x-2">
+          <FaRegCalendarAlt />
+          {releaseDate}
+        </Text>
+        <Text color="muted" className="whitespace-nowrap flex items-center gap-x-2">
+          <ImFire title="Popularity" />
+          {album.popularity}
+        </Text>
+      </div>
+      <div className="flex gap-4">
+        <FaSpotify className="text-xl" />
+        <Text>
+          <Hyperlink href={album.external_urls.spotify} external variant="title">
+            WEB
+          </Hyperlink>
+        </Text>
+        <Text>
+          <Hyperlink href={album.uri} external variant="title">
+            APP
+          </Hyperlink>
+        </Text>
+      </div>
     </div>
   )
 }

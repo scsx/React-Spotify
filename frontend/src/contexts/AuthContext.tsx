@@ -12,6 +12,8 @@ import { useNavigate } from 'react-router-dom'
 import { TSpotifyUser } from '@/types/SpotifyUser'
 import axios from 'axios'
 
+import { setLogoutCallback } from '@/services/axiosInterceptor'
+
 import { SPOTIFY_AUTH_LOGIN_PATH } from '@/lib/constants'
 
 type TAuthContextValue = {
@@ -83,6 +85,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       navigate(SPOTIFY_AUTH_LOGIN_PATH, { replace: true })
     }
   }, [navigate])
+
+  useEffect(() => {
+    setLogoutCallback(logout)
+  }, [logout])
 
   useEffect(() => {
     if (!isAuthCheckComplete) {
