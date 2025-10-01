@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
@@ -7,6 +7,7 @@ import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
 import AlbumOverview from '@/components/Album/AlbumOverview'
 import Tracklist from '@/components/Album/Tracklist'
 import ErrorDisplay from '@/components/ErrorDisplay'
+import Hyperlink from '@/components/Hyperlink'
 import Loading from '@/components/Loading'
 import Text from '@/components/Text'
 
@@ -32,7 +33,7 @@ const AlbumPage = () => {
     const fetchAlbumDetails = async () => {
       try {
         const albumData = await getSpotifyAlbum(albumId)
-        console.log('Album data:', albumData)
+        console.log(albumData)
         setAlbum(albumData)
       } catch (error) {
         console.error('Erro ao carregar detalhes do álbum:', error)
@@ -65,13 +66,21 @@ const AlbumPage = () => {
     <div className="container py-8">
       <div className="flex gap-16 mb-16">
         <div className="w-2/3">
-          <Text variant="h1" className="mb-4">
+          <Text variant="h1" className="mb-2">
             {album.name}
           </Text>
-          {/* TODO: link to artist */}
-          <Text variant="h3">{album?.artists[0]?.name}</Text>
+          <Text variant="h3" className='font-bold'>
+            {album?.artists?.map((artist, index, array) => (
+              <React.Fragment key={artist.id}>
+                <Hyperlink href={`/artists/${artist.id}`} variant="icon">
+                  {artist.name}
+                </Hyperlink>
+                {index < array.length - 1 && <span className="opacity-50">, </span>}
+              </React.Fragment>
+            ))}
+          </Text>
 
-          <div className="my-8">
+          <div className="mt-4 mb-12">
             <AlbumOverview album={album} />
           </div>
 

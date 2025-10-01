@@ -46,15 +46,22 @@ const Tracklist: React.FC<TracklistProps> = ({ tracks }) => {
             <TableCell className="text-center">{track.track_number}</TableCell>
 
             <TableCell className="font-medium">
-              <Text>{track.name}</Text>
+              <Text className="leading-tight">{track.name}</Text>
             </TableCell>
 
             <TableCell>
-              <Text>{track.artists.map((artist) => artist.name).join(', ')}</Text>
+              <Text className="leading-tight">
+                {track.artists.map((artist, index, array) => (
+                  <React.Fragment key={artist.id}>
+                    <Hyperlink href={`/artists/${artist.id}`} variant='title'>{artist.name}</Hyperlink>
+                    {index < array.length - 1 && <span className="opacity-80">, </span>}
+                  </React.Fragment>
+                ))}
+              </Text>
             </TableCell>
 
             <TableCell className="text-right">
-              <Text>{formatDuration(track.duration_ms)}</Text>
+              <Text className="leading-tight">{formatDuration(track.duration_ms)}</Text>
             </TableCell>
           </TableRow>
         ))}

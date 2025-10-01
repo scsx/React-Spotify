@@ -42,6 +42,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const navigate = useNavigate()
 
   const checkAuthStatus = useCallback(async () => {
+    setIsLoggedIn(false)
+    setUser(null)
+
     try {
       const response = await axios.get('/api/spotify/me') // A bit flimsy?
       if (response.status === 200) {
