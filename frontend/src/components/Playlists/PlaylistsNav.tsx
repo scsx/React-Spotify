@@ -15,6 +15,10 @@ const playlistNavItems: PlaylistsNavItem[] = [
     path: '/playlists',
   },
   {
+    name: 'Liked Songs',
+    path: '/playlists/liked-songs',
+  },
+  {
     name: 'Favorites',
     path: '/playlists/favorites',
   },

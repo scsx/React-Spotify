@@ -6,7 +6,7 @@ import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
 
 import AlbumLastFmInfo from '@/components/Album/AlbumLastFmInfo'
 import AlbumOverview from '@/components/Album/AlbumOverview'
-import Tracklist from '@/components/Album/Tracklist'
+import AlbumTracklist from '@/components/Album/AlbumTracklist'
 import ErrorDisplay from '@/components/ErrorDisplay'
 import Hyperlink from '@/components/Hyperlink'
 import Loading from '@/components/Loading'
@@ -96,7 +96,7 @@ const AlbumPage = () => {
             <AlbumOverview album={album} />
           </div>
 
-          <Tracklist tracks={album.tracks.items} />
+          <AlbumTracklist tracks={album.tracks.items} />
         </div>
         <div className="w-1/3">
           {album.images && album.images.length > 0 && (

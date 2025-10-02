@@ -7,12 +7,13 @@ import { useSpotifyAuthCallback } from '@/hooks/useSpotifyAuthCallback'
 import AuthGuard from '@/components/Auth/AuthGuard'
 import DevNotes from '@/components/DevNotes'
 import NotFoundPage from '@/components/NotFoundPage'
+import ByYearPlaylists from '@/components/Playlists/ByYearPlaylists'
 import DiscoverWeeklyPlaylist from '@/components/Playlists/DiscoverWeeklyPlaylist/DiscoverWeeklyPlaylist'
 import FavoritePlaylists from '@/components/Playlists/FavoritePlaylists/FavoritePlaylists'
+import LikedSongs from '@/components/Playlists/LikedSongs/LikedSongs'
 import PlaylistsLayout from '@/components/Playlists/PlaylistsLayout'
 import ShazamPlaylist from '@/components/Playlists/ShazamPlaylist/ShazamPlaylist'
 import SpecialPlaylists from '@/components/Playlists/SpecialPlaylists'
-import ByYearPlaylists from '@/components/Playlists/ByYearPlaylists'
 import YourTopPlaylists from '@/components/Playlists/YourTopPlaylists'
 
 import AlbumPage from '@/pages/AlbumPage'
@@ -60,6 +61,7 @@ const App: React.FC = () => {
                 <Route path=":albumId" element={<AlbumPage />} />
               </Route>
               <Route path="/playlists" element={<PlaylistsLayout />}>
+                <Route path="liked-songs" element={<LikedSongs />} />
                 <Route path="favorites" element={<FavoritePlaylists />} />
                 <Route path="special" element={<SpecialPlaylists />} />
                 <Route path="by-year" element={<ByYearPlaylists />} />

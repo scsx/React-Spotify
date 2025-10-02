@@ -25,7 +25,7 @@ interface TracklistProps {
   tracks: TSpotifyTrack[]
 }
 
-const Tracklist: React.FC<TracklistProps> = ({ tracks }) => {
+const AlbumTracklist: React.FC<TracklistProps> = ({ tracks }) => {
   if (!tracks || tracks.length === 0) {
     return <div>No tracks found</div>
   }
@@ -70,4 +70,4 @@ const Tracklist: React.FC<TracklistProps> = ({ tracks }) => {
   )
 }
 
-export default Tracklist
+export default AlbumTracklist
