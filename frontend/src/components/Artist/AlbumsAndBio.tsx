@@ -7,6 +7,9 @@ import { FaGoogle } from 'react-icons/fa'
 import { FaSpotify } from 'react-icons/fa'
 import { IoBatteryDeadSharp } from 'react-icons/io5'
 
+import Hyperlink from '@/components/Hyperlink'
+import Loading from '@/components/Loading'
+import Text from '@/components/Text'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import { getSpotifyArtistAlbums } from '@/services/spotify/getSpotifyArtistAlbums'
@@ -30,6 +33,7 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
   const [singles, setSingles] = useState<TSpotifyAlbum[] | []>([])
   const [albumsCovers, setAlbumCovers] = useState<string[] | []>([])
   const [activeTab, setActiveTab] = useState('albums')
+  const [isLoading, setIsLoading] = useState(true)
 
   const onTabChange = (value: string) => {
     setActiveTab(value)
@@ -37,6 +41,8 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true)
+
       try {
         if (artistId) {
           const fetchedAlbums = await getSpotifyArtistAlbums(artistId)
@@ -58,6 +64,8 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
         }
       } catch (error) {
         console.error('Error fetching country details:', error)
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -74,7 +82,11 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
 
   return (
     <>
-      {albums.length > 0 || singles.length > 0 ? (
+      {isLoading ? (
+        <div className="mt-16">
+          <Loading type="skeleton" gridSize="2x2" />
+        </div>
+      ) : albums.length > 0 || singles.length > 0 ? (
         <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
           <div className="flex">
             <TabsList className="mb-4">
@@ -88,18 +100,14 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
 
             <div className="inline-flex h-10 rounded-md bg-muted ml-4 mb-0 p-1 text-muted-foreground">
               <div className="inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none hover:bg-background">
-                <a
-                  className="text-xl"
-                  target="_blank"
-                  href={`https://www.google.com/search?q=${artistName}`}
-                >
+                <Hyperlink external href={`https://www.google.com/search?q=${artistName}`}>
                   <FaGoogle className="text-muted-foreground hover:text-red-500" />
-                </a>
+                </Hyperlink>
               </div>
               <div className="inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-background">
-                <a className="text-xl" href={artistURI}>
+                <Hyperlink external href={artistURI}>
                   <FaSpotify className="text-muted-foreground hover:text-primary" />
-                </a>
+                </Hyperlink>
               </div>
             </div>
           </div>
@@ -109,10 +117,10 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
               {albums.length > 0 ? (
                 albums.map((album) => <AlbumCard key={album.id} album={album} />)
               ) : (
-                <p className="mt-10 flex items-center">
+                <Text className="mt-10 flex items-center">
                   <IoBatteryDeadSharp className="text-4xl mr-4" />
                   <span className="block">No albums available</span>
-                </p>
+                </Text>
               )}
             </div>
           </TabsContent>
@@ -121,19 +129,16 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
               {singles.length > 0 ? (
                 singles.map((album) => <AlbumCard key={album.id} album={album} />)
               ) : (
-                <p className="mt-10 flex items-center">
+                <Text className="mt-10 flex items-center">
                   <IoBatteryDeadSharp className="text-4xl mr-4" />
                   <span className="block">No singles available</span>
-                </p>
+                </Text>
               )}
             </div>
           </TabsContent>
           {biographyLastFM && biographyLastFM !== '' && (
             <TabsContent value="bio">
-              <div
-                className="text-base mt-8"
-                dangerouslySetInnerHTML={{ __html: biographyLastFM.replace(/\n/g, '<br>') }}
-              />
+              <Text dangerouslySetInnerHTML={{ __html: biographyLastFM.replace(/\n/g, '<br>') }} />
             </TabsContent>
           )}
         </Tabs>
