@@ -3,7 +3,6 @@ import { useState } from 'react'
 import Hyperlink from '@/components/Hyperlink'
 import Text from '@/components/Text'
 
-Hyperlink
 const DiscoverWeeklyPlaylist = () => {
   const [iframeLoading, setIframeLoading] = useState(true)
   const spotifyEmbedSrc =
@@ -19,7 +18,6 @@ const DiscoverWeeklyPlaylist = () => {
           </div>
         )}
 
-        {/* TODO: make ID more dynamic */}
         <iframe
           src={spotifyEmbedSrc}
           width="100%"

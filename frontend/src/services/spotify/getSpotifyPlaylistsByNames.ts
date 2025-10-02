@@ -1,7 +1,7 @@
 import { TSpotifyPlaylist } from '@/types/SpotifyPlaylist'
 import axios from 'axios'
 
-interface SpotifyPlaylistsByNamesResponse {
+type SpotifyPlaylistsByNamesResponse = {
   found: TSpotifyPlaylist[]
   notFound: string[]
   message: string

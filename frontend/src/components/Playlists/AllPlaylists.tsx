@@ -13,7 +13,7 @@ import { getSpotifyUserPlaylists } from '@/services/spotify/getSpotifyUserPlayli
 
 const PLAYLISTS_LIMIT = 40
 
-const UserPlaylists: React.FC = () => {
+const AllPlaylists: React.FC = () => {
   const [playlists, setPlaylists] = useState<TSpotifyPlaylist[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -131,4 +131,4 @@ const UserPlaylists: React.FC = () => {
   )
 }
 
-export default UserPlaylists
+export default AllPlaylists

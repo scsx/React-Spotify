@@ -123,3 +123,42 @@ export const SPOTIFY_SPECIAL_PLAYLISTS = [
     id: '20ehY0LcHI4sugA9r0NJmJ',
   },
 ]
+
+export const SPOTIFY_TOP_SONGS_BY_YEAR = [
+  {
+    id: '37i9dQZF1CyZtYTsWcuZ8U',
+    name: '2016',
+  },
+  {
+    id: '37i9dQZF1E9Yif6B1y3f49',
+    name: '2017',
+  },
+  {
+    id: '37i9dQZF1Ejos0eEQx2XDU',
+    name: '2018',
+  },
+  {
+    id: '37i9dQZF1Ettp58gseIrnf',
+    name: '2019',
+  },
+  {
+    id: '37i9dQZF1EM9Xt8x5DDebK',
+    name: '2020',
+  },
+  {
+    id: '37i9dQZF1EUMDoJuT8yJsl',
+    name: '2021',
+  },
+  {
+    id: '37i9dQZF1F0sijgNaJdgit',
+    name: '2022',
+  },
+  {
+    id: '37i9dQZF1FaiHlJpt1AeNR',
+    name: '2023',
+  },
+  {
+    id: '37i9dQZF1FoGJkOegcu8dK',
+    name: '2024',
+  },
+]

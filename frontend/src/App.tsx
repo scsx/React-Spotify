@@ -12,6 +12,8 @@ import FavoritePlaylists from '@/components/Playlists/FavoritePlaylists/Favorite
 import PlaylistsLayout from '@/components/Playlists/PlaylistsLayout'
 import ShazamPlaylist from '@/components/Playlists/ShazamPlaylist/ShazamPlaylist'
 import SpecialPlaylists from '@/components/Playlists/SpecialPlaylists'
+import ByYearPlaylists from '@/components/Playlists/ByYearPlaylists'
+import YourTopPlaylists from '@/components/Playlists/YourTopPlaylists'
 
 import AlbumPage from '@/pages/AlbumPage'
 import Albums from '@/pages/Albums'
@@ -60,6 +62,8 @@ const App: React.FC = () => {
               <Route path="/playlists" element={<PlaylistsLayout />}>
                 <Route path="favorites" element={<FavoritePlaylists />} />
                 <Route path="special" element={<SpecialPlaylists />} />
+                <Route path="by-year" element={<ByYearPlaylists />} />
+                <Route path="your-top-songs" element={<YourTopPlaylists />} />
                 <Route path="discover-weekly" element={<DiscoverWeeklyPlaylist />} />
                 <Route path="shazam" element={<ShazamPlaylist />} />
                 <Route index element={<Playlists />} />

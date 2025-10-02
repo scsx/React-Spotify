@@ -6,9 +6,6 @@ import ErrorDisplay from '@/components/ErrorDisplay'
 import Loading from '@/components/Loading'
 import CardPlaylist from '@/components/Playlists/CardPlaylist'
 import Text from '@/components/Text'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
 
 import { getSpotifyPlaylistsById } from '@/services/spotify/getSpotifyPlaylistsById'
 
@@ -60,13 +57,11 @@ const SpecialPlaylists = () => {
   }
 
   return (
-    <>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-        {specialPlaylists.map((playlist) => (
-          <CardPlaylist key={playlist.id} playlist={playlist} />
-        ))}
-      </div>
-    </>
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+      {specialPlaylists.map((playlist) => (
+        <CardPlaylist key={playlist.id} playlist={playlist} />
+      ))}
+    </div>
   )
 }
 

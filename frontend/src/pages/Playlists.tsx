@@ -1,7 +1,7 @@
-import UserPlaylists from '@/components/Playlists/UserPlaylists/UserPlaylists'
+import AllPlaylists from '@/components/Playlists/AllPlaylists'
 
 const Playlists = (): JSX.Element => {
-  return <UserPlaylists />
+  return <AllPlaylists />
 }
 
 export default Playlists
