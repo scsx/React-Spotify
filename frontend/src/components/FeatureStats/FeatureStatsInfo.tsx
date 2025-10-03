@@ -71,7 +71,7 @@ const FeatureStatsInfo = () => {
   }
   return (
     <>
-      <Text variant="h4" className="mb-8">
+      <Text variant="h4" className="mt-8 mb-8">
         Spotify Audio Features
       </Text>
       {featureDescriptions.map(({ key, label, description }) => (

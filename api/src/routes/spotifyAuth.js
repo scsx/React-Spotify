@@ -9,14 +9,28 @@ const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET
 const REDIRECT_URI = process.env.SPOTIFY_REDIRECT_URI
 const SPOTIFY_SCOPES = process.env.SPOTIFY_SCOPES
 const FRONTEND_HOST = process.env.FRONTEND_HOST
+const FRONTEND_URL = process.env.FRONTEND_URL
 
 // Function to close the login window on the frontend after successful login or error.
 const sendPopupCloseScript = (res, error = null) => {
-  let message = 'Login successful. You can close this window.'
+  let message = ''
   let script = 'window.close();'
 
   if (error) {
     message = `An error occurred: ${error}. Please try again.`
+  } else {
+    message = `
+            Login successful. You can close this window. 
+            <br><br>
+            If the main application did not update, click here: 
+            <a href="${FRONTEND_URL}" target="_top" style="color:#1DB954;">Open Application</a>
+        `
+    script = `
+            if (window.opener) { 
+                window.opener.postMessage('spotify_auth_success', '${FRONTEND_URL}'); 
+            } 
+            window.close();
+        `
   }
 
   res.send(`

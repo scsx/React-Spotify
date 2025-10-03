@@ -41,7 +41,6 @@ const LikedSongs = () => {
         }
 
         const json = await response.json()
-        console.log(json)
         setData(json)
 
         if (json.length > 0) {
