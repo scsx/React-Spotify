@@ -92,13 +92,18 @@ const LikedSongs = () => {
   const totalPages = Math.ceil(songCount / pageSize)
   const startIndex = (currentPage - 1) * pageSize
   const paginatedTracks = data.slice(startIndex, startIndex + pageSize)
+  const handleSelectTrack = (track: TSkileyLikedSong) => setSelectedTrack(track)
 
   return (
     <div>
       {songCount > 0 && (
         <div className="pt-8 flex space-x-12">
           <div className="relative w-3/4">
-            <AdvancedTracklist tracks={paginatedTracks} />
+            <AdvancedTracklist
+              tracks={paginatedTracks}
+              selectedTrack={selectedTrack}
+              onSelectTrack={handleSelectTrack}
+            />
             <GenericPagination
               currentPage={currentPage}
               totalPages={totalPages}
@@ -108,7 +113,7 @@ const LikedSongs = () => {
             />
           </div>
           <div className="w-1/4">
-            <AdvancedTracklistDetail track={selectedTrack} />
+            <AdvancedTracklistDetail track={selectedTrack} albumImageUrl={selectedTrackImage} />
             <Text className="mt-4">
               Using{' '}
               <Hyperlink href="https://skiley.net/playlists" external>

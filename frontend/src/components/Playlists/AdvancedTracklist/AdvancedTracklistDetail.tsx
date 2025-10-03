@@ -3,11 +3,12 @@ import { TSkileyLikedSong } from '@/types/SkileyTrack'
 import Hyperlink from '@/components/Hyperlink'
 import Text from '@/components/Text'
 
-type Props = {
+type AdvancedTracklistDetailProps = {
   track: TSkileyLikedSong | null
+  albumImageUrl: string | null
 }
 
-const AdvancedTracklistDetail = ({ track }: Props) => {
+const AdvancedTracklistDetail = ({ track, albumImageUrl }: AdvancedTracklistDetailProps) => {
   const features: { key: keyof TSkileyLikedSong; label: string }[] = [
     { key: 'trackFeatureAcousticness', label: 'Acousticness' },
     { key: 'trackFeatureDanceability', label: 'Danceability' },
@@ -28,20 +29,27 @@ const AdvancedTracklistDetail = ({ track }: Props) => {
   const albumId = track.albumUrl.split('/').pop()
 
   return (
-    <div className="mt-4 p-8 border sticky top-24 bg-background dark:bg-black">
-      <Text variant="h6" className="mb-4">
+    <div className="mt-4 p-8 pt-6 border sticky top-24 bg-background dark:bg-black">
+      <Text variant="h6" className="mb-2">
         Album
       </Text>
-      <Text color="muted">Track Name</Text>
-      <Text variant="h5" className="mb-2">
-        {track.trackName}
-      </Text>
-      <Text color="muted">Album Name</Text>
-      <Text variant="h5" className="mb-2">
+
+      {albumImageUrl ? (
+        <img
+          src={albumImageUrl}
+          alt={`Capa do álbum ${track.albumName}`}
+          className="w-full aspect-square mb-4"
+        />
+      ) : (
+        <div className="w-full aspect-square bg-gray-700 rounded-lg mb-6 flex items-center justify-center">
+          <Text className="text-gray-400 text-sm">No image</Text>
+        </div>
+      )}
+
+      <Text variant="h5" className="mt-1 mb-2 leading-none">
         <Hyperlink href={`/albums/${albumId}`}>{track.albumName}</Hyperlink>
       </Text>
-      <Text color="muted">Label</Text>
-      <Text variant="h5" className="mb-2">
+      <Text className="mt-1 mb-2 leading-none" color='muted'>
         {track.albumRecordLabel}, {track.albumReleaseDate}
       </Text>
 
@@ -52,7 +60,7 @@ const AdvancedTracklistDetail = ({ track }: Props) => {
         {features.map(({ key, label }) => (
           <div key={key}>
             <Text color="muted">{label}</Text>
-            <Text variant="h5">{track[key]}</Text>
+            <Text>{track[key]}</Text>
           </div>
         ))}
       </div>
