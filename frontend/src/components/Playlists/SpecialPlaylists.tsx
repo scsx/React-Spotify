@@ -40,13 +40,8 @@ const SpecialPlaylists = () => {
     }
   }, [])
 
-  if (error) {
-    return <ErrorDisplay message={error} />
-  }
-
-  if (loading) {
-    return <Loading />
-  }
+  if (loading) return <Loading />
+  if (error) return <ErrorDisplay message={error} />
 
   if (specialPlaylists.length === 0) {
     return (

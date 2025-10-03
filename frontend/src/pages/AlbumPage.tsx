@@ -47,17 +47,8 @@ const AlbumPage = () => {
     fetchAlbumDetails()
   }, [albumId])
 
-  if (loadingPage) {
-    return (
-      <div className="container py-8">
-        <Loading />
-      </div>
-    )
-  }
-
-  if (errorPage) {
-    return <ErrorDisplay message={errorPage} />
-  }
+  if (loadingPage) return <Loading />
+  if (errorPage) return <ErrorDisplay message={errorPage} />
 
   if (!album) {
     return <ErrorDisplay message="Album not found" />

@@ -7,7 +7,7 @@ type TextProps = {
   children?: ReactNode
   variant?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'paragraph'
   color?: 'foreground' | 'muted' | 'primary' | 'gray'
-  as?: 'p' | 'small' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'span'
+  as?: 'p' | 'small' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'span' | 'li'
   className?: string
   style?: CSSProperties
 } & HTMLAttributes<HTMLElement> // Allow passing other HTML attributes like dangerouslySetInnerHTML

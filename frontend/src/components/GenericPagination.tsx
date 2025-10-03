@@ -77,7 +77,7 @@ const GenericPagination: React.FC<TGenericPagination> = ({
                 onClick={() => onPageChange(pageNumber)}
                 isActive={pageNumber === currentPage}
                 className={twMerge(
-                  'cursor-pointer',
+                  'cursor-pointer border-none',
                   'hover:bg-primary',
                   pageNumber === currentPage && 'bg-primary text-primary-foreground'
                 )}

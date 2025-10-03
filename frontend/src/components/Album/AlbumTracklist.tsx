@@ -13,13 +13,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-const formatDuration = (ms: number) => {
-  const totalSeconds = Math.floor(ms / 1000)
-  const minutes = Math.floor(totalSeconds / 60)
-  const seconds = totalSeconds % 60
-  const formattedSeconds = String(seconds).padStart(2, '0')
-  return `${minutes}:${formattedSeconds}`
-}
+import { formatTrackDuration } from '@/lib/format-track-duration'
 
 interface TracklistProps {
   tracks: TSpotifyTrack[]
@@ -53,7 +47,9 @@ const AlbumTracklist: React.FC<TracklistProps> = ({ tracks }) => {
               <Text className="leading-tight">
                 {track.artists.map((artist, index, array) => (
                   <React.Fragment key={artist.id}>
-                    <Hyperlink href={`/artists/${artist.id}`} variant='title'>{artist.name}</Hyperlink>
+                    <Hyperlink href={`/artists/${artist.id}`} variant="title">
+                      {artist.name}
+                    </Hyperlink>
                     {index < array.length - 1 && <span className="opacity-80">, </span>}
                   </React.Fragment>
                 ))}
@@ -61,7 +57,7 @@ const AlbumTracklist: React.FC<TracklistProps> = ({ tracks }) => {
             </TableCell>
 
             <TableCell className="text-right">
-              <Text className="leading-tight">{formatDuration(track.duration_ms)}</Text>
+              <Text className="leading-tight">{formatTrackDuration(track.duration_ms)}</Text>
             </TableCell>
           </TableRow>
         ))}

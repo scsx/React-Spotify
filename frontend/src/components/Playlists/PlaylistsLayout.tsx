@@ -13,6 +13,8 @@ const PlaylistsLayout = (): JSX.Element => {
     switch (lastSegment) {
       case 'playlists':
         return 'All Playlists'
+      case 'liked-songs':
+        return 'Liked Songs'
       case 'discovery-weekly':
         return 'Discovery Weekly'
       case 'favorites':

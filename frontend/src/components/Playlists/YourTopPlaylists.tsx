@@ -30,7 +30,7 @@ const YourTopPlaylists = () => {
   return (
     <>
       <Tabs value={activePlaylistId} onValueChange={setActivePlaylistId}>
-        <TabsList className="mb-8 bg-transparent flex space-x-4 justify-start">
+        <TabsList className="mb-8 bg-transparent flex space-x-6 justify-start">
           {SPOTIFY_TOP_SONGS_BY_YEAR.map((playlist) => (
             <TabsTrigger key={playlist.id} value={playlist.id} className="px-0 py-2 !bg-transparent data-[state=active]:text-primary hover:text-primary">
               <Text variant="h5" as="span" className='font-normal text-inherit'>
@@ -69,7 +69,7 @@ const YourTopPlaylists = () => {
                 Spotify-owned editorial playlists.
               </Text>
               <Text variant="h3" as="p" className="leading-normal">
-                Check the embed or <Hyperlink href={spotifyOpenUrl}>open in Spotify</Hyperlink>.
+                Check the embed or <Hyperlink href={spotifyOpenUrl} external>open in Spotify</Hyperlink>.
               </Text>
             </div>
           </div>
