@@ -15,6 +15,8 @@ const PlaylistsLayout = (): JSX.Element => {
         return 'All Playlists'
       case 'liked-songs':
         return 'Liked Songs'
+      case 'feature-stats':
+        return 'Feature Stats'
       case 'discovery-weekly':
         return 'Discovery Weekly'
       case 'favorites':

@@ -47,7 +47,6 @@ const playlistNavItems: PlaylistsNavItem[] = [
 const PlaylistsNav: React.FC = () => {
   return (
     <div className="border-b my-8">
-      {' '}
       <nav className="flex space-x-6 pb-2">
         {playlistNavItems.map((item) => (
           <Text key={item.path} variant="h6">

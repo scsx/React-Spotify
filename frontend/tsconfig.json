@@ -24,7 +24,7 @@
     "types": ["@testing-library/jest-dom", "node"],
 
     // Shadcn
-    "baseUrl": ".",
+    //"baseUrl": ".", // Commented because of "Option 'baseUrl' is deprecated and will stop functioning in TypeScript 7.0. "
     "paths": {
       "@/*": ["./src/*"]
     }

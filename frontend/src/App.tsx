@@ -20,6 +20,7 @@ import AlbumPage from '@/pages/AlbumPage'
 import Albums from '@/pages/Albums'
 import ArtistsFollowedPage from '@/pages/ArtistsFollowedPage'
 import ArtistsPage from '@/pages/ArtistsPage'
+import FeatureStats from '@/pages/FeatureStats'
 import Login from '@/pages/Login'
 import PlaylistPage from '@/pages/PlaylistPage'
 import User from '@/pages/User'
@@ -62,6 +63,7 @@ const App: React.FC = () => {
               </Route>
               <Route path="/playlists" element={<PlaylistsLayout />}>
                 <Route path="liked-songs" element={<LikedSongs />} />
+                <Route path="liked-songs/feature-stats" element={<FeatureStats />} />
                 <Route path="favorites" element={<FavoritePlaylists />} />
                 <Route path="special" element={<SpecialPlaylists />} />
                 <Route path="by-year" element={<ByYearPlaylists />} />

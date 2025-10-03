@@ -23,12 +23,14 @@ interface AdvancedTracklistProps {
   tracks: TSkileyLikedSong[]
   selectedTrack: TSkileyLikedSong | null
   onSelectTrack: (track: TSkileyLikedSong) => void
+  startIndex: number
 }
 
 const AdvancedTracklist: React.FC<AdvancedTracklistProps> = ({
   tracks,
   selectedTrack,
   onSelectTrack,
+  startIndex
 }) => {
   if (!tracks || tracks.length === 0) {
     return <Text>No tracks found</Text>
@@ -52,6 +54,7 @@ const AdvancedTracklist: React.FC<AdvancedTracklistProps> = ({
       <TableBody>
         {tracks.map((track, i) => {
           const isSelected = selectedTrack?.trackUri === track.trackUri
+          const trackNumber = i + startIndex + 1
 
           return (
             <TableRow
@@ -64,7 +67,7 @@ const AdvancedTracklist: React.FC<AdvancedTracklistProps> = ({
                   : 'hover:bg-gray-200 dark:hover:bg-gray-800'
               )}
             >
-              <TableCell className="w-[30px] px-0 text-center">{i + 1}</TableCell>
+              <TableCell className="w-[30px] px-0 text-center">{trackNumber}</TableCell>
 
               <TableCell className="font-medium">
                 <Text className="leading-tight">{track.trackName}</Text>

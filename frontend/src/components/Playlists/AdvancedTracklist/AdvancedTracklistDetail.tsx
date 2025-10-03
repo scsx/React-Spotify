@@ -1,4 +1,5 @@
 import { TSkileyLikedSong } from '@/types/SkileyTrack'
+import { GrCircleQuestion } from "react-icons/gr";
 
 import Hyperlink from '@/components/Hyperlink'
 import Text from '@/components/Text'
@@ -49,14 +50,17 @@ const AdvancedTracklistDetail = ({ track, albumImageUrl }: AdvancedTracklistDeta
       <Text variant="h5" className="mt-1 mb-2 leading-none">
         <Hyperlink href={`/albums/${albumId}`}>{track.albumName}</Hyperlink>
       </Text>
-      <Text className="mt-1 mb-2 leading-none" color='muted'>
+      <Text className="mt-1 mb-2 leading-none" color="muted">
         {track.albumRecordLabel}, {track.albumReleaseDate}
       </Text>
 
-      <Text variant="h6" className="mt-8 mb-4">
-        Features
+      <Text variant="h6" className="mt-8 mb-4 flex items-center justify-between">
+        <span>Features</span>
+        <Hyperlink href="Features" className="text-lg" variant="icon">
+          <GrCircleQuestion />
+        </Hyperlink>
       </Text>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-y-2 gap-x-4">
         {features.map(({ key, label }) => (
           <div key={key}>
             <Text color="muted">{label}</Text>

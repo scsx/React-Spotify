@@ -63,10 +63,24 @@ const Login = () => {
 
   if (!isPopupCallback) {
     return (
-      <div className="container flex flex-col items-center pt-32">
-        <Text variant="h1" className="mb-16">
+      <div className="container flex flex-col items-center">
+        <Text variant="h1">
           Login
         </Text>
+        <div className="my-12 mx-auto w-[300px] flex flex-col space-y-4 text-center">
+          <Text variant="h4">You agree that react-spotify will be able to:</Text>
+          <Text variant="h5">View your Spotify account data</Text>
+          <Text>
+            Your email Your Spotify subscription, account country, and explicit content filter
+            settings. Your name, username, profile picture, Spotify followers, and public playlists.
+            View your activity on Spotify
+          </Text>
+          <Text variant="h5">The content you are playing</Text>
+          <Text>
+            Your top artists and content Who you follow Playlists you've created and playlists you
+            follow
+          </Text>
+        </div>
         <Button onClick={handleLoginClick} className="p-6">
           <Text as="span" variant="h6">
             Authenticate with Spotify
