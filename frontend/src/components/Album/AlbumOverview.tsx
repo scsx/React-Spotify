@@ -15,6 +15,8 @@ const formatTotalDuration = (album: TSpotifyAlbum) => {
     return 'N/D'
   }
 
+  console.log(album)
+
   const totalDurationMs = album.tracks.items.reduce((sum, track) => sum + track.duration_ms, 0)
 
   const totalSeconds = Math.floor(totalDurationMs / 1000)
@@ -45,9 +47,10 @@ const formatReleaseDate = (dateString: string) => {
 
 interface AlbumOverviewProps {
   album: TSpotifyAlbum
+  availableInPT: boolean
 }
 
-const AlbumOverview: React.FC<AlbumOverviewProps> = ({ album }) => {
+const AlbumOverview: React.FC<AlbumOverviewProps> = ({ album, availableInPT }) => {
   const totalDuration = formatTotalDuration(album)
   const releaseDate = formatReleaseDate(album.release_date)
 
@@ -71,7 +74,9 @@ const AlbumOverview: React.FC<AlbumOverviewProps> = ({ album }) => {
           {album.popularity}
         </Text>
       </div>
+      
       <div className="flex gap-4">
+        {!availableInPT && <Text className='text-red-700'>Unavailable in PT</Text>}
         <FaSpotify className="text-xl" />
         <Text>
           <Hyperlink href={album.external_urls.spotify} external variant="title">

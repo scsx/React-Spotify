@@ -15,9 +15,12 @@ import { Progress } from '@/components/ui/progress'
 
 import { getSpotifyAlbum } from '@/services/spotify/getSpotifyAlbum'
 
+import { checkSpotifyContentAvailability } from '@/lib/check-spotify-content-availability'
+
 const AlbumPage = () => {
   const { albumId } = useParams<{ albumId: string }>()
   const [album, setAlbum] = useState<TSpotifyAlbum | null>(null)
+  const [availableInPT, setAvailableInPT] = useState<boolean>(false)
   const [loadingPage, setLoadingPage] = useState(true)
   const [errorPage, setErrorPage] = useState<string | null>(null)
 
@@ -36,6 +39,9 @@ const AlbumPage = () => {
       try {
         const albumData = await getSpotifyAlbum(albumId)
         setAlbum(albumData)
+
+        const isAvailable = await checkSpotifyContentAvailability('album', albumId)
+        setAvailableInPT(isAvailable)
       } catch (error) {
         console.error('Erro ao carregar detalhes do álbum:', error)
         setErrorPage('Album details not found')
@@ -84,7 +90,7 @@ const AlbumPage = () => {
           </Text>
           <Progress value={album.popularity} className="h-1 mt-5 mx-auto" />
           <div className="mt-4 mb-12">
-            <AlbumOverview album={album} />
+            <AlbumOverview album={album} availableInPT={availableInPT} />
           </div>
 
           <AlbumTracklist tracks={album.tracks.items} />

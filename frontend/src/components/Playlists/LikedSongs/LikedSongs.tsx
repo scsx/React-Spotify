@@ -12,6 +12,7 @@ import LikedSongsSecNav from '@/components/Playlists/LikedSongs/LikedSongsSecNav
 
 import { getSpotifyTrack } from '@/services/spotify/getSpotifyTrack'
 
+import { checkSpotifyContentAvailability } from '@/lib/check-spotify-content-availability'
 import { normalizeString } from '@/lib/normalise-string'
 
 const LikedSongs = () => {
@@ -21,7 +22,7 @@ const LikedSongs = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedTrack, setSelectedTrack] = useState<TSkileyLikedSong | null>(null)
   const [selectedTrackImage, setSelectedTrackImage] = useState<string | null>(null)
-  const [selectedTrackAvailableInPT, setSelectedTrackAvailableInPT] = useState<boolean | null>(null)
+  const [selectedTrackAvailableInPT, setSelectedTrackAvailableInPT] = useState<boolean>(false)
 
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -63,7 +64,7 @@ const LikedSongs = () => {
   useEffect(() => {
     if (!selectedTrack) {
       setSelectedTrackImage(null)
-      setSelectedTrackAvailableInPT(null)
+      setSelectedTrackAvailableInPT(false)
       return
     }
 
@@ -71,7 +72,7 @@ const LikedSongs = () => {
 
     if (!trackId) {
       setSelectedTrackImage(null)
-      setSelectedTrackAvailableInPT(null)
+      setSelectedTrackAvailableInPT(false)
       console.warn('Track ID not found for:', selectedTrack.trackName)
       return
     }
@@ -88,11 +89,12 @@ const LikedSongs = () => {
         }
 
         // Disponibilidade em PT
-        setSelectedTrackAvailableInPT(trackData?.available_markets?.includes('PT') ?? null)
+        const isAvailable = await checkSpotifyContentAvailability('track', trackId)
+        setSelectedTrackAvailableInPT(isAvailable)
       } catch (e) {
         console.error('Failed to fetch Spotify track data:', e)
         setSelectedTrackImage(null)
-        setSelectedTrackAvailableInPT(null)
+        setSelectedTrackAvailableInPT(false)
       }
     }
 

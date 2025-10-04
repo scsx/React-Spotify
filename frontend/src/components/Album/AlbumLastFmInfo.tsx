@@ -34,7 +34,6 @@ const AlbumLastFmInfo: React.FC<AlbumLastFmInfoProps> = ({ artistName, albumName
 
       try {
         const result = await getLastFMAlbumInfo(artistName, albumName)
-        console.log(result)
 
         if ('error' in result) {
           setError(result.message)

@@ -119,13 +119,13 @@ const SearchArtists = (): JSX.Element => {
         <div className={`flex items-center gap-4 ${artists.length > 0 ? 'my-6' : 'mt-12 mb-96'}`}>
           {artists.length > 0 && (
             <>
-              <h3>
+              <Text className="whitespace-nowrap">
                 Results: <span className="text-primary">{totalArtists}</span>
-              </h3>
+              </Text>
               <Separator orientation="vertical" />
               <Button
                 onClick={clearSearch}
-                className="-ml-3 -mr-3 px-3 py-1 rounded-md bg-transparent hover:bg-primary"
+                className="-ml-3 -mr-3 px-3 py-1 rounded-md bg-transparent hover:bg-primary whitespace-nowrap"
                 variant="ghost"
               >
                 Clear search
@@ -135,20 +135,27 @@ const SearchArtists = (): JSX.Element => {
           )}
           {pastSearches.length > 0 && (
             <>
-              <h3>Past searches</h3>
-              {pastSearches
-                .slice()
-                .reverse()
-                .map((term, index) => (
-                  <Button
-                    key={index}
-                    className="px-2 py-1 text-gray-400 hover:text-white"
-                    onClick={() => handlePastSearch(term)}
-                    variant="link"
-                  >
-                    {term}
-                  </Button>
-                ))}
+              <Text className="whitespace-nowrap">Past searches</Text>
+              <div className="flex items-center">
+                {pastSearches
+                  .slice()
+                  .reverse()
+                  .map((term, index) => (
+                    <Button
+                      key={index}
+                      className="block px-2"
+                      onClick={() => handlePastSearch(term)}
+                      variant="link"
+                    >
+                      <Text
+                        as="span"
+                        className="max-w-[150px] block truncate whitespace-nowrap opacity-50 hover:opacity-100"
+                      >
+                        {term}
+                      </Text>
+                    </Button>
+                  ))}
+              </div>
             </>
           )}
         </div>
@@ -156,7 +163,7 @@ const SearchArtists = (): JSX.Element => {
         {artists.length === 0 && searchPerformed && (
           <div className="flex-1 mt-3 text-2xl flex items-center">
             <GiDinosaurRex className="text-4xl mr-4 -mt-1" />
-            <span>No artists found.</span>
+            <Text>No artists found.</Text>
           </div>
         )}
 
