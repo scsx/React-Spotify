@@ -22,9 +22,9 @@ const AdvancedTracklistSearch: React.FC<AdvancedTracklistSearchProps> = ({
   return (
     <div className="flex items-center w-full relative gap-x-8">
       <input
-        className="px-3 py-2 text-sm w-1/4 bg-white dark:bg-transparent font-normal text-black dark:text-white border focus:outline-none dark:focus:dark:bg-slate-900"
+        className="px-3 py-2 text-sm w-1/3 bg-white dark:bg-transparent font-normal text-black dark:text-white border focus:outline-none dark:focus:dark:bg-slate-900"
         type="text"
-        placeholder={`Search ${totalItems} by title, artist, album...`}
+        placeholder={`Search by title, artist or album`}
         value={searchTerm}
         onChange={(e) => onSearchChange(e.target.value)}
       />
