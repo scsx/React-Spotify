@@ -10,7 +10,7 @@ import AdvancedTracklistDetail from '@/components/Playlists/AdvancedTracklist/Ad
 import AdvancedTracklistSearch from '@/components/Playlists/AdvancedTracklist/AdvancedTracklistSearch'
 import LikedSongsSecNav from '@/components/Playlists/LikedSongs/LikedSongsSecNav'
 
-import { getSpotifyAlbum } from '@/services/spotify/getSpotifyAlbum'
+import { getSpotifyTrack } from '@/services/spotify/getSpotifyTrack'
 
 import { normalizeString } from '@/lib/normalise-string'
 
@@ -21,6 +21,8 @@ const LikedSongs = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedTrack, setSelectedTrack] = useState<TSkileyLikedSong | null>(null)
   const [selectedTrackImage, setSelectedTrackImage] = useState<string | null>(null)
+  const [selectedTrackAvailableInPT, setSelectedTrackAvailableInPT] = useState<boolean | null>(null)
+
   const [searchTerm, setSearchTerm] = useState('')
 
   const pageSize = 50
@@ -57,37 +59,44 @@ const LikedSongs = () => {
     fetchLikedSongs()
   }, [])
 
-  // Fetch album image when selectedTrack changes.
+  // Fetch album image and availability when selectedTrack changes.
   useEffect(() => {
     if (!selectedTrack) {
       setSelectedTrackImage(null)
+      setSelectedTrackAvailableInPT(null)
       return
     }
 
-    const albumId = selectedTrack.albumUrl.split('/').pop()
+    const trackId = selectedTrack.trackUrl.split('/').pop()
 
-    if (!albumId) {
+    if (!trackId) {
       setSelectedTrackImage(null)
-      console.warn('Album ID not found for track:', selectedTrack.trackName)
+      setSelectedTrackAvailableInPT(null)
+      console.warn('Track ID not found for:', selectedTrack.trackName)
       return
     }
 
-    const fetchAlbumImage = async () => {
+    const fetchTrackData = async () => {
       try {
-        const albumData = await getSpotifyAlbum(albumId)
+        const trackData = await getSpotifyTrack(trackId)
 
-        if (albumData && albumData.images && albumData.images.length > 0) {
-          setSelectedTrackImage(albumData.images[0].url)
+        // Imagem do álbum (vem dentro da track)
+        if (trackData?.album?.images?.length > 0) {
+          setSelectedTrackImage(trackData.album.images[0].url)
         } else {
           setSelectedTrackImage(null)
         }
+
+        // Disponibilidade em PT
+        setSelectedTrackAvailableInPT(trackData?.available_markets?.includes('PT') ?? null)
       } catch (e) {
-        console.error('Failed to fetch Spotify album image:', e)
+        console.error('Failed to fetch Spotify track data:', e)
         setSelectedTrackImage(null)
+        setSelectedTrackAvailableInPT(null)
       }
     }
 
-    fetchAlbumImage()
+    fetchTrackData()
   }, [selectedTrack])
 
   // Filter tracks based on search term
@@ -154,7 +163,11 @@ const LikedSongs = () => {
             />
           </div>
           <div className="w-1/4">
-            <AdvancedTracklistDetail track={selectedTrack} albumImageUrl={selectedTrackImage} />
+            <AdvancedTracklistDetail
+              track={selectedTrack}
+              albumImageUrl={selectedTrackImage}
+              isAvailableInPT={selectedTrackAvailableInPT}
+            />
           </div>
         </div>
       )}

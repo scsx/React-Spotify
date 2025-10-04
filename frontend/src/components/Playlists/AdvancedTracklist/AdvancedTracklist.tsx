@@ -5,7 +5,6 @@ import { AiOutlineClockCircle } from 'react-icons/ai'
 import { FaRegCalendarAlt } from 'react-icons/fa'
 import { twMerge } from 'tailwind-merge'
 
-import Hyperlink from '@/components/Hyperlink'
 import Text from '@/components/Text'
 import {
   Table,
@@ -30,7 +29,7 @@ const AdvancedTracklist: React.FC<AdvancedTracklistProps> = ({
   tracks,
   selectedTrack,
   onSelectTrack,
-  startIndex
+  startIndex,
 }) => {
   if (!tracks || tracks.length === 0) {
     return <Text>No tracks found</Text>
@@ -74,17 +73,11 @@ const AdvancedTracklist: React.FC<AdvancedTracklistProps> = ({
               </TableCell>
 
               <TableCell>
-                <Text className="leading-tight">
-                  <Hyperlink href={track.artistUrl} external variant="title">
-                    {track.artistName}
-                  </Hyperlink>
-                </Text>
+                <Text className="leading-tight">{track.artistName}</Text>
               </TableCell>
 
               <TableCell>
-                <Text className="leading-tight">
-                  {formatSkileyDate(track.addedAt)}
-                </Text>
+                <Text className="leading-tight">{formatSkileyDate(track.addedAt)}</Text>
               </TableCell>
 
               <TableCell className="w-[30px] px-0 text-center">

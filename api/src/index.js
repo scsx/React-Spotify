@@ -13,6 +13,7 @@ const spotifyCurrentlyPlayingRoute = require('./routes/spotify/currentlyPlaying'
 const spotifySearchRoute = require('./routes/spotify/search')
 const spotifyArtistRoute = require('./routes/spotify/artist')
 const spotifyAlbumRoute = require('./routes/spotify/album')
+const spotifyTrackRoute = require('./routes/spotify/track')
 const spotifyCurrentUserRoute = require('./routes/spotify/currentUser')
 const spotifySimilarArtistsRoute = require('./routes/spotify/similarArtists')
 const spotifyNewReleasesRoute = require('./routes/spotify/newReleases')
@@ -83,6 +84,8 @@ spotifyApiRouter.use('/artists', spotifyArtistRoute)
 spotifyApiRouter.use('/similar-artists', spotifySimilarArtistsRoute)
 spotifyApiRouter.use('/new-releases', spotifyNewReleasesRoute)
 spotifyApiRouter.use('/albums', spotifyAlbumRoute)
+spotifyApiRouter.use('/tracks', spotifyTrackRoute)
+
 
 // spotifyApiRouter
 app.use('/api/spotify', spotifyApiRouter)

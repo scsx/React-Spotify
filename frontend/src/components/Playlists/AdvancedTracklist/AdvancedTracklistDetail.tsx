@@ -1,5 +1,7 @@
 import { TSkileyLikedSong } from '@/types/SkileyTrack'
-import { GrCircleQuestion } from "react-icons/gr";
+import { MdOutlineInfo } from 'react-icons/md'
+import { GrCircleQuestion } from 'react-icons/gr'
+import { twMerge } from 'tailwind-merge'
 
 import Hyperlink from '@/components/Hyperlink'
 import Text from '@/components/Text'
@@ -7,9 +9,16 @@ import Text from '@/components/Text'
 type AdvancedTracklistDetailProps = {
   track: TSkileyLikedSong | null
   albumImageUrl: string | null
+  isAvailableInPT: boolean | null
 }
 
-const AdvancedTracklistDetail = ({ track, albumImageUrl }: AdvancedTracklistDetailProps) => {
+const AdvancedTracklistDetail = ({
+  track,
+  albumImageUrl,
+  isAvailableInPT,
+}: AdvancedTracklistDetailProps) => {
+  if (!track) return null
+
   const features: { key: keyof TSkileyLikedSong; label: string }[] = [
     { key: 'trackFeatureAcousticness', label: 'Acousticness' },
     { key: 'trackFeatureDanceability', label: 'Danceability' },
@@ -25,12 +34,77 @@ const AdvancedTracklistDetail = ({ track, albumImageUrl }: AdvancedTracklistDeta
     { key: 'trackPopularity', label: 'Popularity' },
   ]
 
-  if (!track) return null
+  const getID = (url: string) => {
+    if (!url) return ''
+    const parts = url.split('/')
+    return parts[parts.length - 1] || ''
+  }
 
-  const albumId = track.albumUrl.split('/').pop()
+  const linkRows = [
+    {
+      label: 'Track',
+      site: `/tracks/${getID(track.trackUrl)}`,
+      web: track.trackUrl,
+      app: track.trackUri,
+    },
+    {
+      label: 'Album',
+      site: `/albums/${getID(track.albumUrl)}`,
+      web: track.albumUrl,
+      app: track.albumUri,
+    },
+    {
+      label: 'Artist',
+      site: `/artists/${getID(track.artistUrl)}`,
+      web: track.artistUrl,
+      app: track.artistUri,
+    },
+  ]
 
   return (
     <div className="mt-4 p-8 pt-6 border sticky top-24 bg-background dark:bg-black">
+      <Text variant="h6" className="mb-2">
+        Links
+      </Text>
+      <table className="w-full table-auto">
+        <tbody>
+          {linkRows.map(({ label, site, web, app }) => {
+            const isTrackRow = label === 'Track'
+            const linkClass = twMerge(isTrackRow && !isAvailableInPT && 'text-red-500')
+
+            return (
+              <tr key={label}>
+                <td>
+                  <Text>{label}</Text>
+                </td>
+                <td>
+                  <Text>
+                    <Hyperlink href={site}>site</Hyperlink>
+                  </Text>
+                </td>
+                <td>
+                  <Text>
+                    <Hyperlink href={web} className={linkClass} external>
+                      web
+                    </Hyperlink>
+                  </Text>
+                </td>
+                <td>
+                  <Text>
+                    <Hyperlink href={app} className={linkClass} external>
+                      app
+                    </Hyperlink>
+                  </Text>
+                </td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+      <Text className="text-xs mt-2 mb-8 flex items-center" color="muted">
+        <MdOutlineInfo className="mr-2 text-lg" /> Red = not available in PT
+      </Text>
+
       <Text variant="h6" className="mb-2">
         Album
       </Text>
@@ -39,18 +113,15 @@ const AdvancedTracklistDetail = ({ track, albumImageUrl }: AdvancedTracklistDeta
         <img
           src={albumImageUrl}
           alt={`Capa do álbum ${track.albumName}`}
-          className="w-full aspect-square mb-4"
+          className="w-full aspect-square mb-2"
         />
       ) : (
-        <div className="w-full aspect-square bg-gray-700 rounded-lg mb-6 flex items-center justify-center">
+        <div className="w-full aspect-square bg-gray-700 rounded-lg mb-2 flex items-center justify-center">
           <Text className="text-gray-400 text-sm">No image</Text>
         </div>
       )}
 
-      <Text variant="h5" className="mt-1 mb-2 leading-none">
-        <Hyperlink href={`/albums/${albumId}`}>{track.albumName}</Hyperlink>
-      </Text>
-      <Text className="mt-1 mb-2 leading-none" color="muted">
+      <Text className="mb-2 leading-none" color="muted">
         {track.albumRecordLabel}, {track.albumReleaseDate}
       </Text>
 
