@@ -17,9 +17,10 @@ import { formatTrackDuration } from '@/lib/format-track-duration'
 
 interface TracklistProps {
   tracks: TSpotifyTrack[]
+  availableInPT: boolean
 }
 
-const AlbumTracklist: React.FC<TracklistProps> = ({ tracks }) => {
+const AlbumTracklist: React.FC<TracklistProps> = ({ tracks, availableInPT }) => {
   if (!tracks || tracks.length === 0) {
     return <div>No tracks found</div>
   }
@@ -40,7 +41,9 @@ const AlbumTracklist: React.FC<TracklistProps> = ({ tracks }) => {
             <TableCell className="text-center">{track.track_number}</TableCell>
 
             <TableCell className="font-medium">
-              <Text className="leading-tight">{track.name}</Text>
+              <Text className="leading-tight" color={availableInPT ? 'foreground' : 'muted'}>
+                {track.name}
+              </Text>
             </TableCell>
 
             <TableCell>

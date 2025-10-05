@@ -117,9 +117,9 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
               {albums.length > 0 ? (
                 albums.map((album) => <AlbumCard key={album.id} album={album} />)
               ) : (
-                <Text className="mt-10 flex items-center">
-                  <IoBatteryDeadSharp className="text-4xl mr-4" />
-                  <span className="block">No albums available</span>
+                <Text className="mt-10 flex flex-col items-center">
+                  <IoBatteryDeadSharp className="text-5xl mr-4" />
+                  <span className="block text-2xl">No albums available</span>
                 </Text>
               )}
             </div>
@@ -129,9 +129,9 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
               {singles.length > 0 ? (
                 singles.map((album) => <AlbumCard key={album.id} album={album} />)
               ) : (
-                <Text className="mt-10 flex items-center">
-                  <IoBatteryDeadSharp className="text-4xl mr-4" />
-                  <span className="block">No singles available</span>
+                <Text className="mt-10 flex flex-col items-center">
+                  <IoBatteryDeadSharp className="text-5xl mr-4" />
+                  <span className="block text-2xl">No singles available</span>
                 </Text>
               )}
             </div>

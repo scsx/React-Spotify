@@ -53,7 +53,12 @@ const AlbumPage = () => {
     fetchAlbumDetails()
   }, [albumId])
 
-  if (loadingPage) return <Loading />
+  if (loadingPage)
+    return (
+      <div className='w-full text-center'>
+        <Loading />
+      </div>
+    )
   if (errorPage) return <ErrorDisplay message={errorPage} />
 
   if (!album) {
@@ -93,7 +98,7 @@ const AlbumPage = () => {
             <AlbumOverview album={album} availableInPT={availableInPT} />
           </div>
 
-          <AlbumTracklist tracks={album.tracks.items} />
+          <AlbumTracklist tracks={album.tracks.items} availableInPT={availableInPT} />
         </div>
         <div className="w-1/3">
           {album.images && album.images.length > 0 && (

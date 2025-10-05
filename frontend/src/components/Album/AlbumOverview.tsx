@@ -15,8 +15,6 @@ const formatTotalDuration = (album: TSpotifyAlbum) => {
     return 'N/D'
   }
 
-  console.log(album)
-
   const totalDurationMs = album.tracks.items.reduce((sum, track) => sum + track.duration_ms, 0)
 
   const totalSeconds = Math.floor(totalDurationMs / 1000)
