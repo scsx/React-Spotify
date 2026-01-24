@@ -20,9 +20,14 @@ const Albums = () => {
         setError(null)
         const data = await getSpotifyNewReleases()
         setAlbums(data)
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('Erro ao carregar novos lançamentos:', err)
-        setError(err.message || 'Ocorreu um erro ao carregar os álbuns.')
+
+        if (err instanceof Error) {
+          setError(err.message)
+        } else {
+          setError('Ocorreu um erro ao carregar os álbuns.')
+        }
       } finally {
         setLoading(false)
       }
