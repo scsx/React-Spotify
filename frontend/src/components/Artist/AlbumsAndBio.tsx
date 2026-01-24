@@ -53,7 +53,7 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
           setSingles(resultSingles)
 
           // Albums and singles covers.
-          let allCovers: string[] = []
+          const allCovers: string[] = []
           fetchedAlbums.forEach((item) => {
             const cover = item.images[0].url
             if (cover) {
