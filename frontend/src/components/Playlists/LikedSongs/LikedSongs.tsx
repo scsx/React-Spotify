@@ -27,7 +27,7 @@ const LikedSongs = () => {
   const [searchTerm, setSearchTerm] = useState('')
 
   const pageSize = 50
-  const DATA_PATH = '/data/skiley/2025-10-02-skiley-liked-songs.json'
+  const DATA_PATH = '/data/skiley/2026-01-25-skiley-liked-songs.json'
 
   // TODO: useMemo where possible.
 
@@ -46,12 +46,18 @@ const LikedSongs = () => {
         const json = await response.json()
         setData(json)
 
+        console.log(json[0])
+
         if (json.length > 0) {
           setSelectedTrack(json[0])
         }
-      } catch (e: any) {
+      } catch (e: unknown) {
         console.error('Error fetching liked songs data:', e)
-        setError(e.message || 'Failed to fetch data.')
+        if (e instanceof Error) {
+          setError(e.message)
+        } else {
+          setError('Failed to fetch data.')
+        }
       } finally {
         setIsLoading(false)
       }

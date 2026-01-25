@@ -13,7 +13,7 @@ const Welcome = (): JSX.Element => {
     <div className="w-full md:w-2/3">
       <div className="block">
         <h1 className="inline-block text-6xl lg:text-9xl bg-gradient-to-l from-primary to-black dark:to-white text-transparent bg-clip-text">
-          Welcome.
+          All done.
         </h1>
       </div>
       <hr />

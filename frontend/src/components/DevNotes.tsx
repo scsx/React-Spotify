@@ -95,7 +95,10 @@ const DevNotes = () => {
               </Hyperlink>{' '}
               with Spotify account.
             </Text>
-            <Text as="li">Export playlist data to JSON</Text>
+            <Text as="li">
+              Export playlist data to JSON (
+              <pre className="inline-block">Playlists &gt; Liked Songs</pre>, check all options).
+            </Text>
             <Text as="li">
               Save to <pre className="inline-block">\public\data\skiley</pre> with a name like{' '}
               <pre className="inline-block">2025-10-02-skiley-liked-songs.json</pre>

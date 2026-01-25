@@ -10,7 +10,8 @@ import { getSpotifyCurrentlyPlaying } from '@/services/spotify/spotifyPlayer'
 import { useAuth } from '../contexts/AuthContext'
 
 // TODO: Interfaces for Player are simpler and not complete.
-type NowPlaying = {
+// E.g. Missing is_playing, progress_ms, etc.
+type TNowPlaying = {
   album: TSpotifyAlbum
   name: string
   artists: TSpotifyArtist[]
@@ -19,7 +20,7 @@ type NowPlaying = {
 }
 
 const Player = (): JSX.Element => {
-  const [nowPlaying, setNowPlaying] = useState<NowPlaying | null>(null)
+  const [nowPlaying, setNowPlaying] = useState<TNowPlaying | null>(null)
   const { isLoggedIn } = useAuth()
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const Player = (): JSX.Element => {
         const playingData = await getSpotifyCurrentlyPlaying()
 
         if (playingData && playingData.item) {
-          setNowPlaying(playingData.item as NowPlaying)
+          setNowPlaying(playingData.item as TNowPlaying)
         } else {
           setNowPlaying(null)
           console.log(
@@ -44,7 +45,7 @@ const Player = (): JSX.Element => {
     if (isLoggedIn) {
       fetchData()
 
-      // polling para atualizar a música a tocar automaticamente.
+      // Polling para atualizar a música a tocar automaticamente.
       const intervalId = setInterval(fetchData, 5000)
 
       return () => clearInterval(intervalId)
@@ -55,7 +56,7 @@ const Player = (): JSX.Element => {
 
   return (
     <div>
-      {nowPlaying && (
+      {nowPlaying ? (
         <div className="flex">
           <img
             src={nowPlaying.album?.images[2].url}
@@ -67,19 +68,17 @@ const Player = (): JSX.Element => {
           <div>
             <p className="text-gray-700 dark:text-gray-300">{nowPlaying.name}</p>
             <p className="text-gray-500">
-              {nowPlaying.artists.map((artist, index) => {
-                return (
-                  <React.Fragment key={artist.id}>
-                    {index > 0 ? ', ' : ''}
-                    <Hyperlink className="hover:text-primary" href={`/artists/${artist.id}`}>
-                      {artist.name}
-                    </Hyperlink>
-                  </React.Fragment>
-                )
-              })}
+              {nowPlaying.artists.map((artist, index) => (
+                <React.Fragment key={artist.id}>
+                  {index > 0 ? ', ' : ''}
+                  <Hyperlink href={`/artists/${artist.id}`}>{artist.name}</Hyperlink>
+                </React.Fragment>
+              ))}
             </p>
           </div>
         </div>
+      ) : (
+        <p>Nothing playing atm.</p>
       )}
     </div>
   )

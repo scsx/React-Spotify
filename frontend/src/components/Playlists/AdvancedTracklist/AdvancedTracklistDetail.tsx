@@ -1,6 +1,6 @@
 import { TSkileyLikedSong } from '@/types/SkileyTrack'
-import { MdOutlineInfo } from 'react-icons/md'
 import { GrCircleQuestion } from 'react-icons/gr'
+import { MdOutlineInfo } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
 
 import Hyperlink from '@/components/Hyperlink'
@@ -127,7 +127,7 @@ const AdvancedTracklistDetail = ({
 
       <Text variant="h6" className="mt-8 mb-4 flex items-center justify-between">
         <span>Features</span>
-        <Hyperlink href="Features" className="text-lg" variant="icon">
+        <Hyperlink href="/playlists/liked-songs/feature-stats" className="text-lg" variant="icon">
           <GrCircleQuestion />
         </Hyperlink>
       </Text>
