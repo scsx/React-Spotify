@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { TSpotifyTrack } from '@/types/SpotifyTrack'
 import { ImFire } from 'react-icons/im'
 
+import Hyperlink from '@/components/Hyperlink'
 import Text from '@/components/Text'
 import {
   Table,
@@ -52,7 +53,7 @@ const TopTracks: React.FC<TopTracksProps> = ({ artistId }): JSX.Element => {
             <TableHead>
               <Text color="muted">Album</Text>
             </TableHead>
-            <TableHead className='text-right'>
+            <TableHead className="text-right">
               <Text color="muted">Popularity</Text>
             </TableHead>
           </TableRow>
@@ -66,7 +67,11 @@ const TopTracks: React.FC<TopTracksProps> = ({ artistId }): JSX.Element => {
                     <Text className="leading-tight">{track.name}</Text>
                   </TableCell>
                   <TableCell>
-                    <Text className="leading-tight">{track.album.name}</Text>
+                    <Text className="leading-tight">
+                      <Hyperlink href={`/albums/${track.album.id}`} variant="title">
+                        {track.album.name}
+                      </Hyperlink>
+                    </Text>
                   </TableCell>
                   <TableCell className="text-right">
                     <Text className="flex items-center justify-end leading-tight">

@@ -3,8 +3,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
-import { FaGoogle } from 'react-icons/fa'
-import { FaSpotify } from 'react-icons/fa'
+import { FaGoogle, FaSpotify } from 'react-icons/fa'
 import { IoBatteryDeadSharp } from 'react-icons/io5'
 
 import Hyperlink from '@/components/Hyperlink'
@@ -113,28 +112,36 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
           </div>
 
           <TabsContent value="albums">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {albums.length > 0 ? (
-                albums.map((album) => <AlbumCard key={album.id} album={album} />)
-              ) : (
-                <Text className="mt-10 flex flex-col items-center">
+            {albums.length > 0 ? (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {albums.map((album) => (
+                  <AlbumCard key={album.id} album={album} />
+                ))}
+              </div>
+            ) : (
+              <div className="min-h-[300px] flex items-center justify-center">
+                <Text className="flex flex-col items-center">
                   <IoBatteryDeadSharp className="text-5xl mr-4" />
                   <span className="block text-2xl">No albums available</span>
                 </Text>
-              )}
-            </div>
+              </div>
+            )}
           </TabsContent>
           <TabsContent value="singles">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {singles.length > 0 ? (
-                singles.map((album) => <AlbumCard key={album.id} album={album} />)
-              ) : (
-                <Text className="mt-10 flex flex-col items-center">
+            {singles.length > 0 ? (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {singles.map((album) => (
+                  <AlbumCard key={album.id} album={album} />
+                ))}
+              </div>
+            ) : (
+              <div className="min-h-[300px] flex items-center justify-center">
+                <Text className="flex flex-col items-center">
                   <IoBatteryDeadSharp className="text-5xl mr-4" />
                   <span className="block text-2xl">No singles available</span>
                 </Text>
-              )}
-            </div>
+              </div>
+            )}
           </TabsContent>
           {biographyLastFM && biographyLastFM !== '' && (
             <TabsContent value="bio">
