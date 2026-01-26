@@ -12,6 +12,7 @@ type NavItem = {
 const navItems: NavItem[] = [
   { to: '/artists', label: 'Artists' },
   { to: '/albums', label: 'Albums' },
+  { to: '/tracks', label: 'Tracks' },
   { to: '/playlists', label: 'Playlists' },
   { to: '/genres', label: 'Genres' },
   { to: '/user', label: 'User' },

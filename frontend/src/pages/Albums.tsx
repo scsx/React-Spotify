@@ -54,7 +54,7 @@ const Albums = () => {
   }
 
   return (
-    <div className="container py-8 mb-2">
+    <div className="container mb-2">
       <Text variant="h1">Albums</Text>
       <Text variant="h4" color="muted" className="mb-8">
         New releases, it's mostly bad.
