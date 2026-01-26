@@ -2,7 +2,7 @@ export type TSkileyLikedSong = {
   addedAt: string
   addedBy: string
   isLikedByUser: boolean
-  isLocal: string
+  isLocal: string // 'stream' | 'local'
   albumArtistsNames: string
   albumName: string
   albumPopularity: number

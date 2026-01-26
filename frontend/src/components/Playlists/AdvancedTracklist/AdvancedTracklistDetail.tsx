@@ -12,6 +12,8 @@ type AdvancedTracklistDetailProps = {
   isAvailableInPT: boolean | null
 }
 
+// TODO: passar features e outros dados para a pagina de detalhes da track.
+
 const AdvancedTracklistDetail = ({
   track,
   albumImageUrl,
@@ -61,9 +63,19 @@ const AdvancedTracklistDetail = ({
     },
   ]
 
+  const boxClass = 'pt-4 px-6 pb-2 mb-4 border bg-background dark:bg-black'
+
   return (
-    <div className="mt-4 p-8 pt-6 border sticky top-24 bg-background dark:bg-black">
-      <Text variant="h6" className="mb-2">
+    <div className="mt-4 sticky top-24">
+      <div className={boxClass}>
+        <Text variant="h6" className="mb-2">
+          Track
+        </Text>
+        <Text className="mb-2 leading-none text-xl">{track.trackName}</Text>
+      </div>
+
+      <div className={boxClass}>
+        {/* <Text variant="h6" className="mb-2">
         Links
       </Text>
       <table className="w-full table-auto">
@@ -103,41 +115,49 @@ const AdvancedTracklistDetail = ({
       </table>
       <Text className="text-xs mt-2 mb-8 flex items-center" color="muted">
         <MdOutlineInfo className="mr-2 text-lg" /> Red = not available in PT
-      </Text>
+      </Text> */}
 
-      <Text variant="h6" className="mb-2">
-        Album
-      </Text>
+        <Text variant="h6" className="mb-4">
+          Album
+        </Text>
 
-      {albumImageUrl ? (
-        <img
-          src={albumImageUrl}
-          alt={`Capa do álbum ${track.albumName}`}
-          className="w-full aspect-square mb-2"
-        />
-      ) : (
-        <div className="w-full aspect-square bg-gray-700 rounded-lg mb-2 flex items-center justify-center">
-          <Text className="text-gray-400 text-sm">No image</Text>
-        </div>
-      )}
-
-      <Text className="mb-2 leading-none" color="muted">
-        {track.albumRecordLabel}, {track.albumReleaseDate}
-      </Text>
-
-      <Text variant="h6" className="mt-8 mb-4 flex items-center justify-between">
-        <span>Features</span>
-        <Hyperlink href="/playlists/liked-songs/feature-stats" className="text-lg" variant="icon">
-          <GrCircleQuestion />
-        </Hyperlink>
-      </Text>
-      <div className="grid grid-cols-2 gap-y-2 gap-x-4">
-        {features.map(({ key, label }) => (
-          <div key={key}>
-            <Text color="muted">{label}</Text>
-            <Text>{track[key]}</Text>
+        {albumImageUrl ? (
+          <img
+            src={albumImageUrl}
+            alt={`Capa do álbum ${track.albumName}`}
+            className="w-full aspect-square mb-2"
+          />
+        ) : (
+          <div className="w-full aspect-square bg-gray-700 rounded-lg mb-2 flex items-center justify-center">
+            <Text className="text-gray-400 text-sm">No image</Text>
           </div>
-        ))}
+        )}
+
+        <Text className="mb-2 mt-4 !leading-tight text-lg">{track.albumName}</Text>
+        <Text className="mb-2 leading-none" color="muted">
+          {track.albumRecordLabel}, {track.albumReleaseDate}
+        </Text>
+
+        {/* <Text variant="h6" className="mt-8 mb-4 flex items-center justify-between">
+          <span>Features</span>
+          <Hyperlink href="/playlists/liked-songs/feature-stats" className="text-lg" variant="icon">
+            <GrCircleQuestion />
+          </Hyperlink>
+        </Text>
+        <div className="grid grid-cols-2 gap-y-2 gap-x-4">
+          {features.map(({ key, label }) => (
+            <div key={key}>
+              <Text color="muted">{label}</Text>
+              <Text>{track[key]}</Text>
+            </div>
+          ))}
+        </div> */}
+      </div>
+
+      <div className={boxClass}>
+        <Text variant="h6" className="mb-2">
+          About
+        </Text>
       </div>
     </div>
   )

@@ -46,8 +46,6 @@ const LikedSongs = () => {
         const json = await response.json()
         setData(json)
 
-        console.log(json[0])
-
         if (json.length > 0) {
           setSelectedTrack(json[0])
         }
@@ -147,38 +145,39 @@ const LikedSongs = () => {
             onSearchChange={setSearchTerm}
             totalItems={songCount}
           />
+
+          {songCount > 0 && (
+            <div className="relative mt-8">
+              <AdvancedTracklist
+                tracks={paginatedTracks}
+                selectedTrack={selectedTrack}
+                onSelectTrack={handleSelectTrack}
+                startIndex={startIndex}
+              />
+
+              {totalPages > 1 && (
+                <GenericPagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={setCurrentPage}
+                  onPrevious={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  onNext={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  isPreviousDisabled={currentPage === 1}
+                  isNextDisabled={currentPage === totalPages}
+                />
+              )}
+            </div>
+          )}
         </div>
         <div className="w-1/4">
+          <AdvancedTracklistDetail
+            track={selectedTrack}
+            albumImageUrl={selectedTrackImage}
+            isAvailableInPT={selectedTrackAvailableInPT}
+          />
           <LikedSongsSecNav />
         </div>
       </div>
-
-      {songCount > 0 && (
-        <div className="pt-2 flex space-x-12">
-          <div className="relative w-3/4">
-            <AdvancedTracklist
-              tracks={paginatedTracks}
-              selectedTrack={selectedTrack}
-              onSelectTrack={handleSelectTrack}
-              startIndex={startIndex}
-            />
-            <GenericPagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-              onPrevious={() => setCurrentPage((p) => Math.max(1, p - 1))}
-              onNext={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-            />
-          </div>
-          <div className="w-1/4">
-            <AdvancedTracklistDetail
-              track={selectedTrack}
-              albumImageUrl={selectedTrackImage}
-              isAvailableInPT={selectedTrackAvailableInPT}
-            />
-          </div>
-        </div>
-      )}
     </div>
   )
 }

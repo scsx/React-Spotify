@@ -18,6 +18,8 @@ const GenericPagination: React.FC<TGenericPagination> = ({
   onPageChange,
   onPrevious,
   onNext,
+  isPreviousDisabled,
+  isNextDisabled,
 }) => {
   // Lógica para determinar quais números de página exibir
   const getPageNumbers = () => {
@@ -65,7 +67,13 @@ const GenericPagination: React.FC<TGenericPagination> = ({
       {' '}
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious onClick={onPrevious} className="cursor-pointer hover:bg-primary" />
+          <PaginationPrevious
+            onClick={isPreviousDisabled ? undefined : onPrevious}
+            className={twMerge(
+              'cursor-pointer hover:bg-primary',
+              isPreviousDisabled && 'opacity-40 pointer-events-none'
+            )}
+          />
         </PaginationItem>
 
         {pagesToRender.map((pageNumber, index) =>
@@ -89,7 +97,13 @@ const GenericPagination: React.FC<TGenericPagination> = ({
         )}
 
         <PaginationItem>
-          <PaginationNext onClick={onNext} className="cursor-pointer hover:bg-primary" />
+          <PaginationNext
+            onClick={isNextDisabled ? undefined : onNext}
+            className={twMerge(
+              'cursor-pointer hover:bg-primary',
+              isNextDisabled && 'opacity-40 pointer-events-none'
+            )}
+          />
         </PaginationItem>
       </PaginationContent>
     </Pagination>
