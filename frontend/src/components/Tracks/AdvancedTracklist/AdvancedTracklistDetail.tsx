@@ -36,7 +36,7 @@ const AdvancedTracklistDetail = ({
     { key: 'trackPopularity', label: 'Popularity' },
   ]
 
-  const getID = (url: string) => {
+  const getSpotifyIdFromUrl = (url: string) => {
     if (!url) return ''
     const parts = url.split('/')
     return parts[parts.length - 1] || ''
@@ -45,19 +45,19 @@ const AdvancedTracklistDetail = ({
   const linkRows = [
     {
       label: 'Track',
-      site: `/tracks/${getID(track.trackUrl)}`,
+      site: `/tracks/${getSpotifyIdFromUrl(track.trackUrl)}`,
       web: track.trackUrl,
       app: track.trackUri,
     },
     {
       label: 'Album',
-      site: `/albums/${getID(track.albumUrl)}`,
+      site: `/albums/${getSpotifyIdFromUrl(track.albumUrl)}`,
       web: track.albumUrl,
       app: track.albumUri,
     },
     {
       label: 'Artist',
-      site: `/artists/${getID(track.artistUrl)}`,
+      site: `/artists/${getSpotifyIdFromUrl(track.artistUrl)}`,
       web: track.artistUrl,
       app: track.artistUri,
     },
@@ -71,7 +71,10 @@ const AdvancedTracklistDetail = ({
         <Text variant="h6" className="mb-2">
           Track
         </Text>
-        <Text className="mb-2 leading-none text-xl">{track.trackName}</Text>
+        <Text className="mb-6 leading-none text-xl">{track.trackName}</Text>
+        <Text className="mb-2">
+          <Hyperlink href={`/tracks/${getSpotifyIdFromUrl(track.trackUrl)}`}>See track details</Hyperlink>
+        </Text>
       </div>
 
       <div className={boxClass}>
@@ -157,6 +160,13 @@ const AdvancedTracklistDetail = ({
       <div className={boxClass}>
         <Text variant="h6" className="mb-2">
           About
+        </Text>
+        <Text>
+          These tracks are loaded locally from a file exported via{' '}
+          <Hyperlink href="https://skiley.net/playlists" external>
+            skiley.net
+          </Hyperlink>
+          . See the <Hyperlink href="/dev-notes#skiley">dev notes</Hyperlink> for more details.
         </Text>
       </div>
     </div>

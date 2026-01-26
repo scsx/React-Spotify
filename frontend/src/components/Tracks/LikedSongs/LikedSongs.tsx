@@ -8,7 +8,6 @@ import Loading from '@/components/Loading'
 import AdvancedTracklist from '@/components/Tracks/AdvancedTracklist/AdvancedTracklist'
 import AdvancedTracklistDetail from '@/components/Tracks/AdvancedTracklist/AdvancedTracklistDetail'
 import AdvancedTracklistSearch from '@/components/Tracks/AdvancedTracklist/AdvancedTracklistSearch'
-import LikedSongsSecNav from '@/components/Tracks/LikedSongs/LikedSongsSecNav'
 
 import { getSpotifyTrack } from '@/services/spotify/getSpotifyTrack'
 
@@ -175,7 +174,6 @@ const LikedSongs = () => {
             albumImageUrl={selectedTrackImage}
             isAvailableInPT={selectedTrackAvailableInPT}
           />
-          <LikedSongsSecNav />
         </div>
       </div>
     </div>
