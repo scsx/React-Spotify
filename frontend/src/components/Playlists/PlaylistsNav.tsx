@@ -2,10 +2,13 @@ import React from 'react'
 
 import { NavLink } from 'react-router-dom'
 
+import { MdOutlineArrowOutward } from 'react-icons/md'
+import { twMerge } from 'tailwind-merge'
+
 import Text from '@/components/Text'
 
-interface PlaylistsNavItem {
-  name: string
+type PlaylistsNavItem = {
+  name: React.ReactNode
   path: string
 }
 
@@ -13,10 +16,6 @@ const playlistNavItems: PlaylistsNavItem[] = [
   {
     name: 'All',
     path: '/playlists',
-  },
-  {
-    name: 'Liked Songs',
-    path: '/playlists/liked-songs',
   },
   {
     name: 'Favorites',
@@ -42,6 +41,18 @@ const playlistNavItems: PlaylistsNavItem[] = [
     name: 'Shazam',
     path: '/playlists/shazam',
   },
+  {
+    name: (
+      <>
+        Liked Songs <span className="ml-1 capitalize text-muted-foreground">(Tracks)</span>{' '}
+        <sup className="text-muted-foreground">
+          {' '}
+          <MdOutlineArrowOutward className="text-lg" />
+        </sup>
+      </>
+    ),
+    path: '/tracks',
+  },
 ]
 
 const PlaylistsNav: React.FC = () => {
@@ -54,7 +65,10 @@ const PlaylistsNav: React.FC = () => {
               to={item.path}
               end={item.path === '/playlists'}
               className={({ isActive }) =>
-                isActive ? 'text-primary cursor-default' : 'text-foreground hover:text-primary'
+                twMerge(
+                  'flex items-center gap-1',
+                  isActive ? 'text-primary cursor-default' : 'text-foreground hover:text-primary'
+                )
               }
             >
               {item.name}
