@@ -136,45 +136,43 @@ const LikedSongs = () => {
   const handleSelectTrack = (track: TSkileyLikedSong) => setSelectedTrack(track)
 
   return (
-    <div>
-      <div className="flex space-x-12">
-        <div className="w-3/4">
-          <AdvancedTracklistSearch
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-            totalItems={songCount}
-          />
+    <div className="flex space-x-12">
+      <div className="w-3/4">
+        <AdvancedTracklistSearch
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          totalItems={songCount}
+        />
 
-          {songCount > 0 && (
-            <div className="relative mt-8">
-              <AdvancedTracklist
-                tracks={paginatedTracks}
-                selectedTrack={selectedTrack}
-                onSelectTrack={handleSelectTrack}
-                startIndex={startIndex}
+        {songCount > 0 && (
+          <div className="relative mt-8">
+            <AdvancedTracklist
+              tracks={paginatedTracks}
+              selectedTrack={selectedTrack}
+              onSelectTrack={handleSelectTrack}
+              startIndex={startIndex}
+            />
+
+            {totalPages > 1 && (
+              <GenericPagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+                onPrevious={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                onNext={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                isPreviousDisabled={currentPage === 1}
+                isNextDisabled={currentPage === totalPages}
               />
-
-              {totalPages > 1 && (
-                <GenericPagination
-                  currentPage={currentPage}
-                  totalPages={totalPages}
-                  onPageChange={setCurrentPage}
-                  onPrevious={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  onNext={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                  isPreviousDisabled={currentPage === 1}
-                  isNextDisabled={currentPage === totalPages}
-                />
-              )}
-            </div>
-          )}
-        </div>
-        <div className="w-1/4">
-          <AdvancedTracklistDetail
-            track={selectedTrack}
-            albumImageUrl={selectedTrackImage}
-            isAvailableInPT={selectedTrackAvailableInPT}
-          />
-        </div>
+            )}
+          </div>
+        )}
+      </div>
+      <div className="w-1/4">
+        <AdvancedTracklistDetail
+          track={selectedTrack}
+          albumImageUrl={selectedTrackImage}
+          isAvailableInPT={selectedTrackAvailableInPT}
+        />
       </div>
     </div>
   )

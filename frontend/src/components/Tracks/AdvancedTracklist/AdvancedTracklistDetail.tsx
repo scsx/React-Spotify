@@ -161,7 +161,7 @@ const AdvancedTracklistDetail = ({
         <Text variant="h6" className="mb-2">
           About
         </Text>
-        <Text>
+        <Text className='mb-2'>
           These tracks are loaded locally from a file exported via{' '}
           <Hyperlink href="https://skiley.net/playlists" external>
             skiley.net

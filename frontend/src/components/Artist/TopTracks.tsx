@@ -64,7 +64,9 @@ const TopTracks: React.FC<TopTracksProps> = ({ artistId }): JSX.Element => {
               return (
                 <TableRow key={track.id}>
                   <TableCell className="font-medium">
-                    <Text className="leading-tight">{track.name}</Text>
+                    <Text className="leading-tight">
+                      <Hyperlink href={`/tracks/${track.id}`} variant='title'>{track.name}</Hyperlink>
+                    </Text>
                   </TableCell>
                   <TableCell>
                     <Text className="leading-tight">

@@ -19,11 +19,18 @@ export async function getSpotifyPlaylistsById(
     try {
       const response = await axios.get(`/api/spotify/playlists/${id}`)
       fetchedPlaylists.push(response.data)
-    } catch (error: any) {
-      console.error(
-        `Erro ao buscar playlist com ID ${id} do backend:`,
-        error.response ? error.response.data : error.message
-      )
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error(
+          `Erro ao buscar playlist com ID ${id} do backend:`,
+          error.response?.data || error.message
+        )
+      } else if (error instanceof Error) {
+        console.error(`Erro ao buscar playlist com ID ${id} do backend:`, error.message)
+      } else {
+        console.error(`Erro ao buscar playlist com ID ${id} do backend:`, error)
+      }
+
       errors.push(`Falha ao buscar playlist ${id}`)
     }
 

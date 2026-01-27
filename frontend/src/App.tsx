@@ -22,8 +22,9 @@ import ArtistsPage from '@/pages/ArtistsPage'
 import FeatureStats from '@/pages/FeatureStats'
 import Login from '@/pages/Login'
 import PlaylistPage from '@/pages/PlaylistPage'
-import User from '@/pages/User'
+import TrackPage from '@/pages/TrackPage'
 import TracksPage from '@/pages/Tracks'
+import User from '@/pages/User'
 
 import Footer from './components/Footer'
 import Header from './components/Header/Header'
@@ -63,8 +64,9 @@ const App: React.FC = () => {
               </Route>
               <Route path="/tracks">
                 <Route index element={<TracksPage />} />
+                <Route path=":trackId" element={<TrackPage />} />
                 <Route path="feature-stats" element={<FeatureStats />} />
-               {/*  <Route path=":trackId" element={<TrackPage />} /> */}
+                {/*  <Route path=":trackId" element={<TrackPage />} /> */}
               </Route>
               <Route path="/playlists" element={<PlaylistsLayout />}>
                 <Route path="favorites" element={<FavoritePlaylists />} />
