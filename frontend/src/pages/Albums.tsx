@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 
 import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
+import { TSpotifyTrack } from '@/types/SpotifyTrack'
 
 import AlbumCard from '@/components/Album/AlbumCard'
 import Loading from '@/components/Loading'
 import Text from '@/components/Text'
 
 import getSpotifyNewReleases from '@/services/spotify/getSpotifyNewReleases'
+import { getSpotifyUserTopItems } from '@/services/spotify/getSpotifyUserTopItems'
 
 const Albums = () => {
   const [albums, setAlbums] = useState<TSpotifyAlbum[] | null>(null)
@@ -20,6 +22,10 @@ const Albums = () => {
         setError(null)
         const data = await getSpotifyNewReleases()
         setAlbums(data)
+
+        // NEW
+        const topTracks = await getSpotifyUserTopItems<TSpotifyTrack>('tracks', 'short_term')
+
       } catch (err: unknown) {
         console.error('Erro ao carregar novos lançamentos:', err)
 

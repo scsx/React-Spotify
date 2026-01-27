@@ -4,13 +4,13 @@ import axios, { AxiosResponse } from 'axios'
 export const getSpotifyCurrentUserProfile = async (): Promise<TSpotifyUserResponse> => {
   try {
     const response: AxiosResponse<TSpotifyUserResponse> = await axios.get('/api/spotify/me')
-
     return response.data
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Error fetching user profile from Spotify API:', error)
 
-    if (axios.isAxiosError(error) && error.response && error.response.data) {
-      const errorMessage = error.response.data.message || 'Erro desconhecido da API Spotify.'
+    if (axios.isAxiosError(error) && error.response?.data) {
+      const errorMessage =
+        (error.response.data as { message?: string }).message || 'Erro desconhecido da API Spotify.'
       throw new Error(`Erro da API Spotify: ${errorMessage}`)
     }
 

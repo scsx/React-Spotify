@@ -9,6 +9,19 @@ import { SPOTIFY_AUTH_LOGIN_PATH } from '@/lib/constants'
 const Welcome = (): JSX.Element => {
   const { isLoggedIn } = useAuth()
 
+  const ActionItem = ({ label, href }: { label: string; href: string }) => (
+    <>
+      <MdArrowOutward className="inline text-2xl animate-pulse" />{' '}
+      {isLoggedIn ? (
+        <Hyperlink href={href} variant="title">
+          {label}
+        </Hyperlink>
+      ) : (
+        label
+      )}
+    </>
+  )
+
   return (
     <div className="w-full md:w-2/3">
       <div className="block">
@@ -27,16 +40,16 @@ const Welcome = (): JSX.Element => {
       </p>
       <ul className="mt-4 -ml-2">
         <li className="text-xl mb-2">
-          <MdArrowOutward className="inline text-2xl animate-pulse" /> Search artists and genres
+          <ActionItem label="Search artists" href="/artists" />
         </li>
         <li className="text-xl mb-2">
-          <MdArrowOutward className="inline text-2xl animate-pulse" /> Find more artists by genre
+          <ActionItem label="Explore genres" href="/genres" />
         </li>
         <li className="text-xl mb-2">
-          <MdArrowOutward className="inline text-2xl animate-pulse" /> Find duplicates on playlists
+          <ActionItem label="Find duplicates on playlists" href="/duplicates" />
         </li>
         <li className="text-xl mb-2">
-          <MdArrowOutward className="inline text-2xl animate-pulse" /> Check your user info
+          <ActionItem label="Check your user info" href="/user" />
         </li>
       </ul>
 

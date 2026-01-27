@@ -17,6 +17,7 @@ const spotifyTrackRoute = require('./routes/spotify/track')
 const spotifyCurrentUserRoute = require('./routes/spotify/currentUser')
 const spotifySimilarArtistsRoute = require('./routes/spotify/similarArtists')
 const spotifyNewReleasesRoute = require('./routes/spotify/newReleases')
+const spotifyTopItemsRoute = require('./routes/spotify/getUserTopItems')
 
 const app = express()
 const API_PORT = process.env.PORT || 3001
@@ -85,7 +86,7 @@ spotifyApiRouter.use('/similar-artists', spotifySimilarArtistsRoute)
 spotifyApiRouter.use('/new-releases', spotifyNewReleasesRoute)
 spotifyApiRouter.use('/albums', spotifyAlbumRoute)
 spotifyApiRouter.use('/tracks', spotifyTrackRoute)
-
+spotifyApiRouter.use('/user-top-items', spotifyTopItemsRoute)
 
 // spotifyApiRouter
 app.use('/api/spotify', spotifyApiRouter)
