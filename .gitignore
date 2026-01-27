@@ -9,3 +9,5 @@ coverage/
 *.pem
 api/sessions/loki.db
 api/sessions/loki.db
+.vscode/diff/vulsResult.txt
+.vscode/diff/diff-main.json
