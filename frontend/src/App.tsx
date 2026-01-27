@@ -10,7 +10,6 @@ import NotFoundPage from '@/components/NotFoundPage'
 import ByYearPlaylists from '@/components/Playlists/ByYearPlaylists'
 import DiscoverWeeklyPlaylist from '@/components/Playlists/DiscoverWeeklyPlaylist/DiscoverWeeklyPlaylist'
 import FavoritePlaylists from '@/components/Playlists/FavoritePlaylists/FavoritePlaylists'
-import LikedSongs from '@/components/Playlists/LikedSongs/LikedSongs'
 import PlaylistsLayout from '@/components/Playlists/PlaylistsLayout'
 import ShazamPlaylist from '@/components/Playlists/ShazamPlaylist/ShazamPlaylist'
 import SpecialPlaylists from '@/components/Playlists/SpecialPlaylists'
@@ -23,6 +22,8 @@ import ArtistsPage from '@/pages/ArtistsPage'
 import FeatureStats from '@/pages/FeatureStats'
 import Login from '@/pages/Login'
 import PlaylistPage from '@/pages/PlaylistPage'
+import TrackPage from '@/pages/TrackPage'
+import TracksPage from '@/pages/Tracks'
 import User from '@/pages/User'
 
 import Footer from './components/Footer'
@@ -61,9 +62,13 @@ const App: React.FC = () => {
                 <Route index element={<Albums />} />
                 <Route path=":albumId" element={<AlbumPage />} />
               </Route>
+              <Route path="/tracks">
+                <Route index element={<TracksPage />} />
+                <Route path=":trackId" element={<TrackPage />} />
+                <Route path="feature-stats" element={<FeatureStats />} />
+                {/*  <Route path=":trackId" element={<TrackPage />} /> */}
+              </Route>
               <Route path="/playlists" element={<PlaylistsLayout />}>
-                <Route path="liked-songs" element={<LikedSongs />} />
-                <Route path="liked-songs/feature-stats" element={<FeatureStats />} />
                 <Route path="favorites" element={<FavoritePlaylists />} />
                 <Route path="special" element={<SpecialPlaylists />} />
                 <Route path="by-year" element={<ByYearPlaylists />} />

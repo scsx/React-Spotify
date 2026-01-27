@@ -38,7 +38,7 @@ const AllPlaylists: React.FC = () => {
         if (totalPlaylists === null) {
           setTotalPlaylists(data.total)
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('Failed to fetch user playlists:', err)
         setError('Falha ao carregar playlists. Por favor, tente novamente mais tarde.')
         setPlaylists([])
@@ -125,6 +125,8 @@ const AllPlaylists: React.FC = () => {
           onPageChange={handlePageChange}
           onPrevious={handlePreviousPage}
           onNext={handleNextPage}
+          isPreviousDisabled={currentPage === 1}
+          isNextDisabled={currentPage === totalPages}
         />
       )}
     </div>

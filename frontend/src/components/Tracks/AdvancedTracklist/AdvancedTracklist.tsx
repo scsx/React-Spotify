@@ -18,18 +18,20 @@ import {
 import { formatSkileyDate } from '@/lib/format-skiley-date'
 import { formatSkileyTrackDuration } from '@/lib/format-skiley-track-duration'
 
-interface AdvancedTracklistProps {
+type TAdvancedTracklistProps = {
   tracks: TSkileyLikedSong[]
   selectedTrack: TSkileyLikedSong | null
   onSelectTrack: (track: TSkileyLikedSong) => void
   startIndex: number
+  calendarString?: string
 }
 
-const AdvancedTracklist: React.FC<AdvancedTracklistProps> = ({
+const AdvancedTracklist: React.FC<TAdvancedTracklistProps> = ({
   tracks,
   selectedTrack,
   onSelectTrack,
   startIndex,
+  calendarString,
 }) => {
   if (!tracks || tracks.length === 0) {
     return <Text>No tracks found</Text>
@@ -42,9 +44,7 @@ const AdvancedTracklist: React.FC<AdvancedTracklistProps> = ({
           <TableHead className="w-[30px] px-0 text-center">#</TableHead>
           <TableHead className="w-[35%]">Title</TableHead>
           <TableHead className="w-[35%]">Artist</TableHead>
-          <TableHead>
-            <FaRegCalendarAlt />
-          </TableHead>
+          <TableHead>{calendarString ? calendarString : <FaRegCalendarAlt />}</TableHead>
           <TableHead className="w-[50px] px-0 text-center">
             <AiOutlineClockCircle className="w-full text-right" />
           </TableHead>

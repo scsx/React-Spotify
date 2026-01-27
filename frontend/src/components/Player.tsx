@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
-import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
-import { TSpotifyArtist } from '@/types/SpotifyArtist'
+import { TSpotifyTrack } from '@/types/SpotifyTrack'
 
 import Hyperlink from '@/components/Hyperlink'
+import Text from '@/components/Text'
 
 import { getSpotifyCurrentlyPlaying } from '@/services/spotify/spotifyPlayer'
 
@@ -11,16 +11,8 @@ import { useAuth } from '../contexts/AuthContext'
 
 // TODO: Interfaces for Player are simpler and not complete.
 // E.g. Missing is_playing, progress_ms, etc.
-type TNowPlaying = {
-  album: TSpotifyAlbum
-  name: string
-  artists: TSpotifyArtist[]
-  uri: string
-  duration_ms: number
-}
-
 const Player = (): JSX.Element => {
-  const [nowPlaying, setNowPlaying] = useState<TNowPlaying | null>(null)
+  const [nowPlaying, setNowPlaying] = useState<TSpotifyTrack | null>(null)
   const { isLoggedIn } = useAuth()
 
   useEffect(() => {
@@ -29,7 +21,7 @@ const Player = (): JSX.Element => {
         const playingData = await getSpotifyCurrentlyPlaying()
 
         if (playingData && playingData.item) {
-          setNowPlaying(playingData.item as TNowPlaying)
+          setNowPlaying(playingData.item as TSpotifyTrack)
         } else {
           setNowPlaying(null)
           console.log(
@@ -66,15 +58,19 @@ const Player = (): JSX.Element => {
             className="mr-2"
           />
           <div>
-            <p className="text-gray-700 dark:text-gray-300">{nowPlaying.name}</p>
-            <p className="text-gray-500">
+            <Text className="text-gray-700 dark:text-gray-300">
+              <Hyperlink href={`/tracks/${nowPlaying.id}`} variant="title">
+                {nowPlaying.name}
+              </Hyperlink>
+            </Text>
+            <Text className="text-gray-500">
               {nowPlaying.artists.map((artist, index) => (
                 <React.Fragment key={artist.id}>
                   {index > 0 ? ', ' : ''}
                   <Hyperlink href={`/artists/${artist.id}`}>{artist.name}</Hyperlink>
                 </React.Fragment>
               ))}
-            </p>
+            </Text>
           </div>
         </div>
       ) : (

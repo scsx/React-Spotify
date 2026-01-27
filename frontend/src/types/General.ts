@@ -1,20 +1,22 @@
 export type TTheme = 'dark' | 'light'
 
-export interface TGenericPagination {
+export type TGenericPagination = {
   currentPage: number
   totalPages: number
   onPageChange: (page: number) => void
   onPrevious: () => void
   onNext: () => void
+  isPreviousDisabled?: boolean
+  isNextDisabled?: boolean
 }
 
-export interface TFavoritesStyleBreakdown {
+export type TFavoritesStyleBreakdown = {
   style: string
   percentage: number
   totalTracks: number
 }
 
-export interface TErrorDisplay {
+export type TErrorDisplay = {
   title?: string
   message: string
   details?: string
