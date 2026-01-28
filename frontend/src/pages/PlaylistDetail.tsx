@@ -1,4 +1,4 @@
-const PlaylistPage = () => {
+const PlaylistDetail = () => {
   // TODO: not needed, remove
   return (
     <>
@@ -9,4 +9,4 @@ const PlaylistPage = () => {
   )
 }
 
-export default PlaylistPage
+export default PlaylistDetail

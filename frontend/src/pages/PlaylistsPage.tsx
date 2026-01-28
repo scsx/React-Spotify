@@ -1,7 +1,7 @@
 import AllPlaylists from '@/components/Playlists/AllPlaylists'
 
-const Playlists = (): JSX.Element => {
+const PlaylistsPage = (): JSX.Element => {
   return <AllPlaylists />
 }
 
-export default Playlists
+export default PlaylistsPage

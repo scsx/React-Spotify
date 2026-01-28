@@ -9,7 +9,7 @@ import Text from '@/components/Text'
 
 import { getSpotifyTrack } from '@/services/spotify/getSpotifyTrack'
 
-const TrackPage = () => {
+const TrackDetailLayout = (): JSX.Element | null => {
   const { trackId } = useParams<{ trackId: string }>()
   const [track, setTrack] = useState<TSpotifyTrack | null>(null)
 
@@ -35,7 +35,7 @@ const TrackPage = () => {
   const extraTitle = hasExtraInfo ? `(${track.name.split('(')[1].slice(0, -1)})` : null
 
   return (
-    <div className="relative container">
+    <>
       {hasExtraInfo ? (
         <>
           <Text variant="h1" className="block mb-1">
@@ -64,20 +64,21 @@ const TrackPage = () => {
 
       <div className="flex space-x-12">
         <div className="w-3/4">
-          <Text className="mt-16">TODO: </Text>
+          <Text className="mt-16">TODO:</Text>
           <ul>
             <li>Similar tracks</li>
-            <li>audio features </li>
-            <li>cover </li>
-            <li>Scrobbles </li>
+            <li>Audio features</li>
+            <li>Cover</li>
+            <li>Scrobbles</li>
           </ul>
         </div>
+
         <div className="w-1/4">
           <Text>TODO: Playlists containing this track</Text>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
-export default TrackPage
+export default TrackDetailLayout

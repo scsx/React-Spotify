@@ -33,7 +33,7 @@ const SearchArtists = (): JSX.Element => {
   }
 
   useEffect(() => {
-    let retrievedPastSearches = localStorage.getItem('pastArtistSearches')
+    const retrievedPastSearches = localStorage.getItem('pastArtistSearches')
     if (retrievedPastSearches) {
       try {
         const parsedPastSearches = JSON.parse(retrievedPastSearches)
@@ -48,7 +48,7 @@ const SearchArtists = (): JSX.Element => {
 
   const updatePastSearches = (term: string) => {
     if (term.trim() !== '') {
-      let retrievedPastSearches = localStorage.getItem('pastArtistSearches')
+      const retrievedPastSearches = localStorage.getItem('pastArtistSearches')
       let parsedPastSearches: string[] = []
       if (retrievedPastSearches) {
         try {

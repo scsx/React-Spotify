@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
-import Loading from '@/components/Loading'
+
 import Hyperlink from '@/components/Hyperlink'
+import Loading from '@/components/Loading'
 import Text from '@/components/Text'
 
 import { getSpotifyFollowedArtists } from '@/services/spotify/getSpotifyFollowedArtists'
@@ -16,19 +17,28 @@ const ArtistsFollowedPage = () => {
     const fetchFollowedArtists = async () => {
       setIsLoading(true)
       setError(null)
+
       try {
         const data = await getSpotifyFollowedArtists(50, undefined)
+
         const sortedArtists = data.artists.items
           .slice()
           .sort((a, b) => a.name.localeCompare(b.name))
+
         setArtists(sortedArtists)
-      } catch (error: any) {
-        console.error('Error fetching followed artists:', error)
-        setError(error.message || 'Failed to load followed artists.')
+      } catch (err: unknown) {
+        console.error('Error fetching followed artists:', err)
+
+        if (err instanceof Error) {
+          setError(err.message)
+        } else {
+          setError('Failed to load followed artists.')
+        }
       } finally {
         setIsLoading(false)
       }
     }
+
     fetchFollowedArtists()
   }, [])
 

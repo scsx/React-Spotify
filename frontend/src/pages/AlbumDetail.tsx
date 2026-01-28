@@ -17,7 +17,7 @@ import { getSpotifyAlbum } from '@/services/spotify/getSpotifyAlbum'
 
 import { checkSpotifyContentAvailability } from '@/lib/check-spotify-content-availability'
 
-const AlbumPage = () => {
+const AlbumDetail = () => {
   const { albumId } = useParams<{ albumId: string }>()
   const [album, setAlbum] = useState<TSpotifyAlbum | null>(null)
   const [availableInPT, setAvailableInPT] = useState<boolean>(false)
@@ -117,4 +117,4 @@ const AlbumPage = () => {
   )
 }
 
-export default AlbumPage
+export default AlbumDetail

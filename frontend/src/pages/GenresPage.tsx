@@ -1,6 +1,6 @@
 import Text from "@/components/Text"
 
-const Genres = (): JSX.Element => {
+const GenresPage = (): JSX.Element => {
   return (
     <div className="container">
       <Text variant="h1">Genres</Text>
@@ -8,4 +8,4 @@ const Genres = (): JSX.Element => {
   )
 }
 
-export default Genres
+export default GenresPage
