@@ -1,6 +1,7 @@
 import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
 import axios from 'axios'
 
+// NOTE: Not being used ATM.
 const getSpotifyNewReleases = async (): Promise<TSpotifyAlbum[]> => {
   try {
     const response = await axios.get(`/api/spotify/new-releases`)
