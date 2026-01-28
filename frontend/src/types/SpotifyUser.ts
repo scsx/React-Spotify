@@ -1,6 +1,6 @@
 import { TSpotifyArtist } from './SpotifyArtist'
 
-export interface TSpotifyUser {
+export type TSpotifyUser = {
   display_name: string
   id: string
   email?: string // Requires the 'user-read-email' scope
@@ -15,12 +15,12 @@ export interface TSpotifyUser {
   explicit_content?: { filter_enabled: boolean; filter_locked: boolean }
 }
 
-export interface TSpotifyUserResponse {
+export type TSpotifyUserResponse = {
   message?: string
   user: TSpotifyUser
 }
 
-export interface TSpotifyFollowedArtistsResponse {
+export type TSpotifyFollowedArtistsResponse = {
   message: string
   artists: {
     items: TSpotifyArtist[]
@@ -33,4 +33,13 @@ export interface TSpotifyFollowedArtistsResponse {
       before: string | null
     }
   }
+}
+
+export type TSpotifyUserTopItemsResponse<T> = {
+  items: T[]
+  total: number
+  limit: number
+  offset: number
+  next: string | null
+  previous: string | null
 }

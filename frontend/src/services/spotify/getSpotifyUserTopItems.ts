@@ -1,26 +1,20 @@
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import { TSpotifyTrack } from '@/types/SpotifyTrack'
+import { TSpotifyUserTopItemsResponse } from '@/types/SpotifyUser'
 import axios, { AxiosResponse } from 'axios'
-
-type TSpotifyTopResponse<T> = {
-  items: T[]
-  total: number
-  limit: number
-  offset: number
-  next: string | null
-  previous: string | null
-}
 
 export const getSpotifyUserTopItems = async <T extends TSpotifyTrack | TSpotifyArtist>(
   type: 'tracks' | 'artists',
-  timeRange: 'short_term' | 'medium_term' | 'long_term' = 'medium_term'
-): Promise<TSpotifyTopResponse<T>> => {
+  timeRange: 'short_term' | 'medium_term' | 'long_term' = 'medium_term',
+  limit: number = 20
+): Promise<TSpotifyUserTopItemsResponse<T>> => {
   try {
-    const response: AxiosResponse<TSpotifyTopResponse<T>> = await axios.get(
+    const response: AxiosResponse<TSpotifyUserTopItemsResponse<T>> = await axios.get(
       `/api/spotify/user-top-items/${type}`,
       {
         params: {
           time_range: timeRange,
+          limit,
         },
       }
     )

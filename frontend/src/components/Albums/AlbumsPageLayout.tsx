@@ -10,6 +10,20 @@ import Text from '@/components/Text'
 import getSpotifyNewReleases from '@/services/spotify/getSpotifyNewReleases'
 import { getSpotifyUserTopItems } from '@/services/spotify/getSpotifyUserTopItems'
 
+const getUniqueAlbumsFromTracks = (tracks: TSpotifyTrack[], limit: number): TSpotifyAlbum[] => {
+  const map = new Map<string, TSpotifyAlbum>()
+
+  for (const track of tracks) {
+    if (!map.has(track.album.id)) {
+      map.set(track.album.id, track.album)
+    }
+
+    if (map.size === limit) break
+  }
+
+  return Array.from(map.values())
+}
+
 const AlbumsPageLayout = () => {
   const [albums, setAlbums] = useState<TSpotifyAlbum[] | null>(null)
   const [loading, setLoading] = useState(true)
@@ -21,10 +35,21 @@ const AlbumsPageLayout = () => {
         setLoading(true)
         setError(null)
 
+        const topTracksResponse = await getSpotifyUserTopItems<TSpotifyTrack>(
+          'tracks',
+          'short_term',
+          30
+        )
+
+        const topAlbums = getUniqueAlbumsFromTracks(topTracksResponse.items, 20)
+
+        if (topAlbums.length > 0) {
+          setAlbums(topAlbums)
+          return
+        }
+
         const newReleases = await getSpotifyNewReleases()
         setAlbums(newReleases)
-
-        const topTracks = await getSpotifyUserTopItems<TSpotifyTrack>('tracks', 'short_term')
       } catch (err: unknown) {
         if (err instanceof Error) {
           setError(err.message)
