@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 
 import { TSkileyLikedSong } from '@/types/SkileyTrack'
+import { TSpotifyArtist } from '@/types/SpotifyArtist'
 
 import ErrorDisplay from '@/components/ErrorDisplay'
 import GenericPagination from '@/components/GenericPagination'
@@ -9,9 +10,9 @@ import AdvancedTracklist from '@/components/Tracks/AdvancedTracklist/AdvancedTra
 import AdvancedTracklistDetail from '@/components/Tracks/AdvancedTracklist/AdvancedTracklistDetail'
 import AdvancedTracklistSearch from '@/components/Tracks/AdvancedTracklist/AdvancedTracklistSearch'
 
+import { getSpotifyArtist } from '@/services/spotify/getSpotifyArtist'
 import { getSpotifyTrack } from '@/services/spotify/getSpotifyTrack'
 
-import { checkSpotifyContentAvailability } from '@/lib/check-spotify-content-availability'
 import { normalizeString } from '@/lib/normalise-string'
 
 const LikedSongs = () => {
@@ -21,7 +22,7 @@ const LikedSongs = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedTrack, setSelectedTrack] = useState<TSkileyLikedSong | null>(null)
   const [selectedTrackImage, setSelectedTrackImage] = useState<string | null>(null)
-  const [selectedTrackAvailableInPT, setSelectedTrackAvailableInPT] = useState<boolean>(false)
+  const [selectedTrackArtist, setSelectedTrackArtist] = useState<TSpotifyArtist | null>(null)
 
   const [searchTerm, setSearchTerm] = useState('')
 
@@ -67,7 +68,6 @@ const LikedSongs = () => {
   useEffect(() => {
     if (!selectedTrack) {
       setSelectedTrackImage(null)
-      setSelectedTrackAvailableInPT(false)
       return
     }
 
@@ -75,7 +75,6 @@ const LikedSongs = () => {
 
     if (!trackId) {
       setSelectedTrackImage(null)
-      setSelectedTrackAvailableInPT(false)
       console.warn('Track ID not found for:', selectedTrack.trackName)
       return
     }
@@ -84,20 +83,25 @@ const LikedSongs = () => {
       try {
         const trackData = await getSpotifyTrack(trackId)
 
+        // Artista
+        const artistId = trackData?.artists?.[0]?.id
+
+        if (artistId) {
+          const artistData = await getSpotifyArtist(artistId)
+          setSelectedTrackArtist(artistData)
+        } else {
+          setSelectedTrackArtist(null)
+        }
+
         // Imagem do álbum (vem dentro da track)
         if (trackData?.album?.images?.length > 0) {
           setSelectedTrackImage(trackData.album.images[0].url)
         } else {
           setSelectedTrackImage(null)
         }
-
-        // Disponibilidade em PT
-        const isAvailable = await checkSpotifyContentAvailability('track', trackId)
-        setSelectedTrackAvailableInPT(isAvailable)
       } catch (e) {
         console.error('Failed to fetch Spotify track data:', e)
         setSelectedTrackImage(null)
-        setSelectedTrackAvailableInPT(false)
       }
     }
 
@@ -137,7 +141,7 @@ const LikedSongs = () => {
 
   return (
     <div className="flex space-x-12">
-      <div className="w-3/4">
+      <div className="w-2/3">
         <AdvancedTracklistSearch
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
@@ -167,11 +171,11 @@ const LikedSongs = () => {
           </div>
         )}
       </div>
-      <div className="w-1/4">
+      <div className="w-1/3">
         <AdvancedTracklistDetail
           track={selectedTrack}
+          artist={selectedTrackArtist}
           albumImageUrl={selectedTrackImage}
-          isAvailableInPT={selectedTrackAvailableInPT}
         />
       </div>
     </div>

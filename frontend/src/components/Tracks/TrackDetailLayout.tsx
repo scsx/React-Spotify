@@ -6,6 +6,7 @@ import { TSpotifyTrack } from '@/types/SpotifyTrack'
 
 import Hyperlink from '@/components/Hyperlink'
 import Text from '@/components/Text'
+import TrackAudioFeatures from '@/components/Tracks/LikedSongs/TrackAudioFeatures'
 
 import { getSpotifyTrack } from '@/services/spotify/getSpotifyTrack'
 
@@ -63,7 +64,7 @@ const TrackDetailLayout = (): JSX.Element | null => {
       </Text>
 
       <div className="flex space-x-12">
-        <div className="w-3/4">
+        <div className="w-2/3">
           <Text className="mt-16">TODO:</Text>
           <ul>
             <li>Similar tracks</li>
@@ -73,8 +74,11 @@ const TrackDetailLayout = (): JSX.Element | null => {
           </ul>
         </div>
 
-        <div className="w-1/4">
+        <div className="w-1/3">
           <Text>TODO: Playlists containing this track</Text>
+          <div>
+            <TrackAudioFeatures />
+          </div>
         </div>
       </div>
     </>
