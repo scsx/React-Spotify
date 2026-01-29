@@ -16,10 +16,25 @@ import { getSpotifyArtistAlbums } from '@/services/spotify/getSpotifyArtistAlbum
 import AlbumCard from '../Album/AlbumCard'
 import CoverMosaic from './CoverMosaic'
 
-interface AlbumsAndBioProps {
+type AlbumsAndBioProps = {
   biographyLastFM?: string
   artistName: string
   artistURI: string
+}
+
+type TIconLinkProps = {
+  href: string
+  children: React.ReactNode
+}
+
+const IconLink = ({ href, children }: TIconLinkProps) => {
+  return (
+    <div className="inline-flex items-center justify-center rounded-sm text-sm font-medium ring-offset-background transition-all focus-visible:outline-none hover:bg-background">
+      <Hyperlink external href={href} className="px-3 py-1.5">
+        {children}
+      </Hyperlink>
+    </div>
+  )
 }
 
 const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
@@ -98,16 +113,13 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
             {albumsCovers.length > 0 && <CoverMosaic covers={albumsCovers} />}
 
             <div className="inline-flex h-10 rounded-md bg-muted ml-4 mb-0 p-1 text-muted-foreground">
-              <div className="inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none hover:bg-background">
-                <Hyperlink external href={`https://www.google.com/search?q=${artistName}`}>
-                  <FaGoogle className="text-muted-foreground hover:text-red-500" />
-                </Hyperlink>
-              </div>
-              <div className="inline-flex items-center justify-center rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 hover:bg-background">
-                <Hyperlink external href={artistURI}>
-                  <FaSpotify className="text-muted-foreground hover:text-primary" />
-                </Hyperlink>
-              </div>
+              <IconLink href={`https://www.google.com/search?q=${artistName}`}>
+                <FaGoogle className="text-muted-foreground hover:text-red-500" />
+              </IconLink>
+
+              <IconLink href={artistURI}>
+                <FaSpotify className="text-muted-foreground hover:text-primary" />
+              </IconLink>
             </div>
           </div>
 
