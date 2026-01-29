@@ -79,7 +79,7 @@ const SimilarArtists: React.FC<SimilarArtistsProps> = ({
                       {/* TODO: test Hyperlink when LastFM works again. */}
                       <Hyperlink
                         className="inline-block text-sm mr-8 text-gray-500 hover:text-black dark:hover:text-white"
-                        href={`/?searchKey=${artist.name}`}
+                        href={`/artists/?searchKey=${artist.name}`}
                       >
                         Search this app
                       </Hyperlink>
@@ -108,7 +108,7 @@ const SimilarArtists: React.FC<SimilarArtistsProps> = ({
         >
           implicit grant
         </Hyperlink>
-        . This workaround uses search.
+        . This workaround uses search and has weird suggestions.
       </Text>
     </>
   )
