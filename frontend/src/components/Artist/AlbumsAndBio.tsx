@@ -110,7 +110,10 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
                 <TabsTrigger value="bio">Biography</TabsTrigger>
               )}
             </TabsList>
-            {albumsCovers.length > 0 && <CoverMosaic covers={albumsCovers} />}
+
+            {albumsCovers.length > 0 && (
+              <CoverMosaic covers={albumsCovers} artistName={artistName} />
+            )}
 
             <div className="inline-flex h-10 rounded-md bg-muted ml-4 mb-0 p-1 text-muted-foreground">
               <IconLink href={`https://www.google.com/search?q=${artistName}`}>

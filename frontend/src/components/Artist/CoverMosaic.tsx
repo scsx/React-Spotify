@@ -1,11 +1,36 @@
+import { toPng } from 'html-to-image'
+import { LiaFileExportSolid } from 'react-icons/lia'
+
+import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
-interface CoverMosaicProps {
+type CoverMosaicProps = {
   covers: string[]
+  artistName: string
 }
 
-const CoverMosaic: React.FC<CoverMosaicProps> = ({ covers }): JSX.Element => {
+const CoverMosaic: React.FC<CoverMosaicProps> = ({ covers, artistName }): JSX.Element => {
+  const exportMosaic = async () => {
+    const node = document.getElementById('cover-mosaic')
+    if (!node) return
+
+    const dataUrl = await toPng(node, {
+      cacheBust: true,
+      pixelRatio: 2,
+    })
+
+    const link = document.createElement('a')
+    const safeName = artistName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '')
+
+    link.download = `${safeName}-cover-mosaic.png`
+    link.href = dataUrl
+    link.click()
+  }
+
   return (
     <Dialog>
       <div className="inline-flex h-10 rounded-md bg-muted ml-4 p-1 text-muted-foreground mb-4">
@@ -13,9 +38,15 @@ const CoverMosaic: React.FC<CoverMosaicProps> = ({ covers }): JSX.Element => {
           Mosaic
         </DialogTrigger>
       </div>
-      <DialogContent className="max-w-6xl">
-        <ScrollArea className="h-[90vh] p-4">
-          <div className="grid grid-cols-2 lg:grid-cols-4">
+      <DialogContent className="max-w-6xl [&>button]:scale-150">
+        <ScrollArea className="h-[90vh] p-4 pt-0">
+          {/* <button className="p-2 bg-orange-400" onClick={exportMosaic}>
+            Export mosaic to png <LiaFileExportSolid />
+          </button> */}
+          <Button onClick={exportMosaic} variant="outline" size="sm" className='mb-4'>
+            Export mosaic to png <LiaFileExportSolid />
+          </Button>
+          <div className="grid grid-cols-2 lg:grid-cols-4" id="cover-mosaic">
             {covers.map((url) => {
               return <img key={url} src={url} />
             })}
