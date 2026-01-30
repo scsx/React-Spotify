@@ -38,13 +38,13 @@ const CoverMosaic: React.FC<CoverMosaicProps> = ({ covers, artistName }): JSX.El
           Mosaic
         </DialogTrigger>
       </div>
-      <DialogContent className="max-w-6xl [&>button]:scale-150 [&>button]:right-12 [&>button]:top-8">
+      <DialogContent className="max-w-6xl [&>button]:scale-150 [&>button]:-right-8 [&>button]:top-6">
         <ScrollArea className="h-[90vh] p-4 pt-0">
           <Button
             onClick={exportMosaic}
             variant="outline"
             size="sm"
-            className="mb-4 border-indigo-700"
+            className="mb-4 text-indigo-700 dark:text-white border-indigo-700 hover:bg-indigo-700"
           >
             Export mosaic to png <LiaFileExportSolid />
           </Button>

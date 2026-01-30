@@ -41,9 +41,11 @@ const AlbumTracklist: React.FC<TracklistProps> = ({ tracks, availableInPT }) => 
             <TableCell className="text-center">{track.track_number}</TableCell>
 
             <TableCell className="font-medium">
-              <Text className="leading-tight" color={availableInPT ? 'foreground' : 'muted'}>
-                {track.name}
-              </Text>
+              <Hyperlink href={`/tracks/${track.id}`} variant="title">
+                <Text className="leading-tight" color={availableInPT ? 'foreground' : 'muted'}>
+                  {track.name}
+                </Text>
+              </Hyperlink>
             </TableCell>
 
             <TableCell>
