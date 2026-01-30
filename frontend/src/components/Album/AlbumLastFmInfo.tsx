@@ -12,7 +12,7 @@ import { getLastFMAlbumInfo } from '@/services/lastfm/getLastFMAlbumInfo'
 
 import { formatNumberWithSeparators } from '@/lib/format-number-with-separators'
 
-interface AlbumLastFmInfoProps {
+type AlbumLastFmInfoProps = {
   artistName: string
   albumName: string
 }
