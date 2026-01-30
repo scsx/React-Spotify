@@ -38,14 +38,17 @@ const CoverMosaic: React.FC<CoverMosaicProps> = ({ covers, artistName }): JSX.El
           Mosaic
         </DialogTrigger>
       </div>
-      <DialogContent className="max-w-6xl [&>button]:scale-150">
+      <DialogContent className="max-w-6xl [&>button]:scale-150 [&>button]:right-12 [&>button]:top-8">
         <ScrollArea className="h-[90vh] p-4 pt-0">
-          {/* <button className="p-2 bg-orange-400" onClick={exportMosaic}>
-            Export mosaic to png <LiaFileExportSolid />
-          </button> */}
-          <Button onClick={exportMosaic} variant="outline" size="sm" className='mb-4'>
+          <Button
+            onClick={exportMosaic}
+            variant="outline"
+            size="sm"
+            className="mb-4 border-indigo-700"
+          >
             Export mosaic to png <LiaFileExportSolid />
           </Button>
+
           <div className="grid grid-cols-2 lg:grid-cols-4" id="cover-mosaic">
             {covers.map((url) => {
               return <img key={url} src={url} />
