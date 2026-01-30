@@ -17,7 +17,7 @@ import YourTopPlaylists from '@/components/Playlists/YourTopPlaylists'
 
 import AlbumPage from '@/pages/AlbumDetail'
 import Albums from '@/pages/AlbumsPage'
-import ArtistsFollowedPage from '@/pages/ArtistsFollowedPage'
+import FollowedArtistsPage from '@/pages/FollowedArtistsPage'
 import ArtistsPage from '@/pages/ArtistsPage'
 import FeatureStats from '@/pages/FeatureStats'
 import Login from '@/pages/Login'
@@ -55,7 +55,7 @@ const App: React.FC = () => {
             <Route element={<AuthGuard />}>
               <Route path="/artists">
                 <Route index element={<ArtistsPage />} />
-                <Route path="following" element={<ArtistsFollowedPage />} />
+                <Route path="following" element={<FollowedArtistsPage />} />
                 <Route path=":artistId" element={<Artist />} />
               </Route>
               <Route path="/albums">

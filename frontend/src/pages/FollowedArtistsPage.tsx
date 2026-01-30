@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
 
@@ -8,7 +8,7 @@ import Text from '@/components/Text'
 
 import { getSpotifyFollowedArtists } from '@/services/spotify/getSpotifyFollowedArtists'
 
-const ArtistsFollowedPage = () => {
+const FollowedArtistsPage = () => {
   const [artists, setArtists] = useState<TSpotifyArtist[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -42,10 +42,19 @@ const ArtistsFollowedPage = () => {
     fetchFollowedArtists()
   }, [])
 
+  const thePercentage = useMemo(() => {
+    if (artists.length === 0) return 0
+
+    const count = artists.filter((a) => a.name.toLowerCase().startsWith('the ')).length
+
+    return Math.round((count / artists.length) * 100)
+  }, [artists])
+
   return (
     <div className="relative container">
-      <Text variant="h1" className="mb-8">
-        Followed Artists
+      <Text variant="h1">Followed Artists</Text>
+      <Text variant="h4" color="muted" className="mt-2 mb-16">
+        Artists starting with ‘The’: {thePercentage}%
       </Text>
 
       {isLoading ? (
@@ -73,4 +82,4 @@ const ArtistsFollowedPage = () => {
   )
 }
 
-export default ArtistsFollowedPage
+export default FollowedArtistsPage

@@ -19,9 +19,10 @@ const FollowedArtists = () => {
       try {
         const data = await getSpotifyFollowedArtists(50, undefined)
         setArtists(data.artists.items.slice(0, 20))
-      } catch (error: any) {
+      } catch (error) {
+        const message = error instanceof Error ? error.message : 'Failed to load followed artists.'
         console.error('Error fetching followed artists:', error)
-        setError(error.message || 'Failed to load followed artists.')
+        setError(message)
       } finally {
         setIsLoading(false)
       }
@@ -48,7 +49,7 @@ const FollowedArtists = () => {
               </li>
             ))}
           </ul>
-          <Text className='mt-4'>
+          <Text className="mt-4">
             <Hyperlink href="/artists/following" variant="icon">
               See all
             </Hyperlink>
