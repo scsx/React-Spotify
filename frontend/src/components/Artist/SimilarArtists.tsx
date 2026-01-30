@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { TLastFmArtistGetInfoResponse } from '@/types/LastFmArtist'
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import { FaLastfm } from 'react-icons/fa'
 
@@ -11,11 +12,10 @@ import { getSpotifySimilarArtists } from '@/services/spotify/getSpotifySimilarAr
 
 import CardArtistLight from './CardArtistLight'
 
-interface SimilarArtistsProps {
+type SimilarArtistsProps = {
   artistId: string
-  lastFmSimilar?: any
+  lastFmSimilar?: TLastFmArtistGetInfoResponse['artist']['similar'] | null
 }
-
 const SimilarArtists: React.FC<SimilarArtistsProps> = ({
   artistId,
   lastFmSimilar,
@@ -32,7 +32,7 @@ const SimilarArtists: React.FC<SimilarArtistsProps> = ({
       try {
         const data = await getSpotifySimilarArtists(artistId)
         setSpotifySimilarArtists(data.artists)
-      } catch (err: any) {
+      } catch (err) {
         console.error('Error fetching Spotify similar artists:', err)
         setSpotifySimilarArtists([])
       }
@@ -71,7 +71,7 @@ const SimilarArtists: React.FC<SimilarArtistsProps> = ({
           <TabsContent value="lastfmRelated">
             {lastFmSimilar &&
               lastFmSimilar.artist &&
-              lastFmSimilar.artist.map((artist: any) => {
+              lastFmSimilar.artist.map((artist) => {
                 return (
                   <div className="mt-4" key={artist.name}>
                     <h5 className="text-lg">{artist.name}</h5>

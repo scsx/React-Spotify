@@ -1,7 +1,7 @@
 import { TLastFmSimilarArtist } from './LastFmSimilarArtist'
 import { TLastFmTag } from './LastFmTag'
 
-export interface TLastFmArtist {
+export type TLastFmArtist = {
   name: string
   mbid: string
   url: string
@@ -15,7 +15,9 @@ export interface TLastFmArtist {
     listeners: string
     plays: string
   }
-  similar: TLastFmSimilarArtist[]
+  similar: {
+    artist: TLastFmSimilarArtist[]
+  }
   tags: {
     tag: TLastFmTag[]
   }
@@ -26,11 +28,11 @@ export interface TLastFmArtist {
   }
 }
 
-export interface TLastFmArtistGetInfoResponse {
+export type TLastFmArtistGetInfoResponse = {
   artist: TLastFmArtist
 }
 
-export interface TLastFmArtistGetInfoError {
+export type TLastFmArtistGetInfoError = {
   error: number
   message: string
 }
