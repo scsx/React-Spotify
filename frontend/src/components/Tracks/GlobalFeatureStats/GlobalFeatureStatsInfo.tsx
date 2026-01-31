@@ -1,6 +1,6 @@
 import Text from '@/components/Text'
 
-const FeatureStatsInfo = () => {
+const GlobalFeatureStatsInfo = () => {
   const featureDescriptions = [
     {
       key: 'trackFeatureAcousticness',
@@ -71,7 +71,7 @@ const FeatureStatsInfo = () => {
   }
   return (
     <>
-      <Text variant="h4" className="mt-8 mb-8">
+      <Text variant="h4" className="mt-16 mb-8">
         Spotify Audio Features
       </Text>
       {featureDescriptions.map(({ key, label, description }) => (
@@ -100,4 +100,4 @@ const FeatureStatsInfo = () => {
   )
 }
 
-export default FeatureStatsInfo
+export default GlobalFeatureStatsInfo

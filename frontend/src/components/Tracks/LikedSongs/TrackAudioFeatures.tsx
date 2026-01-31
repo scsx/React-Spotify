@@ -1,5 +1,4 @@
 import { TSkileyLikedSong } from '@/types/SkileyTrack'
-import { GrCircleQuestion } from 'react-icons/gr'
 
 import Hyperlink from '@/components/Hyperlink'
 import Text from '@/components/Text'
@@ -22,16 +21,10 @@ const features: { key: keyof TSkileyLikedSong; label: string }[] = [
 ]
 
 const TrackAudioFeatures = ({ track }: TrackAudioFeaturesProps) => {
-  const trackId = track.trackUrl.split('/').pop()
-
   return (
     <div>
       <Text variant="h6" className="mt-8 mb-4 flex items-center justify-between">
-        <span>Features</span>
-        {/* TODO: nao é detalhes desta track, é top features de todas as tracks */}
-        <Hyperlink href={`/tracks/${trackId}/feature-stats`} variant="icon">
-          <GrCircleQuestion /> TODO: TEXT
-        </Hyperlink>
+        Audio Features (TODO: PROGRESS BARS)
       </Text>
 
       <div className="grid grid-cols-2 gap-y-2 gap-x-4">
@@ -48,6 +41,9 @@ const TrackAudioFeatures = ({ track }: TrackAudioFeaturesProps) => {
           )
         })}
       </div>
+      <Hyperlink href={`/tracks/feature-stats`} variant="title" className="mt-4 inline-block">
+        See top audio features
+      </Hyperlink>
     </div>
   )
 }

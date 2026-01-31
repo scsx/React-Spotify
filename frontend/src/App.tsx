@@ -64,9 +64,9 @@ const App: React.FC = () => {
               </Route>
               <Route path="/tracks">
                 <Route index element={<TracksPage />} />
+                <Route path="feature-stats" element={<FeatureStats />} />
                 <Route path=":trackId">
                   <Route index element={<TrackPage />} />
-                  <Route path="feature-stats" element={<FeatureStats />} />
                 </Route>
               </Route>
               <Route path="/playlists" element={<PlaylistsLayout />}>

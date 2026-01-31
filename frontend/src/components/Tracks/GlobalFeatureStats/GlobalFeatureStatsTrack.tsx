@@ -4,7 +4,7 @@ import { twMerge } from 'tailwind-merge'
 import Text from '@/components/Text'
 import { Progress } from '@/components/ui/progress'
 
-type Props = {
+type TGlobalFeatureStatsTrack = {
   track: TSkileyLikedSong
   value?: number
   unit?: string
@@ -12,7 +12,7 @@ type Props = {
   alignRight?: boolean
 }
 
-const FeatureStatsTopsTrack = ({ track, value, unit, alignRight }: Props) => {
+const GlobalFeatureStatsTrack = ({ track, value, unit, alignRight }: TGlobalFeatureStatsTrack) => {
   const formatValue = () => {
     if (value === undefined) return ''
     if (unit === '%') return `${Math.round(value * 100)}%`
@@ -41,4 +41,4 @@ const FeatureStatsTopsTrack = ({ track, value, unit, alignRight }: Props) => {
   )
 }
 
-export default FeatureStatsTopsTrack
+export default GlobalFeatureStatsTrack

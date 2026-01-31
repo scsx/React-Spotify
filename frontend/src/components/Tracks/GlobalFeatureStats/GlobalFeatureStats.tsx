@@ -3,17 +3,19 @@ import { useEffect, useState } from 'react'
 import { TSkileyLikedSong } from '@/types/SkileyTrack'
 
 import Text from '@/components/Text'
-import FeatureStatsTopsTrack from '@/components/Tracks/FeatureStats/FeatureStatsTopsTrack'
+import FeatureStatsTopsTrack from '@/components/Tracks/GlobalFeatureStats/GlobalFeatureStatsTrack'
 
-type TopsMap = {
+import { getLocalSkileyTracks } from '@/services/skiley/getLocalSkileyTracks'
+
+type TGlobalFeatureStats = {
   [key: string]: {
     top: TSkileyLikedSong[]
     bottom: TSkileyLikedSong[]
   }
 }
 
-const FeatureStatsTops = () => {
-  const [tops, setTops] = useState<TopsMap>({})
+const GlobalFeatureStats = () => {
+  const [tops, setTops] = useState<TGlobalFeatureStats>({})
 
   const features = [
     { key: 'trackFeatureAcousticness', name: 'Acousticness', unit: '%', isPercentage: true },
@@ -35,10 +37,9 @@ const FeatureStatsTops = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('/data/skiley/2025-10-02-skiley-liked-songs.json')
-      const json: TSkileyLikedSong[] = await response.json()
+      const json = await getLocalSkileyTracks()
 
-      const result: TopsMap = {}
+      const result: TGlobalFeatureStats = {}
 
       features.forEach(({ key }) => {
         const sorted = [...json].sort((a, b) => {
@@ -50,7 +51,6 @@ const FeatureStatsTops = () => {
         const top = sorted.slice(0, 10)
 
         let bottom = sorted.slice(-10)
-        // Remove 0 values for tempo and time signature
         if (key === 'trackFeatureTempo' || key === 'trackFeatureTimeSignature') {
           bottom = sorted.filter((t) => (t[key as keyof TSkileyLikedSong] as number) > 0).slice(-10)
         }
@@ -102,4 +102,4 @@ const FeatureStatsTops = () => {
   )
 }
 
-export default FeatureStatsTops
+export default GlobalFeatureStats
