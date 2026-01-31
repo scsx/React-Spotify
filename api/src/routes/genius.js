@@ -1,13 +1,15 @@
 const express = require('express')
 const axios = require('axios')
 const cheerio = require('cheerio')
+
 const router = express.Router()
 
+// Variáveis de ambiente para autenticação Genius
 const GENIUS_CLIENT_ID = process.env.GENIUS_CLIENT_ID
 const GENIUS_CLIENT_SECRET = process.env.GENIUS_CLIENT_SECRET
 const GENIUS_REDIRECT_URI = process.env.GENIUS_REDIRECT_URI
 
-// AUTH.
+// Inicia fluxo de autenticação Genius (OAuth)
 router.get('/auth/genius', (req, res) => {
   const params = new URLSearchParams({
     client_id: GENIUS_CLIENT_ID,
@@ -19,6 +21,7 @@ router.get('/auth/genius', (req, res) => {
   res.redirect(`https://api.genius.com/oauth/authorize?${params}`)
 })
 
+// Callback após autenticação – obtém access token e guarda na sessão
 router.get('/auth/genius/callback', async (req, res) => {
   const code = req.query.code
 
@@ -37,10 +40,12 @@ router.get('/auth/genius/callback', async (req, res) => {
       }
     )
 
+    // Guarda token na sessão
     req.session.genius = {
       accessToken: tokenRes.data.access_token,
     }
 
+    // Fecha popup ou redireciona
     res.send(`
       <script>
         if (window.opener) {
@@ -57,7 +62,7 @@ router.get('/auth/genius/callback', async (req, res) => {
   }
 })
 
-// SEARCH.
+// Pesquisa na API Genius (retorna hits)
 router.get('/search', async (req, res) => {
   const q = req.query.q
 
@@ -75,14 +80,14 @@ router.get('/search', async (req, res) => {
   res.json(r.data.response.hits)
 })
 
-// GET LYRICS BY ID. Scrappes the Genius page to get the lyrics.
+// Obtém letras por ID da música (scrape da página Genius)
 router.get('/lyrics/:id', async (req, res) => {
   if (!req.session.genius?.accessToken) {
     return res.status(401).json({ error: 'Not authenticated with Genius' })
   }
 
   try {
-    // 1. Obter a URL da página da música
+    // 1. Obter metadados da música para pegar a URL da página
     const songRes = await axios.get(`https://api.genius.com/songs/${req.params.id}`, {
       headers: {
         Authorization: `Bearer ${req.session.genius.accessToken}`,
@@ -97,7 +102,7 @@ router.get('/lyrics/:id', async (req, res) => {
       return res.status(404).json({ error: 'Song URL not found' })
     }
 
-    // 2. Scrape das letras
+    // 2. Scrape da página de letras
     const pageRes = await axios.get(pageUrl, {
       headers: {
         'User-Agent':
@@ -108,7 +113,7 @@ router.get('/lyrics/:id', async (req, res) => {
 
     const $ = cheerio.load(pageRes.data)
 
-    // Selector principal atual (2026)
+    // Extrai letras do container principal
     let lyrics = $('div[data-lyrics-container="true"]')
       .contents()
       .map((i, el) => {
@@ -121,7 +126,7 @@ router.get('/lyrics/:id', async (req, res) => {
       .replace(/\n\s*\n/g, '\n')
       .trim()
 
-    // Fallback se o principal falhar
+    // Fallback caso o selector principal falhe
     if (!lyrics) {
       lyrics = $('div[class*="Lyrics__Container"]').first().text().trim()
     }

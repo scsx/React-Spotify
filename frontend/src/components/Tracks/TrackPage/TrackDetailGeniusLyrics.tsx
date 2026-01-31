@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 
 import { TGeniusLyricsResult, TSpotifyTrackInput } from '@/types/Genius'
+import { SiGenius } from 'react-icons/si'
+
+import Text from '@/components/shared/Text'
 
 import { getGeniusLyrics } from '@/services/genius/getGeniusLyrics'
 
@@ -64,7 +67,17 @@ const TrackDetailGeniusLyrics = ({ track }: TTrackDetailGeniusLyricsProps): JSX.
   if (error === 'failed') return <div>Lyrics unavailable</div>
   if (!lyricsBase) return <div>Loading lyrics…</div>
 
-  return <pre>{lyricsBase.lyrics}</pre>
+  return (
+    <div>
+      <Text variant="h2" className="flex">
+        Lyrics using{' '}
+        <span className="flex text-yellow-genius">
+          <SiGenius className='ml-4 mr-2' /> Genius
+        </span>
+      </Text>
+      <pre>{lyricsBase.lyrics}</pre>
+    </div>
+  )
 }
 
 export default TrackDetailGeniusLyrics
