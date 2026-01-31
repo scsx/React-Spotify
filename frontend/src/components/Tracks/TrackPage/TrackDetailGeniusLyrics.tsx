@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { TGeniusLyricsResult, TSpotifyTrackInput } from '@/types/Genius'
 import { SiGenius } from 'react-icons/si'
 
+import Hyperlink from '@/components/shared/Hyperlink'
 import Text from '@/components/shared/Text'
 
 import { getGeniusLyrics } from '@/services/genius/getGeniusLyrics'
@@ -68,14 +69,36 @@ const TrackDetailGeniusLyrics = ({ track }: TTrackDetailGeniusLyricsProps): JSX.
   if (!lyricsBase) return <div>Loading lyrics…</div>
 
   return (
-    <div>
-      <Text variant="h2" className="flex">
-        Lyrics using{' '}
-        <span className="flex text-yellow-genius">
-          <SiGenius className='ml-4 mr-2' /> Genius
+    <div className="mt-16">
+      <Text
+        variant="h2"
+        className="inline-flex items-baseline bg-gray-500 dark:bg-gray-800 text-white rounded-t-md px-8 pb-0 pt-4"
+      >
+        Lyrics from{' '}
+        <span className="flex items-baseline text-yellow-genius">
+          <SiGenius className="ml-4 mr-2 text-xl" /> Genius
         </span>
       </Text>
-      <pre>{lyricsBase.lyrics}</pre>
+      <pre className="p-8 bg-gray-500 dark:bg-gray-800 text-white rounded-br-md rounded-bl-md rounded-tr-md">
+        {lyricsBase.lyrics ? (
+          lyricsBase.lyrics
+        ) : (
+          <Text className="text-inherit font-normal" variant="h4">
+            Lyrics not found.
+          </Text>
+        )}
+        {lyricsBase.url && (
+          <Text variant="h5" className="mt-4">
+            <Hyperlink
+              href={lyricsBase.url}
+              external
+              className="text-white hover:text-yellow-genius"
+            >
+              {lyricsBase.url}
+            </Hyperlink>
+          </Text>
+        )}
+      </pre>
     </div>
   )
 }

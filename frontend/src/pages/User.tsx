@@ -23,9 +23,14 @@ const User = (): JSX.Element => {
       try {
         const data = await getSpotifyCurrentUserProfile()
         setUserProfile(data.user)
-      } catch (err: any) {
+      } catch (err: unknown) {
         console.error('Erro ao buscar o perfil do utilizador:', err)
-        setError(err.message || 'Ocorreu um erro ao carregar o perfil.')
+
+        if (err instanceof Error) {
+          setError(err.message)
+        } else {
+          setError('Ocorreu um erro ao carregar o perfil.')
+        }
       } finally {
         setLoading(false)
       }
@@ -57,7 +62,7 @@ const User = (): JSX.Element => {
         {loading
           ? null
           : userProfile?.product === 'premium' && (
-              <div className="ml-4 mb-4 text-primary">PREMIUM</div>
+              <div className="ml-4 mb-4 text-blue-500">PREMIUM</div>
             )}
       </div>
       {userProfile ? (
@@ -68,7 +73,7 @@ const User = (): JSX.Element => {
                 <Text as="h2" variant="h3" className="font-bold mb-2">
                   Country
                 </Text>
-                <Text as="h2" variant="h2" color="primary">
+                <Text as="h2" variant="h2" className="text-blue-500">
                   {userProfile.country}
                 </Text>
               </div>
@@ -76,7 +81,7 @@ const User = (): JSX.Element => {
                 <Text as="h2" variant="h3" className="font-bold mb-2">
                   Followers
                 </Text>
-                <Text as="h2" variant="h2" color="primary">
+                <Text as="h2" variant="h2" className="text-blue-500">
                   {userProfile.followers.total}
                 </Text>
               </div>
@@ -84,7 +89,7 @@ const User = (): JSX.Element => {
                 <Text as="h2" variant="h3" className="font-bold mb-2">
                   Email <span className="text-sm ml-8">Click to remove blur</span>
                 </Text>
-                <Text as="h2" variant="h2" color="primary" className={twMerge(blur && 'blur-sm')}>
+                <Text as="h2" variant="h2" className={twMerge('text-blue-500', blur && 'blur-sm')}>
                   <button onClick={toggleBlur}>{userProfile.email}</button>
                 </Text>
               </div>
@@ -93,7 +98,7 @@ const User = (): JSX.Element => {
                   Spotify
                 </Text>
                 <Text as="h2" variant="h2">
-                  <Hyperlink href={userProfile.uri} external>
+                  <Hyperlink href={userProfile.uri} external className="text-blue-500">
                     {userProfile.uri}
                   </Hyperlink>
                 </Text>
@@ -103,7 +108,11 @@ const User = (): JSX.Element => {
                   Web
                 </Text>
                 <Text as="h2" variant="h2">
-                  <Hyperlink href={userProfile.external_urls.spotify} external>
+                  <Hyperlink
+                    href={userProfile.external_urls.spotify}
+                    external
+                    className="text-blue-500"
+                  >
                     {userProfile.external_urls.spotify}
                   </Hyperlink>
                 </Text>

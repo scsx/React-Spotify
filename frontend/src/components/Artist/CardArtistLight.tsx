@@ -22,7 +22,7 @@ const CardArtistLight: React.FC<CardArtistLightProps> = ({ artist }): JSX.Elemen
             <img
               src={artist.images[0]?.url}
               alt={Array(40).fill(artist.name).join(' ')} // In case of no image.
-              className="object-cover text-sm text-gray-400 dark:text-gray-700"
+              className="object-cover object-center w-full h-full text-sm text-gray-400 dark:text-gray-700"
             />
           </AspectRatio>
         </div>

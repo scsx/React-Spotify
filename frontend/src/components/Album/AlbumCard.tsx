@@ -17,7 +17,7 @@ interface AlbumCardProps {
 const AlbumCard: React.FC<AlbumCardProps> = ({ album, showArtist = false }): JSX.Element => {
   return (
     <Hyperlink href={`/albums/${album.id}`} className="block !no-underline group">
-      <Card className="flex flex-col [&_*]:no-underline group-hover:bg-black">
+      <Card className="flex flex-col [&_*]:no-underline group-hover:bg-gray-200 dark:group-hover:bg-black">
         <CardHeader className="p-0">
           <AspectRatio
             ratio={1 / 1}
@@ -46,10 +46,19 @@ const AlbumCard: React.FC<AlbumCardProps> = ({ album, showArtist = false }): JSX
               )}
             </div>
             {showArtist && album.artists && album.artists.length > 0 && (
-              <Text variant="h5" className="mt-2">
+              <Text variant="h5" className="mt-2 hover:text-primary cursor-progress">
                 {album.artists.map((artist, index) => (
                   <React.Fragment key={artist.id}>
-                    <Hyperlink href={`/artists/${artist.id}`} variant='icon'> {artist.name}</Hyperlink>
+                    <span
+                      onClick={(e) => {
+                        e.preventDefault()
+                        e.stopPropagation()
+                        window.location.href = `/artists/${artist.id}`
+                      }}
+                      className="hover:text-primary cursor-crosshair"
+                    >
+                      {artist.name}
+                    </span>
                     {index < album.artists.length - 1 && ', '}
                   </React.Fragment>
                 ))}

@@ -8,6 +8,7 @@ const DevNotes = () => {
     { title: 'AI', slug: 'ai' },
     { title: 'Skiley', slug: 'skiley' },
     { title: 'Backend', slug: 'backend' },
+    { title: 'Colors', slug: 'colors' },
   ]
 
   const scrollToId = (id: string) => {
@@ -115,6 +116,25 @@ const DevNotes = () => {
             Backend
           </Text>
           <Text>TODO</Text>
+        </li>
+        <li>
+          <Text variant="h3" as="h2" id="colors" className="font-bold pt-10 -mt-10 mb-4">
+            Colors
+          </Text>
+          <ul className="list-disc pl-5 mt-4 space-y-2">
+            <Text as="li">
+              <span className='text-primary'>Green</span> Spotify API content and primary color.
+            </Text>
+            <Text as="li">
+              <span className='text-yellow-genius'>Yellow</span> Genius API content.
+            </Text>
+            <Text as="li">
+              <span className='text-red-500'>Red</span> LastFM API content.
+            </Text>
+            <Text as="li">
+              <span className='text-blue-500'>Blue</span> User actions.
+            </Text>
+          </ul>
         </li>
       </ul>
     </div>
