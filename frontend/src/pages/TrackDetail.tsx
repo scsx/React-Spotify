@@ -1,4 +1,4 @@
-import TrackDetailLayout from '@/components/Tracks/TrackDetailLayout'
+import TrackDetailLayout from '@/components/Tracks/TrackPage/TrackDetailLayout'
 
 const TrackDetail = () => {
   return (

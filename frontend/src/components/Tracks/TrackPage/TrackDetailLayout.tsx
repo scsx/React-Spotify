@@ -24,6 +24,8 @@ const TrackDetailLayout = (): JSX.Element | null => {
       try {
         const trackData = await getSpotifyTrack(trackId)
         setTrack(trackData)
+
+        console.log(trackData)
       } catch (error) {
         console.error('Erro ao carregar detalhes da track:', error)
       }
