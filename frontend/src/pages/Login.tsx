@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import Text from '@/components/Text'
+import Text from '@/components/shared/Text'
 import { Button } from '@/components/ui/button'
 
 import { useAuth } from '@/contexts/AuthContext'
@@ -64,9 +64,7 @@ const Login = () => {
   if (!isPopupCallback) {
     return (
       <div className="container flex flex-col items-center">
-        <Text variant="h1">
-          Login
-        </Text>
+        <Text variant="h1">Login</Text>
         <div className="my-12 mx-auto w-[300px] flex flex-col space-y-4 text-center">
           <Text variant="h4">You agree that react-spotify will be able to:</Text>
           <Text variant="h5">View your Spotify account data</Text>

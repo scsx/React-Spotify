@@ -6,9 +6,9 @@ import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
 import { FaGoogle, FaSpotify } from 'react-icons/fa'
 import { IoBatteryDeadSharp } from 'react-icons/io5'
 
-import Hyperlink from '@/components/Hyperlink'
-import Loading from '@/components/Loading'
-import Text from '@/components/Text'
+import Hyperlink from '@/components/shared/Hyperlink'
+import Loading from '@/components/shared/Loading'
+import Text from '@/components/shared/Text'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import { getSpotifyArtistAlbums } from '@/services/spotify/getSpotifyArtistAlbums'

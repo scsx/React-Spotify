@@ -3,7 +3,7 @@ import React, { useMemo } from 'react'
 import { TFavoritesStyleBreakdown } from '@/types/General'
 import { TSpotifyPlaylist } from '@/types/SpotifyPlaylist'
 
-import Text from '@/components/Text'
+import Text from '@/components/shared/Text'
 
 interface FavoritesStylesProps {
   playlists: (TSpotifyPlaylist & { style: string })[]
@@ -87,7 +87,7 @@ const FavoritesStyles: React.FC<FavoritesStylesProps> = ({ playlists }) => {
           return (
             <div key={item.style} className="flex items-center space-x-2">
               <div className={`w-3 h-3 rounded-sm ${bgColorClass}`}></div>
-              <Text variant='paragraph' as='span'>
+              <Text variant="paragraph" as="span">
                 {item.style.charAt(0).toUpperCase() + item.style.slice(1)}: {item.percentage}%
               </Text>
             </div>

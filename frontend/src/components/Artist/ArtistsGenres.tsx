@@ -7,7 +7,7 @@ import { TSpotifyGenres } from '@/types/SpotifyGenres'
 import { FaLastfm } from 'react-icons/fa'
 import { LuPlusCircle } from 'react-icons/lu'
 
-import Text from '@/components/Text'
+import Text from '@/components/shared/Text'
 import { Badge } from '@/components/ui/badge'
 import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -60,7 +60,10 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
     if (genres && genres.length > 0) {
       return genres.map((genre) => {
         return (
-          <div key={genre} className="flex mt-3 mr-3 font-normal bg-secondary dark:bg-card rounded-lg">
+          <div
+            key={genre}
+            className="flex mt-3 mr-3 font-normal bg-secondary dark:bg-card rounded-lg"
+          >
             <Link to={`/genres/spotify:${genre}`} className={`p-1.5 pl-3 text-sm ${badgeColors}`}>
               {genre}
             </Link>

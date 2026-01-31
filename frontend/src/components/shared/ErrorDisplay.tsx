@@ -3,7 +3,7 @@ import React from 'react'
 import { TErrorDisplay } from '@/types/General'
 import { MdErrorOutline } from 'react-icons/md'
 
-import Text from '@/components/Text'
+import Text from '@/components/shared/Text'
 
 const ErrorDisplay: React.FC<TErrorDisplay> = ({ title = 'Error', message, details }) => {
   return (

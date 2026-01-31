@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 
 import { TSpotifyTrack } from '@/types/SpotifyTrack'
 
-import Hyperlink from '@/components/Hyperlink'
-import Text from '@/components/Text'
+import Hyperlink from '@/components/shared/Hyperlink'
+import Text from '@/components/shared/Text'
 
 import { getSpotifyCurrentlyPlaying } from '@/services/spotify/spotifyPlayer'
 
-import { useAuth } from '../contexts/AuthContext'
+import { useAuth } from '../../contexts/AuthContext'
 
 // TODO: Interfaces for Player are simpler and not complete.
 // E.g. Missing is_playing, progress_ms, etc.

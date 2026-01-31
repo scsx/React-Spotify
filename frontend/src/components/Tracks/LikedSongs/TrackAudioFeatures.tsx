@@ -1,7 +1,7 @@
 import { TSkileyLikedSong } from '@/types/SkileyTrack'
 
-import Hyperlink from '@/components/Hyperlink'
-import Text from '@/components/Text'
+import Hyperlink from '@/components/shared/Hyperlink'
+import Text from '@/components/shared/Text'
 
 type TrackAudioFeaturesProps = {
   track: TSkileyLikedSong

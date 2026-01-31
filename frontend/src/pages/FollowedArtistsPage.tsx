@@ -2,9 +2,9 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
 
-import Hyperlink from '@/components/Hyperlink'
-import Loading from '@/components/Loading'
-import Text from '@/components/Text'
+import Hyperlink from '@/components/shared/Hyperlink'
+import Loading from '@/components/shared/Loading'
+import Text from '@/components/shared/Text'
 
 import { getSpotifyFollowedArtists } from '@/services/spotify/getSpotifyFollowedArtists'
 

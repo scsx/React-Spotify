@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom'
 import { MdOutlineArrowOutward } from 'react-icons/md'
 import { twMerge } from 'tailwind-merge'
 
-import Text from '@/components/Text'
+import Text from '@/components/shared/Text'
 
 type PlaylistsNavItem = {
   name: React.ReactNode

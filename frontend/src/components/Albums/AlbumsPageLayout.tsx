@@ -4,8 +4,8 @@ import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
 import { TSpotifyTrack } from '@/types/SpotifyTrack'
 
 import AlbumCard from '@/components/Album/AlbumCard'
-import Loading from '@/components/Loading'
-import Text from '@/components/Text'
+import Loading from '@/components/shared/Loading'
+import Text from '@/components/shared/Text'
 
 import getSpotifyNewReleases from '@/services/spotify/getSpotifyNewReleases'
 import { getSpotifyUserTopItems } from '@/services/spotify/getSpotifyUserTopItems'

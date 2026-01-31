@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { TLastFmAlbumGetInfoResponse } from '@/types/LastFmAlbum'
 import { FaLastfm } from 'react-icons/fa'
 
-import ErrorDisplay from '@/components/ErrorDisplay'
-import Hyperlink from '@/components/Hyperlink'
-import Loading from '@/components/Loading'
-import Text from '@/components/Text'
+import ErrorDisplay from '@/components/shared/ErrorDisplay'
+import Hyperlink from '@/components/shared/Hyperlink'
+import Loading from '@/components/shared/Loading'
+import Text from '@/components/shared/Text'
 
 import { getLastFMAlbumInfo } from '@/services/lastfm/getLastFMAlbumInfo'
 

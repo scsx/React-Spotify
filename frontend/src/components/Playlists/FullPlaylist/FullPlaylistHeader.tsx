@@ -2,7 +2,7 @@ import React from 'react'
 
 import { TSpotifyPlaylist } from '@/types/SpotifyPlaylist'
 
-import Text from '@/components/Text'
+import Text from '@/components/shared/Text'
 import { Card, CardContent } from '@/components/ui/card'
 
 import { getFirstNameAndLastInitial } from '@/lib/get-first-name-and-last-initial'

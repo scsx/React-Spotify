@@ -1,6 +1,6 @@
 import AlbumsPageLayout from '@/components/Albums/AlbumsPageLayout'
-import Hyperlink from '@/components/Hyperlink'
-import Text from '@/components/Text'
+import Hyperlink from '@/components/shared/Hyperlink'
+import Text from '@/components/shared/Text'
 
 const AlbumsPage = () => {
   return (

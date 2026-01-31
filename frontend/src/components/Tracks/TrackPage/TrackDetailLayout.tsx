@@ -5,8 +5,8 @@ import { useParams } from 'react-router-dom'
 import { TSkileyLikedSong } from '@/types/SkileyTrack'
 import { TSpotifyTrack } from '@/types/SpotifyTrack'
 
-import Hyperlink from '@/components/Hyperlink'
-import Text from '@/components/Text'
+import Hyperlink from '@/components/shared/Hyperlink'
+import Text from '@/components/shared/Text'
 import TrackAudioFeatures from '@/components/Tracks/LikedSongs/TrackAudioFeatures'
 
 import { getLocalSkileyTrackById } from '@/services/skiley/getLocalSkileyTrackById'

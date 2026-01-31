@@ -1,4 +1,4 @@
-import Text from "@/components/Text"
+import Text from '@/components/shared/Text'
 
 const GenresPage = (): JSX.Element => {
   return (

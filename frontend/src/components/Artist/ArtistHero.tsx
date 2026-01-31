@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import { twMerge } from 'tailwind-merge'
 
-import Text from '@/components/Text'
+import Text from '@/components/shared/Text'
 import { Progress } from '@/components/ui/progress'
 
 interface ArtistHeroProps {

@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
 
-import Hyperlink from '@/components/Hyperlink'
-import Text from '@/components/Text'
+import Hyperlink from '@/components/shared/Hyperlink'
+import Text from '@/components/shared/Text'
 
 import { getSpotifyFollowedArtists } from '@/services/spotify/getSpotifyFollowedArtists'
 

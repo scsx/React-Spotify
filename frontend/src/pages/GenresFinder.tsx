@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom'
 
 import GenresFinderLayout from '@/components/Genres/GenresFinderLayout/GenresFinderLayout'
-import Text from '@/components/Text'
+import Text from '@/components/shared/Text'
 
 const GenresFinder = (): JSX.Element => {
   const { genresNames } = useParams()

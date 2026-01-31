@@ -4,7 +4,7 @@ import { TSpotifyPlaylist } from '@/types/SpotifyPlaylist'
 
 import CardPlaylist from '@/components/Playlists/CardPlaylist'
 import FavoritesStyles from '@/components/Playlists/FavoritePlaylists/FavoritesStyles'
-import Text from '@/components/Text'
+import Text from '@/components/shared/Text'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
@@ -74,7 +74,9 @@ const FavoritePlaylists = () => {
       <>
         <div className="w-[90%] mx-auto pt-8 mb-16">
           <div className="flex w-full h-2 bg-slate-500"></div>
-          <Text variant='paragraph' className='text-center mt-4'>Loading styles</Text>
+          <Text variant="paragraph" className="text-center mt-4">
+            Loading styles
+          </Text>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">

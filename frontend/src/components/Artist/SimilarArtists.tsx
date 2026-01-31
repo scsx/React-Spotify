@@ -4,8 +4,8 @@ import { TLastFmArtistGetInfoResponse } from '@/types/LastFmArtist'
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import { FaLastfm } from 'react-icons/fa'
 
-import Hyperlink from '@/components/Hyperlink'
-import Text from '@/components/Text'
+import Hyperlink from '@/components/shared/Hyperlink'
+import Text from '@/components/shared/Text'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import { getSpotifySimilarArtists } from '@/services/spotify/getSpotifySimilarArtists'

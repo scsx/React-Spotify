@@ -1,4 +1,4 @@
-import Hyperlink from '@/components/Hyperlink'
+import Hyperlink from '@/components/shared/Hyperlink'
 
 import Player from './Player'
 

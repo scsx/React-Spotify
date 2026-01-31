@@ -3,9 +3,9 @@ import React from 'react'
 import { TSpotifyPlaylist } from '@/types/SpotifyPlaylist'
 import { twMerge } from 'tailwind-merge'
 
-import Hyperlink from '@/components/Hyperlink'
+import Hyperlink from '@/components/shared/Hyperlink'
 import FullPlaylistHeader from '@/components/Playlists/FullPlaylist/FullPlaylistHeader'
-import Text from '@/components/Text'
+import Text from '@/components/shared/Text'
 import { Card, CardContent } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table'
 

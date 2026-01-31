@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
-import Hyperlink from '@/components/Hyperlink'
-import Text from '@/components/Text'
+import Hyperlink from '@/components/shared/Hyperlink'
+import Text from '@/components/shared/Text'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import { SPOTIFY_TOP_SONGS_BY_YEAR } from '@/lib/constants'

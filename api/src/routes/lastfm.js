@@ -3,7 +3,7 @@ const router = express.Router()
 const axios = require('axios')
 const LASTFM_API_KEY = process.env.LASTFM_KEY
 
-// TODO: split into multiple files if it has more routes.
+// Split into multiple files if it has many routes.
 async function callLastFmApi(method, params, res) {
   if (!LASTFM_API_KEY) {
     console.error('LASTFM_KEY is not defined in environment variables.')

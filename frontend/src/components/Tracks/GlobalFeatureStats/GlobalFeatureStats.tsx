@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 
 import { TSkileyLikedSong } from '@/types/SkileyTrack'
 
-import Text from '@/components/Text'
 import FeatureStatsTopsTrack from '@/components/Tracks/GlobalFeatureStats/GlobalFeatureStatsTrack'
+import Text from '@/components/shared/Text'
 
 import { getLocalSkileyTracks } from '@/services/skiley/getLocalSkileyTracks'
 

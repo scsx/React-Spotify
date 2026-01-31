@@ -1,6 +1,6 @@
 import { MdArrowOutward } from 'react-icons/md'
 
-import Hyperlink from '@/components/Hyperlink'
+import Hyperlink from '@/components/shared/Hyperlink'
 
 import { useAuth } from '@/contexts/AuthContext'
 

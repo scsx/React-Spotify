@@ -4,8 +4,8 @@ import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
 import { CiCalendarDate } from 'react-icons/ci'
 import { CiBoxList } from 'react-icons/ci'
 
-import Hyperlink from '@/components/Hyperlink'
-import Text from '@/components/Text'
+import Hyperlink from '@/components/shared/Hyperlink'
+import Text from '@/components/shared/Text'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 

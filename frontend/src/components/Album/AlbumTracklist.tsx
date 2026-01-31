@@ -2,8 +2,8 @@ import React from 'react'
 
 import { TSpotifyTrack } from '@/types/SpotifyTrack'
 
-import Hyperlink from '@/components/Hyperlink'
-import Text from '@/components/Text'
+import Hyperlink from '@/components/shared/Hyperlink'
+import Text from '@/components/shared/Text'
 import {
   Table,
   TableBody,

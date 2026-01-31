@@ -5,7 +5,7 @@ import { AiOutlineClockCircle } from 'react-icons/ai'
 import { FaRegCalendarAlt } from 'react-icons/fa'
 import { twMerge } from 'tailwind-merge'
 
-import Text from '@/components/Text'
+import Text from '@/components/shared/Text'
 import {
   Table,
   TableBody,

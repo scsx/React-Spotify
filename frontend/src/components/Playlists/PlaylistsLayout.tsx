@@ -1,7 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom'
 
 import PlaylistsNav from '@/components/Playlists/PlaylistsNav'
-import Text from '@/components/Text'
+import Text from '@/components/shared/Text'
 
 const PlaylistsLayout = (): JSX.Element => {
   const location = useLocation()

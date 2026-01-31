@@ -1,5 +1,5 @@
-import Text from '@/components/Text'
 import LikedSongs from '@/components/Tracks/LikedSongs/LikedSongs'
+import Text from '@/components/shared/Text'
 
 const TracksPage = () => {
   return (

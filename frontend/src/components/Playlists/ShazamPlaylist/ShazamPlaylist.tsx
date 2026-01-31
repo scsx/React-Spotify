@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 
 import { TSpotifyPlaylist } from '@/types/SpotifyPlaylist'
 
-import ErrorDisplay from '@/components/ErrorDisplay'
-import Loading from '@/components/Loading'
+import ErrorDisplay from '@/components/shared/ErrorDisplay'
+import Loading from '@/components/shared/Loading'
 import FullPlaylist from '@/components/Playlists/FullPlaylist/FullPlaylist'
-import Text from '@/components/Text'
+import Text from '@/components/shared/Text'
 
 import { getSpotifyPlaylistsByNames } from '@/services/spotify/getSpotifyPlaylistsByNames'
 

@@ -7,6 +7,7 @@ const GENIUS_CLIENT_ID = process.env.GENIUS_CLIENT_ID
 const GENIUS_CLIENT_SECRET = process.env.GENIUS_CLIENT_SECRET
 const GENIUS_REDIRECT_URI = process.env.GENIUS_REDIRECT_URI
 
+// AUTH.
 router.get('/auth/genius', (req, res) => {
   const params = new URLSearchParams({
     client_id: GENIUS_CLIENT_ID,
@@ -45,6 +46,44 @@ router.get('/auth/genius/callback', async (req, res) => {
     console.error('Genius OAuth error', e.response?.data || e.message)
     res.status(500).json({ error: 'Genius auth failed' })
   }
+})
+
+// SEARCH.
+router.get('/search', async (req, res) => {
+  const q = req.query.q
+
+  if (!q) return res.status(400).json({ error: 'Missing q' })
+  if (!req.session.genius?.accessToken)
+    return res.status(401).json({ error: 'Not authenticated with Genius' })
+
+  const r = await axios.get('https://api.genius.com/search', {
+    params: { q },
+    headers: {
+      Authorization: `Bearer ${req.session.genius.accessToken}`,
+    },
+  })
+
+  res.json(r.data.response.hits)
+})
+
+// GET LYRICS BY ID.
+router.get('/lyrics/:id', async (req, res) => {
+  const songId = req.params.id
+
+  const song = await axios.get(`https://api.genius.com/songs/${songId}`, {
+    headers: {
+      Authorization: `Bearer ${req.session.genius.accessToken}`,
+    },
+  })
+
+  const url = song.data.response.song.url
+
+  const html = await axios.get(url)
+  const m = html.data.match(/<div[^>]*data-lyrics-container[^>]*>([\s\S]*?)<\/div>/g)
+
+  const lyrics = m ? m.map((v) => v.replace(/<[^>]+>/g, '').trim()).join('\n') : null
+
+  res.json({ lyrics, url })
 })
 
 module.exports = router

@@ -2,9 +2,9 @@ import { useNavigate } from 'react-router-dom'
 
 import { IoIosArrowBack } from 'react-icons/io'
 
-import Text from '@/components/Text'
 import GlobalFeatureStats from '@/components/Tracks/GlobalFeatureStats/GlobalFeatureStats'
 import FeatureStatsInfo from '@/components/Tracks/GlobalFeatureStats/GlobalFeatureStatsInfo'
+import Text from '@/components/shared/Text'
 
 const FeatureStats = () => {
   const navigate = useNavigate()
@@ -15,7 +15,7 @@ const FeatureStats = () => {
         <Text variant="h1" className="grow">
           Top Audio Features
         </Text>
-        <Text className='mt-4'>
+        <Text className="mt-4">
           <button onClick={() => navigate(-1)} className="text-base">
             <IoIosArrowBack className="inline-block mr-1 text-sm" />
             Back

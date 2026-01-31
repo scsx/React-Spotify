@@ -14,7 +14,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 
 import { useAuth } from '@/contexts/AuthContext'
 
-import Switch from '../Switch'
+import Switch from '../shared/Switch'
 import HeaderNav from './HeaderNav'
 import HeaderNavMobile from './HeaderNavMobile'
 

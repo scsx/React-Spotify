@@ -7,8 +7,8 @@ import { FaRegCalendarAlt } from 'react-icons/fa'
 import { FaSpotify } from 'react-icons/fa'
 import { ImFire } from 'react-icons/im'
 
-import Hyperlink from '@/components/Hyperlink'
-import Text from '@/components/Text'
+import Hyperlink from '@/components/shared/Hyperlink'
+import Text from '@/components/shared/Text'
 
 const formatTotalDuration = (album: TSpotifyAlbum) => {
   if (!album || !album.tracks || !album.tracks.items) {

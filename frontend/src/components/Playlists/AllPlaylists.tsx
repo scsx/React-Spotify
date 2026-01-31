@@ -2,9 +2,9 @@ import React, { useCallback, useEffect, useState } from 'react'
 
 import { TSpotifyPlaylist } from '@/types/SpotifyPlaylist'
 
-import GenericPagination from '@/components/GenericPagination'
+import GenericPagination from '@/components/shared/GenericPagination'
 import CardPlaylist from '@/components/Playlists/CardPlaylist'
-import Text from '@/components/Text'
+import Text from '@/components/shared/Text'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'

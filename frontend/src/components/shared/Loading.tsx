@@ -2,7 +2,7 @@ import React from 'react'
 
 import { RiLoader4Line } from 'react-icons/ri'
 
-import Text from '@/components/Text'
+import Text from '@/components/shared/Text'
 
 interface LoadingProps {
   message?: string

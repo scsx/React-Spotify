@@ -9,7 +9,7 @@ import { GiDinosaurRex } from 'react-icons/gi'
 import CardArtist from '@/components/Artist/CardArtist'
 import FollowedArtists from '@/components/Search/FollowedArtists'
 import SearchForm from '@/components/Search/SearchForm'
-import Text from '@/components/Text'
+import Text from '@/components/shared/Text'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 
