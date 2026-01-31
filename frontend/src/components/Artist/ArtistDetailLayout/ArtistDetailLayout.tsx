@@ -5,6 +5,7 @@ import { useLocation, useParams } from 'react-router-dom'
 import { TLastFmArtistGetInfoResponse } from '@/types/LastFmArtist'
 import { TLastFmTag } from '@/types/LastFmTag'
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
+import { twMerge } from 'tailwind-merge'
 
 import AlbumsAndBio from '@/components/Artist/AlbumsAndBio'
 import ArtistHero from '@/components/Artist/ArtistHero'
@@ -23,6 +24,7 @@ const ArtistDetailLayout = (): JSX.Element => {
   const location = useLocation()
 
   const [artist, setArtist] = useState<TSpotifyArtist | null>(null)
+  const [artistHasImage, setArtistHasImage] = useState<boolean>(false)
   const [lastFmResponseData, setLastFmResponseData] = useState<TLastFmArtistGetInfoResponse | null>(
     null
   )
@@ -44,6 +46,7 @@ const ArtistDetailLayout = (): JSX.Element => {
 
         const fetchedArtist = await getSpotifyArtist(artistId)
         setArtist(fetchedArtist)
+        setArtistHasImage(!!(fetchedArtist.images && fetchedArtist.images.length > 0))
 
         if (fetchedArtist?.name) {
           const lastFmResponse = await getLastFMArtistInfo(fetchedArtist.name)
@@ -117,16 +120,18 @@ const ArtistDetailLayout = (): JSX.Element => {
             />
           </div>
 
-          <div className="col-span-2 pt-16">
+          <div className={twMerge('col-span-2', artistHasImage ? 'pt-16' : 'pt-56')}>
             <div className="grid grid-cols-3 gap-8 -mt-28">
               <div className="col-start-2 col-end-4">
-                <AspectRatio ratio={1 / 1} className="rounded-sm overflow-hidden">
-                  <img
-                    className="rounded-sm p-1 bg-white dark:bg-black"
-                    src={`${artist.images[0].url}`}
-                    alt=""
-                  />
-                </AspectRatio>
+                {artistHasImage && (
+                  <AspectRatio ratio={1 / 1} className="rounded-sm overflow-hidden">
+                    <img
+                      className="rounded-sm p-1 bg-white dark:bg-black"
+                      src={`${artist.images[0].url}`}
+                      alt=""
+                    />
+                  </AspectRatio>
+                )}
               </div>
             </div>
 
@@ -134,7 +139,7 @@ const ArtistDetailLayout = (): JSX.Element => {
             <ArtistsGenres genres={artist.genres} lastFmTags={lastFmArtistTags ?? []} />
             <SimilarArtists
               artistId={artist.id}
-              lastFmSimilar={lastFmResponseData?.artist?.similar || []}
+              lastFmSimilar={lastFmResponseData?.artist?.similar ?? null}
             />
           </div>
         </div>

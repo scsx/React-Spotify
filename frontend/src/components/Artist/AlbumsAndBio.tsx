@@ -100,7 +100,7 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
         <div className="mt-16">
           <Loading type="skeleton" gridSize="2x2" />
         </div>
-      ) : albums.length > 0 || singles.length > 0 ? (
+      ) : albums.length > 0 || singles.length > 0 || biographyLastFM ? (
         <Tabs value={activeTab} onValueChange={onTabChange} className="w-full">
           <div className="flex">
             <TabsList className="mb-4">

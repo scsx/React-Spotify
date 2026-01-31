@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 
 import { TSkileyLikedSong } from '@/types/SkileyTrack'
 
-import FeatureStatsTopsTrack from '@/components/FeatureStats/FeatureStatsTopsTrack'
 import Text from '@/components/Text'
+import FeatureStatsTopsTrack from '@/components/Tracks/FeatureStats/FeatureStatsTopsTrack'
 
 type TopsMap = {
   [key: string]: {

@@ -31,14 +31,21 @@ const ArtistHero: React.FC<ArtistHeroProps> = ({ artist }): JSX.Element => {
     }
   }, [artist])
 
+  const heroImage = artist.images?.[0]?.url
+
   return (
     <>
       <div
         className="w-full -mt-40 absolute h-96 bg-cover blur-sm bg-center bg-no-repeat z-0"
-        style={{
-          backgroundImage: `url(${artist.images[0].url})`,
-        }}
-      ></div>
+        style={
+          heroImage
+            ? { backgroundImage: `url(${heroImage})` }
+            : {
+                background: 'linear-gradient(90deg, #555 20%, #888 50%, #555 80%)',
+                backgroundSize: '400% 100%',
+              }
+        }
+      />
       <div className="w-full -mt-4 absolute top-96 h-8 z-0 bg-white dark:bg-background transition duration-500"></div>
       <div className="relative container">
         <div

@@ -74,24 +74,20 @@ const SimilarArtists: React.FC<SimilarArtistsProps> = ({
               lastFmSimilar.artist.map((artist) => {
                 return (
                   <div className="mt-4" key={artist.name}>
-                    <h5 className="text-lg">{artist.name}</h5>
-                    <div className="flex">
-                      {/* TODO: test Hyperlink when LastFM works again. */}
-                      <Hyperlink
-                        className="inline-block text-sm mr-8 text-gray-500 hover:text-black dark:hover:text-white"
-                        href={`/artists/?searchKey=${artist.name}`}
-                      >
-                        Search this app
+                    <h5 className="text-lg">
+                      <Hyperlink href={`/artists/?searchKey=${artist.name}`} variant="title">
+                        {artist.name}
                       </Hyperlink>
-                      <Hyperlink
-                        className="flex text-sm mr-4 text-gray-500 hover:text-black dark:hover:text-white"
-                        external
-                        href={artist.url}
-                      >
-                        <FaLastfm className="text-red-500 mt-1 mr-1" />
-                        View on LastFM
-                      </Hyperlink>
-                    </div>
+                    </h5>
+                    {/* TODO: test Hyperlink when LastFM works again. */}
+                    <Hyperlink
+                      className="flex text-sm mr-4 text-gray-500 hover:text-black dark:hover:text-white"
+                      external
+                      href={artist.url}
+                    >
+                      <FaLastfm className="text-red-500 mt-1 mr-1" />
+                      View on LastFM
+                    </Hyperlink>
                   </div>
                 )
               })}

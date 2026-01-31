@@ -1,7 +1,8 @@
 export const SPOTIFY_PREFERRED_MARKET = 'PT'
 export const SPOTIFY_AUTH_LOGIN_PATH = '/auth/spotify/login'
-// "Dev user" is SCSX.
+// TODO: DELETE "Dev user" is SCSX.
 export const SPOTIFY_DEV_USER_ID = '1179088849'
+export const LOCAL_SKILEY_DATA_PATH = '/data/skiley/2026-01-25-skiley-liked-songs.json'
 
 export const SPOTIFY_FAVORITE_PLAYLISTS = [
   {

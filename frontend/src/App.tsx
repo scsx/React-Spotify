@@ -17,9 +17,9 @@ import YourTopPlaylists from '@/components/Playlists/YourTopPlaylists'
 
 import AlbumPage from '@/pages/AlbumDetail'
 import Albums from '@/pages/AlbumsPage'
-import FollowedArtistsPage from '@/pages/FollowedArtistsPage'
 import ArtistsPage from '@/pages/ArtistsPage'
 import FeatureStats from '@/pages/FeatureStats'
+import FollowedArtistsPage from '@/pages/FollowedArtistsPage'
 import Login from '@/pages/Login'
 import PlaylistPage from '@/pages/PlaylistDetail'
 import TrackPage from '@/pages/TrackDetail'
@@ -31,8 +31,8 @@ import Header from './components/Header/Header'
 import { ThemeProvider } from './contexts/ThemeProvider'
 import './globals.css'
 import Artist from './pages/ArtistDetail'
-import Genres from './pages/GenresPage'
 import GenresFinder from './pages/GenresFinder'
+import Genres from './pages/GenresPage'
 import Homepage from './pages/Homepage'
 import Playlists from './pages/PlaylistsPage'
 import './services/axiosInterceptor'
@@ -64,9 +64,10 @@ const App: React.FC = () => {
               </Route>
               <Route path="/tracks">
                 <Route index element={<TracksPage />} />
-                <Route path=":trackId" element={<TrackPage />} />
-                <Route path="feature-stats" element={<FeatureStats />} />
-                {/*  <Route path=":trackId" element={<TrackPage />} /> */}
+                <Route path=":trackId">
+                  <Route index element={<TrackPage />} />
+                  <Route path="feature-stats" element={<FeatureStats />} />
+                </Route>
               </Route>
               <Route path="/playlists" element={<PlaylistsLayout />}>
                 <Route path="favorites" element={<FavoritePlaylists />} />

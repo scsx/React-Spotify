@@ -2,17 +2,20 @@ import { useEffect, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
+import { TSkileyLikedSong } from '@/types/SkileyTrack'
 import { TSpotifyTrack } from '@/types/SpotifyTrack'
 
 import Hyperlink from '@/components/Hyperlink'
 import Text from '@/components/Text'
 import TrackAudioFeatures from '@/components/Tracks/LikedSongs/TrackAudioFeatures'
 
+import { getLocalSkileyTrackById } from '@/services/skiley/getLocalSkileyTrackById'
 import { getSpotifyTrack } from '@/services/spotify/getSpotifyTrack'
 
 const TrackDetailLayout = (): JSX.Element | null => {
   const { trackId } = useParams<{ trackId: string }>()
   const [track, setTrack] = useState<TSpotifyTrack | null>(null)
+  const [skileyTrack, setSkileyTrack] = useState<TSkileyLikedSong | null>(null)
 
   useEffect(() => {
     if (!trackId) return
@@ -27,6 +30,18 @@ const TrackDetailLayout = (): JSX.Element | null => {
     }
 
     fetchTrack()
+  }, [trackId])
+
+  useEffect(() => {
+    if (!trackId) return
+
+    const loadLocalTrack = async () => {
+      const localTrack = await getLocalSkileyTrackById(trackId)
+      setSkileyTrack(localTrack)
+      console.log(localTrack)
+    }
+
+    loadLocalTrack()
   }, [trackId])
 
   if (!track) return null
@@ -76,9 +91,7 @@ const TrackDetailLayout = (): JSX.Element | null => {
 
         <div className="w-1/3">
           <Text>TODO: Playlists containing this track</Text>
-          <div>
-            <TrackAudioFeatures />
-          </div>
+          <div>{skileyTrack && <TrackAudioFeatures track={skileyTrack} />}</div>
         </div>
       </div>
     </>

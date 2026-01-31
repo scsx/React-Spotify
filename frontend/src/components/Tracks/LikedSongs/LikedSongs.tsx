@@ -10,6 +10,7 @@ import AdvancedTracklist from '@/components/Tracks/AdvancedTracklist/AdvancedTra
 import AdvancedTracklistDetail from '@/components/Tracks/AdvancedTracklist/AdvancedTracklistDetail'
 import AdvancedTracklistSearch from '@/components/Tracks/AdvancedTracklist/AdvancedTracklistSearch'
 
+import { getLocalSkileyTracks } from '@/services/skiley/getLocalSkileyTracks'
 import { getSpotifyArtist } from '@/services/spotify/getSpotifyArtist'
 import { getSpotifyTrack } from '@/services/spotify/getSpotifyTrack'
 
@@ -27,7 +28,6 @@ const LikedSongs = () => {
   const [searchTerm, setSearchTerm] = useState('')
 
   const pageSize = 50
-  const DATA_PATH = '/data/skiley/2026-01-25-skiley-liked-songs.json'
 
   // TODO: useMemo where possible.
 
@@ -37,17 +37,11 @@ const LikedSongs = () => {
       setIsLoading(true)
       setError(null)
       try {
-        const response = await fetch(DATA_PATH)
+        const tracks = await getLocalSkileyTracks()
+        setData(tracks)
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`)
-        }
-
-        const json = await response.json()
-        setData(json)
-
-        if (json.length > 0) {
-          setSelectedTrack(json[0])
+        if (tracks.length > 0) {
+          setSelectedTrack(tracks[0])
         }
       } catch (e: unknown) {
         console.error('Error fetching liked songs data:', e)
