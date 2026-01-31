@@ -1,8 +1,12 @@
-import React from 'react'
+import Text from '@/components/shared/Text'
 
 const TrackVersusUser = () => {
   return (
-    <div>TrackXUser</div>
+    <div>
+      <Text variant="h2" className="mb-4">
+        User
+      </Text>
+    </div>
   )
 }
 

@@ -113,22 +113,27 @@ router.get('/lyrics/:id', async (req, res) => {
 
     const $ = cheerio.load(pageRes.data)
 
-    // Extrai letras do container principal
-    let lyrics = $('div[data-lyrics-container="true"]')
-      .contents()
-      .map((i, el) => {
-        if (el.type === 'text') return $(el).text()
-        if (el.tagName === 'br') return '\n'
-        return ''
-      })
-      .get()
-      .join('')
-      .replace(/\n\s*\n/g, '\n')
+    // Remover headers e elementos não lyrics
+    $(
+      'div[data-lyrics-container="true"] .LyricsHeader__Container, button, svg, .Dropdown__Container'
+    ).remove()
+
+    // Extrair o HTML interno do container e converter para texto com quebras
+    const lyricsHtml = $('div[data-lyrics-container="true"]').html() || ''
+
+    let lyrics = lyricsHtml
+      .replace(/<br\s*\/?>/gi, '\n') // substitui <br> por \n
+      .replace(/<\/?[^>]+(>|$)/g, '') // remove todas as tags
+      .replace(/\n\s*\n+/g, '\n') // remove linhas vazias extras
+      .replace(/^\s+|\s+$/gm, '') // trim em cada linha
       .trim()
 
-    // Fallback caso o selector principal falhe
+    // Destacar secções [Chorus], [Verse], etc.
+    lyrics = lyrics.replace(/\[(Chorus|Verse|Outro|Intro|Bridge|Refrain|Interlude)\]/gi, '\n\n$&')
+
+    // Fallback se o selector principal falhar
     if (!lyrics) {
-      lyrics = $('div[class*="Lyrics__Container"]').first().text().trim()
+      lyrics = $('div[class*="Lyrics__Container"]').text().trim()
     }
 
     if (!lyrics) {

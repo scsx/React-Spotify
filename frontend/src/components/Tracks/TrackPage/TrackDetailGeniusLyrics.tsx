@@ -22,8 +22,6 @@ const TrackDetailGeniusLyrics = ({ track }: TTrackDetailGeniusLyricsProps): JSX.
         const res = await getGeniusLyrics(track)
         setLyricsBase(res)
         setError(null)
-
-        console.log(lyricsBase)
       } catch (e: unknown) {
         if (e instanceof Error && e.message.includes('401')) {
           setError('login')
@@ -79,7 +77,7 @@ const TrackDetailGeniusLyrics = ({ track }: TTrackDetailGeniusLyricsProps): JSX.
           <SiGenius className="ml-4 mr-2 text-xl" /> Genius
         </span>
       </Text>
-      <pre className="p-8 bg-gray-500 dark:bg-gray-800 text-white rounded-br-md rounded-bl-md rounded-tr-md">
+      <pre className="p-8 bg-gray-500 dark:bg-gray-800 text-white rounded-br-md rounded-bl-md rounded-tr-md whitespace-pre-wrap break-words">
         {lyricsBase.lyrics ? (
           lyricsBase.lyrics
         ) : (

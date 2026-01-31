@@ -4,9 +4,11 @@ import { useParams } from 'react-router-dom'
 
 import { TSkileyLikedSong } from '@/types/SkileyTrack'
 import { TSpotifyTrack } from '@/types/SpotifyTrack'
+import { GiSoundWaves } from 'react-icons/gi'
 
-import TrackAudioFeatures from '@/components/Tracks/LikedSongs/TrackAudioFeatures'
+import TrackAudioFeatures from '@/components/Tracks/TrackPage/TrackAudioFeatures/TrackAudioFeatures'
 import TrackDetailGeniusLyrics from '@/components/Tracks/TrackPage/TrackDetailGeniusLyrics'
+import TrackVersusUser from '@/components/Tracks/TrackPage/TrackVersusUser'
 import Hyperlink from '@/components/shared/Hyperlink'
 import Text from '@/components/shared/Text'
 
@@ -97,8 +99,27 @@ const TrackDetailLayout = (): JSX.Element | null => {
         </div>
 
         <div className="w-1/3">
-          <Text>TODO: Playlists containing this track</Text>
-          <div>{skileyTrack && <TrackAudioFeatures track={skileyTrack} />}</div>
+          <div className="mb-16">
+            <TrackVersusUser />
+          </div>
+          <div className="mb-16">
+            <Text variant="h2" className="mb-4">
+              Audio Features
+            </Text>
+            {skileyTrack ? (
+              <TrackAudioFeatures track={skileyTrack} />
+            ) : (
+              <>
+                <Text variant="h6" className="mt-2 mb-4 flex items-center gap-2">
+                  <GiSoundWaves className="text-3xl" /> No audio features available.
+                </Text>
+                <Text color="muted">
+                  Spotify's audio features endpoints were officially deprecated and restricted in
+                  late 2024 due to LLM training.
+                </Text>
+              </>
+            )}
+          </div>
         </div>
       </div>
     </>
