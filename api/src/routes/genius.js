@@ -140,15 +140,22 @@ router.get('/lyrics/:id', async (req, res) => {
       url: pageUrl,
     })
   } catch (error) {
-    console.error('Lyrics error:', error.message || error)
     const status = error.response?.status
-    if (status === 403 || status === 429) {
-      return res.status(403).json({ error: 'Genius blocked request (anti-bot)' })
+
+    if (status === 401 || status === 403) {
+      return res.status(401).json({ error: 'Genius token expired' })
     }
+
     if (status === 404) {
       return res.status(404).json({ error: 'Song not found' })
     }
-    res.status(500).json({ error: 'Failed to get lyrics' })
+
+    if (status === 429) {
+      return res.status(429).json({ error: 'Rate limited by Genius' })
+    }
+
+    console.error('Lyrics error:', error.message)
+    return res.status(500).json({ error: 'Failed to get lyrics' })
   }
 })
 

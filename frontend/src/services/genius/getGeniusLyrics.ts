@@ -44,8 +44,22 @@ export async function getGeniusLyrics(track: TSpotifyTrackInput): Promise<TGeniu
     credentials: 'include',
   })
 
+  if (lyricsRes.status === 401) {
+    throw new Error('GENIUS_401')
+  }
+
+  if (lyricsRes.status === 404) {
+    return {
+      lyrics: null,
+      url: null,
+      geniusSongId: bestHit.result.id,
+      matchedTitle: bestHit.result.title,
+      matchedArtist: bestHit.result.primary_artist.name,
+    }
+  }
+
   if (!lyricsRes.ok) {
-    throw new Error('Genius lyrics fetch failed')
+    throw new Error('GENIUS_FAILED')
   }
 
   const data = await lyricsRes.json()
