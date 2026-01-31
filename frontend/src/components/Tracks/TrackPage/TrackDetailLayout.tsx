@@ -5,9 +5,10 @@ import { useParams } from 'react-router-dom'
 import { TSkileyLikedSong } from '@/types/SkileyTrack'
 import { TSpotifyTrack } from '@/types/SpotifyTrack'
 
+import TrackAudioFeatures from '@/components/Tracks/LikedSongs/TrackAudioFeatures'
+import TrackDetailGeniusLyrics from '@/components/Tracks/TrackPage/TrackDetailGeniusLyrics'
 import Hyperlink from '@/components/shared/Hyperlink'
 import Text from '@/components/shared/Text'
-import TrackAudioFeatures from '@/components/Tracks/LikedSongs/TrackAudioFeatures'
 
 import { getLocalSkileyTrackById } from '@/services/skiley/getLocalSkileyTrackById'
 import { getSpotifyTrack } from '@/services/spotify/getSpotifyTrack'
@@ -24,8 +25,6 @@ const TrackDetailLayout = (): JSX.Element | null => {
       try {
         const trackData = await getSpotifyTrack(trackId)
         setTrack(trackData)
-
-        console.log(trackData)
       } catch (error) {
         console.error('Erro ao carregar detalhes da track:', error)
       }
@@ -40,7 +39,6 @@ const TrackDetailLayout = (): JSX.Element | null => {
     const loadLocalTrack = async () => {
       const localTrack = await getLocalSkileyTrackById(trackId)
       setSkileyTrack(localTrack)
-      console.log(localTrack)
     }
 
     loadLocalTrack()
@@ -68,7 +66,6 @@ const TrackDetailLayout = (): JSX.Element | null => {
           {mainTitle}
         </Text>
       )}
-
       <Text variant="h3" className="font-bold">
         {track.artists.map((artist, index, array) => (
           <span key={artist.id}>
@@ -79,6 +76,14 @@ const TrackDetailLayout = (): JSX.Element | null => {
           </span>
         ))}
       </Text>
+
+      <TrackDetailGeniusLyrics
+        track={{
+          id: track.id,
+          name: track.name,
+          artists: track.artists.map((a) => ({ id: a.id, name: a.name })),
+        }}
+      />
 
       <div className="flex space-x-12">
         <div className="w-2/3">

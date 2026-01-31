@@ -1,6 +1,6 @@
 const express = require('express')
 const axios = require('axios')
-
+const cheerio = require('cheerio')
 const router = express.Router()
 
 const GENIUS_CLIENT_ID = process.env.GENIUS_CLIENT_ID
@@ -41,7 +41,16 @@ router.get('/auth/genius/callback', async (req, res) => {
       accessToken: tokenRes.data.access_token,
     }
 
-    res.redirect(process.env.FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL)
+    res.send(`
+      <script>
+        if (window.opener) {
+          window.opener.postMessage("GENIUS_AUTH_SUCCESS", "*")
+          window.close()
+        } else {
+          window.location = "${process.env.FRONTEND_SPOTIFY_LOGIN_SUCCESS_URL}"
+        }
+      </script>
+    `)
   } catch (e) {
     console.error('Genius OAuth error', e.response?.data || e.message)
     res.status(500).json({ error: 'Genius auth failed' })
@@ -66,24 +75,76 @@ router.get('/search', async (req, res) => {
   res.json(r.data.response.hits)
 })
 
-// GET LYRICS BY ID.
+// GET LYRICS BY ID. Scrappes the Genius page to get the lyrics.
 router.get('/lyrics/:id', async (req, res) => {
-  const songId = req.params.id
+  if (!req.session.genius?.accessToken) {
+    return res.status(401).json({ error: 'Not authenticated with Genius' })
+  }
 
-  const song = await axios.get(`https://api.genius.com/songs/${songId}`, {
-    headers: {
-      Authorization: `Bearer ${req.session.genius.accessToken}`,
-    },
-  })
+  try {
+    // 1. Obter a URL da página da música
+    const songRes = await axios.get(`https://api.genius.com/songs/${req.params.id}`, {
+      headers: {
+        Authorization: `Bearer ${req.session.genius.accessToken}`,
+      },
+      timeout: 10000,
+    })
 
-  const url = song.data.response.song.url
+    const song = songRes.data.response.song
+    const pageUrl = song.url
 
-  const html = await axios.get(url)
-  const m = html.data.match(/<div[^>]*data-lyrics-container[^>]*>([\s\S]*?)<\/div>/g)
+    if (!pageUrl) {
+      return res.status(404).json({ error: 'Song URL not found' })
+    }
 
-  const lyrics = m ? m.map((v) => v.replace(/<[^>]+>/g, '').trim()).join('\n') : null
+    // 2. Scrape das letras
+    const pageRes = await axios.get(pageUrl, {
+      headers: {
+        'User-Agent':
+          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',
+      },
+      timeout: 15000,
+    })
 
-  res.json({ lyrics, url })
+    const $ = cheerio.load(pageRes.data)
+
+    // Selector principal atual (2026)
+    let lyrics = $('div[data-lyrics-container="true"]')
+      .contents()
+      .map((i, el) => {
+        if (el.type === 'text') return $(el).text()
+        if (el.tagName === 'br') return '\n'
+        return ''
+      })
+      .get()
+      .join('')
+      .replace(/\n\s*\n/g, '\n')
+      .trim()
+
+    // Fallback se o principal falhar
+    if (!lyrics) {
+      lyrics = $('div[class*="Lyrics__Container"]').first().text().trim()
+    }
+
+    if (!lyrics) {
+      return res.status(404).json({ error: 'Lyrics not found in page' })
+    }
+
+    res.json({
+      lyrics,
+      url: pageUrl,
+    })
+  } catch (error) {
+    console.error('Lyrics error:', error.message || error)
+    const status = error.response?.status
+    if (status === 403 || status === 429) {
+      return res.status(403).json({ error: 'Genius blocked request (anti-bot)' })
+    }
+    if (status === 404) {
+      return res.status(404).json({ error: 'Song not found' })
+    }
+    res.status(500).json({ error: 'Failed to get lyrics' })
+  }
 })
 
 module.exports = router

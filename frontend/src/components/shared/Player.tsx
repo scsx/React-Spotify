@@ -24,9 +24,6 @@ const Player = (): JSX.Element => {
           setNowPlaying(playingData.item as TSpotifyTrack)
         } else {
           setNowPlaying(null)
-          console.log(
-            "No track currently playing or 'item' is null/undefined in the response from Spotify."
-          )
         }
       } catch (error) {
         console.error('Error fetching currently playing:', error)

@@ -16,8 +16,12 @@ export async function getGeniusLyrics(track: TSpotifyTrackInput): Promise<TGeniu
     credentials: 'include',
   })
 
+  if (searchRes.status === 401) {
+    throw new Error('GENIUS_401')
+  }
+
   if (!searchRes.ok) {
-    throw new Error('Genius search failed')
+    throw new Error('GENIUS_FAILED')
   }
 
   const hits: TGeniusSearchHit[] = await searchRes.json()
