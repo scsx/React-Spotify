@@ -7,6 +7,7 @@ const fs = require('fs')
 
 // --- Importação de Rotas ---
 const lastFmRoutes = require('./routes/lastfm')
+const geniusRoutes = require('./routes/genius')
 const spotifyAuthRoutes = require('./routes/spotifyAuth')
 const spotifyPlaylistRoutes = require('./routes/spotify/playlists')
 const spotifyCurrentlyPlayingRoute = require('./routes/spotify/currentlyPlaying')
@@ -68,6 +69,9 @@ app.use(express.urlencoded({ extended: true }))
 // --- ROUTES ---
 // LastFM routes.
 app.use('/api/lastfm', lastFmRoutes)
+
+// Genius routes.
+app.use('/api/genius', geniusRoutes)
 
 // Spotify auth route.
 app.use('/auth/spotify', spotifyAuthRoutes)

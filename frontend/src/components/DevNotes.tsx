@@ -7,6 +7,7 @@ const DevNotes = () => {
   const sections = [
     { title: 'AI', slug: 'ai' },
     { title: 'Skiley', slug: 'skiley' },
+    { title: 'Backend', slug: 'backend' },
   ]
 
   const scrollToId = (id: string) => {
@@ -107,6 +108,13 @@ const DevNotes = () => {
               Update <pre className="inline-block">LikedSongs.tsx</pre>
             </Text>
           </ol>
+        </li>
+
+        <li>
+          <Text variant="h3" as="h2" id="backend" className="font-bold pt-10 -mt-10 mb-4">
+            Backend
+          </Text>
+          <Text>TODO</Text>
         </li>
       </ul>
     </div>
