@@ -1,16 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
+import { IoMdHeart } from 'react-icons/io'
 import { twMerge } from 'tailwind-merge'
 
+import Hyperlink from '@/components/shared/Hyperlink'
 import Text from '@/components/shared/Text'
 import { Progress } from '@/components/ui/progress'
 
 interface ArtistHeroProps {
   artist: TSpotifyArtist
+  isFollowed: boolean
 }
 
-const ArtistHero: React.FC<ArtistHeroProps> = ({ artist }): JSX.Element => {
+const ArtistHero: React.FC<ArtistHeroProps> = ({ artist, isFollowed = false }): JSX.Element => {
   // refs and logic to check what div is longer, to do rounded corners.
   const titleRef = useRef<HTMLDivElement>(null)
   const followersRef = useRef<HTMLDivElement>(null)
@@ -48,6 +51,17 @@ const ArtistHero: React.FC<ArtistHeroProps> = ({ artist }): JSX.Element => {
       />
       <div className="w-full -mt-4 absolute top-96 h-8 z-0 bg-white dark:bg-background transition duration-500"></div>
       <div className="relative container">
+        {isFollowed && (
+          <Text className="absolute top-0 right-8">
+            <Hyperlink
+              href="/artists/following"
+              className="text-blue-500 flex items-center gap-x-1 text-lg"
+            >
+              <IoMdHeart /> Following
+            </Hyperlink>
+          </Text>
+        )}
+
         <div
           className={twMerge(
             '-mt-4 bg-white dark:bg-black inline-block p-4 rounded-tl-sm rounded-tr-sm rounded-bl-none',
@@ -67,7 +81,7 @@ const ArtistHero: React.FC<ArtistHeroProps> = ({ artist }): JSX.Element => {
             ref={followersRef}
           >
             <div className="flex items-center">
-              <div>{artist.followers.total.toLocaleString()} followers</div>
+              <div>{artist.followers.total.toLocaleString()} followers </div>
             </div>
           </div>
         </div>

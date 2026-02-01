@@ -22,12 +22,12 @@ import {
 import { Progress } from '@/components/ui/progress'
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 
-interface CardArtistProps {
+type TCardArtistProps = {
   artist: TSpotifyArtist
   classes?: string
 }
 
-const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.Element => {
+const CardArtist: React.FC<TCardArtistProps> = ({ artist, classes = '' }): JSX.Element => {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   const openSheet = async () => {
@@ -43,7 +43,7 @@ const CardArtist: React.FC<CardArtistProps> = ({ artist, classes = '' }): JSX.El
               <img
                 src={artist.images[0]?.url}
                 alt={Array(40).fill(artist.name).join(' ')} // In case of no image.
-                className="object-cover text-sm text-gray-400 dark:text-gray-700"
+                className="object-cover object-top w-full h-full text-sm text-gray-400 dark:text-gray-700"
               />
             </AspectRatio>
           </div>

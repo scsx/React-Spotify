@@ -9,6 +9,7 @@ import { GiDinosaurRex } from 'react-icons/gi'
 import CardArtist from '@/components/Artist/CardArtist'
 import FollowedArtists from '@/components/Search/FollowedArtists'
 import SearchForm from '@/components/Search/SearchForm'
+import Hyperlink from '@/components/shared/Hyperlink'
 import Text from '@/components/shared/Text'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -171,7 +172,9 @@ const SearchArtists = (): JSX.Element => {
       </div>
       <div className="basis-1/4 pt-20">
         <Text as="h4" variant="h3" className="mb-8 text-right">
-          Following
+          <Hyperlink href="/artists/following" variant="title" className="hover:text-blue-500">
+            Following
+          </Hyperlink>
         </Text>
         <FollowedArtists />
       </div>

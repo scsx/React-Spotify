@@ -3,22 +3,25 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { TSkileyLikedSong } from '@/types/SkileyTrack'
+import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import { TSpotifyTrack } from '@/types/SpotifyTrack'
 import { GiSoundWaves } from 'react-icons/gi'
 
+import CardArtistLight from '@/components/Artist/CardArtistLight'
 import TrackAudioFeatures from '@/components/Tracks/TrackPage/TrackAudioFeatures/TrackAudioFeatures'
 import TrackDetailGeniusLyrics from '@/components/Tracks/TrackPage/TrackDetailGeniusLyrics'
 import TrackVersusUser from '@/components/Tracks/TrackPage/TrackVersusUser'
-import Hyperlink from '@/components/shared/Hyperlink'
 import Text from '@/components/shared/Text'
 
 import { getLocalSkileyTrackById } from '@/services/skiley/getLocalSkileyTrackById'
+import { getSpotifyArtist } from '@/services/spotify/getSpotifyArtist'
 import { getSpotifyTrack } from '@/services/spotify/getSpotifyTrack'
 
 const TrackDetailLayout = (): JSX.Element | null => {
   const { trackId } = useParams<{ trackId: string }>()
   const [track, setTrack] = useState<TSpotifyTrack | null>(null)
   const [skileyTrack, setSkileyTrack] = useState<TSkileyLikedSong | null>(null)
+  const [artists, setArtists] = useState<TSpotifyArtist[]>([])
 
   useEffect(() => {
     if (!trackId) return
@@ -27,6 +30,12 @@ const TrackDetailLayout = (): JSX.Element | null => {
       try {
         const trackData = await getSpotifyTrack(trackId)
         setTrack(trackData)
+
+        const artistIds = trackData.artists.map((a) => a.id)
+
+        const artistsData = await Promise.all(artistIds.map((id) => getSpotifyArtist(id)))
+
+        setArtists(artistsData)
       } catch (error) {
         console.error('Erro ao carregar detalhes da track:', error)
       }
@@ -68,26 +77,25 @@ const TrackDetailLayout = (): JSX.Element | null => {
           {mainTitle}
         </Text>
       )}
-      <Text variant="h3" className="font-bold">
-        {track.artists.map((artist, index, array) => (
-          <span key={artist.id}>
-            <Hyperlink href={`/artists/${artist.id}`} variant="icon">
-              {artist.name}
-            </Hyperlink>
-            {index < array.length - 1 && ', '}
-          </span>
-        ))}
-      </Text>
 
-      <div className="flex space-x-12">
-        <div className="w-2/3">
-          <Text className="mt-16">TODO:</Text>
+      <div className="flex space-x-12 mt-16">
+        <div className="w-1/2">
+
+          {/* <Text className="mt-16">TODO:</Text>
           <ul>
             <li>Similar tracks</li>
-            <li>Audio features</li>
             <li>Cover</li>
             <li>Scrobbles</li>
-          </ul>
+          </ul> */}
+
+          {/* <pre className="p-8 bg-gray-500 dark:bg-gray-800 text-white rounded-br-md rounded-bl-md rounded-tr-md whitespace-pre-wrap break-words">
+            {JSON.stringify(track)}
+            <br />
+            <br />
+            <br />
+            {JSON.stringify(skileyTrack)}
+          </pre>
+ */}
 
           <TrackDetailGeniusLyrics
             track={{
@@ -98,7 +106,13 @@ const TrackDetailLayout = (): JSX.Element | null => {
           />
         </div>
 
-        <div className="w-1/3">
+        <div className="w-1/2">
+          <div className="grid grid-cols-2 gap-4">
+            {artists.map((artist) => (
+              <CardArtistLight key={artist.id} artist={artist} />
+            ))}
+          </div>
+
           <div className="mb-16">
             <TrackVersusUser />
           </div>
@@ -119,6 +133,11 @@ const TrackDetailLayout = (): JSX.Element | null => {
                 </Text>
               </>
             )}
+          </div>
+          <div className="mb-16">
+            <Text variant="h2" className="mb-4">
+              Album
+            </Text>
           </div>
         </div>
       </div>

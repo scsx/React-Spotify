@@ -88,6 +88,34 @@ router.get('/:artistId/top-tracks', async (req, res) => {
   }
 })
 
+// Ver se user segue certo artista.
+router.get('/:artistId/user-follows', async (req, res) => {
+  const accessToken = req.spotifyAccessToken
+  const { artistId } = req.params
+
+  try {
+    const response = await axios.get(`${SPOTIFY_API_BASE}/me/following/contains`, {
+      params: {
+        type: 'artist',
+        ids: artistId,
+      },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+
+    // Spotify returns: [true] or [false]
+    res.json({ follows: response.data[0] })
+  } catch (error) {
+    console.error('[Backend - UserFollowsArtist] Error:', error.response?.data || error.message)
+
+    res.status(error.response?.status || 500).json({
+      error: 'Failed to check if user follows artist',
+      details: error.response?.data || error.message,
+    })
+  }
+})
+
 // Rota para artistas semelhantes: /api/spotify/artists/:artistId/similar
 router.get('/:artistId/similar', async (req, res) => {
   /* ... similar logic ... */

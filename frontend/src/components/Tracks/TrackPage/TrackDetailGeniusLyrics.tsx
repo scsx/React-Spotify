@@ -50,17 +50,31 @@ const TrackDetailGeniusLyrics = ({ track }: TTrackDetailGeniusLyricsProps): JSX.
 
   if (error === 'login')
     return (
-      <button
-        onClick={() =>
-          window.open(
-            'https://spotify-clone.local:3001/api/genius/auth/genius',
-            'geniusLogin',
-            'width=600,height=800'
-          )
-        }
-      >
-        Connect Genius to see lyrics
-      </button>
+      <>
+        <Text
+          variant="h2"
+          className="inline-flex items-baseline bg-gray-500 dark:bg-gray-800 text-white rounded-t-md px-8 pb-0 pt-4"
+        >
+          Lyrics from{' '}
+          <span className="flex items-baseline text-yellow-genius">
+            <SiGenius className="ml-4 mr-2 text-xl" /> Genius
+          </span>
+        </Text>
+        <div className="bg-gray-500 dark:bg-gray-800 text-white rounded-br-md rounded-bl-md rounded-tr-md px-8 pt-12 pb-4">
+          <button
+            className="border border-gray-600 rounded-md py-1 px-4"
+            onClick={() =>
+              window.open(
+                'https://spotify-clone.local:3001/api/genius/auth/genius',
+                'geniusLogin',
+                'width=600,height=800'
+              )
+            }
+          >
+            Connect Genius to see lyrics
+          </button>
+        </div>
+      </>
     )
 
   if (error === 'failed') return <div>Lyrics unavailable</div>

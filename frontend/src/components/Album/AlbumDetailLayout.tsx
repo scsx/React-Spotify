@@ -104,7 +104,7 @@ const AlbumDetailLayout = () => {
         <AlbumTracklist tracks={album.tracks.items} availableInPT={availableInPT} />
       </div>
 
-      <div className="w-1/3">
+      <div className="w-1/3 pt-6">
         {album.images && album.images.length > 0 && (
           <img
             src={album.images[0].url}

@@ -18,6 +18,7 @@ import { AspectRatio } from '@/components/ui/aspect-ratio'
 
 import { getLastFMArtistInfo } from '@/services/lastfm/getLastFMArtistInfo'
 import { getSpotifyArtist } from '@/services/spotify/getSpotifyArtist'
+import { getSpotifyArtistIsFollowedByUser } from '@/services/spotify/getSpotifyArtistIsFollowedByUser'
 
 const ArtistDetailLayout = (): JSX.Element => {
   const { artistId } = useParams<string>()
@@ -31,6 +32,7 @@ const ArtistDetailLayout = (): JSX.Element => {
   const [lastFmArtistTags, setLastFmArtistTags] = useState<TLastFmTag[] | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isFollowed, setIsFollowed] = useState<boolean>(false)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,6 +49,9 @@ const ArtistDetailLayout = (): JSX.Element => {
         const fetchedArtist = await getSpotifyArtist(artistId)
         setArtist(fetchedArtist)
         setArtistHasImage(!!(fetchedArtist.images && fetchedArtist.images.length > 0))
+
+        const followed = await getSpotifyArtistIsFollowedByUser(artistId)
+        setIsFollowed(followed)
 
         if (fetchedArtist?.name) {
           const lastFmResponse = await getLastFMArtistInfo(fetchedArtist.name)
@@ -108,7 +113,7 @@ const ArtistDetailLayout = (): JSX.Element => {
 
   return (
     <>
-      <ArtistHero artist={artist} />
+      <ArtistHero artist={artist} isFollowed={isFollowed} />
 
       <div className="relative container">
         <div className="grid grid-cols-4 gap-16">

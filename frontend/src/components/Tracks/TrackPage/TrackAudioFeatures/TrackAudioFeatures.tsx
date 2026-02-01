@@ -2,6 +2,7 @@ import { TSkileyLikedSong } from '@/types/SkileyTrack'
 
 import Hyperlink from '@/components/shared/Hyperlink'
 import Text from '@/components/shared/Text'
+import { Progress } from '@/components/ui/progress'
 
 import { AUDIO_FEATURES, AUDIO_FEATURE_KEYS } from './audioFeatures'
 
@@ -10,19 +11,33 @@ type TrackAudioFeaturesProps = {
 }
 
 const TrackAudioFeatures = ({ track }: TrackAudioFeaturesProps) => {
+  const normalize = (value: number, min: number, max: number) => {
+    const clamped = Math.min(Math.max(value, min), max)
+    return ((clamped - min) / (max - min)) * 100
+  }
+
   return (
     <>
-      <div className="grid grid-cols-2 gap-y-2 gap-x-4">
+      <div>
         {AUDIO_FEATURE_KEYS.map((key) => {
           const feature = AUDIO_FEATURES[key]
-          const value = track[key]
+          const raw = track[key]
 
-          if (value === null || value === undefined) return null
+          if (raw === null || raw === undefined) return null
+
+          const percent = normalize(raw, feature.min, feature.max)
 
           return (
             <div key={key}>
-              <Text color="muted">{feature.label}</Text>
-              <Text>{value}</Text>
+              <div className="flex justify-between">
+                <Text color="muted">{feature.label}</Text>
+                <Text>
+                  {raw}
+                  {feature.unit ? ` ${feature.unit}` : ''}
+                </Text>
+              </div>
+
+              <Progress value={percent} className="h-1 mb-2" />
             </div>
           )
         })}

@@ -1,4 +1,4 @@
-import ArtistDetailLayout from '@/components/Artist/ArtistDetailLayout/ArtistDetailLayout'
+import ArtistDetailLayout from '@/components/Artist/ArtistDetailLayout'
 
 const ArtistDetail = (): JSX.Element => {
   return (
