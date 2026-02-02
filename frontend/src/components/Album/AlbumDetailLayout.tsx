@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
+import { TSpotifyArtist } from '@/types/SpotifyArtist'
 
 import AlbumLastFmInfo from '@/components/Album/AlbumLastFmInfo'
 import AlbumOverview from '@/components/Album/AlbumOverview'
@@ -11,15 +12,18 @@ import ErrorDisplay from '@/components/shared/ErrorDisplay'
 import Hyperlink from '@/components/shared/Hyperlink'
 import Loading from '@/components/shared/Loading'
 import Text from '@/components/shared/Text'
+import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Progress } from '@/components/ui/progress'
 
 import { getSpotifyAlbum } from '@/services/spotify/getSpotifyAlbum'
+import { getSpotifyArtist } from '@/services/spotify/getSpotifyArtist'
 
 import { checkSpotifyContentAvailability } from '@/lib/check-spotify-content-availability'
 
 const AlbumDetailLayout = () => {
   const { albumId } = useParams<{ albumId: string }>()
   const [album, setAlbum] = useState<TSpotifyAlbum | null>(null)
+  const [artists, setArtists] = useState<TSpotifyArtist[]>([])
   const [availableInPT, setAvailableInPT] = useState<boolean>(false)
   const [loadingPage, setLoadingPage] = useState(true)
   const [errorPage, setErrorPage] = useState<string | null>(null)
@@ -39,6 +43,11 @@ const AlbumDetailLayout = () => {
       try {
         const albumData = await getSpotifyAlbum(albumId)
         setAlbum(albumData)
+
+        const artistIds = albumData.artists.map((a) => a.id)
+        const artistsData = await Promise.all(artistIds.map((id) => getSpotifyArtist(id)))
+
+        setArtists(artistsData)
 
         const isAvailable = await checkSpotifyContentAvailability('album', albumId)
         setAvailableInPT(isAvailable)
@@ -84,14 +93,27 @@ const AlbumDetailLayout = () => {
           </Text>
         )}
 
-        <Text variant="h3" className="font-bold">
-          {album?.artists?.map((artist, index, array) => (
-            <React.Fragment key={artist.id}>
-              <Hyperlink href={`/artists/${artist.id}`} variant="icon">
+        <Text variant="h3" as="h3" className="font-bold">
+          {artists.map((artist, index) => (
+            <span key={artist.id}>
+              <Hyperlink
+                href={`/artists/${artist.id}`}
+                variant="icon"
+                className="flex items-center gap-x-2"
+              >
+                <span className="w-8 overflow-hidden rounded-full block">
+                  <AspectRatio ratio={1}>
+                    <img
+                      src={artist.images.at(-1)?.url}
+                      alt={artist.name}
+                      className="object-cover w-full h-full"
+                    />
+                  </AspectRatio>
+                </span>
                 {artist.name}
               </Hyperlink>
-              {index < array.length - 1 && <span className="opacity-50">, </span>}
-            </React.Fragment>
+              {index < artists.length - 1 && ', '}
+            </span>
           ))}
         </Text>
 
@@ -113,7 +135,7 @@ const AlbumDetailLayout = () => {
           />
         )}
 
-        {album.label && <Text className="mb-2">{album.label}</Text>}
+        {album.label && <Text className="mb-2" variant='h5'>{album.label}</Text>}
 
         <AlbumLastFmInfo artistName={album.artists[0]?.name || ''} albumName={album.name} />
       </div>

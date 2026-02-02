@@ -10,7 +10,6 @@ import { GiSoundWaves } from 'react-icons/gi'
 import TrackAudioFeatures from '@/components/Tracks/TrackPage/TrackAudioFeatures/TrackAudioFeatures'
 import TrackDetailGeniusLyrics from '@/components/Tracks/TrackPage/TrackDetailGeniusLyrics'
 import TrackHero from '@/components/Tracks/TrackPage/TrackHero'
-import TrackVersusUser from '@/components/Tracks/TrackPage/TrackVersusUser'
 import Text from '@/components/shared/Text'
 
 import { getLocalSkileyTrackById } from '@/services/skiley/getLocalSkileyTrackById'
@@ -55,15 +54,11 @@ const TrackDetailLayout = (): JSX.Element | null => {
 
   if (!track) return null
 
-  
-
   return (
     <div className="relative w-full">
       {track && artists[0] && <TrackHero track={track} artists={artists} />}
 
       <div className="container relative z-10">
-        
-
         <div className="flex space-x-12 mt-16">
           <div className="w-1/2">
             {/* <Text className="mt-16">TODO:</Text>
@@ -72,16 +67,6 @@ const TrackDetailLayout = (): JSX.Element | null => {
             <li>Cover</li>
             <li>Scrobbles</li>
           </ul> */}
-
-            {/* <pre className="p-8 bg-gray-500 dark:bg-gray-800 text-white rounded-br-md rounded-bl-md rounded-tr-md whitespace-pre-wrap break-words">
-            {JSON.stringify(track)}
-            <br />
-            <br />
-            <br />
-            {JSON.stringify(skileyTrack)}
-          </pre>
- */}
-
             <TrackDetailGeniusLyrics
               track={{
                 id: track.id,
@@ -92,15 +77,6 @@ const TrackDetailLayout = (): JSX.Element | null => {
           </div>
 
           <div className="w-1/2">
-            {/* <div className="grid grid-cols-2 gap-4">
-              {artists.map((artist) => (
-                <CardArtistLight key={artist.id} artist={artist} />
-              ))}
-            </div> */}
-
-            <div className="mb-16">
-              <TrackVersusUser />
-            </div>
             <div className="mb-16">
               <Text variant="h2" className="mb-4">
                 Audio Features
