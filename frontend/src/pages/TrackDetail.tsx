@@ -1,11 +1,7 @@
 import TrackDetailLayout from '@/components/Tracks/TrackPage/TrackDetailLayout'
 
 const TrackDetail = () => {
-  return (
-    <div className="relative container">
-      <TrackDetailLayout />
-    </div>
-  )
+  return <TrackDetailLayout />
 }
 
 export default TrackDetail

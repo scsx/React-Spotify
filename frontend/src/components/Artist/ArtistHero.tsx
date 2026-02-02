@@ -8,12 +8,12 @@ import Hyperlink from '@/components/shared/Hyperlink'
 import Text from '@/components/shared/Text'
 import { Progress } from '@/components/ui/progress'
 
-interface ArtistHeroProps {
+type TArtistHeroProps = {
   artist: TSpotifyArtist
   isFollowed: boolean
 }
 
-const ArtistHero: React.FC<ArtistHeroProps> = ({ artist, isFollowed = false }): JSX.Element => {
+const ArtistHero: React.FC<TArtistHeroProps> = ({ artist, isFollowed = false }): JSX.Element => {
   // refs and logic to check what div is longer, to do rounded corners.
   const titleRef = useRef<HTMLDivElement>(null)
   const followersRef = useRef<HTMLDivElement>(null)
