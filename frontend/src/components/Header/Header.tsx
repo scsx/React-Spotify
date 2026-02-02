@@ -55,7 +55,7 @@ const Header = (): JSX.Element => {
           </NavigationMenuList>
         </NavigationMenu>
         <div className="ml-auto flex items-center gap-2">
-          <Switch text="Dark mode" classes="flex mr-4" />
+          <Switch text="Theme" classes="flex mr-4" />
 
           {isLoggedIn && <UserLoggedIn user={user} logout={logout} />}
         </div>
