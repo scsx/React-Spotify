@@ -55,11 +55,13 @@ const UserLoggedIn = ({ user, logout }: UserLoggedInProps): JSX.Element => {
           </div>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-44 mt-2" align="end">
-          <DropdownMenuItem>
-            <Hyperlink href="/user">Profile</Hyperlink>
+          <DropdownMenuItem className="p-0">
+            <Hyperlink href="/user" className="py-[6px] px-2">
+              Profile
+            </Hyperlink>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+          <DropdownMenuItem onClick={logout} className='cursor-pointer'>Logout</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

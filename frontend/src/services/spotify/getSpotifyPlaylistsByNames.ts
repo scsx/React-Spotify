@@ -21,11 +21,16 @@ export async function getSpotifyPlaylistsByNames(
     )
 
     return response.data
-  } catch (error: any) {
-    console.error(
-      `Erro ao buscar playlists por nomes (${playlistNames.join(', ')}) do backend:`,
-      axios.isAxiosError(error) ? (error.response ? error.response.data : error.message) : error
-    )
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      console.error(
+        `Erro ao buscar playlists por nomes (${playlistNames.join(', ')}) do backend:`,
+        error.response?.data ?? error.message
+      )
+    } else {
+      console.error(`Erro ao buscar playlists por nomes (${playlistNames.join(', ')}):`, error)
+    }
+
     throw new Error(`Falha ao carregar as playlists: ${playlistNames.join(', ')}.`)
   }
 }
