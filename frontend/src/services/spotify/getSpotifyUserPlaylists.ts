@@ -2,13 +2,13 @@ import { TSpotifyPlaylist } from '@/types/SpotifyPlaylist'
 import { TSpotifyPagingObject } from '@/types/SpotifySearchResults'
 import axios, { AxiosResponse } from 'axios'
 
-interface GetSpotifyUserPlaylistsOptions {
+type TGetSpotifyUserPlaylistsOptions = {
   limit?: number
   offset?: number
 }
 
 export const getSpotifyUserPlaylists = async (
-  options?: GetSpotifyUserPlaylistsOptions
+  options?: TGetSpotifyUserPlaylistsOptions
 ): Promise<TSpotifyPagingObject<TSpotifyPlaylist>> => {
   try {
     const params = new URLSearchParams()

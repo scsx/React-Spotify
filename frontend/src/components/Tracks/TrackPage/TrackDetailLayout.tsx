@@ -30,7 +30,6 @@ const TrackDetailLayout = (): JSX.Element | null => {
       try {
         const trackData = await getSpotifyTrack(trackId)
         setTrack(trackData)
-        console.log(trackData.album.images)
 
         const artistIds = trackData.artists.map((a) => a.id)
         const artistsData = await Promise.all(artistIds.map((id) => getSpotifyArtist(id)))
