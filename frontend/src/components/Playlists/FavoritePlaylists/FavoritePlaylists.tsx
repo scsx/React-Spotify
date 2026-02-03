@@ -13,7 +13,7 @@ import { getSpotifyPlaylistsById } from '@/services/spotify/getSpotifyPlaylistsB
 
 import { SPOTIFY_FAVORITE_PLAYLISTS } from '@/lib/constants'
 
-interface FavoritePlaylistWithStyle extends TSpotifyPlaylist {
+type FavoritePlaylistWithStyle = TSpotifyPlaylist & {
   style: string
 }
 
@@ -48,8 +48,9 @@ const FavoritePlaylists = () => {
               }
         })
 
-        setFavoritePlaylists(combinedPlaylists as any)
-      } catch (err: any) {
+        // @ts-expect-error oneof
+        setFavoritePlaylists(combinedPlaylists)
+      } catch (err) {
         console.error('Failed to fetch favorite playlists:', err)
         setError('Falha ao carregar as playlists favoritas. Por favor, tente novamente mais tarde.')
       } finally {

@@ -9,6 +9,7 @@ const { requireSpotifyAccessToken } = require('../../utils/spotifyAuthMiddleware
 
 router.use(requireSpotifyAccessToken)
 
+// Busca os detalhes completos de uma playlist pelo ID na API do Spotify.
 async function fetchFullPlaylistDetails(playlistId, accessToken) {
   const response = await axios.get(`${SPOTIFY_API_BASE}/playlists/${playlistId}`, {
     headers: { Authorization: `Bearer ${accessToken}` },
@@ -16,6 +17,7 @@ async function fetchFullPlaylistDetails(playlistId, accessToken) {
   return response.data
 }
 
+// Pagina todas as playlists do utilizador até esgotar os resultados.
 async function getAllUserPlaylists(accessToken) {
   const all = []
   let offset = 0
