@@ -162,4 +162,8 @@ export const SPOTIFY_TOP_SONGS_BY_YEAR = [
     id: '37i9dQZF1FoGJkOegcu8dK',
     name: '2024',
   },
+  {
+    id: '37i9dQZEVXdaA9mJpU0lGz',
+    name: '2025',
+  },
 ]
