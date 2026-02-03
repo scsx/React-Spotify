@@ -1,5 +1,3 @@
-// api/src/routes/spotify/playlists.js
-
 const express = require('express')
 const router = express.Router()
 const axios = require('axios')
@@ -245,7 +243,7 @@ router.post('/by-names', async (req, res) => {
       error: 'Failed to fetch playlists by name from Spotify.',
       details: error.response?.data || error.message,
     })
-  }
+  } 
 })
 
 // --- GET /playlists/:playlistId

@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom'
 
 import { TLastFmTag } from '@/types/LastFmTag'
 import { TSpotifyGenres } from '@/types/SpotifyGenres'
+import { PlusCircle } from 'lucide-react'
 import { FaLastfm } from 'react-icons/fa'
-import { LuPlusCircle } from 'react-icons/lu'
 
 import Text from '@/components/shared/Text'
 import { Badge } from '@/components/ui/badge'
@@ -43,7 +43,7 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger className="p-1.5 pr-2">
-            <LuPlusCircle
+            <PlusCircle
               onClick={() => addToSearch(`${brand}:${genre}`)}
               className={`text-xl ${badgeColors}`}
             />
@@ -136,7 +136,7 @@ const ArtistsGenres: React.FC<ArtistsGenresProps> = ({ genres, lastFmTags }): JS
       )}
       {searchQuery.length === 0 ? (
         <Text color="gray" className="mt-8">
-          Click on a genre to search or select with <LuPlusCircle className="inline" /> to search
+          Click on a genre to search or select with <PlusCircle className="inline" /> to search
           for multiple genres.
         </Text>
       ) : (
