@@ -1,4 +1,4 @@
-const { SPOTIFY_API_BASE } = require('../../utils/constants')
+const { SPOTIFY_API_BASE } = require('../../utils/constants-api')
 
 const express = require('express')
 const router = express.Router()
