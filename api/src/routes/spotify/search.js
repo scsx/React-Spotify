@@ -1,8 +1,12 @@
+const { SPOTIFY_API_BASE } = require('../../utils/constants')
+
 const express = require('express')
 const router = express.Router()
 const axios = require('axios')
 
-const { getAccessTokenFromSession } = require('../../utils/sessionHelpers')
+const { requireSpotifyAccessToken } = require('../../utils/spotifyAuthMiddleware')
+
+router.use(requireSpotifyAccessToken)
 
 /**
  * /api/spotify/search
@@ -10,7 +14,7 @@ const { getAccessTokenFromSession } = require('../../utils/sessionHelpers')
  * Requires 'q' (query), 'type' (item type), and optional 'limit', 'offset', etc.
  */
 router.get('/', async (req, res) => {
-  const accessToken = getAccessTokenFromSession(req)
+  const accessToken = req.spotifyAccessToken
   const { q, type, limit, offset, market } = req.query // Extract query parameters
 
   // Basic validation for required parameters
@@ -40,14 +44,11 @@ router.get('/', async (req, res) => {
     }).toString()
 
     // Make the GET request to Spotify's Search API
-    const spotifyApiResponse = await axios.get(
-      `https://api.spotify.com/v1/search?${spotifyQueryParams}`,
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      }
-    )
+    const spotifyApiResponse = await axios.get(`${SPOTIFY_API_BASE}/search?${spotifyQueryParams}`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
 
     // Send Spotify's response back to the frontend
     res.json(spotifyApiResponse.data)

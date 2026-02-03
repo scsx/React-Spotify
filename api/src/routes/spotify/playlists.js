@@ -1,22 +1,13 @@
+const { SPOTIFY_API_BASE } = require('../../utils/constants')
+
 const express = require('express')
 const router = express.Router()
 const axios = require('axios')
-const { getAccessTokenFromSession } = require('../../utils/sessionHelpers')
+const { requireSpotifyAccessToken } = require('../../utils/spotifyAuthMiddleware')
 
-const SPOTIFY_API_BASE = 'https://api.spotify.com/v1' 
+// Middleware para garantir que o token de acesso do Spotify está presente
+router.use(requireSpotifyAccessToken)
 
-// --- MIDDLEWARE LOCAL (para logs e token) ---
-router.use(async (req, res, next) => {
-  const accessToken = getAccessTokenFromSession(req)
-  if (!accessToken) {
-    console.error(`ERRO: Token não disponível para ${req.path}.`)
-    return res.status(401).json({ error: 'No Spotify access token provided. Please log in.' })
-  }
-  req.spotifyAccessToken = accessToken // Adiciona o token à requisição
-  next()
-})
-
-// --- Função Auxiliar para Buscar Detalhes Completos da Playlist ---
 // Esta função será reutilizada pelas rotas que precisam de detalhes completos
 async function fetchFullPlaylistDetails(playlistId, accessToken) {
   try {
@@ -243,7 +234,7 @@ router.post('/by-names', async (req, res) => {
       error: 'Failed to fetch playlists by name from Spotify.',
       details: error.response?.data || error.message,
     })
-  } 
+  }
 })
 
 // --- GET /playlists/:playlistId
@@ -269,6 +260,52 @@ router.get('/:playlistId', async (req, res) => {
       details: error.response ? error.response.data : error.message,
     })
   }
+})
+
+// --- POST /playlists/by-ids
+// Endpoint: /api/spotify/playlists/by-ids
+router.post('/by-ids', async (req, res) => {
+  const accessToken = req.spotifyAccessToken
+  const ids = req.body.ids
+
+  if (!Array.isArray(ids) || ids.length === 0) {
+    return res.status(400).json({ error: 'Array de ids é obrigatório.' })
+  }
+
+  const results = []
+  const errors = []
+
+  const CONCURRENCY = 3
+  const DELAY_MS = 200
+
+  const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+  for (let i = 0; i < ids.length; i += CONCURRENCY) {
+    const batch = ids.slice(i, i + CONCURRENCY)
+
+    const batchResults = await Promise.all(
+      batch.map(async (id) => {
+        try {
+          return await fetchFullPlaylistDetails(id, accessToken)
+        } catch (error) {
+          errors.push({ id, error: error.response?.data || error.message })
+          return null
+        }
+      })
+    )
+
+    results.push(...batchResults.filter(Boolean))
+
+    if (i + CONCURRENCY < ids.length) {
+      await delay(DELAY_MS)
+    }
+  }
+
+  return res.json({
+    items: results,
+    total: results.length,
+    errors,
+  })
 })
 
 module.exports = router

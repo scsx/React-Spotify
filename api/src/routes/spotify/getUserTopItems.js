@@ -1,9 +1,14 @@
+const { SPOTIFY_API_BASE } = require('../../utils/constants')
+const { requireSpotifyAccessToken } = require('../../utils/spotifyAuthMiddleware')
+
 const express = require('express')
 const axios = require('axios')
 const router = express.Router()
 
+router.use(requireSpotifyAccessToken)
+
 router.get('/:type', async (req, res) => {
-  const accessToken = req.session.access_token
+  const accessToken = req.spotifyAccessToken
   const { type } = req.params
   const { time_range = 'medium_term', limit = 20, offset = 0 } = req.query
 
@@ -16,7 +21,7 @@ router.get('/:type', async (req, res) => {
   }
 
   try {
-    const response = await axios.get(`https://api.spotify.com/v1/me/top/${type}`, {
+    const response = await axios.get(`${SPOTIFY_API_BASE}/me/top/${type}`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

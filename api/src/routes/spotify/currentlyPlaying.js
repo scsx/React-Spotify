@@ -1,11 +1,14 @@
+const { SPOTIFY_API_BASE } = require('../../utils/constants')
+const { requireSpotifyAccessToken } = require('../../utils/spotifyAuthMiddleware')
+
 const express = require('express')
 const router = express.Router()
 const axios = require('axios')
 
-const { getAccessTokenFromSession } = require('../../utils/sessionHelpers')
+router.use(requireSpotifyAccessToken)
 
 router.get('/currently-playing', async (req, res) => {
-  const accessToken = getAccessTokenFromSession(req)
+  const accessToken = req.spotifyAccessToken
   const market = req.query.market || 'US'
 
   if (!accessToken) {
@@ -14,7 +17,7 @@ router.get('/currently-playing', async (req, res) => {
   }
 
   try {
-    const response = await axios.get(`https://api.spotify.com/v1/me/player/currently-playing`, {
+    const response = await axios.get(`${SPOTIFY_API_BASE}/me/player/currently-playing`, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },

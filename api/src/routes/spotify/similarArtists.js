@@ -1,20 +1,13 @@
+const { SPOTIFY_API_BASE } = require('../../utils/constants')
+
 const express = require('express')
 const router = express.Router()
 const axios = require('axios')
 
-const { getAccessTokenFromSession } = require('../../utils/sessionHelpers')
+const { requireSpotifyAccessToken } = require('../../utils/spotifyAuthMiddleware')
 
-const SPOTIFY_API_BASE = 'https://api.spotify.com/v1' // A SUA BASE DA API DO SPOTIFY
-
-router.use(async (req, res, next) => {
-  const accessToken = getAccessTokenFromSession(req)
-  if (!accessToken) {
-    console.error(`ERROR: Access token not available for ${req.path}.`)
-    return res.status(401).json({ error: 'No Spotify access token provided. Please log in.' })
-  }
-  req.spotifyAccessToken = accessToken
-  next()
-})
+// Middleware para garantir que o token de acesso do Spotify está presente
+router.use(requireSpotifyAccessToken)
 
 /**
  * /api/spotify/artists/:artistId/similar-artists

@@ -1,18 +1,13 @@
+const { SPOTIFY_API_BASE } = require('../../utils/constants')
+
 const express = require('express')
 const axios = require('axios')
 const router = express.Router()
 
-const { getAccessTokenFromSession } = require('../../utils/sessionHelpers')
+const { requireSpotifyAccessToken } = require('../../utils/spotifyAuthMiddleware')
 
-// Middleware to ensure Spotify access token is present
-router.use(async (req, res, next) => {
-  const accessToken = getAccessTokenFromSession(req)
-  if (!accessToken) {
-    return res.status(401).json({ error: 'No Spotify access token provided. Please log in.' })
-  }
-  req.spotifyAccessToken = accessToken
-  next()
-})
+// Middleware para garantir que o token de acesso do Spotify está presente
+router.use(requireSpotifyAccessToken)
 
 // GET /new-releases (will be mounted under /api/spotify in main server)
 router.get('/', async (req, res) => {
@@ -27,7 +22,7 @@ router.get('/', async (req, res) => {
     const queryString = queryParams.toString()
 
     // Actual Spotify API endpoint for New Releases
-    const spotifyApiUrl = `https://api.spotify.com/v1/browse/new-releases?${queryString}`
+    const spotifyApiUrl = `${SPOTIFY_API_BASE}/browse/new-releases?${queryString}`
 
     const spotifyApiResponse = await axios.get(spotifyApiUrl, {
       headers: { Authorization: `Bearer ${accessToken}` },
