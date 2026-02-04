@@ -17,6 +17,8 @@ type FavoritePlaylistWithStyle = TSpotifyPlaylist & {
   style: string
 }
 
+// TODO: Usar dados locais quando disponiveis; senao ir buscar normal.
+
 const FavoritePlaylists = () => {
   const [favoritePlaylists, setFavoritePlaylists] = useState<FavoritePlaylistWithStyle[]>([])
   const [loading, setLoading] = useState(true)

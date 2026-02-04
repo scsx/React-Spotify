@@ -1,26 +1,15 @@
-/*
-POST /api/spotify/library/sync → cria job
-GET /api/spotify/library/sync/:jobId → estado
-GET /api/spotify/library/sync/:jobId/result → dados finais
-*/
 const express = require('express')
 const router = express.Router()
-const { getAccessTokenFromSession } = require('../../utils/sessionHelpers')
 const {
   createLibraryJob,
   getLibraryJobStatus,
   getLibraryJobResult,
-} = require('../../utils/librarySync') 
+} = require('../../services/librarySync')
 
-// Middleware de token
-router.use((req, res, next) => {
-  const accessToken = getAccessTokenFromSession(req)
-  if (!accessToken) {
-    return res.status(401).json({ error: 'No Spotify access token provided.' })
-  }
-  req.spotifyAccessToken = accessToken
-  next()
-})
+const { requireSpotifyAccessToken } = require('../../utils/spotifyAuthMiddleware')
+
+// Middleware para garantir que o token de acesso do Spotify está presente
+router.use(requireSpotifyAccessToken)
 
 /**
  * POST /api/spotify/library/sync
@@ -66,6 +55,7 @@ router.get('/sync/:jobId/result', async (req, res) => {
     if (!result) return res.status(404).json({ error: 'Resultado não encontrado.' })
     return res.json(result)
   } catch (error) {
+    console.error('library sync error:', error)
     return res.status(500).json({ error: 'Falha ao obter resultado.', details: error.message })
   }
 })
