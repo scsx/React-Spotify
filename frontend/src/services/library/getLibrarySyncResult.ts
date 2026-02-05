@@ -1,12 +1,14 @@
 import axios from 'axios'
 
+import { TPlaylist } from '@/components/Library/TemporaryPLViewer'
+
 export type TLibrarySyncResult = {
-  playlists: Array<{
-    id: string
-    name: string
-    details: unknown
-    tracks: unknown[]
-  }>
+  meta?: {
+    syncedAt?: string
+    playlistCount?: number
+    totalTracks?: number
+  }
+  playlists: TPlaylist[]
   errors: Array<{ id: string; error: string }>
 }
 

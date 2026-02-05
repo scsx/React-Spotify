@@ -11,7 +11,7 @@ type TLibraryStatusProps = {
 
 const LibraryStatus = ({ jobId }: TLibraryStatusProps) => {
   const [status, setStatus] = useState<'idle' | 'running' | 'completed' | 'failed'>('idle')
-  const [progress, setProgress] = useState<{ completed: number; total: number } | null>(null)
+  const [progress, setProgress] = useState<{ completed: number; total: number; message?: string } | null>(null)
   const [error, setError] = useState<string | null>(null)
   // TODO: any
   const [jobResult, setJobResult] = useState<any>(null)
@@ -107,8 +107,14 @@ const LibraryStatus = ({ jobId }: TLibraryStatusProps) => {
     <div>
       <div>Status: {status}</div>
       {progress && (
-        <div>
-          Progresso: {progress.completed}/{progress.total}
+        <div className='p-4'>
+          {progress.message ? (
+            <div className="text-sm text-gray-900">{progress.message}</div>
+          ) : (
+            <div>
+              Progresso: {progress.completed}/{progress.total}
+            </div>
+          )}
         </div>
       )}
 

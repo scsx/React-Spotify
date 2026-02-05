@@ -7,6 +7,8 @@
     "dev:frontend": "npm run dev --prefix frontend",
     "dev:api": "npm run dev --prefix api",
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:api\"",
+    "start:api": "npm start --prefix api",
+    "dev:stable": "concurrently \"npm run dev:frontend\" \"npm run start:api\"",
     "format": "prettier --write \"frontend/**/*.{js,jsx,ts,tsx}\" \"api/**/*.{js,ts}\"",
     "format:check": "prettier --check \"frontend/**/*.{js,jsx,ts,tsx}\" \"api/**/*.{js,ts}\""
   },

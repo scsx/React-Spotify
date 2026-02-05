@@ -13,3 +13,4 @@ api/sessions/loki.db
 .vscode/diff/diff-main.json
 .vscode/diff/vulsCount.txt
 .vscode/diff/vulsResult.txt
+*.log

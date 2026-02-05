@@ -45,23 +45,58 @@ async function fetchAllPlaylistTracks(
   let all = []
   let offset = 0
 
+  console.log(`[FetchTracks] Starting fetch for playlist ${playlistId}, maxTracksPerPlaylist=${maxTracksPerPlaylist}`)
+
   while (true) {
     const { data } = await axios.get(`${SPOTIFY_API_BASE}/playlists/${playlistId}/tracks`, {
       headers: { Authorization: `Bearer ${accessToken}` },
       params: { limit, offset },
     })
 
+    console.log(`[FetchTracks] Got ${data.items.length} items, offset=${offset}, hasNext=${!!data.next}`)
     all.push(...data.items)
     if (!data.next) break
     offset += limit
   }
 
+  console.log(`[FetchTracks] Total collected: ${all.length} tracks before limit check`)
+
   // Use in dev only.
   if (maxTracksPerPlaylist && maxTracksPerPlaylist > 0) {
+    console.log(`[FetchTracks] Limiting to ${maxTracksPerPlaylist} tracks`)
     return all.slice(0, maxTracksPerPlaylist)
   }
 
   return all
+}
+
+async function fetchPlaylistsMetadata(playlistIds, accessToken) {
+  const metadata = []
+  
+  for (const id of playlistIds) {
+    try {
+      const { data } = await axios.get(`${SPOTIFY_API_BASE}/playlists/${id}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      
+      // total_tracks pode estar em diferentes formatos
+      const totalTracks = data.tracks?.total || data.total_tracks || 0
+      
+      metadata.push({
+        id: data.id,
+        name: data.name,
+        total_tracks: totalTracks,
+      })
+      
+      console.log(`[Metadata] ${data.name}: ${totalTracks} tracks`)
+    } catch (error) {
+      console.error(`[Metadata Error] Playlist ${id}:`, error.message)
+      // Skip on error
+    }
+  }
+  
+  console.log(`[Metadata Complete] Total playlists with metadata: ${metadata.length}`)
+  return metadata
 }
 
 async function runSyncJob(jobId, playlists, accessToken, options = {}) {
@@ -72,8 +107,33 @@ async function runSyncJob(jobId, playlists, accessToken, options = {}) {
 
   updateJob(jobId, { status: 'running', updatedAt: Date.now() })
 
+  // Pre-fetch metadata to calculate total tracks
+  console.log(`Fetching metadata for ${playlists.length} playlists...`)
+  const playlistsMetadata = await fetchPlaylistsMetadata(
+    playlists.map((p) => p.id),
+    accessToken
+  )
+
+  const totalTracks = playlistsMetadata.reduce((sum, p) => sum + (p.total_tracks || 0), 0)
+  console.log(
+    `Total tracks to fetch: ${totalTracks} across ${playlistsMetadata.length} playlists`
+  )
+
+  // Fallback: se totalTracks é 0, usa número de playlists como medida
+  const displayTotal = totalTracks > 0 ? totalTracks : playlists.length
+  
+  updateJob(jobId, {
+    progress: {
+      completed: 0,
+      total: displayTotal,
+      message: `Fetching ${displayTotal} ${totalTracks > 0 ? 'tracks' : 'playlists'}...`,
+    },
+    updatedAt: Date.now(),
+  })
+
   const results = []
   const errors = []
+  let tracksProcessed = 0
 
   for (let i = 0; i < playlists.length; i += concurrency) {
     const batch = playlists.slice(i, i + concurrency)
@@ -89,6 +149,20 @@ async function runSyncJob(jobId, playlists, accessToken, options = {}) {
             maxTracksPerPlaylist
           )
           const normalized = normalizePlaylist(details, tracks)
+
+          // Update track count
+          tracksProcessed += tracks.length
+          console.log(`[Fetch] ${details.name}: fetched ${tracks.length} tracks`)
+          
+          const percentage = displayTotal > 0 ? Math.round((tracksProcessed / displayTotal) * 100) : 0
+          updateJob(jobId, {
+            progress: {
+              completed: tracksProcessed,
+              total: displayTotal,
+              message: `${tracksProcessed}/${displayTotal} tracks (${percentage}%)`,
+            },
+            updatedAt: Date.now(),
+          })
 
           return {
             id: playlist.id,
@@ -106,14 +180,6 @@ async function runSyncJob(jobId, playlists, accessToken, options = {}) {
     )
 
     results.push(...batchResults.filter(Boolean))
-
-    updateJob(jobId, {
-      progress: {
-        completed: Math.min(i + batch.length, playlists.length),
-        total: playlists.length,
-      },
-      updatedAt: Date.now(),
-    })
 
     if (i + concurrency < playlists.length) {
       await delay(delayMs)

@@ -1,4 +1,4 @@
-type TPlaylist = {
+export type TPlaylist = {
   id: string
   name: string
   description?: string | null

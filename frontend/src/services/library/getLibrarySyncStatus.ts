@@ -6,6 +6,7 @@ export type TLibrarySyncStatus = {
   progress?: {
     completed: number
     total: number
+    message?: string
   }
   updatedAt?: number
   error?: string
