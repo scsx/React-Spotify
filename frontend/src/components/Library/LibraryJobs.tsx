@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react'
 
+import { AiOutlineDelete } from 'react-icons/ai'
+import { LuEye } from 'react-icons/lu'
+
+import Text from '@/components/shared/Text'
 import {
   Table,
   TableBody,
@@ -11,6 +15,8 @@ import {
 
 import { TLibraryJob, getLibraryJobs } from '@/services/library/getLibraryJobs'
 import { TLibrarySyncResult, getLibrarySyncResult } from '@/services/library/getLibrarySyncResult'
+
+import { formatJobDate } from '@/lib/format-job-date'
 
 import TemporaryPLViewer from './TemporaryPLViewer'
 
@@ -45,6 +51,10 @@ export default function LibraryJobs() {
     }
   }
 
+  const handleDeleteJob = () => {
+    console.log('Delete job - to be implemented')
+  }
+
   if (selectedJobId) {
     return (
       <div>
@@ -61,7 +71,7 @@ export default function LibraryJobs() {
 
   return (
     <div>
-      <h3 className="font-semibold mb-4">Job History ({jobs.length})</h3>
+      <Text variant="h4">Job History ({jobs.length})</Text>
 
       <Table>
         <TableHeader>
@@ -70,8 +80,8 @@ export default function LibraryJobs() {
             <TableHead>Status</TableHead>
             <TableHead>Progress</TableHead>
             <TableHead>Created at</TableHead>
-            <TableHead>Updated at</TableHead>
             <TableHead>Actions</TableHead>
+            <TableHead className="border-l-2">Saved to IndexDB</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -82,46 +92,58 @@ export default function LibraryJobs() {
               </TableCell>
             </TableRow>
           ) : (
-            jobs.map((job) => (
-              <TableRow key={job.id}>
-                <TableCell className="font-mono text-sm">
-                  {job.id?.slice(0, 8) || 'n/a'}...
-                </TableCell>
-                <TableCell>
-                  <span
-                    className={`px-2 py-1 rounded text-sm inline-block ${
-                      job.status === 'completed'
-                        ? 'bg-green-700'
-                        : job.status === 'failed'
-                          ? 'bg-red-600'
-                          : 'bg-yellow-600'
-                    }`}
-                  >
-                    {job.status || 'n/a'}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  {job.progress
-                    ? `${job.progress.completed || 0}/${job.progress.total || 0}`
-                    : 'n/a'}
-                </TableCell>
-                <TableCell>
-                  {job.createdAt ? new Date(job.createdAt).toLocaleString('en-US') : 'n/a'}
-                </TableCell>
-                <TableCell>
-                  {job.updatedAt ? new Date(job.updatedAt).toLocaleString('en-US') : 'n/a'}
-                </TableCell>
-                <TableCell>
-                  <button
-                    onClick={() => handlePreview(job.id)}
-                    disabled={loading}
-                    className="px-2 py-1 bg-blue-700 text-white rounded text-sm disabled:opacity-50 hover:bg-blue-800"
-                  >
-                    Preview
-                  </button>
-                </TableCell>
-              </TableRow>
-            ))
+            [...jobs]
+              .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0))
+              .map((job) => (
+                <TableRow key={job.id}>
+                  <TableCell className="font-mono text-sm">
+                    {job.id?.slice(0, 14) || 'n/a'}...
+                  </TableCell>
+                  <TableCell>
+                    <span
+                      className={`px-2 py-1 rounded text-sm inline-block ${
+                        job.status === 'completed'
+                          ? 'bg-green-600 text-white'
+                          : job.status === 'failed'
+                            ? 'bg-red-600 text-white'
+                            : 'bg-yellow-600 text-white'
+                      }`}
+                    >
+                      {job.status === 'completed' ? 'OK' : job.status || 'n/a'}
+                    </span>
+                  </TableCell>
+                  <TableCell className="font-mono">
+                    {job.progress
+                      ? `${job.progress.completed || 0}/${job.progress.total || 0}`
+                      : 'n/a'}
+                  </TableCell>
+                  <TableCell>
+                    {(() => {
+                      const formatted = formatJobDate(job.createdAt)
+                      return formatted ? (
+                        <>
+                          {formatted.date}
+                          <br />
+                          {formatted.time}
+                        </>
+                      ) : (
+                        'n/a'
+                      )
+                    })()}
+                  </TableCell>
+
+                  <TableCell className="flex items-center gap-2">
+                    <button onClick={() => handlePreview(job.id)} disabled={loading}>
+                      <LuEye />
+                    </button>
+                    <button onClick={handleDeleteJob} disabled={loading}>
+                      <AiOutlineDelete />
+                    </button>
+                  </TableCell>
+
+                  <TableCell className="border-l-2">saved date or button "save"</TableCell>
+                </TableRow>
+              ))
           )}
         </TableBody>
       </Table>

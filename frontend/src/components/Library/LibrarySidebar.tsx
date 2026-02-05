@@ -10,7 +10,7 @@ const LibrarySidebar = () => {
         </Text>
         <Text>
           For liked songs go to <Hyperlink href="/tracks">tracks</Hyperlink>. They're obtained via
-          Skiley and have more data than this app can get.
+          Skiley and have more data than this app can get becayse Skiley has legacy access.
         </Text>
       </div>
       <div className="mb-16">
