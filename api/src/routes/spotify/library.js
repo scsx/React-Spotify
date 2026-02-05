@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const { getAllJobs } = require('../../storage/libraryStore')
 const {
   createLibraryJob,
   getLibraryJobStatus,
@@ -29,6 +30,7 @@ router.post('/sync', async (req, res) => {
     })
     return res.status(202).json({ jobId: job.id })
   } catch (error) {
+    console.error('library sync error:', error)
     return res.status(500).json({ error: 'Falha ao criar job.', details: error.message })
   }
 })
@@ -57,6 +59,20 @@ router.get('/sync/:jobId/result', async (req, res) => {
   } catch (error) {
     console.error('library sync error:', error)
     return res.status(500).json({ error: 'Falha ao obter resultado.', details: error.message })
+  }
+})
+
+/**
+ * GET /api/spotify/library/jobs
+ * Retorna lista de todos os jobs criados
+ */
+router.get('/jobs', (req, res) => {
+  try {
+    const allJobs = getAllJobs()
+    return res.json(allJobs)
+  } catch (error) {
+    console.error('Error fetching jobs:', error)
+    return res.status(500).json({ error: 'Falha ao obter jobs.', details: error.message })
   }
 })
 

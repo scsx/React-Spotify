@@ -1,7 +1,7 @@
 import { TSpotifyAlbum } from './SpotifyAlbum'
 import { TSpotifyArtist } from './SpotifyArtist'
 
-export interface TSpotifyTrack {
+export type TSpotifyTrack = {
   album: TSpotifyAlbum
   artists: TSpotifyArtist[]
   available_markets: string[]

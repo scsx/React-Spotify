@@ -5,6 +5,7 @@ Faz chamadas à Spotify API para cada playlist/faixas.
 Atualiza progresso e status.
 No fim, guarda o resultado e marca como concluído.
  */
+const { normalizePlaylist } = require('./librarySyncPreferences')
 
 const axios = require('axios')
 const { v4: uuidv4 } = require('uuid')
@@ -20,9 +21,10 @@ const {
 } = require('../storage/libraryStore')
 
 const DEFAULTS = {
-  concurrency: 2,
-  delayMs: 150,
+  concurrency: 1,
+  delayMs: 500,
   tracksPageLimit: 100,
+  maxTracksPerPlaylist: null, // dev only (0 ou null = sem limite)
 }
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
@@ -34,7 +36,12 @@ async function fetchPlaylistDetails(playlistId, accessToken) {
   return data
 }
 
-async function fetchAllPlaylistTracks(playlistId, accessToken, limit = 100) {
+async function fetchAllPlaylistTracks(
+  playlistId,
+  accessToken,
+  limit = 100,
+  maxTracksPerPlaylist = 0
+) {
   let all = []
   let offset = 0
 
@@ -49,11 +56,19 @@ async function fetchAllPlaylistTracks(playlistId, accessToken, limit = 100) {
     offset += limit
   }
 
+  // Use in dev only.
+  if (maxTracksPerPlaylist && maxTracksPerPlaylist > 0) {
+    return all.slice(0, maxTracksPerPlaylist)
+  }
+
   return all
 }
 
 async function runSyncJob(jobId, playlists, accessToken, options = {}) {
-  const { concurrency, delayMs, tracksPageLimit } = { ...DEFAULTS, ...options }
+  const { concurrency, delayMs, tracksPageLimit, maxTracksPerPlaylist } = {
+    ...DEFAULTS,
+    ...options,
+  }
 
   updateJob(jobId, { status: 'running', updatedAt: Date.now() })
 
@@ -67,13 +82,18 @@ async function runSyncJob(jobId, playlists, accessToken, options = {}) {
       batch.map(async (playlist) => {
         try {
           const details = await fetchPlaylistDetails(playlist.id, accessToken)
-          const tracks = await fetchAllPlaylistTracks(playlist.id, accessToken, tracksPageLimit)
+          const tracks = await fetchAllPlaylistTracks(
+            playlist.id,
+            accessToken,
+            tracksPageLimit,
+            maxTracksPerPlaylist
+          )
+          const normalized = normalizePlaylist(details, tracks)
 
           return {
             id: playlist.id,
             name: playlist.name,
-            details,
-            tracks,
+            ...normalized,
           }
         } catch (error) {
           errors.push({

@@ -1,8 +1,11 @@
 import { useState } from 'react'
 
+import LibraryJobs from '@/components/Library/LibraryJobs'
+import LibrarySidebar from '@/components/Library/LibrarySidebar'
 import LibraryStatus from '@/components/Library/LibraryStatus'
 import Text from '@/components/shared/Text'
-import { Checkbox } from '@/components/ui/checkbox'
+
+// import { Checkbox } from '@/components/ui/checkbox'
 
 import { startLibrarySync } from '@/services/library/startLibrarySync'
 
@@ -32,11 +35,14 @@ const LibraryLayout = () => {
   }
 
   return (
-    <div className="flex gap-x-8 mt-16">
-      <div className="w-1/3">
-        <Text variant="h3" className="mb-8">
-          Get favorite and Special playlists
+    <div className="flex gap-x-16 mt-16">
+      <div className="w-3/4">
+        <Text variant="h2" className="mb-8">
+          Favorite and Special playlists
         </Text>
+
+        <LibraryJobs />
+
         <button onClick={handleStartSync} disabled={isStarting} className="bg-red-500 p-2 my-2">
           {isStarting ? 'A iniciar...' : 'START'}
         </button>
@@ -51,7 +57,7 @@ const LibraryLayout = () => {
             <LibraryStatus jobId={jobId} />
           </div>
         </div>
-        <div>
+        {/* <div>
           {allPlaylists.map((playlist) => (
             <label key={playlist.id} className="flex items-center gap-x-2">
               <Checkbox
@@ -61,18 +67,11 @@ const LibraryLayout = () => {
               {playlist.name}
             </label>
           ))}
-        </div>
+        </div> */}
       </div>
 
-      <div className="w-1/3">
-        <Text variant="h3" className="mb-8">
-          Get liked songs
-        </Text>
-      </div>
-      <div className="w-1/3">
-        <Text variant="h3" className="mb-8">
-          Something else
-        </Text>
+      <div className="w-1/4">
+        <LibrarySidebar />
       </div>
     </div>
   )

@@ -1,15 +1,7 @@
-/*
-Inicializa o LokiDB (ou JSON).
-Guarda e lê jobs.
-Atualiza estado/progresso.
-Salva resultados grandes em ficheiros e mantém só o caminho no DB.
-*/
-
 const path = require('path')
 const fs = require('fs')
 const Loki = require('lokijs')
 
-// Ajusta estes caminhos se preferires outro local
 const DATA_DIR = path.join(__dirname, '..', '..', 'data')
 const DB_PATH = path.join(DATA_DIR, 'library.db')
 const RESULTS_DIR = path.join(DATA_DIR, 'library')
@@ -26,13 +18,11 @@ function initStore() {
   ensureDirs()
 
   db = new Loki(DB_PATH, {
-    autoload: true,
-    autoloadCallback: () => {
-      jobs = db.getCollection('jobs') || db.addCollection('jobs', { indices: ['id'] })
-    },
     autosave: true,
     autosaveInterval: 5000,
   })
+
+  jobs = db.getCollection('jobs') || db.addCollection('jobs', { indices: ['id'] })
 }
 
 function createJob(job) {
@@ -41,6 +31,7 @@ function createJob(job) {
 }
 
 function updateJob(jobId, patch) {
+  if (!jobs) initStore()
   const job = jobs.findOne({ id: jobId })
   if (!job) return null
   Object.assign(job, patch)
@@ -56,7 +47,19 @@ function getJob(jobId) {
 function saveResult(jobId, data) {
   ensureDirs()
   const resultPath = path.join(RESULTS_DIR, `${jobId}.json`)
-  fs.writeFileSync(resultPath, JSON.stringify(data), 'utf8')
+
+  // Adiciona metadados
+  const wrappedData = {
+    meta: {
+      syncedAt: new Date().toISOString(),
+      playlistCount: data.playlists?.length || 0,
+      totalTracks: data.playlists?.reduce((sum, pl) => sum + (pl.tracks?.length || 0), 0) || 0,
+    },
+    playlists: data.playlists || [],
+    errors: data.errors || [],
+  }
+
+  fs.writeFileSync(resultPath, JSON.stringify(wrappedData), 'utf8')
   return resultPath
 }
 
@@ -67,6 +70,32 @@ function getResult(jobId) {
   return JSON.parse(raw)
 }
 
+function getAllJobs() {
+  if (!fs.existsSync(DB_PATH)) {
+    console.log('DB_PATH não existe:', DB_PATH)
+    return []
+  }
+
+  try {
+    const raw = fs.readFileSync(DB_PATH, 'utf8')
+    const data = JSON.parse(raw)
+
+    console.log('DB file - collections:', data.collections?.length)
+    console.log('First collection:', data.collections?.[0]?.name)
+    console.log('Jobs count:', data.collections?.[0]?.data?.length)
+
+    if (data.collections && data.collections[0] && data.collections[0].data) {
+      console.log('getAllJobs returning:', data.collections[0].data.length, 'jobs')
+      return data.collections[0].data
+    }
+  } catch (e) {
+    console.error('Error reading jobs:', e)
+  }
+
+  console.log('getAllJobs returning: 0 jobs')
+  return []
+}
+
 module.exports = {
   initStore,
   createJob,
@@ -74,4 +103,5 @@ module.exports = {
   getJob,
   saveResult,
   getResult,
+  getAllJobs,
 }
