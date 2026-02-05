@@ -9,6 +9,7 @@ const DevNotes = () => {
     { title: 'Skiley', slug: 'skiley' },
     { title: 'Backend', slug: 'backend' },
     { title: 'Colors', slug: 'colors' },
+    { title: 'Library', slug: 'library' },
   ]
 
   const scrollToId = (id: string) => {
@@ -135,6 +136,16 @@ const DevNotes = () => {
               <span className='text-blue-500'>Blue</span> User actions.
             </Text>
           </ul>
+        </li>
+        <li>
+          <Text variant="h3" as="h2" id="colors" className="font-bold pt-10 -mt-10 mb-4">
+            Library
+          </Text>
+          <ol className="list-decimal pl-5 mt-4 space-y-2">
+            <Text as="li">
+              Passos...
+            </Text>
+          </ol>
         </li>
       </ul>
     </div>

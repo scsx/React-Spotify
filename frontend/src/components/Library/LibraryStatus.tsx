@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-import TemporaryPLViewer from '@/components/Library/TemporaryPLViewer'
+import TemporaryPLViewer from '@/components/Library/LibraryPLViewer'
 
 import { getLibrarySyncResult } from '@/services/library/getLibrarySyncResult'
 import { getLibrarySyncStatus } from '@/services/library/getLibrarySyncStatus'
@@ -11,7 +11,11 @@ type TLibraryStatusProps = {
 
 const LibraryStatus = ({ jobId }: TLibraryStatusProps) => {
   const [status, setStatus] = useState<'idle' | 'running' | 'completed' | 'failed'>('idle')
-  const [progress, setProgress] = useState<{ completed: number; total: number; message?: string } | null>(null)
+  const [progress, setProgress] = useState<{
+    completed: number
+    total: number
+    message?: string
+  } | null>(null)
   const [error, setError] = useState<string | null>(null)
   // TODO: any
   const [jobResult, setJobResult] = useState<any>(null)
@@ -107,7 +111,7 @@ const LibraryStatus = ({ jobId }: TLibraryStatusProps) => {
     <div>
       <div>Status: {status}</div>
       {progress && (
-        <div className='p-4'>
+        <div className="p-4">
           {progress.message ? (
             <div className="text-sm text-gray-900">{progress.message}</div>
           ) : (

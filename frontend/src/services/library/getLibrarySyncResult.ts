@@ -1,6 +1,5 @@
+import { TLibraryPlaylist } from '@/types/Library'
 import axios from 'axios'
-
-import { TPlaylist } from '@/components/Library/TemporaryPLViewer'
 
 export type TLibrarySyncResult = {
   meta?: {
@@ -8,7 +7,7 @@ export type TLibrarySyncResult = {
     playlistCount?: number
     totalTracks?: number
   }
-  playlists: TPlaylist[]
+  playlists: TLibraryPlaylist[]
   errors: Array<{ id: string; error: string }>
 }
 

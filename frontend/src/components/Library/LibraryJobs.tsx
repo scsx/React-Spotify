@@ -18,7 +18,7 @@ import { TLibrarySyncResult, getLibrarySyncResult } from '@/services/library/get
 
 import { formatJobDate } from '@/lib/format-job-date'
 
-import TemporaryPLViewer from './TemporaryPLViewer'
+import TemporaryPLViewer from './LibraryPLViewer'
 
 export default function LibraryJobs() {
   const [jobs, setJobs] = useState<TLibraryJob[]>([])
@@ -60,7 +60,7 @@ export default function LibraryJobs() {
       <div>
         <button
           onClick={() => setSelectedJobId(null)}
-          className="mb-2 px-2 py-1 bg-gray-500 text-white rounded"
+          className="mb-2 px-2 py-1"
         >
           ← Back
         </button>
@@ -71,7 +71,9 @@ export default function LibraryJobs() {
 
   return (
     <div>
-      <Text variant="h4">Job History ({jobs.length})</Text>
+      <div className="flex items-center">
+        <Text variant="h4">Job History ({jobs.length})</Text>
+      </div>
 
       <Table>
         <TableHeader>
@@ -132,11 +134,15 @@ export default function LibraryJobs() {
                     })()}
                   </TableCell>
 
-                  <TableCell className="flex items-center gap-2">
-                    <button onClick={() => handlePreview(job.id)} disabled={loading}>
+                  <TableCell className="flex items-center gap-4">
+                    <button
+                      className="text-xl"
+                      onClick={() => handlePreview(job.id)}
+                      disabled={loading}
+                    >
                       <LuEye />
                     </button>
-                    <button onClick={handleDeleteJob} disabled={loading}>
+                    <button className="text-xl" onClick={handleDeleteJob} disabled={loading}>
                       <AiOutlineDelete />
                     </button>
                   </TableCell>

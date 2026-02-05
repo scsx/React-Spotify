@@ -57,21 +57,10 @@ const LibraryLayout = () => {
             <LibraryStatus jobId={jobId} />
           </div>
         </div>
-        {/* <div>
-          {allPlaylists.map((playlist) => (
-            <label key={playlist.id} className="flex items-center gap-x-2">
-              <Checkbox
-                className="data-[state=checked]:bg-slate-300 data-[state=checked]:text-black border-slate-400"
-                defaultChecked
-              />
-              {playlist.name}
-            </label>
-          ))}
-        </div> */}
       </div>
 
       <div className="w-1/4">
-        <LibrarySidebar />
+        <LibrarySidebar allPlaylists={allPlaylists} />
       </div>
     </div>
   )
