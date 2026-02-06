@@ -6,6 +6,7 @@ import { IoWarningOutline } from 'react-icons/io5'
 import { IoCloseSharp } from 'react-icons/io5'
 import { LuEye } from 'react-icons/lu'
 
+import Loading from '@/components/shared/Loading'
 import Text from '@/components/shared/Text'
 import {
   Table,
@@ -29,6 +30,7 @@ export default function LibraryJobs() {
   const [selectedResult, setSelectedResult] = useState<TLibrarySyncResult | null>(null)
   const [loading, setLoading] = useState(false)
   const [savedJobs, setSavedJobs] = useState<Record<string, number>>({})
+  const [isLoadingJobs, setIsLoadingJobs] = useState(true)
 
   useEffect(() => {
     const loadJobs = async () => {
@@ -37,6 +39,8 @@ export default function LibraryJobs() {
         setJobs(data)
       } catch (e) {
         console.error('Error loading jobs:', e)
+      } finally {
+        setIsLoadingJobs(false)
       }
     }
     loadJobs()
@@ -86,10 +90,23 @@ export default function LibraryJobs() {
     )
   }
 
+  if (isLoadingJobs) {
+    return (
+      <>
+        <Text variant="h4" className="mb-4">
+          Job History...
+        </Text>
+        <Loading type="table" gridSize="4x6" />
+      </>
+    )
+  }
+
   return (
     <div>
       <div className="flex items-center">
-        <Text variant="h4">Job History ({jobs.length})</Text>
+        <Text variant="h4" className="mb-4">
+          Job History ({jobs.length})
+        </Text>
       </div>
 
       <Table>
@@ -98,7 +115,7 @@ export default function LibraryJobs() {
             <TableHead>ID</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Progress</TableHead>
-            <TableHead>Created at</TableHead>
+            <TableHead>Created</TableHead>
             <TableHead>Actions</TableHead>
             <TableHead className="border-l-2">Saved to IndexDB</TableHead>
           </TableRow>

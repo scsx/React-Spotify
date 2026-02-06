@@ -44,7 +44,7 @@ const User = (): JSX.Element => {
   }
 
   if (loading) {
-    return <Loading type="spinner" />
+    return <Loading />
   }
 
   if (error) {

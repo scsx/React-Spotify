@@ -6,8 +6,8 @@ import Text from '@/components/shared/Text'
 
 interface LoadingProps {
   message?: string
-  type?: 'spinner' | 'skeleton'
-  gridSize?: '2x2' | '3x3' | '4x4'
+  type?: 'spinner' | 'skeleton' | 'table'
+  gridSize?: '2x2' | '3x3' | '4x4' | '4x6'
 }
 
 const Loading: React.FC<LoadingProps> = ({
@@ -15,7 +15,6 @@ const Loading: React.FC<LoadingProps> = ({
   type = 'spinner',
   gridSize = '3x3',
 }) => {
-  // TODO: remove 1x1
   const getGridDimensions = (size: string) => {
     switch (size) {
       case '2x2':
@@ -24,6 +23,8 @@ const Loading: React.FC<LoadingProps> = ({
         return { cols: 3, rows: 3 }
       case '4x4':
         return { cols: 4, rows: 4 }
+      case '4x6':
+        return { cols: 6, rows: 4 }
       default:
         return { cols: 3, rows: 3 }
     }
@@ -40,6 +41,15 @@ const Loading: React.FC<LoadingProps> = ({
           <Text variant="h3" as="h3" className="mt-4">
             {message}
           </Text>
+        </div>
+      ) : type === 'table' ? (
+        <div
+          className={`grid gap-2 w-full`}
+          style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
+        >
+          {Array.from({ length: totalItems }).map((_, index) => (
+            <div key={index} className="h-10 bg-gray-700 rounded animate-pulse"></div>
+          ))}
         </div>
       ) : (
         <div className={`grid grid-cols-1 sm:grid-cols-${cols} gap-4 w-full max-w-5xl`}>
