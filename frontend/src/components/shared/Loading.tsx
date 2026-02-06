@@ -7,7 +7,7 @@ import Text from '@/components/shared/Text'
 interface LoadingProps {
   message?: string
   type?: 'spinner' | 'skeleton' | 'table'
-  gridSize?: '2x2' | '3x3' | '4x4' | '4x6'
+  gridSize?: '2x2' | '3x3' | '4x4' | '1x4'
 }
 
 const Loading: React.FC<LoadingProps> = ({
@@ -23,8 +23,8 @@ const Loading: React.FC<LoadingProps> = ({
         return { cols: 3, rows: 3 }
       case '4x4':
         return { cols: 4, rows: 4 }
-      case '4x6':
-        return { cols: 6, rows: 4 }
+      case '1x4':
+        return { cols: 1, rows: 4 }
       default:
         return { cols: 3, rows: 3 }
     }

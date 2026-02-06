@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const { getAllJobs } = require('../../storage/libraryStore')
+const { getAllJobs, deleteJob } = require('../../storage/libraryStore')
 const {
   createLibraryJob,
   getLibraryJobStatus,
@@ -73,6 +73,26 @@ router.get('/jobs', (req, res) => {
   } catch (error) {
     console.error('Error fetching jobs:', error)
     return res.status(500).json({ error: 'Falha ao obter jobs.', details: error.message })
+  }
+})
+
+/**
+ * DELETE /api/spotify/library/jobs/:jobId
+ * Apaga um job específico
+ */
+router.delete('/jobs/:jobId', (req, res) => {
+  try {
+    const { jobId } = req.params
+    const success = deleteJob(jobId)
+
+    if (!success) {
+      return res.status(404).json({ error: 'Job não encontrado.' })
+    }
+
+    return res.json({ success: true, message: 'Job apagado com sucesso.' })
+  } catch (error) {
+    console.error('Error deleting job:', error)
+    return res.status(500).json({ error: 'Falha ao apagar job.', details: error.message })
   }
 })
 

@@ -49,7 +49,7 @@ const TrackDetailGeniusLyrics = ({ track }: TTrackDetailGeniusLyricsProps): JSX.
   }, [track.id])
 
   return (
-    <div className="mt-16">
+    <div>
       <Text
         variant="h2"
         className="inline-flex items-baseline bg-gray-500 dark:bg-gray-800 text-white rounded-t-md px-8 pb-0 pt-4"

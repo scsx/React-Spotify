@@ -26,7 +26,7 @@ type TLibraryJobsTableProps = {
   loading: boolean
   savedJobs: Record<string, number>
   onPreview: (jobId: string) => void
-  onDelete: () => void
+  onDelete: (jobId: string) => void
   onSaveToIndexDB: (jobId: string) => void
 }
 
@@ -158,7 +158,7 @@ export default function LibraryJobsTable({
                   </button>
                   <button
                     className="text-2xl hover:text-red-500"
-                    onClick={onDelete}
+                    onClick={() => onDelete(job.id)}
                     disabled={loading}
                   >
                     <AiOutlineDelete />

@@ -58,15 +58,9 @@ const TrackDetailLayout = (): JSX.Element | null => {
     <div className="relative w-full">
       {track && artists[0] && <TrackHero track={track} artists={artists} />}
 
-      <div className="container relative z-10">
-        <div className="flex space-x-12 mt-16">
+      <div className="container relative z-10 pt-24">
+        <div className="flex space-x-12">
           <div className="w-1/2">
-            {/* <Text className="mt-16">TODO:</Text>
-          <ul>
-            <li>Similar tracks</li>
-            <li>Cover</li>
-            <li>Scrobbles</li>
-          </ul> */}
             <TrackDetailGeniusLyrics
               track={{
                 id: track.id,
@@ -98,6 +92,11 @@ const TrackDetailLayout = (): JSX.Element | null => {
             <div className="mb-16">
               <Text variant="h2" className="mb-4">
                 Album
+              </Text>
+            </div>
+            <div className="mb-16">
+              <Text variant="h2" className="mb-4">
+                Similar tracks
               </Text>
             </div>
           </div>

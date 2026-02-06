@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import Loading from '@/components/shared/Loading'
 import Text from '@/components/shared/Text'
 
+import { deleteLibraryJob } from '@/services/library/deleteLibraryJob'
 import { TLibraryJob, getLibraryJobs } from '@/services/library/getLibraryJobs'
 import { TLibrarySyncResult, getLibrarySyncResult } from '@/services/library/getLibrarySyncResult'
 import { getLibrarySyncStatus } from '@/services/library/getLibrarySyncStatus'
@@ -108,8 +109,16 @@ export default function LibraryJobs() {
     }
   }
 
-  const handleDeleteJob = () => {
-    console.log('Delete job - to be implemented')
+  const handleDeleteJob = async (jobId: string) => {
+    if (!confirm('Tens a certeza que queres apagar este job?')) return
+
+    try {
+      await deleteLibraryJob(jobId)
+      setJobs((prev) => prev.filter((job) => job.id !== jobId))
+    } catch (e) {
+      console.error('Erro ao apagar job:', e)
+      alert('Falha ao apagar job.')
+    }
   }
 
   const handleStartSync = async () => {
@@ -145,7 +154,7 @@ export default function LibraryJobs() {
         <Text variant="h4" className="mb-4">
           Job History...
         </Text>
-        <Loading type="table" gridSize="4x6" />
+        <Loading type="table" gridSize="1x4" />
       </>
     )
   }
@@ -161,7 +170,7 @@ export default function LibraryJobs() {
           disabled={isStarting}
           className="bg-primary py-1 px-4 rounded-sm hover:bg-blue-500"
         >
-          <Text className='text-white'>{isStarting ? 'Starting...' : 'New job'}</Text>
+          <Text className="text-white">{isStarting ? 'Starting...' : 'New job'}</Text>
         </button>
       </div>
 

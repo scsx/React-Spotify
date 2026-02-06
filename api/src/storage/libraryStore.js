@@ -170,6 +170,25 @@ function getAllJobs() {
   }
 }
 
+function deleteJob(jobId) {
+  ensureDirs()
+  const jobPath = path.join(LIBRARY_DIR, `${jobId}.json`)
+
+  if (!fs.existsSync(jobPath)) {
+    console.error(`Job file not found: ${jobPath}`)
+    return false
+  }
+
+  try {
+    fs.unlinkSync(jobPath)
+    console.log(`Job deleted: ${jobId}`)
+    return true
+  } catch (e) {
+    console.error('Error deleting job:', e)
+    return false
+  }
+}
+
 module.exports = {
   initStore,
   createJob,
@@ -178,4 +197,5 @@ module.exports = {
   saveResult,
   getResult,
   getAllJobs,
+  deleteJob,
 }

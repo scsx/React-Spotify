@@ -97,6 +97,15 @@ const AdvancedTracklistDetail = ({
 
       <div className={boxClass}>
         <Text variant="h6" className="mb-2">
+          Missing tracks
+        </Text>
+        <Text className="mb-2">
+          Tracks that are no longer available on Spotify. Aldrich Lawson - No problem. TODO: Link to page.
+        </Text>
+      </div>
+
+      <div className={boxClass}>
+        <Text variant="h6" className="mb-2">
           About
         </Text>
         <Text className="mb-2">
