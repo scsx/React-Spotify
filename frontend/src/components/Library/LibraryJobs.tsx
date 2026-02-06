@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { AiOutlineDelete } from 'react-icons/ai'
-import { FaCheckCircle } from 'react-icons/fa'
+import { FaCcDiscover, FaCheckCircle } from 'react-icons/fa'
 import { IoWarningOutline } from 'react-icons/io5'
 import { IoCloseSharp } from 'react-icons/io5'
 import { LuEye } from 'react-icons/lu'
@@ -28,6 +28,7 @@ export default function LibraryJobs() {
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null)
   const [selectedResult, setSelectedResult] = useState<TLibrarySyncResult | null>(null)
   const [loading, setLoading] = useState(false)
+  const [savedJobs, setSavedJobs] = useState<Record<string, number>>({})
 
   useEffect(() => {
     const loadJobs = async () => {
@@ -51,6 +52,22 @@ export default function LibraryJobs() {
       console.error('Erro ao carregar resultado:', e)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleSaveToIndexDB = async (jobId: string) => {
+    try {
+      const result = await getLibrarySyncResult(jobId)
+      const db = indexedDB.open('react-spotify', 1)
+      db.onsuccess = (event) => {
+        const database = (event.target as IDBOpenDBRequest).result
+        const transaction = database.transaction(['library-jobs'], 'readwrite')
+        const store = transaction.objectStore('library-jobs')
+        store.put({ jobId, data: result, savedAt: Date.now() })
+        setSavedJobs((prev) => ({ ...prev, [jobId]: Date.now() }))
+      }
+    } catch (e) {
+      console.error('Error saving to IndexDB:', e)
     }
   }
 
@@ -101,7 +118,7 @@ export default function LibraryJobs() {
                   <TableCell className="font-mono text-sm">
                     {job.id?.slice(0, 14) || 'n/a'}...
                   </TableCell>
-                  <TableCell className='flex items-center'>
+                  <TableCell className="flex items-center">
                     <span
                       className={`text-lg inline-block ml-[15%] ${
                         job.status === 'completed'
@@ -157,7 +174,23 @@ export default function LibraryJobs() {
                     </button>
                   </TableCell>
 
-                  <TableCell className="border-l-2">saved date or button "save"</TableCell>
+                  <TableCell className="border-l-2">
+                    {savedJobs[job.id] ? (
+                      <span className="text-sm">
+                        {formatJobDate(savedJobs[job.id])?.date}
+                        <br />
+                        {formatJobDate(savedJobs[job.id])?.time}
+                      </span>
+                    ) : (
+                      <button
+                        onClick={() => handleSaveToIndexDB(job.id)}
+                        className="text-2xl hover:text-blue-500"
+                        disabled={loading}
+                      >
+                        <FaCcDiscover />
+                      </button>
+                    )}
+                  </TableCell>
                 </TableRow>
               ))
           )}
