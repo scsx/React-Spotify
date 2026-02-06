@@ -2,7 +2,7 @@ import { toPng } from 'html-to-image'
 import { LiaFileExportSolid } from 'react-icons/lia'
 
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
 type CoverMosaicProps = {
@@ -39,6 +39,7 @@ const CoverMosaic: React.FC<CoverMosaicProps> = ({ covers, artistName }): JSX.El
         </DialogTrigger>
       </div>
       <DialogContent className="max-w-6xl [&>button]:scale-150 [&>button]:-right-8 [&>button]:top-6">
+        <DialogTitle className="sr-only">Album Covers Mosaic</DialogTitle>
         <ScrollArea className="h-[90vh] p-4 pt-0">
           <Button
             onClick={exportMosaic}
