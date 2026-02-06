@@ -110,14 +110,14 @@ export default function LibraryJobs() {
   }
 
   const handleDeleteJob = async (jobId: string) => {
-    if (!confirm('Tens a certeza que queres apagar este job?')) return
+    if (!confirm('Delete job for sure?')) return
 
     try {
       await deleteLibraryJob(jobId)
       setJobs((prev) => prev.filter((job) => job.id !== jobId))
     } catch (e) {
-      console.error('Erro ao apagar job:', e)
-      alert('Falha ao apagar job.')
+      console.error('Error deleting job:', e)
+      alert('Failed to delete job.')
     }
   }
 
