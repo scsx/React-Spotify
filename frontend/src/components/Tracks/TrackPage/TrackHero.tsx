@@ -2,15 +2,13 @@ import { useEffect, useRef, useState } from 'react'
 
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
 import { TSpotifyTrack } from '@/types/SpotifyTrack'
-import { IoMdHeart } from 'react-icons/io'
 import { twMerge } from 'tailwind-merge'
 
+import TrackHeroSaved from '@/components/Tracks/TrackPage/TrackHeroSaved'
 import Hyperlink from '@/components/shared/Hyperlink'
 import Text from '@/components/shared/Text'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 import { Progress } from '@/components/ui/progress'
-
-import { getSpotifyUserHasSavedTrack } from '@/services/spotify/getSpotifyUserHasSavedTrack'
 
 type TTrackHeroProps = {
   track: TSpotifyTrack
@@ -21,7 +19,6 @@ const TrackHero = ({ track, artists }: TTrackHeroProps) => {
   const titleRef = useRef<HTMLDivElement>(null)
   const artistRef = useRef<HTMLDivElement>(null)
   const [widerDiv, setWiderDiv] = useState<'title' | 'artist' | 'equal' | null>(null)
-  const [isSavedInLikedSongs, setIsSavedInLikedSongs] = useState<boolean | null>(null)
 
   useEffect(() => {
     if (titleRef.current && artistRef.current) {
@@ -33,21 +30,6 @@ const TrackHero = ({ track, artists }: TTrackHeroProps) => {
       else setWiderDiv('equal')
     }
   }, [track, artists])
-
-  useEffect(() => {
-    const checkSaved = async () => {
-      try {
-        const saved = await getSpotifyUserHasSavedTrack(track.id)
-        setIsSavedInLikedSongs(saved)
-      } catch {
-        setIsSavedInLikedSongs(null)
-      }
-    }
-
-    if (track?.id) {
-      checkSaved()
-    }
-  }, [track.id])
 
   const heroImage = track.album.images?.[0]?.url
   const hasExtraInfo = track.name.includes('(')
@@ -127,18 +109,8 @@ const TrackHero = ({ track, artists }: TTrackHeroProps) => {
           </div>
         </div>
 
-        {isSavedInLikedSongs && (
-          <div className="absolute top-0 right-8 bg-blue-500 text-white py-1 px-3 rounded-sm">
-            <Text className="flex items-center gap-2">
-              <IoMdHeart /> Saved in liked songs
-            </Text>
-          </div>
-        )}
-
-        <div className="absolute top-0 right-8 bg-blue-500 text-white py-1 px-3 rounded-sm">
-          <Text className="flex items-center gap-2">
-            <IoMdHeart /> Saved in liked songs
-          </Text>
+        <div className="absolute top-0 right-8">
+          <TrackHeroSaved />
         </div>
       </div>
     </>
