@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import TemporaryPLViewer from '@/components/Library/LibraryPLViewer'
 
-import { getLibrarySyncResult } from '@/services/library/getLibrarySyncResult'
+import { TLibrarySyncResult, getLibrarySyncResult } from '@/services/library/getLibrarySyncResult'
 import { getLibrarySyncStatus } from '@/services/library/getLibrarySyncStatus'
 
 type TLibraryStatusProps = {
@@ -17,34 +17,8 @@ const LibraryStatus = ({ jobId }: TLibraryStatusProps) => {
     message?: string
   } | null>(null)
   const [error, setError] = useState<string | null>(null)
-  // TODO: any
-  const [jobResult, setJobResult] = useState<any>(null)
+  const [jobResult, setJobResult] = useState<TLibrarySyncResult | null>(null)
   const pollRef = useRef<number | null>(null)
-  // TODO: temp
-  const [manualJobId, setManualJobId] = useState('')
-  const [loadingManual, setLoadingManual] = useState(false)
-
-  const fetchManualResult = async (id?: string) => {
-    const jid = id ?? manualJobId
-    if (!jid) {
-      setError('jobId obrigatório.')
-      return
-    }
-    try {
-      setLoadingManual(true)
-      setError(null)
-      console.log('Fetching result for jobId:', jid)
-      const result = await getLibrarySyncResult(jid)
-      console.log('Result received:', result)
-      setJobResult(result)
-      setStatus('completed')
-    } catch (e) {
-      console.error('Erro ao fetch result:', e)
-      setError(`Erro a obter resultado: ${e instanceof Error ? e.message : 'desconhecido'}`)
-    } finally {
-      setLoadingManual(false)
-    }
-  }
 
   useEffect(() => {
     if (!jobId) return
@@ -62,8 +36,6 @@ const LibraryStatus = ({ jobId }: TLibraryStatusProps) => {
 
           setJobResult(result)
           console.log('result', result)
-
-          // TODO: guardar no IndexedDB
         } else if (data.status === 'failed') {
           setStatus('failed')
           setError(data.error || 'Job falhou.')
@@ -86,26 +58,7 @@ const LibraryStatus = ({ jobId }: TLibraryStatusProps) => {
 
   if (error && !jobResult) return <div>{error}</div>
 
-  // Se não há jobId nem resultado, mostra input manual
-  if (!jobId && !jobResult) {
-    return (
-      <div className="mt-2 flex items-center gap-2">
-        <input
-          value={manualJobId}
-          onChange={(e) => setManualJobId(e.target.value)}
-          placeholder="Insere jobId"
-          className="border px-2 py-1 rounded text-gray-500 grow"
-        />
-        <button
-          onClick={() => fetchManualResult()}
-          disabled={loadingManual}
-          className="bg-slate-700 text-white px-3 py-1 rounded"
-        >
-          {loadingManual ? 'A carregar...' : 'Carregar jobId'}
-        </button>
-      </div>
-    )
-  }
+  if (!jobId && !jobResult) return null
 
   return (
     <div>

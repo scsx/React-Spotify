@@ -15,3 +15,16 @@ export function formatJobDate(
     time: `${hours}:${minutes}`,
   }
 }
+
+export function formatJobDateCompact(timestamp: number | null | undefined): string | null {
+  if (!timestamp) return null
+
+  const now = new Date()
+  const jobDate = new Date(timestamp)
+  const daysAgo = Math.floor((now.getTime() - jobDate.getTime()) / (1000 * 60 * 60 * 24))
+
+  const month = String(jobDate.getMonth() + 1).padStart(2, '0')
+  const day = String(jobDate.getDate()).padStart(2, '0')
+
+  return `${day}/${month} (${daysAgo === 0 ? 'today' : `${daysAgo}d`})`
+}

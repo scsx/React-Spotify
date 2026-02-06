@@ -21,7 +21,8 @@ const LibrarySidebar = ({ allPlaylists }: { allPlaylists: { id: string; name: st
         <Text>
           Job is a request clicking "New job" that starts the synchronization process in the
           backend. That fetches the tracks for the specified playlists and updates the library
-          accordingly. See the <Hyperlink href="/dev-notes#library">dev notes</Hyperlink>
+          accordingly. After that can be saved locally with IndexDB. See the{' '}
+          <Hyperlink href="/dev-notes#library">dev notes</Hyperlink>
         </Text>
       </div>
       <div className="mb-16">
