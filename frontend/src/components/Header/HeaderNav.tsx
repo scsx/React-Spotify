@@ -15,9 +15,8 @@ const navItems: NavItem[] = [
   { to: '/tracks', label: 'Tracks' },
   { to: '/playlists', label: 'Playlists' },
   { to: '/genres', label: 'Genres' },
-  { to: '/user', label: 'User' },
   { to: '/duplicates', label: 'Duplicates' },
-  { to: '/backup', label: 'Backup' },
+  { to: '/library', label: 'Library' },
 ]
 
 const HeaderNav = (): JSX.Element => {

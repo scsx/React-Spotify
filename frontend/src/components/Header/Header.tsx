@@ -1,10 +1,8 @@
 import { Link } from 'react-router-dom'
 
-import { BsDatabaseDown, BsDatabaseFillCheck } from 'react-icons/bs'
 import { RxHamburgerMenu } from 'react-icons/rx'
 
 import UserLoggedIn from '@/components/Header/UserLoggedIn'
-import Hyperlink from '@/components/shared/Hyperlink'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
@@ -22,7 +20,6 @@ import HeaderNavMobile from './HeaderNavMobile'
 
 const Header = (): JSX.Element => {
   const { isLoggedIn, logout, user } = useAuth()
-  const isSyncing = true // libraryStatus === 'running'
 
   return (
     <div className="fixed z-50 w-full mx-auto bg-black/10 dark:bg-black/15 backdrop-blur border-b border-white/20 dark:border-black/20">
@@ -60,19 +57,7 @@ const Header = (): JSX.Element => {
         <div className="ml-auto flex items-center gap-2">
           <Switch text="Theme" classes="flex mr-4" />
 
-          {isLoggedIn && (
-            <>
-              <Hyperlink href="/library" variant="title" className="text-2xl hover:text-blue-500">
-                {isSyncing ? (
-                  <BsDatabaseDown className="animate-pulse " />
-                ) : (
-                  <BsDatabaseFillCheck />
-                )}
-              </Hyperlink>
-
-              <UserLoggedIn user={user} logout={logout} />
-            </>
-          )}
+          {isLoggedIn && <UserLoggedIn user={user} logout={logout} />}
         </div>
       </header>
     </div>

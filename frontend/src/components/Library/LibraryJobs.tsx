@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
 
 import { AiOutlineDelete } from 'react-icons/ai'
+import { FaCheckCircle } from 'react-icons/fa'
+import { IoWarningOutline } from 'react-icons/io5'
+import { IoCloseSharp } from 'react-icons/io5'
 import { LuEye } from 'react-icons/lu'
 
 import Text from '@/components/shared/Text'
@@ -58,10 +61,7 @@ export default function LibraryJobs() {
   if (selectedJobId) {
     return (
       <div>
-        <button
-          onClick={() => setSelectedJobId(null)}
-          className="mb-2 px-2 py-1"
-        >
+        <button onClick={() => setSelectedJobId(null)} className="mb-2 px-2 py-1">
           ← Back
         </button>
         {selectedResult && <TemporaryPLViewer playlists={selectedResult.playlists} />}
@@ -101,17 +101,23 @@ export default function LibraryJobs() {
                   <TableCell className="font-mono text-sm">
                     {job.id?.slice(0, 14) || 'n/a'}...
                   </TableCell>
-                  <TableCell>
+                  <TableCell className='flex items-center'>
                     <span
-                      className={`px-2 py-1 rounded text-sm inline-block ${
+                      className={`text-lg inline-block ml-[15%] ${
                         job.status === 'completed'
-                          ? 'bg-green-600 text-white'
+                          ? 'text-green-600'
                           : job.status === 'failed'
-                            ? 'bg-red-600 text-white'
-                            : 'bg-yellow-600 text-white'
+                            ? 'text-red-600'
+                            : 'text-yellow-600'
                       }`}
                     >
-                      {job.status === 'completed' ? 'OK' : job.status || 'n/a'}
+                      {job.status === 'completed' ? (
+                        <FaCheckCircle />
+                      ) : job.status === 'failed' ? (
+                        <IoCloseSharp />
+                      ) : (
+                        <IoWarningOutline />
+                      )}
                     </span>
                   </TableCell>
                   <TableCell className="font-mono">
@@ -136,13 +142,17 @@ export default function LibraryJobs() {
 
                   <TableCell className="flex items-center gap-4">
                     <button
-                      className="text-xl"
+                      className="text-2xl hover:text-blue-500"
                       onClick={() => handlePreview(job.id)}
                       disabled={loading}
                     >
                       <LuEye />
                     </button>
-                    <button className="text-xl" onClick={handleDeleteJob} disabled={loading}>
+                    <button
+                      className="text-2xl hover:text-red-500"
+                      onClick={handleDeleteJob}
+                      disabled={loading}
+                    >
                       <AiOutlineDelete />
                     </button>
                   </TableCell>
