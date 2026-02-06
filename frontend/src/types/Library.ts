@@ -13,3 +13,19 @@ export type TLibraryPlaylist = {
     album?: { id: string; name?: string; images?: { url: string }[] }
   }>
 }
+
+export type TLibrarySyncResult = {
+  meta?: {
+    syncedAt?: string
+    playlistCount?: number
+    totalTracks?: number
+  }
+  playlists: TLibraryPlaylist[]
+  errors: Array<{ id: string; error: string }>
+}
+
+export type TLibraryJobRecord = {
+  jobId: string
+  data: TLibrarySyncResult
+  savedAt: number
+}

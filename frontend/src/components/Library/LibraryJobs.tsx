@@ -1,40 +1,35 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
+
+import { useLibraryJobStorage } from '@/hooks/useLibraryJobStorage'
+import { useLibraryJobSync } from '@/hooks/useLibraryJobSync'
+import { TLibrarySyncResult } from '@/types/Library'
 
 import Loading from '@/components/shared/Loading'
 import Text from '@/components/shared/Text'
 
 import { deleteLibraryJob } from '@/services/library/deleteLibraryJob'
 import { TLibraryJob, getLibraryJobs } from '@/services/library/getLibraryJobs'
-import { TLibrarySyncResult, getLibrarySyncResult } from '@/services/library/getLibrarySyncResult'
-import { getLibrarySyncStatus } from '@/services/library/getLibrarySyncStatus'
-import { startLibrarySync } from '@/services/library/startLibrarySync'
-
-import { SPOTIFY_FAVORITE_PLAYLISTS, SPOTIFY_SPECIAL_PLAYLISTS } from '@/lib/constants'
+import { getLibrarySyncResult } from '@/services/library/getLibrarySyncResult'
 
 import LibraryJobsTable from './LibraryJobsTable'
-import TemporaryPLViewer from './LibraryPLViewer'
+import LibraryPLViewer from './LibraryPLViewer'
 
 export default function LibraryJobs() {
   const [jobs, setJobs] = useState<TLibraryJob[]>([])
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null)
   const [selectedResult, setSelectedResult] = useState<TLibrarySyncResult | null>(null)
   const [loading, setLoading] = useState(false)
-  const [savedJobs, setSavedJobs] = useState<Record<string, number>>({})
   const [isLoadingJobs, setIsLoadingJobs] = useState(true)
-  const [jobId, setJobId] = useState<string | null>(null)
-  const [playlistSyncError, setPlaylistSyncError] = useState<string | null>(null)
-  const [isStarting, setIsStarting] = useState(false)
-  const [currentJobStatus, setCurrentJobStatus] = useState<
-    'idle' | 'running' | 'completed' | 'failed'
-  >('idle')
-  const [currentJobProgress, setCurrentJobProgress] = useState<{
-    completed: number
-    total: number
-    message?: string
-  } | null>(null)
-  const pollRef = useRef<number | null>(null)
 
-  const allPlaylists = [...SPOTIFY_FAVORITE_PLAYLISTS, ...SPOTIFY_SPECIAL_PLAYLISTS]
+  const { savedJobs, handleSaveToIndexDB } = useLibraryJobStorage()
+  const {
+    jobId,
+    currentJobStatus,
+    currentJobProgress,
+    playlistSyncError,
+    isStarting,
+    handleStartSync,
+  } = useLibraryJobSync()
 
   useEffect(() => {
     const loadJobs = async () => {
@@ -50,36 +45,6 @@ export default function LibraryJobs() {
     loadJobs()
   }, [])
 
-  useEffect(() => {
-    if (!jobId) return
-
-    const poll = async () => {
-      try {
-        const data = await getLibrarySyncStatus(jobId)
-        setCurrentJobProgress(data.progress || null)
-
-        if (data.status === 'completed') {
-          setCurrentJobStatus('completed')
-          if (pollRef.current) window.clearInterval(pollRef.current)
-        } else if (data.status === 'failed') {
-          setCurrentJobStatus('failed')
-          if (pollRef.current) window.clearInterval(pollRef.current)
-        } else {
-          setCurrentJobStatus('running')
-        }
-      } catch (err) {
-        console.error('Error polling job status:', err)
-      }
-    }
-
-    poll()
-    pollRef.current = window.setInterval(poll, 2000)
-
-    return () => {
-      if (pollRef.current) window.clearInterval(pollRef.current)
-    }
-  }, [jobId])
-
   const handlePreview = async (jobId: string) => {
     setLoading(true)
     try {
@@ -90,22 +55,6 @@ export default function LibraryJobs() {
       console.error('Erro ao carregar resultado:', e)
     } finally {
       setLoading(false)
-    }
-  }
-
-  const handleSaveToIndexDB = async (jobId: string) => {
-    try {
-      const result = await getLibrarySyncResult(jobId)
-      const db = indexedDB.open('react-spotify', 1)
-      db.onsuccess = (event) => {
-        const database = (event.target as IDBOpenDBRequest).result
-        const transaction = database.transaction(['library-jobs'], 'readwrite')
-        const store = transaction.objectStore('library-jobs')
-        store.put({ jobId, data: result, savedAt: Date.now() })
-        setSavedJobs((prev) => ({ ...prev, [jobId]: Date.now() }))
-      }
-    } catch (e) {
-      console.error('Error saving to IndexDB:', e)
     }
   }
 
@@ -121,29 +70,13 @@ export default function LibraryJobs() {
     }
   }
 
-  const handleStartSync = async () => {
-    try {
-      setIsStarting(true)
-      setPlaylistSyncError(null)
-
-      const playlists = allPlaylists.map((p) => ({ id: p.id, name: p.name }))
-      const { jobId } = await startLibrarySync(playlists)
-
-      setJobId(jobId)
-    } catch (err) {
-      setPlaylistSyncError('Falha ao iniciar sincronização da library.')
-    } finally {
-      setIsStarting(false)
-    }
-  }
-
   if (selectedJobId) {
     return (
       <div>
         <button onClick={() => setSelectedJobId(null)} className="mb-2 px-2 py-1">
           ← Back
         </button>
-        {selectedResult && <TemporaryPLViewer playlists={selectedResult.playlists} />}
+        {selectedResult && <LibraryPLViewer playlists={selectedResult.playlists} />}
       </div>
     )
   }

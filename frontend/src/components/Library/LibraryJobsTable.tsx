@@ -1,5 +1,6 @@
 import { AiOutlineDelete } from 'react-icons/ai'
-import { FaCcDiscover, FaCheckCircle } from 'react-icons/fa'
+import { FaCheckCircle } from 'react-icons/fa'
+import { FaRegFloppyDisk } from 'react-icons/fa6'
 import { IoWarningOutline } from 'react-icons/io5'
 import { IoCloseSharp } from 'react-icons/io5'
 import { LuEye } from 'react-icons/lu'
@@ -16,7 +17,7 @@ import {
 
 import { TLibraryJob } from '@/services/library/getLibraryJobs'
 
-import { formatJobDate, formatJobDateCompact } from '@/lib/format-job-date'
+import { formatJobDateCompact } from '@/lib/format-job-date'
 
 type TLibraryJobsTableProps = {
   jobs: TLibraryJob[]
@@ -167,18 +168,24 @@ export default function LibraryJobsTable({
 
                 <TableCell className="border-l-2 text-right">
                   {savedJobs[job.id] ? (
-                    <span className="text-sm">
-                      {formatJobDate(savedJobs[job.id])?.date}
-                      <br />
-                      {formatJobDate(savedJobs[job.id])?.time}
-                    </span>
+                    (() => {
+                      const formatted = formatJobDateCompact(savedJobs[job.id])
+                      if (!formatted) return 'n/a'
+                      const [date, daysAgo] = formatted.split(' ')
+                      return (
+                        <div className="flex gap-x-2 justify-end">
+                          <Text className="text-sm text-primary">{date}</Text>
+                          <Text className="text-sm text-primary">{daysAgo}</Text>
+                        </div>
+                      )
+                    })()
                   ) : (
                     <button
                       onClick={() => onSaveToIndexDB(job.id)}
-                      className="text-2xl hover:text-blue-500"
+                      className="text-xl hover:text-primary"
                       disabled={loading}
                     >
-                      <FaCcDiscover />
+                      <FaRegFloppyDisk />
                     </button>
                   )}
                 </TableCell>

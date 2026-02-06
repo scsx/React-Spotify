@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 
-import TemporaryPLViewer from '@/components/Library/LibraryPLViewer'
+import LibraryPLViewer from '@/components/Library/LibraryPLViewer'
 
 import { TLibrarySyncResult, getLibrarySyncResult } from '@/services/library/getLibrarySyncResult'
 import { getLibrarySyncStatus } from '@/services/library/getLibrarySyncStatus'
@@ -88,7 +88,7 @@ const LibraryStatus = ({ jobId }: TLibraryStatusProps) => {
             </button>
           </div>
 
-          <TemporaryPLViewer playlists={jobResult.playlists} />
+          <LibraryPLViewer playlists={jobResult.playlists} />
         </div>
       )}
     </div>
