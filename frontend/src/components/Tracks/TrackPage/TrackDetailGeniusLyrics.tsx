@@ -91,7 +91,7 @@ const TrackDetailGeniusLyrics = ({ track }: TTrackDetailGeniusLyricsProps): JSX.
         {!error && lyricsBase && (
           <>
             {lyricsBase.lyrics ? (
-              <pre className="whitespace-pre-wrap break-words">{lyricsBase.lyrics}</pre>
+              <pre className="text-sm whitespace-pre-wrap break-words">{lyricsBase.lyrics}</pre>
             ) : (
               <Text className="text-inherit font-normal" variant="h4">
                 Lyrics not found.

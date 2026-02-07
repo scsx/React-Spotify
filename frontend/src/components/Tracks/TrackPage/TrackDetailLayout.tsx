@@ -60,17 +60,13 @@ const TrackDetailLayout = (): JSX.Element | null => {
 
       <div className="container relative z-10 pt-24">
         <div className="flex space-x-12">
-          <div className="w-1/2">
-            <TrackDetailGeniusLyrics
-              track={{
-                id: track.id,
-                name: track.name,
-                artists: track.artists.map((a) => ({ id: a.id, name: a.name })),
-              }}
-            />
+          <div className="w-1/3">
+            <Text variant="h2" className="mb-4">
+              Album
+            </Text>
           </div>
 
-          <div className="w-1/2">
+          <div className="w-1/3">
             <div className="mb-16">
               <Text variant="h2" className="mb-4">
                 Audio Features
@@ -89,16 +85,21 @@ const TrackDetailLayout = (): JSX.Element | null => {
                 </>
               )}
             </div>
-            <div className="mb-16">
-              <Text variant="h2" className="mb-4">
-                Album
-              </Text>
-            </div>
+
             <div className="mb-16">
               <Text variant="h2" className="mb-4">
                 Similar tracks
               </Text>
             </div>
+          </div>
+          <div className="w-1/3">
+            <TrackDetailGeniusLyrics
+              track={{
+                id: track.id,
+                name: track.name,
+                artists: track.artists.map((a) => ({ id: a.id, name: a.name })),
+              }}
+            />
           </div>
         </div>
       </div>

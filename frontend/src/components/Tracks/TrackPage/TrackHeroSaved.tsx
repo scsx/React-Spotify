@@ -91,7 +91,7 @@ const TrackHeroSaved = () => {
             variant="title"
             className={twMerge(
               labelLinkClasses,
-              'bg-white text-blue-700 border border-blue-700 hover:bg-blue-700'
+              'bg-white text-blue-700 border border-blue-500 hover:bg-blue-700 hover:border-blue-700'
             )}
             href={`/playlists/${playlist.id}`}
           >
