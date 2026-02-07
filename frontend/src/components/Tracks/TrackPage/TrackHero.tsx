@@ -39,15 +39,15 @@ const TrackHero = ({ track, artists }: TTrackHeroProps) => {
 
   return (
     <>
-      <div className="relative h-96">
+      <div className="relative h-[420px]">
         <div
-          className="w-full -mt-40 absolute h-96 bg-cover blur-sm bg-center bg-no-repeat z-0"
+          className="w-full -mt-40 absolute h-[420px] bg-cover blur-sm bg-center bg-no-repeat z-0"
           style={heroImage ? { backgroundImage: `url(${heroImage})` } : undefined}
         />
         <div className="w-full absolute bottom-36 h-8 z-0 bg-white dark:bg-background transition duration-500"></div>
       </div>
 
-      <div className="relative container z-10 -mt-96">
+      <div className="relative container z-10 -mt-[420px]">
         <div
           className={twMerge(
             '-mt-4 max-w-[66.67%] bg-white dark:bg-black inline-block p-4 rounded-tl-sm rounded-tr-sm',
@@ -109,7 +109,7 @@ const TrackHero = ({ track, artists }: TTrackHeroProps) => {
           </div>
         </div>
 
-        <div className="absolute top-0 right-8">
+        <div className="">
           <TrackHeroSaved />
         </div>
       </div>

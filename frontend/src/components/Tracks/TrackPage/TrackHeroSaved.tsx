@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
 import { IoMdHeart } from 'react-icons/io'
+import { IoArrowBack } from 'react-icons/io5'
 import { twMerge } from 'tailwind-merge'
 
 import Hyperlink from '@/components/shared/Hyperlink'
@@ -59,18 +60,27 @@ const TrackHeroSaved = () => {
   }, [trackId])
 
   const labelLinkClasses =
-    'text-xs whitespace-nowrap bg-blue-500 text-white py-1 px-3 rounded-[6px] hover:bg-blue-700 hover:text-white'
+    'text-sm whitespace-nowrap bg-blue-500 text-white py-1 px-3 rounded-[6px] hover:bg-blue-700 hover:text-white'
 
   return (
-    <ul className="flex flex-col items-end space-y-2">
+    <ul className="flex items-center space-x-2">
+      <Text as="li">
+        <Hyperlink
+          className="flex items-center gap-x-2 h-[25px] text-sm bg-white text-black dark:bg-black dark:text-white py-1 px-3 rounded-[6px] hover:no-underline hover:bg-gray-300 dark:hover:bg-gray-700"
+          href="/tracks"
+        >
+          <IoArrowBack /> All tracks
+        </Hyperlink>
+      </Text>
+
       {isSavedInLikedSongs && (
         <Text as="li">
           <Hyperlink
             variant="title"
-            className={twMerge('flex items-center gap-2', labelLinkClasses)}
+            className={twMerge('flex items-center gap-x-2 h-[25px]', labelLinkClasses)}
             href="/tracks"
           >
-            <IoMdHeart /> Saved
+            <IoMdHeart className="leading-none" /> Saved
           </Hyperlink>
         </Text>
       )}
@@ -79,22 +89,16 @@ const TrackHeroSaved = () => {
         <Text as="li" key={playlist.id}>
           <Hyperlink
             variant="title"
-            className={labelLinkClasses}
+            className={twMerge(
+              labelLinkClasses,
+              'bg-white text-blue-700 border border-blue-700 hover:bg-blue-700'
+            )}
             href={`/playlists/${playlist.id}`}
           >
             {playlist.name}
           </Hyperlink>
         </Text>
       ))}
-
-      <Text as="li" className="!mt-4">
-        <Hyperlink
-          className="text-xs bg-white text-black dark:bg-black dark:text-white py-1 px-3 rounded-[6px] hover:no-underline hover:bg-gray-300 dark:hover:bg-gray-700"
-          href="/tracks"
-        >
-          Back to tracks
-        </Hyperlink>
-      </Text>
     </ul>
   )
 }
