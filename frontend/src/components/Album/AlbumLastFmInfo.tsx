@@ -74,8 +74,8 @@ const AlbumLastFmInfo: React.FC<AlbumLastFmInfoProps> = ({ artistName, albumName
 
   return (
     <div className="mt-12">
-      <Text variant="h4" className="flex items-center mb-4">
-        <span className="grow">Last FM</span>
+      <Text variant="h4" className="flex items-center gap-x-4 mb-4">
+        <span>Last FM</span>
         <Hyperlink href={lastFmData?.album.url} external>
           <FaLastfm className="text-red-500 text-2xl mr-2 hover:text-gray-500" />
         </Hyperlink>
