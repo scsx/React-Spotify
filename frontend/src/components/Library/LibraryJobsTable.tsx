@@ -1,4 +1,5 @@
 import { TLibraryJobsTableProps } from '@/types/Library'
+import * as Tooltip from '@radix-ui/react-tooltip'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { FaCheckCircle } from 'react-icons/fa'
 import { FaRegFloppyDisk } from 'react-icons/fa6'
@@ -137,20 +138,33 @@ export default function LibraryJobsTable({
                 </TableCell>
 
                 <TableCell className="flex items-center gap-4">
-                  <button
-                    className="text-2xl hover:text-blue-500"
-                    onClick={() => onPreview(job.id)}
-                    disabled={loading}
-                  >
-                    <LuEye />
-                  </button>
-                  <button
-                    className="text-2xl hover:text-red-500"
-                    onClick={() => onDelete(job.id)}
-                    disabled={loading}
-                  >
-                    <AiOutlineDelete />
-                  </button>
+                  <Tooltip.Provider>
+                    <Tooltip.Root>
+                      <Tooltip.Trigger asChild>
+                        <button
+                          className="text-2xl hover:text-blue-500"
+                          onClick={() => onPreview(job.id)}
+                          disabled={loading}
+                        >
+                          <LuEye />
+                        </button>
+                      </Tooltip.Trigger>
+                      <Tooltip.Content>Preview job details</Tooltip.Content>
+                    </Tooltip.Root>
+
+                    <Tooltip.Root>
+                      <Tooltip.Trigger asChild>
+                        <button
+                          className="text-2xl hover:text-red-500"
+                          onClick={() => onDelete(job.id)}
+                          disabled={loading}
+                        >
+                          <AiOutlineDelete />
+                        </button>
+                      </Tooltip.Trigger>
+                      <Tooltip.Content>Delete job</Tooltip.Content>
+                    </Tooltip.Root>
+                  </Tooltip.Provider>
                 </TableCell>
 
                 <TableCell className="border-l-2 text-right">
