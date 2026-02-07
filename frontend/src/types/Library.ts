@@ -29,3 +29,27 @@ export type TLibraryJobRecord = {
   data: TLibrarySyncResult
   savedAt: number
 }
+
+
+export type TLibraryJob = {
+  id: string
+  status: 'queued' | 'running' | 'completed' | 'failed'
+  progress: { completed: number; total: number }
+  createdAt: number
+  updatedAt: number
+  resultPath?: string
+  error?: string
+}
+
+// Exceptionally props here to reduce file size.I
+export type TLibraryJobsTableProps = {
+  jobs: TLibraryJob[]
+  jobId: string | null
+  currentJobStatus: 'idle' | 'running' | 'completed' | 'failed'
+  currentJobProgress: { completed: number; total: number; message?: string } | null
+  loading: boolean
+  savedJobs: Record<string, number>
+  onPreview: (jobId: string) => void
+  onDelete: (jobId: string) => void
+  onSaveToIndexDB: (jobId: string) => void
+}

@@ -1,3 +1,4 @@
+import { TLibraryJobsTableProps } from '@/types/Library'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { FaCheckCircle } from 'react-icons/fa'
 import { FaRegFloppyDisk } from 'react-icons/fa6'
@@ -15,21 +16,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-import { TLibraryJob } from '@/services/library/getLibraryJobs'
-
 import { formatJobDateCompact } from '@/lib/format-job-date'
-
-type TLibraryJobsTableProps = {
-  jobs: TLibraryJob[]
-  jobId: string | null
-  currentJobStatus: 'idle' | 'running' | 'completed' | 'failed'
-  currentJobProgress: { completed: number; total: number; message?: string } | null
-  loading: boolean
-  savedJobs: Record<string, number>
-  onPreview: (jobId: string) => void
-  onDelete: (jobId: string) => void
-  onSaveToIndexDB: (jobId: string) => void
-}
 
 export default function LibraryJobsTable({
   jobs,
