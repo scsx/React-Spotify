@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react'
 import { useLibraryJobStorage } from '@/hooks/useLibraryJobStorage'
 import { useLibraryJobSync } from '@/hooks/useLibraryJobSync'
 import { TLibrarySyncResult } from '@/types/Library'
+import { TLibraryJob } from '@/types/Library'
+import { IoCloudDownloadOutline } from 'react-icons/io5'
 
 import Loading from '@/components/shared/Loading'
 import Text from '@/components/shared/Text'
 
 import { deleteLibraryJob } from '@/services/library/deleteLibraryJob'
-import { TLibraryJob, getLibraryJobs } from '@/services/library/getLibraryJobs'
+import { getLibraryJobs } from '@/services/library/getLibraryJobs'
 import { getLibrarySyncResult } from '@/services/library/getLibrarySyncResult'
 
 import LibraryJobsTable from './LibraryJobsTable'
@@ -98,12 +100,21 @@ export default function LibraryJobs() {
         <Text variant="h4" className="grow">
           Job History ({jobs.length})
         </Text>
+
         <button
           onClick={handleStartSync}
           disabled={isStarting}
-          className="bg-primary py-1 px-4 rounded-sm hover:bg-blue-500"
+          className="bg-primary py-1 pl-4 pr-5 rounded hover:bg-blue-500"
         >
-          <Text className="text-white">{isStarting ? 'Starting...' : 'New job'}</Text>
+          <Text className="text-white">
+            {isStarting ? (
+              'Starting...'
+            ) : (
+              <span className="flex items-center gap-x-2">
+                <IoCloudDownloadOutline /> New job
+              </span>
+            )}
+          </Text>
         </button>
       </div>
 
