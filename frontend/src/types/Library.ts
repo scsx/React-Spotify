@@ -30,7 +30,6 @@ export type TLibraryJobRecord = {
   savedAt: number
 }
 
-
 export type TLibraryJob = {
   id: string
   status: 'queued' | 'running' | 'completed' | 'failed'
@@ -52,4 +51,5 @@ export type TLibraryJobsTableProps = {
   onPreview: (jobId: string) => void
   onDelete: (jobId: string) => void
   onSaveToIndexDB: (jobId: string) => void
+  onDownloadJob: (jobId: string) => void
 }

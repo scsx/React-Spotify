@@ -72,6 +72,38 @@ export default function LibraryJobs() {
     }
   }
 
+  const handleDownloadJob = async (jobId: string) => {
+    try {
+      const result = await getLibrarySyncResult(jobId)
+      const job = jobs.find((j) => j.id === jobId)
+      if (!job || !result) return
+
+      // Format date as yyyy-mm-dd
+      const date = new Date(job.createdAt)
+      const formattedDate = date.toISOString().split('T')[0]
+
+      // Combine job metadata with full result data
+      const fullData = {
+        jobMetadata: job,
+        syncResult: result,
+      }
+
+      const jsonString = JSON.stringify(fullData, null, 2)
+      const blob = new Blob([jsonString], { type: 'application/json' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = `${formattedDate}-favorite-playlists.json`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      URL.revokeObjectURL(url)
+    } catch (e) {
+      console.error('Error downloading job:', e)
+      alert('Failed to download job data.')
+    }
+  }
+
   if (selectedJobId) {
     return (
       <div>
@@ -130,6 +162,7 @@ export default function LibraryJobs() {
         onPreview={handlePreview}
         onDelete={handleDeleteJob}
         onSaveToIndexDB={handleSaveToIndexDB}
+        onDownloadJob={handleDownloadJob}
       />
     </div>
   )

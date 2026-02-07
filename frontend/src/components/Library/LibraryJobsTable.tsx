@@ -29,6 +29,7 @@ export default function LibraryJobsTable({
   onPreview,
   onDelete,
   onSaveToIndexDB,
+  onDownloadJob,
 }: TLibraryJobsTableProps) {
   return (
     <Table>
@@ -88,7 +89,7 @@ export default function LibraryJobsTable({
         {jobs.length === 0 && !jobId ? (
           <TableRow>
             <TableCell colSpan={6} className="text-center py-4 text-gray-400">
-              No jobs in history
+              <Text>No jobs in history</Text>
             </TableCell>
           </TableRow>
         ) : (
@@ -100,9 +101,9 @@ export default function LibraryJobsTable({
                 <TableCell className="font-mono text-sm">
                   {job.id?.slice(0, 20) || 'n/a'}...
                 </TableCell>
-                <TableCell className="flex items-center">
-                  <span
-                    className={`text-lg inline-block ml-[15%] ${
+                <TableCell>
+                  <div
+                    className={`text-lg h-full flex flex-col items-center ${
                       job.status === 'completed'
                         ? 'text-green-600'
                         : job.status === 'failed'
@@ -117,7 +118,7 @@ export default function LibraryJobsTable({
                     ) : (
                       <IoWarningOutline />
                     )}
-                  </span>
+                  </div>
                 </TableCell>
                 <TableCell className="font-mono">
                   {job.progress
@@ -137,38 +138,40 @@ export default function LibraryJobsTable({
                   })()}
                 </TableCell>
 
-                <TableCell className="flex items-center gap-2">
-                  <Tooltip.Provider>
-                    <Tooltip.Root>
-                      <Tooltip.Trigger asChild>
-                        <button
-                          className="text-2xl hover:text-blue-500 px-2 py-1"
-                          onClick={() => onPreview(job.id)}
-                          disabled={loading}
-                        >
-                          <LuEye />
-                        </button>
-                      </Tooltip.Trigger>
-                      <Tooltip.Content className="bg-blue-500 text-white px-3 py-1 rounded text-sm mb-4">
-                        Preview job details
-                      </Tooltip.Content>
-                    </Tooltip.Root>
+                <TableCell>
+                  <div className="flex items-center gap-2">
+                    <Tooltip.Provider>
+                      <Tooltip.Root>
+                        <Tooltip.Trigger asChild>
+                          <button
+                            className="text-2xl hover:text-blue-500 px-2 py-1"
+                            onClick={() => onPreview(job.id)}
+                            disabled={loading}
+                          >
+                            <LuEye />
+                          </button>
+                        </Tooltip.Trigger>
+                        <Tooltip.Content className="bg-blue-500 text-white px-3 py-1 rounded text-sm mb-4">
+                          Preview job details
+                        </Tooltip.Content>
+                      </Tooltip.Root>
 
-                    <Tooltip.Root>
-                      <Tooltip.Trigger asChild>
-                        <button
-                          className="text-2xl hover:text-red-500 px-2 py-1"
-                          onClick={() => onDelete(job.id)}
-                          disabled={loading}
-                        >
-                          <AiOutlineDelete />
-                        </button>
-                      </Tooltip.Trigger>
-                      <Tooltip.Content className="bg-red-700 text-white px-3 py-1 rounded text-sm mb-4">
-                        Delete job
-                      </Tooltip.Content>
-                    </Tooltip.Root>
-                  </Tooltip.Provider>
+                      <Tooltip.Root>
+                        <Tooltip.Trigger asChild>
+                          <button
+                            className="text-2xl hover:text-red-500 px-2 py-1"
+                            onClick={() => onDelete(job.id)}
+                            disabled={loading}
+                          >
+                            <AiOutlineDelete />
+                          </button>
+                        </Tooltip.Trigger>
+                        <Tooltip.Content className="bg-red-700 text-white px-3 py-1 rounded text-sm mb-4">
+                          Delete job
+                        </Tooltip.Content>
+                      </Tooltip.Root>
+                    </Tooltip.Provider>
+                  </div>
                 </TableCell>
 
                 <TableCell className="border-l-2 text-right">
@@ -186,17 +189,18 @@ export default function LibraryJobsTable({
                           <Tooltip.Provider>
                             <Tooltip.Root>
                               <Tooltip.Trigger asChild>
-                                <div className="flex gap-x-2 justify-end items-center mt-4 cursor-pointer hover:text-primary">
+                                <button
+                                  className="flex gap-x-2 justify-end items-center mt-4 cursor-pointer hover:text-primary w-full px-2 py-1"
+                                  onClick={() => onDownloadJob(job.id)}
+                                >
                                   <Text className="text-sm hover:text-primary">
                                     Download as JSON
                                   </Text>
-                                  <button>
-                                    <IoMdDownload className="text-2xl" />
-                                  </button>
-                                </div>
+                                  <IoMdDownload className="text-2xl" />
+                                </button>
                               </Tooltip.Trigger>
                               <Tooltip.Content className="bg-green-600 px-3 py-1 rounded text-sm mb-4">
-                                Download job data
+                                Download as JSON
                               </Tooltip.Content>
                             </Tooltip.Root>
                           </Tooltip.Provider>
