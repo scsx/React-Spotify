@@ -61,4 +61,43 @@ router.get('/artist/members', async (req, res) => {
   }
 })
 
+// Get artist details by ID
+router.get('/artist/:artistId', async (req, res) => {
+  const { artistId } = req.params
+
+  if (!artistId) {
+    return res.status(400).json({ error: 'Artist ID parameter is required.' })
+  }
+
+  try {
+    const artistResponse = await axios.get(`${DISCOGS_BASE_URL}/artists/${artistId}`, {
+      headers: discogsHeaders,
+    })
+
+    const data = artistResponse.data
+
+    res.json({
+      id: data.id,
+      name: data.name,
+      profile: data.profile || null,
+      images: data.images || [],
+      urls: data.urls || [],
+      members: data.members || [],
+      resource_url: data.resource_url,
+    })
+  } catch (error) {
+    console.error(`Error fetching Discogs artist with ID ${artistId}:`, error.message)
+    if (error.response && error.response.status === 404) {
+      return res.status(404).json({ error: 'Artist not found on Discogs.' })
+    }
+    if (error.response && error.response.data) {
+      return res.status(error.response.status || 500).json({
+        error: 'Failed to fetch artist from Discogs API.',
+        details: error.response.data.message || error.message,
+      })
+    }
+    res.status(500).json({ error: 'Internal server error.' })
+  }
+})
+
 module.exports = router

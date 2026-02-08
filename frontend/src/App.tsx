@@ -17,6 +17,7 @@ import NotFoundPage from '@/components/shared/NotFoundPage'
 
 import AlbumPage from '@/pages/AlbumDetail'
 import Albums from '@/pages/AlbumsPage'
+import ArtistPersonPage from '@/pages/ArtistPersonPage'
 import ArtistsPage from '@/pages/ArtistsPage'
 import FeatureStats from '@/pages/FeatureStats'
 import FollowedArtistsPage from '@/pages/FollowedArtistsPage'
@@ -57,6 +58,7 @@ const App: React.FC = () => {
               <Route path="/artists">
                 <Route index element={<ArtistsPage />} />
                 <Route path="following" element={<FollowedArtistsPage />} />
+                <Route path="person/:memberId" element={<ArtistPersonPage />} />
                 <Route path=":artistId" element={<Artist />} />
               </Route>
               <Route path="/albums">

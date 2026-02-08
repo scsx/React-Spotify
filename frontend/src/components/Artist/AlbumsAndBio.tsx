@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import { TDiscogsBandMembersError, TDiscogsBandMembersResponse } from '@/types/Discogs'
+import { TDiscogsBandMembersResponse, TDiscogsError } from '@/types/Discogs'
 import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
 import { IoBatteryDeadSharp } from 'react-icons/io5'
 
@@ -52,7 +52,7 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
   const [activeTab, setActiveTab] = useState('albums')
   const [isLoading, setIsLoading] = useState(true)
   const [artistMembers, setArtistMembers] = useState<
-    TDiscogsBandMembersResponse | TDiscogsBandMembersError | null
+    TDiscogsBandMembersResponse | TDiscogsError | null
   >(null)
 
   const onTabChange = (value: string) => {

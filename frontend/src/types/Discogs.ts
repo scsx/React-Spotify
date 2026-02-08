@@ -6,6 +6,25 @@ export type TDiscogsMember = {
   thumbnail_url?: string
 }
 
+export type TDiscogsArtistImage = {
+  type: 'primary' | 'secondary' | string
+  height: number
+  width: number
+  resource_url: string
+  uri: string
+  uri150: string
+}
+
+export type TDiscogsArtist = {
+  id: number
+  name: string
+  profile: string | null
+  images: TDiscogsArtistImage[]
+  urls: string[]
+  members: TDiscogsMember[]
+  resource_url: string
+}
+
 export type TDiscogsBandMembersResponse = {
   artist: string
   id: number
@@ -14,7 +33,7 @@ export type TDiscogsBandMembersResponse = {
   url: string | null
 }
 
-export type TDiscogsBandMembersError = {
+export type TDiscogsError = {
   error: string
   details?: string
 }

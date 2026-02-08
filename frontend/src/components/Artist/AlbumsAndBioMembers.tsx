@@ -12,7 +12,6 @@ type TAlbumsAndBioMembersProps = {
 }
 
 const AlbumsAndBioMembers = ({ artistMembers }: TAlbumsAndBioMembersProps): JSX.Element => {
-  console.log(artistMembers)
   return (
     <TabsContent value="members" className="pt-16">
       <div>
@@ -40,7 +39,10 @@ const AlbumsAndBioMembers = ({ artistMembers }: TAlbumsAndBioMembersProps): JSX.
                 </div>
                 <div className="flex-1">
                   <Text variant="h4" className="mb-2">
-                    {member.name}
+                    {/* TODO: pode nao haver id */}
+                    <Hyperlink variant="title" href={`/artists/person/${member.id}`}>
+                      {member.name}
+                    </Hyperlink>
                     {!member.active && (
                       <span className="ml-3 bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs px-3 py-0.5 rounded-full">
                         past member
