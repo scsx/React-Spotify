@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
+import { TDiscogsBandMembersError, TDiscogsBandMembersResponse } from '@/types/Discogs'
 import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
 import { FaGoogle, FaSpotify } from 'react-icons/fa'
 import { IoBatteryDeadSharp } from 'react-icons/io5'
@@ -11,9 +12,11 @@ import Loading from '@/components/shared/Loading'
 import Text from '@/components/shared/Text'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
+import { getDiscogsBandMembers } from '@/services/discogs/getDiscogsBandMembers'
 import { getSpotifyArtistAlbums } from '@/services/spotify/getSpotifyArtistAlbums'
 
 import AlbumCard from '../Album/AlbumCard'
+import AlbumsAndBioMembers from './AlbumsAndBioMembers'
 import CoverMosaic from './CoverMosaic'
 
 type AlbumsAndBioProps = {
@@ -48,6 +51,9 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
   const [albumsCovers, setAlbumCovers] = useState<string[] | []>([])
   const [activeTab, setActiveTab] = useState('albums')
   const [isLoading, setIsLoading] = useState(true)
+  const [artistMembers, setArtistMembers] = useState<
+    TDiscogsBandMembersResponse | TDiscogsBandMembersError | null
+  >(null)
 
   const onTabChange = (value: string) => {
     setActiveTab(value)
@@ -94,6 +100,20 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
     }
   }, [albums, singles])
 
+  useEffect(() => {
+    const fetchBandMembers = async () => {
+      try {
+        const data = await getDiscogsBandMembers(artistName)
+        setArtistMembers(data)
+        console.log('Discogs band members:', data)
+      } catch (error) {
+        console.error('Error fetching band members:', error)
+      }
+    }
+
+    fetchBandMembers()
+  }, [artistName])
+
   return (
     <>
       {isLoading ? (
@@ -108,6 +128,9 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
               <TabsTrigger value="singles">Singles</TabsTrigger>
               {biographyLastFM && biographyLastFM !== '' && (
                 <TabsTrigger value="bio">Biography</TabsTrigger>
+              )}
+              {artistMembers && !('error' in artistMembers) && (
+                <TabsTrigger value="members">Members</TabsTrigger>
               )}
             </TabsList>
 
@@ -165,6 +188,9 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
                 className="pt-16"
               />
             </TabsContent>
+          )}
+          {artistMembers && !('error' in artistMembers) && (
+            <AlbumsAndBioMembers artistMembers={artistMembers} />
           )}
         </Tabs>
       ) : null}

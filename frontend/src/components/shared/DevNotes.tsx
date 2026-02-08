@@ -130,6 +130,9 @@ const DevNotes = () => {
               <span className='text-yellow-genius'>Yellow</span> Genius API content.
             </Text>
             <Text as="li">
+              <span className='text-orange-discogs'>Orange</span> Discogs API content.
+            </Text>
+            <Text as="li">
               <span className='text-red-500'>Red</span> LastFM API content.
             </Text>
             <Text as="li">

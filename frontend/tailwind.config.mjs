@@ -54,6 +54,7 @@ export default {
           foreground: 'hsl(var(--card-foreground))',
         },
         'yellow-genius': '#ffff64',
+        'orange-discogs': '#fa8200',
       },
       borderRadius: {
         lg: 'var(--radius)',
