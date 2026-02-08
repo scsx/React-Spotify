@@ -16,9 +16,9 @@ const AlbumsAndBioMembers = ({ artistMembers }: TAlbumsAndBioMembersProps): JSX.
   return (
     <TabsContent value="members" className="pt-16">
       <div>
-        <Text variant="h2" className="flex gap-x-2 mb-8">
+        <Text variant="h2" className="flex items-baseline gap-x-2 mb-8">
           Members from
-          <IconBrand type="discogs" />
+          <IconBrand type="discogs" className='text-2xl' />
           <span className="text-orange-discogs">Discogs</span>
         </Text>
         {artistMembers.members && artistMembers.members.length > 0 ? (
@@ -44,7 +44,7 @@ const AlbumsAndBioMembers = ({ artistMembers }: TAlbumsAndBioMembersProps): JSX.
                     <Hyperlink
                       external
                       href={getDiscogsArtistPageUrl(member.resource_url)}
-                      variant="title"
+                      variant="icon"
                       className="flex items-center gap-x-2"
                     >
                       <IconBrand type="discogs" className="text-inherit" /> Discogs
@@ -52,7 +52,7 @@ const AlbumsAndBioMembers = ({ artistMembers }: TAlbumsAndBioMembersProps): JSX.
                     <Hyperlink
                       external
                       href={`https://www.google.com/search?q=${encodeURIComponent(member.name)}`}
-                      variant="title"
+                      variant="icon"
                       className="flex items-center gap-x-2"
                     >
                       <IconBrand type="google" className="text-inherit" /> Google
