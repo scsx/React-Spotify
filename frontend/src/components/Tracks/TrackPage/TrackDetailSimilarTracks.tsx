@@ -50,38 +50,46 @@ const TrackDetailSimilarTracks = ({
         <span>Similar tracks</span>
         <FaLastfm className="text-red-500 text-3xl mt-1" />
       </Text>
-      {similarTracks && !('error' in similarTracks) && similarTracks.similartracks?.track ? (
-        <div>
-          {similarTracks.similartracks.track.map((track, index) => {
-            const largeImage = track.image?.find(
-              (img) => img.size === 'large' || img.size === 'extralarge'
-            )
-            const imageUrl = largeImage?.['#text'] || track.image?.[2]?.['#text']
+      {similarTracks && !('error' in similarTracks) ? (
+        similarTracks.similartracks?.track?.length ? (
+          <div>
+            {similarTracks.similartracks.track.map((track, index) => {
+              const largeImage = track.image?.find(
+                (img) => img.size === 'large' || img.size === 'extralarge'
+              )
+              const imageUrl = largeImage?.['#text'] || track.image?.[2]?.['#text']
 
-            return (
-              <div key={index} className="flex gap-4 py-3">
-                {imageUrl && (
-                  <img src={imageUrl} alt={track.name} className="w-16 h-16 rounded object-cover" />
-                )}
-                <div className="flex-1">
-                  <Text variant="h5">{track.name}</Text>
-                  <Text color="muted">
-                    <Hyperlink variant="title" href={`/artists/?searchKey=${track.artist.name}`}>
-                      {track.artist.name}
-                    </Hyperlink>
-                  </Text>
-                  {track.playcount && (
-                    <Text color="muted" className="text-xs">
-                      {parseInt(track.playcount).toLocaleString()} plays
-                    </Text>
+              return (
+                <div key={index} className="flex gap-4 py-3">
+                  {imageUrl && (
+                    <img
+                      src={imageUrl}
+                      alt={track.name}
+                      className="w-16 h-16 rounded object-cover"
+                    />
                   )}
+                  <div className="flex-1">
+                    <Text variant="h5">{track.name}</Text>
+                    <Text color="muted">
+                      <Hyperlink variant="title" href={`/artists/?searchKey=${track.artist.name}`}>
+                        {track.artist.name}
+                      </Hyperlink>
+                    </Text>
+                    {track.playcount && (
+                      <Text color="muted" className="text-xs">
+                        {parseInt(track.playcount).toLocaleString()} plays
+                      </Text>
+                    )}
+                  </div>
                 </div>
-              </div>
-            )
-          })}
-        </div>
+              )
+            })}
+          </div>
+        ) : (
+          <Text color="muted">No similar tracks found for this song.</Text>
+        )
       ) : (
-        <p>Loading similar tracks...</p>
+        <Text>Loading similar tracks...</Text>
       )}
     </div>
   )

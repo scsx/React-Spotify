@@ -81,13 +81,24 @@ const TrackDetailLayout = (): JSX.Element | null => {
           </div>
 
           <div className="w-1/3 pt-4">
-            <div className="mb-16">
-              <Text variant="h2" className="mb-4">
-                Audio Features
-              </Text>
-              {skileyTrack ? (
+            {skileyTrack && (
+              <div className="mb-16">
+                <Text variant="h2" className="mb-4">
+                  Audio Features
+                </Text>
                 <TrackAudioFeatures track={skileyTrack} />
-              ) : (
+              </div>
+            )}
+
+            {!skileyTrack && <TrackDetailSimilarTracks track={track} limit={8} />}
+
+            {skileyTrack && <TrackDetailSimilarTracks track={track} />}
+
+            {!skileyTrack && (
+              <div className="mb-16">
+                <Text variant="h2" className="mb-4">
+                  Audio Features
+                </Text>
                 <>
                   <Text variant="h6" className="mt-2 mb-4 flex items-center gap-2">
                     <GiSoundWaves className="text-3xl" /> No audio features available.
@@ -97,10 +108,8 @@ const TrackDetailLayout = (): JSX.Element | null => {
                     late 2024 due to LLM training.
                   </Text>
                 </>
-              )}
-            </div>
-
-            <TrackDetailSimilarTracks track={track} />
+              </div>
+            )}
           </div>
           <div className="w-1/3">
             <TrackDetailGeniusLyrics
