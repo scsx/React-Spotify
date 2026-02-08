@@ -14,7 +14,7 @@ type TIconBrandProps = {
 
 const IconBrand = ({ type, className = '' }: TIconBrandProps): React.ReactNode => {
   const defaultColors: Record<TIconBrandType, string> = {
-    spotify: 'text-primary',
+    spotify: 'text-muted-foreground',
     discogs: 'text-orange-discogs',
     lastfm: 'text-red-600',
     genius: 'text-yellow-genius',

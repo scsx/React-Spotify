@@ -18,27 +18,34 @@ const AlbumsAndBioMembers = ({ artistMembers }: TAlbumsAndBioMembersProps): JSX.
       <div>
         <Text variant="h2" className="flex items-baseline gap-x-2 mb-8">
           Members from
-          <IconBrand type="discogs" className='text-2xl' />
+          <IconBrand type="discogs" className="text-2xl" />
           <span className="text-orange-discogs">Discogs</span>
         </Text>
         {artistMembers.members && artistMembers.members.length > 0 ? (
           <div className="flex flex-col gap-y-4">
             {artistMembers.members.map((member) => (
-              <div key={member.id} className="flex items-center">
-                {member.thumbnail_url ? (
-                  <div className="w-28 h-28 rounded-full overflow-hidden flex-shrink-0">
-                    <img
-                      src={member.thumbnail_url}
-                      alt={member.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-28 h-28 rounded-full bg-gray-300 dark:bg-gray-900 flex-shrink-0" />
-                )}
-                <div className="pl-4">
+              <div key={member.id} className="flex items-center gap-4">
+                <div className="relative flex-shrink-0">
+                  {member.thumbnail_url ? (
+                    <div className="w-28 h-28 rounded-full overflow-hidden">
+                      <img
+                        src={member.thumbnail_url}
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ) : (
+                    <div className="w-28 h-28 rounded-full bg-gray-300 dark:bg-gray-900" />
+                  )}
+                </div>
+                <div className="flex-1">
                   <Text variant="h4" className="mb-2">
                     {member.name}
+                    {!member.active && (
+                      <span className="ml-3 bg-gray-200 dark:bg-gray-800 text-gray-600 dark:text-gray-400 text-xs px-3 py-0.5 rounded-full">
+                        past member
+                      </span>
+                    )}
                   </Text>
                   <div className="flex items-center gap-x-6">
                     <Hyperlink

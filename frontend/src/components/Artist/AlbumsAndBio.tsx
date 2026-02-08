@@ -4,12 +4,12 @@ import { useParams } from 'react-router-dom'
 
 import { TDiscogsBandMembersError, TDiscogsBandMembersResponse } from '@/types/Discogs'
 import { TSpotifyAlbum } from '@/types/SpotifyAlbum'
-import { FaGoogle, FaSpotify } from 'react-icons/fa'
 import { IoBatteryDeadSharp } from 'react-icons/io5'
 
 import Hyperlink from '@/components/shared/Hyperlink'
 import Loading from '@/components/shared/Loading'
 import Text from '@/components/shared/Text'
+import IconBrand from '@/components/shared/icons/IconBrand'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 
 import { getDiscogsBandMembers } from '@/services/discogs/getDiscogsBandMembers'
@@ -33,7 +33,7 @@ type TIconLinkProps = {
 const IconLink = ({ href, children }: TIconLinkProps) => {
   return (
     <div className="inline-flex items-center justify-center rounded-sm text-sm font-medium ring-offset-background transition-all focus-visible:outline-none hover:bg-background">
-      <Hyperlink external href={href} className="px-3 py-1.5">
+      <Hyperlink external href={href} className="px-3 py-1.5 group">
         {children}
       </Hyperlink>
     </div>
@@ -140,11 +140,17 @@ const AlbumsAndBio: React.FC<AlbumsAndBioProps> = ({
 
             <div className="inline-flex h-10 rounded-md bg-muted ml-4 mb-0 p-1 text-muted-foreground">
               <IconLink href={`https://www.google.com/search?q=${artistName}`}>
-                <FaGoogle className="text-muted-foreground hover:text-red-500" />
+                <IconBrand
+                  type="google"
+                  className="group-hover:text-red-500 text-muted-foreground"
+                />
               </IconLink>
 
               <IconLink href={artistURI}>
-                <FaSpotify className="text-muted-foreground hover:text-primary" />
+                <IconBrand
+                  type="spotify"
+                  className="group-hover:text-primary text-muted-foreground"
+                />
               </IconLink>
             </div>
           </div>
