@@ -1,15 +1,20 @@
-import { TLastFmAlbumGetInfoError, TLastFmAlbumGetInfoResponse } from '@/types/LastFmAlbum'
+import {
+  TLastFmSimilarTracksError,
+  TLastFmSimilarTracksResponse,
+} from '@/types/LastFmSimilarTracks'
 import axios from 'axios'
 
-export async function getLastFMAlbumInfo(
+export async function getLastFMSimilarTracks(
   artistName: string,
-  albumName: string
-): Promise<TLastFmAlbumGetInfoResponse | TLastFmAlbumGetInfoError> {
+  trackName: string,
+  limit: number = 10
+): Promise<TLastFmSimilarTracksResponse | TLastFmSimilarTracksError> {
   try {
-    const response = await axios.get<TLastFmAlbumGetInfoResponse>(`/api/lastfm/album.getinfo`, {
+    const response = await axios.get<TLastFmSimilarTracksResponse>(`/api/lastfm/track.getsimilar`, {
       params: {
         artist: artistName,
-        album: albumName,
+        track: trackName,
+        limit,
       },
     })
     return response.data
@@ -21,13 +26,13 @@ export async function getLastFMAlbumInfo(
         'message' in error.response.data
       ) {
         console.error(
-          'Error fetching Last.FM album info (API Error Response):',
+          'Error fetching Last.FM similar tracks (API Error Response):',
           error.response.data.message
         )
-        return error.response.data as TLastFmAlbumGetInfoError
+        return error.response.data as TLastFmSimilarTracksError
       }
       console.error(
-        'Error fetching Last.FM album info (HTTP Error Response):',
+        'Error fetching Last.FM similar tracks (HTTP Error Response):',
         error.response.status,
         error.response.data
       )
@@ -38,9 +43,9 @@ export async function getLastFMAlbumInfo(
     }
 
     console.error(
-      'Error fetching Last.FM album info via proxy (Network/Unknown Error):',
+      'Error fetching Last.FM similar tracks via proxy (Network/Unknown Error):',
       error instanceof Error ? error.message : String(error)
     )
-    return { error: -1, message: 'Failed to load album info from Last.FM proxy.' }
+    return { error: -1, message: 'Failed to load similar tracks from Last.FM proxy.' }
   }
 }

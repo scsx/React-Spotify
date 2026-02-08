@@ -60,4 +60,25 @@ router.get('/album.getinfo', async (req, res) => {
   await callLastFmApi('album.getinfo', { artist: artist, album: album }, res)
 })
 
+router.get('/track.getsimilar', async (req, res) => {
+  const { artist, track, limit } = req.query
+
+  if (!artist || !track) {
+    return res.status(400).json({
+      error: 'Both artist and track parameters are required.',
+    })
+  }
+
+  await callLastFmApi(
+    'track.getsimilar',
+    {
+      artist,
+      track,
+      limit: limit || 10,
+      autocorrect: 1,
+    },
+    res
+  )
+})
+
 module.exports = router

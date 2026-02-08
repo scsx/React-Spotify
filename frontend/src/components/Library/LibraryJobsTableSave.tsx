@@ -42,7 +42,7 @@ const LibraryJobsTableSave = ({
                       className="flex gap-x-2 justify-end items-center mt-2 cursor-pointer hover:text-primary w-full px-2 py-1"
                       onClick={() => onDownloadJob(job.id)}
                     >
-                      <Text className="text-sm hover:text-primary">Download as JSON</Text>
+                      <Text className="text-sm hover:text-inherit">Download as JSON</Text>
                       <IoMdDownload className="text-2xl" />
                     </button>
                   </Tooltip.Trigger>

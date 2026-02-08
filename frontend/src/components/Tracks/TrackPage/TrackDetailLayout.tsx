@@ -9,6 +9,7 @@ import { GiSoundWaves } from 'react-icons/gi'
 
 import TrackAudioFeatures from '@/components/Tracks/TrackPage/TrackAudioFeatures/TrackAudioFeatures'
 import TrackDetailGeniusLyrics from '@/components/Tracks/TrackPage/TrackDetailGeniusLyrics'
+import TrackDetailSimilarTracks from '@/components/Tracks/TrackPage/TrackDetailSimilarTracks'
 import TrackHero from '@/components/Tracks/TrackPage/TrackHero'
 import Text from '@/components/shared/Text'
 
@@ -59,14 +60,27 @@ const TrackDetailLayout = (): JSX.Element | null => {
       {track && artists[0] && <TrackHero track={track} artists={artists} />}
 
       <div className="container relative z-10 pt-24">
-        <div className="flex space-x-12">
-          <div className="w-1/3">
+        <div className="flex space-x-16">
+          <div className="w-1/3 pt-4">
             <Text variant="h2" className="mb-4">
               Album
             </Text>
+            <div>
+              {track ? (
+                <>
+                  <img src={track.album.images[0]?.url} alt={track.album.name} />
+                  <Text variant="h4" className="mt-4">
+                    {track.album.name}
+                  </Text>
+                  {track.album.release_date && <Text>{track.album.release_date}</Text>}
+                </>
+              ) : (
+                <Text color="muted">Loading album info...</Text>
+              )}
+            </div>
           </div>
 
-          <div className="w-1/3">
+          <div className="w-1/3 pt-4">
             <div className="mb-16">
               <Text variant="h2" className="mb-4">
                 Audio Features
@@ -86,11 +100,7 @@ const TrackDetailLayout = (): JSX.Element | null => {
               )}
             </div>
 
-            <div className="mb-16">
-              <Text variant="h2" className="mb-4">
-                Similar tracks
-              </Text>
-            </div>
+            <TrackDetailSimilarTracks track={track} />
           </div>
           <div className="w-1/3">
             <TrackDetailGeniusLyrics
