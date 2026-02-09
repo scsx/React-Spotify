@@ -34,13 +34,13 @@ const AlbumCard: React.FC<AlbumCardProps> = ({ album, showArtist = false }): JSX
             <div>
               {album.name.includes('(') ? (
                 <>
-                  <Text variant="h3" className="block mt-2">
+                  <Text variant="h3" className="block mt-2 line-clamp-2">
                     {album.name.split('(')[0]}
                   </Text>
-                  <Text>({album.name.split('(')[1].slice(0, -1)})</Text>
+                  <Text className="line-clamp-1">({album.name.split('(')[1].slice(0, -1)})</Text>
                 </>
               ) : (
-                <Text variant="h3" className="block mt-2">
+                <Text variant="h3" className="block mt-2 line-clamp-2">
                   {album.name}
                 </Text>
               )}

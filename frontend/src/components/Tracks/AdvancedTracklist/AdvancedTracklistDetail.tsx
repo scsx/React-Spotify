@@ -1,5 +1,6 @@
 import { TSkileyLikedSong } from '@/types/SkileyTrack'
 import { TSpotifyArtist } from '@/types/SpotifyArtist'
+import { IoIosArrowRoundForward } from 'react-icons/io'
 
 import Hyperlink from '@/components/shared/Hyperlink'
 import Text from '@/components/shared/Text'
@@ -34,22 +35,19 @@ const AdvancedTracklistDetail = ({
   return (
     <div className="mt-4 sticky top-24">
       <div className={boxClass}>
-        <Text variant="h6" className="mb-2">
+        <Text variant="h6" className="mb-1">
           Track
         </Text>
-        <Text className="mb-6 leading-none text-xl">{track.trackName}</Text>
-        <Text className="mb-2">
-          <Hyperlink href={`/tracks/${getSpotifyIdFromUrl(track.trackUrl)}`}>
-            See track details
+        <Text className="mb-6 leading-none text-xl">
+          <Hyperlink className="flex items-stretch" href={`/tracks/${getSpotifyIdFromUrl(track.trackUrl)}`}>
+            {track.trackName}
+            <IoIosArrowRoundForward className='text-3xl' />
           </Hyperlink>
         </Text>
-      </div>
-
-      <div className={boxClass}>
-        <Text variant="h6" className="mb-4">
+        <Text variant="h6" className="mb-1">
           Artist
         </Text>
-        <div className="flex items-center mb-2">
+        <div className="flex items-center mb-4">
           <div className="w-[100px]">
             {artist?.images?.[0]?.url ? (
               <img src={artist.images[0].url} alt={artist.name} className="w-full aspect-square" />
@@ -68,10 +66,7 @@ const AdvancedTracklistDetail = ({
             </Text>
           </div>
         </div>
-      </div>
-
-      <div className={boxClass}>
-        <Text variant="h6" className="mb-4">
+        <Text variant="h6" className="mb-1">
           Album
         </Text>
         <div className="flex items-center mb-2">
@@ -100,7 +95,8 @@ const AdvancedTracklistDetail = ({
           Missing tracks
         </Text>
         <Text className="mb-2">
-          Tracks that are no longer available on Spotify. Aldrich Lawson - No problem. TODO: Link to page.
+          Tracks that are no longer available on Spotify. Aldrich Lawson - No problem. TODO: Link to
+          page.
         </Text>
       </div>
 
@@ -114,6 +110,10 @@ const AdvancedTracklistDetail = ({
             skiley.net
           </Hyperlink>
           . See the <Hyperlink href="/dev-notes#skiley">dev notes</Hyperlink> for more details.
+        </Text>
+        <Text className="mb-2">
+          See <Hyperlink href="/tracks/missing-tracks">tracks</Hyperlink> that are missing from
+          Spotify or are no longer available there.
         </Text>
       </div>
     </div>

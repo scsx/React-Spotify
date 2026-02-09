@@ -23,6 +23,7 @@ import FeatureStats from '@/pages/FeatureStats'
 import FollowedArtistsPage from '@/pages/FollowedArtistsPage'
 import LibraryPage from '@/pages/LibraryPage'
 import Login from '@/pages/Login'
+import MissingTracksPage from '@/pages/MissingTracksPage'
 import PlaylistPage from '@/pages/PlaylistDetail'
 import TrackPage from '@/pages/TrackDetail'
 import TracksPage from '@/pages/TracksPage'
@@ -68,6 +69,7 @@ const App: React.FC = () => {
               <Route path="/tracks">
                 <Route index element={<TracksPage />} />
                 <Route path="feature-stats" element={<FeatureStats />} />
+                <Route path="missing-tracks" element={<MissingTracksPage />} />
                 <Route path=":trackId">
                   <Route index element={<TrackPage />} />
                 </Route>

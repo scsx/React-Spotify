@@ -92,11 +92,15 @@ const TrackHero = ({ track, artists }: TTrackHeroProps) => {
               <div key={artist.id} className="flex items-center gap-2">
                 <div className="w-8 overflow-hidden rounded-full">
                   <AspectRatio ratio={1}>
-                    <img
-                      src={artist.images[0]?.url}
-                      alt={artist.name}
-                      className="object-cover w-full h-full"
-                    />
+                    {artist.images[0]?.url ? (
+                      <img
+                        src={artist.images[0]?.url}
+                        alt={artist.name}
+                        className="object-cover w-full h-full"
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-300 dark:bg-gray-800" />
+                    )}
                   </AspectRatio>
                 </div>
                 <Text variant="h4">
