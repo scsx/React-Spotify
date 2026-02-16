@@ -10,6 +10,7 @@ const DevNotes = () => {
     { title: 'Backend', slug: 'backend' },
     { title: 'Colors', slug: 'colors' },
     { title: 'Library', slug: 'library' },
+    { title: 'Messy IDs', slug: 'messy-ids' },
   ]
 
   const scrollToId = (id: string) => {
@@ -124,19 +125,19 @@ const DevNotes = () => {
           </Text>
           <ul className="list-disc pl-5 mt-4 space-y-2">
             <Text as="li">
-              <span className='text-primary'>Green</span> Spotify API content and primary color.
+              <span className="text-primary">Green</span> Spotify API content and primary color.
             </Text>
             <Text as="li">
-              <span className='text-yellow-genius'>Yellow</span> Genius API content.
+              <span className="text-yellow-genius">Yellow</span> Genius API content.
             </Text>
             <Text as="li">
-              <span className='text-orange-discogs'>Orange</span> Discogs API content.
+              <span className="text-orange-discogs">Orange</span> Discogs API content.
             </Text>
             <Text as="li">
-              <span className='text-red-500'>Red</span> LastFM API content.
+              <span className="text-red-500">Red</span> LastFM API content.
             </Text>
             <Text as="li">
-              <span className='text-blue-500'>Blue</span> User actions.
+              <span className="text-blue-500">Blue</span> User actions.
             </Text>
           </ul>
         </li>
@@ -145,10 +146,20 @@ const DevNotes = () => {
             Library
           </Text>
           <ol className="list-decimal pl-5 mt-4 space-y-2">
-            <Text as="li">
-              Passos...
-            </Text>
+            <Text as="li">Passos...</Text>
           </ol>
+        </li>
+        <li>
+          <Text variant="h3" as="h2" id="messy-ids" className="font-bold pt-10 -mt-10 mb-4">
+            Messy IDs
+          </Text>
+          <Text>
+            Spotify can have multiple Ids for the same track, for example:{' '}
+            <pre className="inline">2U6A1YrSoVjm2aDy67FdZz</pre> and{' '}
+            <pre className="inline">454WVpreI1rezNYf492EZx</pre> (Still Corners - Bad Town). The
+            final source of truth should be{' '}
+            <Hyperlink href="/tracks">skiley's saved tracks</Hyperlink>.
+          </Text>
         </li>
       </ul>
     </div>
