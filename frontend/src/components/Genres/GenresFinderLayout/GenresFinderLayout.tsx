@@ -14,13 +14,22 @@ type GenresFinderLayoutProps = {
   genresNames: string
 }
 
+type TLastFmTagInfo = {
+  name: string
+  url: string
+  wiki?: {
+    summary?: string
+    content?: string
+  }
+}
+
 const GenresFinderLayout = ({ genresNames }: GenresFinderLayoutProps): JSX.Element => {
   const initialArtistState: TSpotifyArtist[] = []
 
   const [spotifyGenres, setSpotifyGenres] = useState<string[]>([])
   const [lastFmGenres, setLastFmGenres] = useState<string[]>([])
   const [artistsSpotify, setArtistsSpotify] = useState(initialArtistState)
-  const [lastFmTagsInfo, setLastFmTagsInfo] = useState<any[]>([])
+  const [lastFmTagsInfo, setLastFmTagsInfo] = useState<TLastFmTagInfo[]>([])
 
   // Get genres from params.
   useEffect(() => {
@@ -59,7 +68,7 @@ const GenresFinderLayout = ({ genresNames }: GenresFinderLayoutProps): JSX.Eleme
       }
 
       const fetchLastFmInfoForSpotifyGenres = async () => {
-        const results: any[] = []
+        const results: TLastFmTagInfo[] = []
 
         for (const tag of spotifyGenres) {
           try {
@@ -88,7 +97,7 @@ const GenresFinderLayout = ({ genresNames }: GenresFinderLayoutProps): JSX.Eleme
   useEffect(() => {
     if (lastFmGenres.length > 0) {
       const fetchLastFmTagsInfo = async () => {
-        const results: any[] = []
+        const results: TLastFmTagInfo[] = []
 
         for (const tag of lastFmGenres) {
           try {

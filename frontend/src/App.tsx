@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Outlet, Route, Routes } from 'react-router-dom'
 
@@ -42,6 +42,17 @@ import './services/axiosInterceptor'
 
 const App: React.FC = () => {
   useSpotifyAuthCallback()
+
+  // Get top genres from Skiley liked songs (local json) in background using Web Worker.
+  useEffect(() => {
+    const worker = new Worker(new URL('@/workers/generateTopGenres.worker.ts', import.meta.url), {
+      type: 'module',
+    })
+
+    worker.postMessage({})
+
+    return () => worker.terminate()
+  }, [])
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">

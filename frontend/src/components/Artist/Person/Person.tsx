@@ -7,6 +7,7 @@ import { TDiscogsArtist, TDiscogsError } from '@/types/Discogs'
 import Hyperlink from '@/components/shared/Hyperlink'
 import Loading from '@/components/shared/Loading'
 import Text from '@/components/shared/Text'
+import IconBrand from '@/components/shared/icons/IconBrand'
 import { AspectRatio } from '@/components/ui/aspect-ratio'
 
 import { getDiscogsArtist } from '@/services/discogs/getDiscogsArtist'
@@ -79,6 +80,14 @@ const Person = () => {
               <Text className="mt-4">{artist.profile}</Text>
             </>
           )}
+          <Hyperlink
+            external
+            href={`https://www.google.com/search?q=${encodeURIComponent(artist.name)}`}
+            variant="icon"
+            className="flex items-center gap-x-2 mt-8"
+          >
+            <IconBrand type="google" className="text-inherit" /> Google
+          </Hyperlink>
           {artist.urls && artist.urls.length > 0 && (
             <div className="mt-8">
               <Text variant="h2">Links</Text>

@@ -52,8 +52,6 @@ const Welcome = (): JSX.Element => {
           <ActionItem label="Check your user info" href="/user" />
         </li>
       </ul>
-
-      <p className="mt-8">TODO: {isLoggedIn ? 'logged in' : 'not'}</p>
     </div>
   )
 }

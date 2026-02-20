@@ -11,6 +11,7 @@ import TrackAudioFeatures from '@/components/Tracks/TrackPage/TrackAudioFeatures
 import TrackDetailGeniusLyrics from '@/components/Tracks/TrackPage/TrackDetailGeniusLyrics'
 import TrackDetailSimilarTracks from '@/components/Tracks/TrackPage/TrackDetailSimilarTracks'
 import TrackHero from '@/components/Tracks/TrackPage/TrackHero'
+import Hyperlink from '@/components/shared/Hyperlink'
 import Text from '@/components/shared/Text'
 
 import { getLocalSkileyTrackById } from '@/services/skiley/getLocalSkileyTrackById'
@@ -65,7 +66,7 @@ const TrackDetailLayout = (): JSX.Element | null => {
             <Text variant="h2" className="mb-4">
               Album
             </Text>
-            <div>
+            <Hyperlink href={`/albums/${track.album.id}`} variant='title'>
               {track ? (
                 <>
                   <img src={track.album.images[0]?.url} alt={track.album.name} />
@@ -77,7 +78,7 @@ const TrackDetailLayout = (): JSX.Element | null => {
               ) : (
                 <Text color="muted">Loading album info...</Text>
               )}
-            </div>
+            </Hyperlink>
           </div>
 
           <div className="w-1/3 pt-4">

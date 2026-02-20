@@ -53,3 +53,9 @@ export type TLibraryJobsTableProps = {
   onSaveToIndexDB: (jobId: string) => void
   onDownloadJob: (jobId: string) => void
 }
+
+export type TTLibraryTopGenres = {
+  id: string
+  genres: { genre: string; count: number }[]
+  updatedAt: number
+}
